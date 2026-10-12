@@ -1,1 +1,2 @@
 ngay,thanh_vien,ma_viec,da_lam,dau_ra,link_commit_hoac_pr,vuong_mac,viec_tiep_theo
+12/10/2026,Hoàng Quốc Anh,S1-06,"Đề xuất và cắt 26 ảnh 512x512 từ 16 ảnh nguồn NASA; xác lập 2 vùng so sánh; sinh metadata và catalogue đạt 100% hợp đồng dữ liệu","docs/S1-06_BANG_ANH_XA_ANH_CAT.md, docs/S1-06_BANG_ANH_XA.csv, data/processed/",PR nhánh s1-06-crop-dataset,"STT 19 (1.12GB) và STT 20 không tải để tối ưu bộ nhớ; STT 12 swath hẹp được thay bằng crop phụ chất lượng cao từ STT 17",Bàn giao cho Hưng kiểm tra chuẩn hóa và Tiến chạy thử Hough
