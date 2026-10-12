@@ -74,7 +74,13 @@ Một đầu việc dùng một nhánh, ví dụ `s1-07-hough-numpy` hoặc `s1-
 
 ## Căn cứ thiết kế
 
-Ba tài liệu nhóm đã bàn giao: S1-02 (nguồn ảnh), S1-03 (Hough và tài liệu), S1-04 (đặc tả tiền xử lý). S1-04 là căn cứ cho kích thước, kiểu dữ liệu, hướng nắng và quy đổi bán kính. Các file gốc vẫn được nhóm lưu riêng.
+Ba tài liệu nhóm đã bàn giao được lưu trong `docs/`:
+
+- [S1-02 — Bảng 20 nguồn ảnh](<docs/S1-02_Bang_20_anh_nguon (1).docx>)
+- [S1-03 — Ghi chú Hough tròn, tiền xử lý và tài liệu](<docs/S1-03 — GHI CHÚ HOUGH TRÒN, TIỀN XỬ LÝ VÀ TÀI LIỆU.docx>)
+- [S1-04 — Đặc tả tiền xử lý](docs/S1-04_Dac_ta_tien_xu_ly.docx)
+
+Nhấp vào tên tài liệu rồi tải file DOCX để đọc bằng Word hoặc LibreOffice. S1-04 là căn cứ cho kích thước, kiểu dữ liệu, hướng nắng và quy đổi bán kính.
 
 ## Đưa repo lên GitHub
 
