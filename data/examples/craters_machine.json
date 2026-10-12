@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "synthetic",
+  "image_id": "s105_synthetic_512",
+  "source": "machine",
+  "reference_source": null,
+  "circles": [
+    {"crater_id": "M1", "x": 160.0, "y": 180.0, "r": 32.0, "confidence": null, "votes": 45},
+    {"crater_id": "M2", "x": 330.0, "y": 350.0, "r": 50.0, "confidence": null, "votes": 62}
+  ],
+  "note": "Vòng tròn và phiếu đặt sẵn để kiểm tra định dạng; chưa chạy Hough."
+}

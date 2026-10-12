@@ -1,0 +1,6 @@
+# Cài khi bắt đầu phần thuật toán / giao diện; checker S1-05 dùng Python chuẩn.
+numpy
+opencv-python-headless
+rasterio
+matplotlib
+streamlit

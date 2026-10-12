@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Local editor and credentials
+.idea/
+.vscode/
+.DS_Store
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Large source images and generated files
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+outputs/*
+!outputs/README.md

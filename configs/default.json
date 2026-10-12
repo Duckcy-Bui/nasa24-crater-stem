@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "status": "initial_parameters_to_tune",
+  "image": {"width": 512, "height": 512, "dtype": "float32", "value_range": [0, 1]},
+  "preprocess": {
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6
+  },
+  "hough": {"radius_step_px": 1, "r_min_limit_px": 5, "r_max_limit_px": 128},
+  "evaluation": {"center_tolerance_fraction": 0.5, "matching": "one_to_one"}
+}

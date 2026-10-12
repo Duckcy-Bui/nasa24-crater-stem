@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "synthetic",
+  "image_id": "s105_synthetic_512",
+  "source": "player",
+  "reference_source": null,
+  "circles": [
+    {"crater_id": "U1", "x": 165.0, "y": 181.0, "r": 31.0, "confidence": null, "votes": null}
+  ],
+  "note": "Câu trả lời giả lập; chưa phải dữ liệu khảo sát học sinh."
+}
