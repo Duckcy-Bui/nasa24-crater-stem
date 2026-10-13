@@ -46,13 +46,17 @@ nasa24-crater-stem/
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
 ├── app.py                     # Điểm vào giao diện, sẽ cài ở S1-09
-├── scripts/check_contracts.py # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
-├── tests/                     # Kiểm tra hợp đồng dữ liệu
+├── scripts/
+│   ├── check_contracts.py     # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
+│   ├── run_preprocessing.py   # S1-08: chạy B0–B8, lưu ảnh từng bước + tham số
+│   └── synthetic_scene.py     # Cảnh hố giả lập để thử khi chưa có ảnh thật
+├── tests/                     # Kiểm tra hợp đồng dữ liệu và tiền xử lý
 ├── outputs/                   # Kết quả chạy theo run_id, không đưa vào Git
 └── docs/
     ├── DINH_DANG_DU_LIEU.md
     ├── PHAN_CONG.md
     ├── NHAT_KY_NHOM.csv
+    ├── TIEN_XU_LY.md          # S1-08: cài đặt, chạy, tự viết/thư viện
     └── HUONG_DAN_GITHUB.md
 ```
 
