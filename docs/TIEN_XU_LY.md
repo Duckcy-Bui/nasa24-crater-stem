@@ -16,12 +16,18 @@ Kết quả mong đợi: mọi kiểm tra đạt. Nếu chưa cài numpy/opencv,
 ## 2. Chạy và xem ảnh từng bước
 
 ```bash
-# Hai cảnh giả lập (chưa có ảnh thật từ S1-06): nắng xiên 80° và nắng gần đứng 15°
+# Hai cảnh giả lập: nắng xiên 80° và nắng gần đứng 15°
 python scripts/run_preprocessing.py --synthetic oblique
 python scripts/run_preprocessing.py --synthetic overhead
 
 # Ảnh thật: metadata JSON theo chuẩn S1-05 (crop_x0, crop_y0, downsample_k...)
 python scripts/run_preprocessing.py --input data/raw/<file>.tif --metadata data/processed/<image_id>.json
+
+# Ảnh cắt S1-06: tự đọc <image_id>_valid_mask.npy cạnh ảnh .npy
+python scripts/run_preprocessing.py --input data/processed/<image_id>.npy --metadata data/processed/<image_id>.json
+
+# Nếu mặt nạ đặt ở chỗ khác (bool, cùng kích thước ảnh đầu vào)
+python scripts/run_preprocessing.py --input data/processed/<image_id>.npy --metadata data/processed/<image_id>.json --valid-mask data/processed/<image_id>_valid_mask.npy
 
 # Thử tham số khác mà không sửa cấu hình
 python scripts/run_preprocessing.py --synthetic oblique --set gauss_sigma=2.0 canny_high_pct=95
@@ -33,9 +39,9 @@ Mỗi lần chạy tạo một thư mục mới `outputs/<run_id>/`, không ghi 
 |---|---|
 | `overview.png` | Ghép 12 ô B1→B8; tiêu đề xanh = tự viết, đỏ = thư viện |
 | `steps/B*.png` | Ảnh riêng từng bước (B3 gray, B4 enhanced, B5 smooth, B6 gx/gy/mag/theta, B7 canny, B8 edges, overlay, valid_mask) |
-| `params.json` | Toàn bộ tham số đã dùng, kể cả giá trị tính ra: P0,5/P99,5, ngưỡng Canny low/high, số px biên |
+| `params.json` | Tham số đã dùng: phân vị, chiến lược chuẩn hóa/ngưỡng Canny, low/high, lề biên yêu cầu/thực tế, số px biên |
 | `metadata.json` | Metadata ảnh, trường `preprocess` và `valid_ratio` đã điền; đã qua `validate_metadata` |
-| `run.json` | run_id, mã commit (`+working-tree` nếu còn sửa chưa commit), cấu hình, tham số ghi đè |
+| `run.json` | run_id, mã commit (`+working-tree` nếu còn sửa chưa commit), cấu hình, tham số ghi đè, SHA-256 và kích thước các file đầu vào |
 | `result.npz` | Các mảng đầu ra để Hough (S1-07) đọc: `np.load(...)["edges"]` |
 | `truth_craters.json` | Chỉ có với cảnh giả lập: hố đúng do bộ tạo đặt, định dạng danh sách hố chung |
 
@@ -46,14 +52,18 @@ Mỗi lần chạy tạo một thư mục mới `outputs/<run_id>/`, không ghi 
 | B0 | Đọc file, cắt cửa sổ 512·k | **Thư viện** rasterio | `read_window` |
 | B1 | Thu nhỏ trung bình khối k×k | **Tự viết** NumPy | `block_mean` |
 | B2 | Ảnh xám BT.601 | **Tự viết** NumPy | `to_gray` |
-| B3 | Chuẩn hóa phân vị 0,5–99,5 % | **Tự viết** NumPy | `normalize_percentile` |
+| B3 | Chuẩn hóa phân vị 0,5–99,5 %; min/max nếu phân vị bằng nhau trên ảnh chưa phẳng | **Tự viết** NumPy | `normalize_percentile` |
 | B4 | CLAHE | **Thư viện** OpenCV `createCLAHE` | `clahe` |
 | B5 | Gaussian tách hai chiều | **Tự viết** NumPy | `gaussian_kernel`, `gaussian_blur`, `correlate_1d` |
 | B6 | Sobel 3×3, \|G\|, θ | **Tự viết** NumPy | `sobel` |
-| B7 | Canny (NMS + ngưỡng kép) | **Thư viện** OpenCV `Canny`; ngưỡng tự động P90 tự viết | `canny` |
-| B8 | Bỏ biên trong lề 6 px từ mép ảnh và nodata | **Tự viết** NumPy | `erode`, `mask_edges` |
+| B7 | Canny (NMS + ngưỡng kép) | **Thư viện** OpenCV `Canny`; ngưỡng P90 tự viết, dự phòng trên gradient dương nếu P90 bằng 0 | `canny` |
+| B8 | Bỏ biên từ mép ảnh và nodata; lề ít nhất bằng bán kính kernel Gaussian + 1 | **Tự viết** NumPy | `erode`, `mask_edges` |
 
 "Tự viết" nghĩa là chỉ dùng phép toán mảng NumPy (cộng, nhân, cắt lát, `np.pad`, `np.percentile`); không gọi hàm lọc ảnh dựng sẵn. OpenCV chỉ được gọi trong B4, B7 và trong `tests/` để đối chiếu. Danh sách này cũng được ghi vào `params.json` (khóa `steps`) của mỗi lần chạy.
+
+Lề mặc định vẫn là **6 px** với kernel Gaussian **11×11**. Khi tăng kernel, chương trình tự tăng lề để vùng nhiễm nodata bởi Gaussian/Sobel không lọt vào biên cuối. Ngưỡng Canny chỉ tính trên vùng đã loại lề này. Pixel hợp lệ có giá trị 0 vẫn được giữ; không dùng `image > 0` để đoán nodata.
+
+Nếu metadata báo `valid_ratio < 1` nhưng ảnh NPY/PNG/JPEG không có mặt nạ, alpha hay NaN để xác định vị trí lỗi, chương trình dừng và yêu cầu mặt nạ. Với ảnh 512×512, tỷ lệ tính từ mặt nạ phải khớp metadata (sai số tối đa 1e-6); không âm thầm thay dữ liệu thiếu thành 100% hợp lệ. PNG RGBA giữ alpha, alpha bằng 0 là không hợp lệ. GeoTIFF đọc mặt nạ gốc bằng rasterio. Mọi file mặt nạ NPY phải có dtype `bool`.
 
 ## 4. Kiểm chứng phần tự viết (S1-04 mục 9)
 
@@ -69,12 +79,15 @@ Mỗi lần chạy tạo một thư mục mới `outputs/<run_id>/`, không ghi 
 | Dấu gradient | Ảnh sáng dần sang phải/xuống dưới | θ = 0 và π/2 |
 | Mặt nạ biên | Lề 6 px quanh mép và quanh pixel nodata | đúng |
 
-## 5. Điểm lệch S1-04 cần Hưng và Tiến xác nhận
+Các kiểm tra hồi quy bổ sung bao phủ đĩa sáng bán kính 5/24/32/64/100 px trên nền phẳng, ảnh hoàn toàn phẳng, ảnh toàn nodata, lề tăng theo Gaussian, tham số sai kiểu/phạm vi, mặt nạ thiếu hoặc sai, pixel 0 hợp lệ và alpha PNG. Một kiểm tra chạy CLI thật, đọc lại `result.npz`/JSON và xác nhận 625 pixel nodata, ngưỡng dự phòng, SHA-256 và khả năng từ chối ghi đè kết quả cũ. `--run-id` có đường dẫn bị từ chối trước khi ghi file; nếu lưu ảnh thất bại thì thư mục kết quả dở dang được dọn bỏ.
+
+## 5. Điểm khác S1-04 đã ghi lại để đối chiếu
 
 **CLAHE dùng uint8 thay vì uint16** (`clahe_bits = 8`). OpenCV đặt ngưỡng cắt mỗi bin là `max(1, clipLimit × số pixel một ô / số bin)`. Với uint16 (65536 bin) và ô 64×64 thì `2 × 4096 / 65536 < 1`, nên ngưỡng luôn bằng 1: `clipLimit` = 1, 2, 4 cho kết quả giống hệt nhau và nhiễu vùng phẳng bị khuếch đại khoảng 9 lần. Với uint8 (256 bin) ngưỡng bằng 32, `clipLimit` có tác dụng đúng như mô tả. Phương án uint16 vẫn chạy được bằng `--set clahe_bits=16` để so sánh; kiểm tra `test_b4_clip_limit_has_effect_in_8bit_only` ghi lại hiện tượng này.
 
 ## 6. Hạn chế đã thấy
 
 - **Ngưỡng Canny P90 giả định khoảng 10 % pixel là biên mạnh.** Trên vùng phẳng hoặc kết cấu mịn, ngưỡng rơi vào mức nhiễu nên Canny giữ nhiều biên kết cấu ngoài vành hố (thấy rõ ở B7 của hai cảnh giả lập). `canny_high_pct`, `canny_low_ratio` và `gauss_sigma` cần chỉnh trên tập điều chỉnh (S2-15).
-- **Cảnh giả lập không có bóng đổ dài**, nên chưa thể hiện hạn chế nắng rất xiên của S1-04 mục 10. Cần chạy lại trên ảnh thật STT 13/14 (nắng xiên) và STT 17 (nắng đứng) khi S1-06 bàn giao.
+- Khi P90 bằng 0 nhưng vẫn có gradient dương, dùng phân vị trên các gradient dương (`canny_threshold_strategy="positive_gradient_percentile"`). Ảnh thực sự phẳng trả biên rỗng và ghi `normalization_strategy="constant_image"`, `canny_threshold_strategy="no_gradient"`. Ảnh toàn nodata hoặc không còn vùng hợp lệ sau loại lề bị từ chối rõ ràng.
+- **Cảnh giả lập không có bóng đổ dài**, nên chưa thể hiện hạn chế nắng rất xiên của S1-04 mục 10. Cần đánh giá thêm trên ảnh thật STT 13/14 (nắng xiên) và STT 17 (nắng đứng), tách tập điều chỉnh và tập đánh giá.
 - B8 không phát hiện được đường ghép mosaic nằm giữa vùng hợp lệ; S1-06 vẫn phải tránh khi cắt ảnh.

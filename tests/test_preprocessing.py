@@ -5,12 +5,20 @@ thì bỏ qua để checker S1-05 vẫn chạy được với Python chuẩn.
 """
 
 import json
+import shutil
+import subprocess
+import sys
+import tempfile
 import unittest
+from pathlib import Path
+from uuid import uuid4
+from unittest.mock import patch
 
 try:
     import cv2
     import numpy as np
     from src import preprocessing as pp
+    from scripts import run_preprocessing as cli
 except ImportError:  # pragma: no cover
     cv2 = None
 
@@ -175,6 +183,173 @@ class PipelineContract(unittest.TestCase):
     def test_unknown_param_rejected(self):
         with self.assertRaises(ValueError):
             pp.preprocess(self.image, {"downsample_k": 2}, {"gauss_sigmaa": 2})
+
+
+@unittest.skipIf(cv2 is None, "Chưa cài numpy/opencv-python-headless.")
+class RegressionAndInputValidation(unittest.TestCase):
+    def test_clean_discs_on_flat_background_keep_rims(self):
+        yy, xx = np.mgrid[:512, :512]
+        for radius in (5, 24, 32, 64, 100):
+            with self.subTest(radius=radius):
+                image = (((xx - 256) ** 2 + (yy - 256) ** 2) <= radius ** 2).astype(np.float32)
+                out = pp.preprocess(image, {"downsample_k": 1})
+                distance = np.hypot(xx - 256, yy - 256)
+                self.assertGreater(int((out["edges"] & (abs(distance - radius) <= 2)).sum()), radius * 3)
+                self.assertGreater(out["params"]["canny_high"], 0)
+                self.assertEqual(out["params"]["canny_threshold_strategy"], "positive_gradient_percentile")
+                if radius == 5:
+                    self.assertEqual(out["params"]["normalization_strategy"], "valid_min_max_fallback")
+
+    def test_flat_image_returns_empty_edges_with_explanation(self):
+        out = pp.preprocess(np.ones((512, 512), np.float32), {"downsample_k": 1})
+        self.assertFalse(out["edges"].any())
+        self.assertEqual(out["params"]["normalization_strategy"], "constant_image")
+        self.assertEqual(out["params"]["canny_threshold_strategy"], "no_gradient")
+        self.assertEqual(out["params"]["canny_high"], 0)
+
+    def test_all_invalid_and_too_small_support_rejected(self):
+        image = np.ones((512, 512), np.float32)
+        for mask in (np.zeros(image.shape, bool), np.pad(np.ones((3, 3), bool), ((254, 255), (254, 255)))):
+            with self.subTest(valid_pixels=int(mask.sum())), self.assertRaisesRegex(ValueError, "hợp lệ"):
+                pp.preprocess(image, {"downsample_k": 1}, valid_mask=mask)
+
+    def test_larger_gaussian_increases_mask_margin(self):
+        image = np.tile(np.linspace(0, 1, 512, dtype=np.float32), (512, 1))
+        mask = np.ones(image.shape, bool)
+        mask[180:205, 180:205] = False
+        out = pp.preprocess(image, {"downsample_k": 1}, {"gauss_sigma": 2.5}, mask)
+        self.assertEqual(out["params"]["gauss_kernel_size"], 17)
+        self.assertEqual(out["params"]["edge_margin_requested_px"], 6)
+        self.assertEqual(out["params"]["edge_margin_px"], 9)
+        self.assertFalse((out["edges"] & ~pp.erode(mask, 9)).any())
+
+    def test_invalid_parameters_fail_clearly(self):
+        for key, values in {
+            "p_lo": (-1, 100, True, float("nan")), "p_hi": (0, 101, "99"),
+            "gauss_sigma": (0, -1, float("inf"), "1.5", True),
+            "gauss_kernel_size": (2, 10, 511, 11.5, True),
+            "clahe_clip": (0, float("nan"), True), "clahe_grid": (0, 513, 8.5, True),
+            "clahe_bits": (7, 8.0, True), "canny_high_pct": (0, 101, False),
+            "canny_low_ratio": (0, 1, float("inf")), "edge_margin_px": (-1, 256, 6.5, True),
+        }.items():
+            for value in values:
+                with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                    pp.resolve_params({key: value})
+
+    def test_invalid_downsample_and_mask_are_rejected(self):
+        image = np.ones((512, 512), np.float32)
+        for k in (0, -1, 1.5, True, "2"):
+            with self.subTest(k=k), self.assertRaises(ValueError):
+                pp.preprocess(image, {"downsample_k": k})
+        for mask in (np.ones((512, 1), bool), np.ones((512, 512), np.uint8), np.array(True)):
+            with self.subTest(mask_shape=mask.shape), self.assertRaisesRegex(ValueError, "valid_mask"):
+                pp.preprocess(image, {"downsample_k": 1}, valid_mask=mask)
+
+    def test_unsupported_image_types_rejected(self):
+        for image in (np.ones((512, 512), complex), np.ones((512, 512), object), np.ones((512, 512, 2)), np.ones(512)):
+            with self.subTest(shape=image.shape, dtype=image.dtype), self.assertRaises(ValueError):
+                pp.preprocess(image, {"downsample_k": 1})
+
+
+@unittest.skipIf(cv2 is None, "Chưa cài numpy/opencv-python-headless.")
+class PreprocessingFileAndCLI(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.folder = Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+        self.image = np.tile(np.linspace(0, 1, 512, dtype=np.float32), (512, 1))
+        self.mask = np.ones((512, 512), bool)
+        self.mask[180:205, 180:205] = False
+        self.image[~self.mask] = 0
+        self.path = self.folder / "masked.npy"
+        np.save(self.path, self.image)
+        self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+        self.metadata.update(image_id="masked", valid_ratio=float(self.mask.mean()), downsample_k=1)
+        self.metadata_path = self.folder / "masked.json"
+        self.metadata_path.write_text(json.dumps(self.metadata))
+
+    def test_npy_sidecar_mask_preserves_nodata_and_valid_zeros(self):
+        np.save(self.folder / "masked_valid_mask.npy", self.mask)
+        image, mask, metadata, _ = cli.file_input(self.path, self.metadata_path)
+        out = pp.preprocess(image, metadata, valid_mask=mask)
+        self.assertEqual(int((~out["valid_mask"]).sum()), 625)
+        self.assertTrue(out["valid_mask"][100, 0])  # Có giá trị 0 nhưng vẫn hợp lệ.
+        self.assertFalse((out["edges"] & ~pp.erode(self.mask, 6)).any())
+        self.assertEqual(out["params"]["valid_ratio"], float(self.mask.mean()))
+        self.assertIn("valid_mask", metadata["input_files"])
+
+    def test_missing_mask_is_not_silently_ignored(self):
+        with self.assertRaisesRegex(ValueError, "thiếu mặt nạ"):
+            cli.file_input(self.path, self.metadata_path)
+
+    def test_explicit_mask_and_invalid_mask_files(self):
+        path = self.folder / "separate.npy"
+        np.save(path, self.mask)
+        _, mask, _, _ = cli.file_input(self.path, self.metadata_path, path)
+        np.testing.assert_array_equal(mask, self.mask)
+        for bad in (np.ones((512, 1), bool), np.ones((512, 512), np.uint8)):
+            np.save(path, bad)
+            with self.assertRaisesRegex(ValueError, "mảng bool"):
+                cli.file_input(self.path, self.metadata_path, path)
+
+    def test_mask_and_metadata_mismatch_is_rejected(self):
+        np.save(self.folder / "masked_valid_mask.npy", np.ones((512, 512), bool))
+        with self.assertRaisesRegex(ValueError, "không khớp"):
+            cli.file_input(self.path, self.metadata_path)
+
+    def test_png_alpha_is_kept_as_mask_and_channels_stay_rgb(self):
+        rgba = np.zeros((512, 512, 4), np.uint8)
+        rgba[..., :3] = (30, 80, 200)  # BGR trên đĩa
+        rgba[..., 3] = self.mask.astype(np.uint8) * 255
+        png = self.folder / "masked.png"
+        self.assertTrue(cv2.imwrite(str(png), rgba))
+        image, mask, _, _ = cli.file_input(png, self.metadata_path)
+        np.testing.assert_array_equal(image[0, 0], [200, 80, 30, 255])
+        np.testing.assert_array_equal(mask, self.mask)
+
+    def test_cli_saves_mask_threshold_strategy_and_input_hashes(self):
+        yy, xx = np.mgrid[:512, :512]
+        image = (((xx - 256) ** 2 + (yy - 256) ** 2) <= 32 ** 2).astype(np.float32)
+        image[~self.mask] = 0
+        np.save(self.path, image)
+        np.save(self.folder / "masked_valid_mask.npy", self.mask)
+        run_id = f"test_s108_{uuid4().hex}"
+        directory = cli.ROOT / "outputs" / run_id
+        self.addCleanup(lambda: shutil.rmtree(directory, ignore_errors=True))
+        cmd = [sys.executable, str(cli.ROOT / "scripts/run_preprocessing.py"), "--input", str(self.path),
+               "--metadata", str(self.metadata_path), "--run-id", run_id]
+        result = subprocess.run(cmd, cwd=cli.ROOT, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        params = json.loads((directory / "params.json").read_text())
+        metadata = json.loads((directory / "metadata.json").read_text())
+        run = json.loads((directory / "run.json").read_text())
+        with np.load(directory / "result.npz", allow_pickle=False) as arrays:
+            np.testing.assert_array_equal(arrays["valid_mask"], self.mask)
+            self.assertGreater(int(arrays["edges"].sum()), 0)
+        self.assertEqual(params["valid_ratio"], float(self.mask.mean()))
+        self.assertEqual(metadata["valid_ratio"], float(self.mask.mean()))
+        self.assertEqual(params["canny_threshold_strategy"], "positive_gradient_percentile")
+        self.assertEqual(run["input_files"]["valid_mask"]["sha256"], cli.fingerprint(self.folder / "masked_valid_mask.npy")["sha256"])
+        rerun = subprocess.run(cmd, cwd=cli.ROOT, capture_output=True, text=True)
+        self.assertNotEqual(rerun.returncode, 0)
+        self.assertEqual(json.loads((directory / "params.json").read_text()), params)
+
+    def test_cli_rejects_path_traversal_before_writing(self):
+        run = subprocess.run([sys.executable, str(cli.ROOT / "scripts/run_preprocessing.py"),
+                              "--synthetic", "oblique", "--run-id", "../../outside"],
+                             capture_output=True, text=True)
+        self.assertNotEqual(run.returncode, 0)
+        self.assertIn("run_id", run.stderr)
+
+    def test_failed_render_does_not_leave_partial_output(self):
+        np.save(self.folder / "masked_valid_mask.npy", self.mask)
+        run_id = f"test_failed_render_{uuid4().hex}"
+        directory = cli.ROOT / "outputs" / run_id
+        argv = ["run_preprocessing.py", "--input", str(self.path), "--metadata", str(self.metadata_path), "--run-id", run_id]
+        with patch.object(sys, "argv", argv), patch.object(cli, "save_images", side_effect=OSError("disk failure")):
+            with self.assertRaisesRegex(OSError, "disk failure"):
+                cli.main()
+        self.assertFalse(directory.exists())
 
 
 if __name__ == "__main__":

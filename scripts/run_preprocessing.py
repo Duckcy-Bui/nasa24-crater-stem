@@ -17,11 +17,16 @@ Kết quả ở outputs/<run_id>/ (không ghi đè lần chạy cũ):
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import math
+import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import uuid4
 
 import numpy as np
 
@@ -48,7 +53,7 @@ def code_version() -> str:
 
 
 def synthetic_input(name: str):
-    from synthetic_scene import make_scene
+    from scripts.synthetic_scene import make_scene
 
     cfg = SYNTHETIC[name]
     k, src_scale = 2, 1.0
@@ -80,24 +85,65 @@ def synthetic_input(name: str):
     return image, None, metadata, truth
 
 
-def file_input(path: Path, metadata_path: Path):
+def fingerprint(path: Path) -> dict:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return {"path": str(path.resolve()), "sha256": digest.hexdigest(), "bytes": path.stat().st_size}
+
+
+def file_input(path: Path, metadata_path: Path, valid_mask_path: Path | None = None):
     metadata = read_json(metadata_path)
     k = metadata["downsample_k"]
     suffix = path.suffix.lower()
     if suffix == ".npy":
-        image, valid = np.load(path), None
+        image, valid = np.load(path, allow_pickle=False), None
     elif suffix in (".png", ".jpg", ".jpeg"):
         import cv2  # B0 [THƯ VIỆN]: chỉ đọc file, không xử lý
 
         image = cv2.imread(str(path), cv2.IMREAD_UNCHANGED)
         if image is None:
-            raise SystemExit(f"Không đọc được {path}")
-        if image.ndim == 3:
-            image = image[..., 2::-1] if image.shape[2] >= 3 else image  # BGR → RGB
-        valid = None
+            raise ValueError(f"Không đọc được {path}")
+        valid = image[..., 3] > 0 if image.ndim == 3 and image.shape[2] == 4 else None
+        if image.ndim == 3 and image.shape[2] in (3, 4):
+            # Giữ alpha; kênh hoàn toàn trong suốt không được dùng làm dữ liệu.
+            image = image[..., [2, 1, 0, 3]] if image.shape[2] == 4 else image[..., ::-1]
     else:  # GeoTIFF, PDS .IMG, JP2: cắt cửa sổ 512·k bằng rasterio
         image, valid = read_window(str(path), metadata["crop_x0"], metadata["crop_y0"], k)
+    if image.dtype.kind not in "uif" or image.ndim not in (2, 3) or (image.ndim == 3 and image.shape[2] not in (3, 4)):
+        raise ValueError("Ảnh đầu vào phải là mảng số thực 2 chiều hoặc RGB/RGBA.")
+    if image.ndim == 3 and image.shape[2] == 4:
+        alpha_valid = image[..., 3] > 0
+        valid = alpha_valid if valid is None else valid & alpha_valid
+    expected_mask = path.with_name(f"{metadata['image_id']}_valid_mask.npy")
+    mask_path = valid_mask_path or (expected_mask if expected_mask.is_file() else None)
+    if mask_path is not None:
+        mask = np.load(mask_path, allow_pickle=False)
+        if mask.dtype != np.bool_ or mask.shape != image.shape[:2]:
+            raise ValueError("File valid_mask phải là mảng bool cùng chiều cao/rộng với ảnh đầu vào.")
+        valid = mask if valid is None else valid & mask
+    finite = np.isfinite(image) if image.ndim == 2 else np.isfinite(image).all(axis=2)
+    if valid is not None:
+        finite &= valid
+    ratio = metadata.get("valid_ratio")
+    if ratio is not None:
+        if isinstance(ratio, bool) or not isinstance(ratio, (int, float)) or not math.isfinite(ratio) or not 0 <= ratio <= 1:
+            raise ValueError("metadata.valid_ratio phải là số hữu hạn trong [0, 1].")
+        # Mặt nạ là nguồn chân lý; không đoán nodata từ pixel bằng 0.
+        if suffix in (".npy", ".png", ".jpg", ".jpeg") and valid is None and ratio < 1 and finite.all():
+            raise ValueError(f"Metadata có nodata nhưng thiếu mặt nạ; cung cấp --valid-mask hoặc {expected_mask.name}.")
+        if image.shape[:2] == (512, 512) and not math.isclose(float(finite.mean()), ratio, abs_tol=1e-6):
+            raise ValueError("Mặt nạ/giá trị hữu hạn không khớp metadata.valid_ratio; kiểm tra đúng bộ ảnh và metadata.")
+    metadata["input_files"] = {"image": fingerprint(path), "metadata": fingerprint(metadata_path)}
+    if mask_path:
+        metadata["input_files"]["valid_mask"] = fingerprint(mask_path)
     return image, valid, metadata, None
+
+
+def validate_run_id(run_id: str) -> None:
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", run_id):
+        raise ValueError("run_id chỉ dùng chữ, số, _ hoặc -; không được chứa đường dẫn.")
 
 
 # ------------------------------------------------------------ lưu ảnh từng bước
@@ -186,6 +232,7 @@ def main() -> None:
     source.add_argument("--synthetic", choices=sorted(SYNTHETIC))
     source.add_argument("--input", type=Path, help=".npy/.png/.jpg hoặc ảnh địa lý (.tif/.img/.jp2)")
     parser.add_argument("--metadata", type=Path, help="JSON metadata theo DINH_DANG_DU_LIEU.md (bắt buộc với --input)")
+    parser.add_argument("--valid-mask", type=Path, help="Mặt nạ bool .npy; mặc định tìm <image_id>_valid_mask.npy cạnh ảnh")
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "default.json")
     parser.add_argument("--set", nargs="*", default=[], metavar="KEY=VALUE", help="ghi đè tham số, vd gauss_sigma=2")
     parser.add_argument("--run-id")
@@ -193,41 +240,62 @@ def main() -> None:
 
     if args.input and not args.metadata:
         parser.error("--input cần --metadata")
-    image, valid, metadata, truth = synthetic_input(args.synthetic) if args.synthetic else file_input(args.input, args.metadata)
+    if args.synthetic and (args.metadata or args.valid_mask):
+        parser.error("--metadata/--valid-mask chỉ dùng với --input")
+    if args.run_id:
+        try:
+            validate_run_id(args.run_id)
+        except ValueError as exc:
+            parser.error(str(exc))
+    image, valid, metadata, truth = synthetic_input(args.synthetic) if args.synthetic else file_input(args.input, args.metadata, args.valid_mask)
 
     params = dict(read_json(args.config)["preprocess"])
     for item in args.set:
-        key, _, value = item.partition("=")
-        params[key] = json.loads(value)
+        key, separator, value = item.partition("=")
+        if not separator or not key:
+            parser.error("--set phải có dạng KEY=VALUE")
+        try:
+            params[key] = json.loads(value)
+        except json.JSONDecodeError as exc:
+            parser.error(f"--set {key}: giá trị phải là JSON ({exc.msg})")
     version = code_version()
     params["version"] = version
 
     out = preprocess(image, metadata, params, valid_mask=valid)
     used = out["params"]
-    metadata["valid_ratio"] = round(used["valid_ratio"], 6)
+    metadata["valid_ratio"] = used["valid_ratio"]
     metadata["preprocess"] = {k: v for k, v in used.items() if k != "steps"}
     validate_metadata(metadata)
     if truth:
         validate_crater_set(truth, metadata)
 
-    run_id = args.run_id or f"s108_{metadata['image_id']}_{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}"
+    run_id = args.run_id or f"s108_{metadata['image_id']}_{datetime.now(timezone.utc):%Y%m%dT%H%M%S}_{uuid4().hex[:8]}"
+    validate_run_id(run_id)
     directory = ROOT / "outputs" / run_id
-    directory.mkdir(parents=True, exist_ok=False)
-    save_images(out, directory, f"{metadata['image_id']} — nắng: phương vị {metadata['sun']['azimuth_deg']}°, "
-                                f"góc tới {metadata['sun']['incidence_deg']}°")
-    np.savez_compressed(directory / "result.npz", **{k: v for k, v in out.items() if k != "params"})
     records = {
         "params.json": used,
         "metadata.json": metadata,
         "run.json": {"run_id": run_id, "task": "S1-08", "image_id": metadata["image_id"],
                      "data_kind": metadata["data_kind"], "code_version": version,
                      "config": str(args.config.relative_to(ROOT) if args.config.is_relative_to(ROOT) else args.config),
+                     "config_file": fingerprint(args.config),
+                     "input_files": metadata.get("input_files", {}),
                      "overrides": args.set, "created_at_utc": datetime.now(timezone.utc).isoformat()},
     }
     if truth:
         records["truth_craters.json"] = truth
-    for name, value in records.items():
-        (directory / name).write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    serialized = {name: json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n" for name, value in records.items()}
+    directory.mkdir(parents=True, exist_ok=False)
+    try:
+        save_images(out, directory, f"{metadata['image_id']} — nắng: phương vị {metadata['sun']['azimuth_deg']}°, "
+                                    f"góc tới {metadata['sun']['incidence_deg']}°")
+        np.savez_compressed(directory / "result.npz", **{key: value for key, value in out.items() if key != "params"})
+        for name, value in serialized.items():
+            (directory / name).write_text(value, encoding="utf-8")
+    except Exception:
+        # Chỉ xóa thư mục do lần chạy này vừa tạo; lỗi không để lại gói bàn giao dở dang.
+        shutil.rmtree(directory)
+        raise
 
     print(f"Đã lưu: {directory.relative_to(ROOT)}")
     print(f"  pixel hợp lệ {used['valid_ratio']:.1%} | P{used['p_lo']}={used['p_lo_value']:.1f}, "

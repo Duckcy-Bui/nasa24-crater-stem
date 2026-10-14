@@ -27,7 +27,7 @@ from typing import Any
 import numpy as np
 
 SIZE = 512
-MODULE_VERSION = "s108-1"
+MODULE_VERSION = "s108-2"
 
 STEPS = (
     ("B0", "Đọc file và cắt cửa sổ", "THƯ VIỆN: rasterio (GDAL)"),
@@ -65,6 +65,8 @@ def read_window(path: str, x0: int, y0: int, k: int, band: int = 1) -> tuple[np.
     import rasterio
     from rasterio.windows import Window
 
+    for name, value, minimum in (("crop_x0", x0, 0), ("crop_y0", y0, 0), ("downsample_k", k, 1), ("band", band, 1)):
+        _integer(value, name, minimum)
     side = SIZE * k
     with rasterio.open(path) as src:
         if x0 < 0 or y0 < 0 or x0 + side > src.width or y0 + side > src.height:
@@ -80,6 +82,9 @@ def read_window(path: str, x0: int, y0: int, k: int, band: int = 1) -> tuple[np.
 # ---------------------------------------------------------------- B1 TỰ VIẾT
 def block_mean(image: np.ndarray, valid: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
     """B1 [TỰ VIẾT]: trung bình mỗi khối k×k; khối có pixel lỗi thì lỗi cả khối."""
+    _integer(k, "downsample_k", 1)
+    if image.ndim not in (2, 3) or valid.shape != image.shape[:2]:
+        raise ValueError("Mặt nạ phải có cùng chiều cao/rộng với ảnh.")
     h, w = image.shape[:2]
     if k < 1 or h % k or w % k:
         raise ValueError(f"Kích thước {h}×{w} không chia hết cho k={k}.")
@@ -106,12 +111,25 @@ def normalize_percentile(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi
     """B3 [TỰ VIẾT]: I' = clip((I − P_lo)/(P_hi − P_lo), 0, 1), phân vị tính trên pixel hợp lệ."""
     if not valid.any():
         raise ValueError("Ảnh không có pixel hợp lệ.")
-    lo, hi = np.percentile(image[valid].astype(np.float64), [p_lo, p_hi])
-    if hi <= lo:
-        raise ValueError(f"Ảnh phẳng màu (P{p_lo}={lo}, P{p_hi}={hi}); không chuẩn hóa được.")
+    lo, hi, _ = normalization_bounds(image, valid, p_lo, p_hi)
+    if hi == lo:
+        return np.zeros(image.shape, dtype=np.float32), lo, hi
     out = np.clip((image.astype(np.float64) - lo) / (hi - lo), 0, 1)
     out[~valid] = 0
     return out.astype(np.float32), float(lo), float(hi)
+
+
+def normalization_bounds(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi: float) -> tuple[float, float, str]:
+    """Không xóa vật thể thưa khi hai phân vị bằng nhau; ảnh thật sự phẳng → 0."""
+    values = image[valid].astype(np.float64)
+    if not values.size:
+        raise ValueError("Ảnh không có pixel hợp lệ.")
+    lo, hi = np.percentile(values, [p_lo, p_hi])
+    strategy = "valid_percentile"
+    if hi <= lo:
+        lo, hi = float(values.min()), float(values.max())
+        strategy = "valid_min_max_fallback" if hi > lo else "constant_image"
+    return float(lo), float(hi), strategy
 
 
 # ---------------------------------------------------------------- B4 THƯ VIỆN
@@ -162,11 +180,11 @@ def correlate_1d(image: np.ndarray, kernel: np.ndarray, axis: int) -> np.ndarray
 # ---------------------------------------------------------------- B5 TỰ VIẾT
 def gaussian_kernel(sigma: float, size: int | None = None) -> np.ndarray:
     """[TỰ VIẾT] g(i) = exp(−i²/2σ²) / Σ exp(−j²/2σ²), i = −R…R, mặc định R = ⌈3σ⌉."""
-    if sigma <= 0:
-        raise ValueError("gauss_sigma phải > 0.")
+    _finite_number(sigma, "gauss_sigma", positive=True)
     if size is None:
         size = 2 * math.ceil(3 * sigma) + 1
-    if size < 3 or size % 2 == 0:
+    _integer(size, "gauss_kernel_size", 3)
+    if size % 2 == 0:
         raise ValueError("gauss_kernel_size phải là số lẻ >= 3.")
     i = np.arange(size, dtype=np.float64) - size // 2
     g = np.exp(-(i ** 2) / (2 * sigma ** 2))
@@ -207,13 +225,28 @@ def canny(smooth: np.ndarray, mag: np.ndarray, valid: np.ndarray, high_pct: floa
     """
     import cv2
 
-    high = float(np.percentile(mag[valid].astype(np.float64) * 255, high_pct))
-    low = low_ratio * high
+    low, high, _ = canny_thresholds(mag, valid, high_pct, low_ratio)
     if high <= 0:
         return np.zeros(smooth.shape, dtype=bool), low, high
     u8 = np.round(np.clip(smooth, 0, 1) * 255).astype(np.uint8)
     edges = cv2.Canny(u8, low, high, apertureSize=3, L2gradient=True) > 0
     return edges, low, high
+
+
+def canny_thresholds(mag: np.ndarray, valid: np.ndarray, high_pct: float, low_ratio: float) -> tuple[float, float, str]:
+    """P90 trên vùng giữ lại; nếu nền phẳng chiếm >90%, dùng gradient dương."""
+    values = mag[valid].astype(np.float64) * 255
+    if not values.size:
+        return 0.0, 0.0, "no_valid_support"
+    positive = values[values > np.finfo(np.float32).eps * 255]
+    if not positive.size:
+        return 0.0, 0.0, "no_gradient"
+    high = float(np.percentile(values, high_pct))
+    strategy = "valid_percentile"
+    if high <= np.finfo(np.float32).eps * 255:
+        high = float(np.percentile(positive, high_pct))
+        strategy = "positive_gradient_percentile"
+    return low_ratio * high, high, strategy
 
 
 # ---------------------------------------------------------------- B8 TỰ VIẾT
@@ -245,16 +278,59 @@ def mask_edges(edges: np.ndarray, valid: np.ndarray, margin: int) -> tuple[np.nd
 # ---------------------------------------------------------------- Chuỗi B1–B8
 def resolve_params(params: dict | None) -> dict:
     """Ghép tham số người dùng với mặc định S1-04; báo lỗi nếu có khóa lạ."""
+    if params is not None and not isinstance(params, dict):
+        raise ValueError("Tham số phải là object/dict.")
     params = dict(params or {})
+    if any(not isinstance(key, str) for key in params):
+        raise ValueError("Tên tham số phải là chuỗi.")
+    if "version" in params and (not isinstance(params["version"], str) or not params["version"].strip()):
+        raise ValueError("version phải là chuỗi không rỗng.")
     extra = set(params) - set(DEFAULT_PARAMS) - {"version", "status"}
     if extra:
         raise ValueError("Tham số tiền xử lý không biết: " + ", ".join(sorted(extra)))
     merged = {**DEFAULT_PARAMS, **{k: v for k, v in params.items() if k in DEFAULT_PARAMS}}
+    for key in ("p_lo", "p_hi", "canny_high_pct", "canny_low_ratio", "clahe_clip", "gauss_sigma"):
+        _finite_number(merged[key], key, positive=key in ("clahe_clip", "gauss_sigma"))
+        merged[key] = float(merged[key])
+    if not 0 <= merged["p_lo"] < merged["p_hi"] <= 100:
+        raise ValueError("Cần 0 <= p_lo < p_hi <= 100.")
+    if not 0 < merged["canny_high_pct"] <= 100 or not 0 < merged["canny_low_ratio"] < 1:
+        raise ValueError("Cần 0 < canny_high_pct <= 100 và 0 < canny_low_ratio < 1.")
+    _integer(merged["clahe_grid"], "clahe_grid", 1)
+    if merged["clahe_grid"] > SIZE:
+        raise ValueError("clahe_grid không được vượt cạnh ảnh 512.")
+    _integer(merged["clahe_bits"], "clahe_bits", 1)
+    if merged["clahe_bits"] not in (8, 16):
+        raise ValueError("clahe_bits phải là 8 hoặc 16.")
+    _integer(merged["edge_margin_px"], "edge_margin_px", 0)
     if merged["border_mode"] != "reflect_101":
         raise ValueError("Chỉ hỗ trợ border_mode = reflect_101 (khớp mặc định OpenCV).")
     if merged["gauss_kernel_size"] is None:
         merged["gauss_kernel_size"] = 2 * math.ceil(3 * merged["gauss_sigma"]) + 1
+    _integer(merged["gauss_kernel_size"], "gauss_kernel_size", 3)
+    if merged["gauss_kernel_size"] % 2 == 0 or merged["gauss_kernel_size"] >= SIZE - 1:
+        raise ValueError("gauss_kernel_size phải là số lẻ từ 3 đến 509.")
+    # Gaussian ảnh hưởng R px, Sobel thêm 1: không cho vùng nodata lọt vào B8.
+    required_margin = merged["gauss_kernel_size"] // 2 + 1
+    merged["edge_margin_requested_px"] = merged["edge_margin_px"]
+    merged["edge_margin_px"] = max(merged["edge_margin_px"], required_margin)
+    if merged["edge_margin_px"] >= SIZE // 2:
+        raise ValueError("Lề biên không được xóa toàn bộ ảnh 512×512.")
+    for key in ("clahe_grid", "clahe_bits", "gauss_kernel_size", "edge_margin_px", "edge_margin_requested_px"):
+        merged[key] = int(merged[key])
     return merged
+
+
+def _integer(value: Any, name: str, minimum: int) -> None:
+    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
+        raise ValueError(f"{name} phải là số nguyên >= {minimum}.")
+
+
+def _finite_number(value: Any, name: str, *, positive: bool = False) -> None:
+    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, float, np.integer, np.floating)):
+        raise ValueError(f"{name} phải là số hữu hạn.")
+    if not math.isfinite(value) or (positive and value <= 0):
+        raise ValueError(f"{name} phải là số hữu hạn" + (" > 0." if positive else "."))
 
 
 def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mask: Any = None) -> dict:
@@ -270,12 +346,25 @@ def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mas
     """
     p = resolve_params(params)
     image = np.asarray(image)
+    if image.dtype.kind not in "uif" or image.ndim not in (2, 3) or (image.ndim == 3 and image.shape[2] not in (3, 4)):
+        raise ValueError("Ảnh phải là mảng số thực 2 chiều hoặc RGB/RGBA.")
+    if not isinstance(metadata, dict):
+        raise ValueError("Metadata phải là dict.")
     input_shape = [int(n) for n in image.shape]
-    k = int(metadata.get("downsample_k", 1))
+    k = metadata.get("downsample_k", 1)
+    _integer(k, "downsample_k", 1)
+    k = int(k)
 
     valid = np.isfinite(image) if image.ndim == 2 else np.isfinite(image).all(axis=2)
+    if image.ndim == 3 and image.shape[2] == 4:
+        valid &= image[..., 3] > 0
     if valid_mask is not None:
-        valid &= np.asarray(valid_mask, dtype=bool)
+        supplied_mask = np.asarray(valid_mask)
+        if supplied_mask.shape != image.shape[:2] or supplied_mask.dtype != np.bool_:
+            raise ValueError("valid_mask phải là mảng bool cùng chiều cao/rộng với ảnh.")
+        valid &= supplied_mask
+    if not valid.any():
+        raise ValueError("Ảnh không có pixel hợp lệ.")
     image = np.where(np.isfinite(image), image, 0)
 
     # B1
@@ -291,8 +380,12 @@ def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mas
     # B2
     downsampled = to_gray(image)
     downsampled[~valid] = 0
+    threshold_valid = erode(valid, p["edge_margin_px"])
+    if not threshold_valid.any():
+        raise ValueError("Không còn vùng hợp lệ sau khi loại lề Gaussian/Sobel và nodata.")
     # B3
     gray, lo_value, hi_value = normalize_percentile(downsampled, valid, p["p_lo"], p["p_hi"])
+    _, _, normalization_strategy = normalization_bounds(downsampled, valid, p["p_lo"], p["p_hi"])
     # B4
     enhanced = clahe(gray, valid, p["clahe_clip"], p["clahe_grid"], p["clahe_bits"])
     # B5
@@ -300,7 +393,8 @@ def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mas
     # B6
     gx, gy, mag, theta = sobel(smooth)
     # B7
-    edges_canny, canny_low, canny_high = canny(smooth, mag, valid, p["canny_high_pct"], p["canny_low_ratio"])
+    edges_canny, canny_low, canny_high = canny(smooth, mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"])
+    _, _, threshold_strategy = canny_thresholds(mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"])
     # B8
     edges, _ = mask_edges(edges_canny, valid, p["edge_margin_px"])
 
@@ -313,8 +407,11 @@ def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mas
         "input_shape": input_shape,
         "p_lo_value": lo_value,
         "p_hi_value": hi_value,
+        "normalization_strategy": normalization_strategy,
         "canny_high": canny_high,
         "canny_low": canny_low,
+        "canny_threshold_strategy": threshold_strategy,
+        "canny_threshold_valid_px": int(threshold_valid.sum()),
         "canny_aperture": 3,
         "canny_l2gradient": True,
         "valid_ratio": float(valid.mean()),
