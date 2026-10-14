@@ -2,18 +2,18 @@
 
 Phát hiện hố va chạm và trò chơi STEM cho học sinh.
 
-Repo này là đầu ra S1-05: cấu trúc mã nguồn, định dạng dữ liệu dùng chung, mẫu lưu tham số/kết quả và quy tắc phối hợp. Thuật toán Hough, chuỗi tiền xử lý và ứng dụng giao diện sẽ được các thành viên cài đặt ở các đầu việc tiếp theo. Những hàm chưa cài đặt báo `NotImplementedError`, không trả kết quả đặt sẵn.
+Repo chứa khung dùng chung S1-05 và các phần triển khai của Sprint 1. Ba PR S1-06, S1-07, S1-08 lần lượt bổ sung bộ ảnh, Hough NumPy và tiền xử lý B0–B8. Giao diện, chấm điểm và đánh giá còn thuộc các đầu việc tiếp theo; những hàm chưa cài đặt báo `NotImplementedError`.
 
 ## Chạy kiểm tra khung repo
 
-Từ thư mục repo, chạy hai lệnh dưới đây với Python 3.10 trở lên. Hai lệnh này chỉ dùng thư viện chuẩn Python, chưa cần cài thư viện xử lý ảnh:
+Checker và kiểm tra hợp đồng dưới đây chỉ dùng thư viện chuẩn Python 3.10 trở lên:
 
 ```bash
 python3 scripts/check_contracts.py
-python3 -m unittest discover -s tests -v
+python3 -m unittest discover -s tests -p 'test_contracts.py' -v
 ```
 
-Kết quả mong đợi: các mẫu metadata/danh sách hố hợp lệ và các kiểm tra đạt. Mẫu trong `data/examples/` là dữ liệu giả lập; repo chưa có bộ ảnh thật đã khớp danh mục.
+Mẫu trong `data/examples/` là dữ liệu giả lập, chỉ dùng để kiểm tra định dạng. Không dùng các mẫu này để tính độ chính xác trên ảnh NASA.
 
 Khi bắt đầu cài thuật toán hoặc giao diện:
 
@@ -24,6 +24,16 @@ python -m pip install -r requirements.txt
 ```
 
 Trên Windows dùng `python` và kích hoạt bằng `.venv\Scripts\activate` trong CMD.
+
+Để tái tạo môi trường kiểm tra của các PR và GitHub Actions, dùng **Python 3.12**:
+
+```bash
+python -m pip install -r requirements-test.txt
+python scripts/check_contracts.py
+python -m unittest discover -s tests -v
+```
+
+Xem [TIEN_XU_LY.md](docs/TIEN_XU_LY.md) để chạy tiền xử lý và đọc ảnh từng bước. Sau khi merge cả ba PR, xem thêm `docs/S1-06_BANG_ANH_XA_ANH_CAT.md` để lấy bộ ảnh và `docs/HOUGH.md` để chạy Hough. Ảnh thật có nguồn riêng; danh mục hố chỉ được dùng khi đã xác minh, không suy ra đáp án từ vị trí tâm ảnh.
 
 ## Cấu trúc thư mục
 
@@ -46,13 +56,17 @@ nasa24-crater-stem/
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
 ├── app.py                     # Điểm vào giao diện, sẽ cài ở S1-09
-├── scripts/check_contracts.py # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
-├── tests/                     # Kiểm tra hợp đồng dữ liệu
+├── scripts/
+│   ├── check_contracts.py     # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
+│   ├── run_preprocessing.py   # S1-08: chạy B0–B8, lưu ảnh từng bước + tham số
+│   └── synthetic_scene.py     # Cảnh hố giả lập để thử khi chưa có ảnh thật
+├── tests/                     # Kiểm tra hợp đồng dữ liệu và tiền xử lý
 ├── outputs/                   # Kết quả chạy theo run_id, không đưa vào Git
 └── docs/
     ├── DINH_DANG_DU_LIEU.md
     ├── PHAN_CONG.md
     ├── NHAT_KY_NHOM.csv
+    ├── TIEN_XU_LY.md          # S1-08: cài đặt, chạy, tự viết/thư viện
     └── HUONG_DAN_GITHUB.md
 ```
 
