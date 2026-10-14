@@ -223,6 +223,11 @@ class TestHough(unittest.TestCase):
                 )
                 self.assert_circle_found(circles, 256, 256, radius)
 
+    def test_large_finite_nms_distance_does_not_overflow(self):
+        edges = self.make_circle(160, 180, 32) | self.make_circle(350, 310, 32)
+        circles = detect_circles(edges, 32, 32, {"nms_center_px": 1e308})
+        self.assertEqual(len(circles), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

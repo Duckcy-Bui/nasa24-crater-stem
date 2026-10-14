@@ -283,7 +283,9 @@ def detect_circles(
     )
 
     selected = []
-    distance_squared = config["nms_center_px"] ** 2
+    # Any two centres in this image are closer than height + width.
+    # Capping before squaring preserves NMS decisions for enormous finite radii.
+    distance_squared = min(config["nms_center_px"], float(sum(edges.shape))) ** 2
 
     for candidate in candidates:
         _, _, y, x, radius = candidate
