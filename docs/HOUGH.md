@@ -5,6 +5,24 @@
 Hough. Bước bán kính mặc định là 1 px; tâm dùng hệ tọa độ ảnh: x sang phải,
 y xuống dưới. Tâm phải nằm trong ảnh, nhưng vòng tròn có thể bị cắt ở mép.
 
+
+## Ví dụ tính tay và nháp lý thuyết
+
+- [S1-12 — Ví dụ 5×5 và đối chiếu OpenCV](S1-12_VI_DU_VA_DOI_CHIEU_HOUGH.md):
+  từng phép bỏ phiếu, ma trận cộng dồn, ngưỡng, đỉnh, NMS và chênh lệch thực chạy.
+- [S1-15 — Nháp Chương 2 về Hough](S1-15_LY_THUYET_HOUGH.md):
+  dẫn xuất công thức, sơ đồ gọi hàm trong `hough.py`, giả mã và chi phí.
+- [Danh mục 12 nguồn / 3 bài DOI](TAI_LIEU_THAM_KHAO_HOUGH.md):
+  ghi riêng mức xác minh và phần còn cần đọc toàn văn.
+
+```powershell
+python -B scripts/verify_hough_examples.py --tiny-only
+python -B scripts/verify_hough_examples.py
+```
+
+Ví dụ 5×5 dùng các hàm nội bộ; API phát hiện vẫn yêu cầu ảnh 512×512 và
+bán kính 5–128 px. Mã đối chiếu thư viện nằm riêng trong script S1-12.
+
 ![Minh họa Hough trên ba vòng tròn giả lập](images/hough_synthetic_demo.png)
 
 Ảnh do `scripts/demo_hough.py --method full_circle` tạo: tâm và bán kính
