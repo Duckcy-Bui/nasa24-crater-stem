@@ -42,7 +42,13 @@ if hasattr(sys.stdout, "reconfigure"):
 import numpy as np
 # pyrefly: ignore [missing-import]
 import matplotlib
-matplotlib.use("TkAgg")
+
+# Thử nạp TkAgg nếu có hỗ trợ GUI, giữ nguyên backend (ví dụ Agg) trên headless CI
+try:
+    matplotlib.use("TkAgg")
+except Exception:
+    pass
+
 # pyrefly: ignore [missing-import]
 import matplotlib.pyplot as plt
 # pyrefly: ignore [missing-import]
