@@ -1,0 +1,29 @@
+.stApp { background: #0a0c0f; color: #eceae4; font-family: Arial, "Segoe UI", "Noto Sans", sans-serif; }
+[data-testid="stHeader"] { display: none; }
+[data-testid="stMainBlockContainer"] { max-width: 1200px; padding: 20px 32px 28px; }
+.nasa-brand { display: flex; align-items: center; gap: 14px; padding: 6px 0 12px; }
+.nasa-brand svg { flex: none; width: 36px; height: 36px; }
+.nasa-brand h1 { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; font-weight: 600; color: #eceae4; font-size: 27px; letter-spacing: -.025em; line-height: 1.2; margin: 0; padding: 0; }
+.nasa-brand p { color: #a7adb6; font-size: 12px; margin: 5px 0 0; }
+.nasa-rule { border-bottom: 1px solid #222831; margin-bottom: 8px; }
+[data-testid="stSelectbox"] label p { color: #a7adb6; font-size: 12px; }
+[data-testid="stSelectbox"] [role="group"] { background: #171b21; border: 1px solid #303743; border-radius: 8px; }
+[data-testid="stSelectbox"] input { color: #eceae4; font-size: 13px; background: transparent; }
+[data-testid="stSelectbox"] button { background: transparent; color: #a7adb6; }
+[role="listbox"], [role="option"] { background: #171b21; color: #eceae4; }
+[role="option"]:hover { background: #232934; }
+[data-testid="stButton"] button { background: #171b21; color: #eceae4; border: 1px solid #303743; border-radius: 8px; min-height: 40px; font-size: 13px; }
+[data-testid="stButton"] button:hover { color: #eceae4; border-color: #f3b23c; background: #232934; }
+[data-testid="stButton"] button:focus-visible { outline: 2px solid #f3b23c; outline-offset: 3px; }
+[data-testid="stMarkdownContainer"] p { color: #c9cdd3; font-size: 12px; }
+[data-testid="stCaptionContainer"] p { color: #a7adb6; font-size: 12px; }
+[data-testid="stExpander"] { background: #111419; border-color: #262c35; color: #eceae4; }
+[data-testid="stAlert"] p { color: inherit; }
+.nasa-footer { margin: 6px 0 0; padding-top: 16px; border-top: 1px solid #222831; }
+.nasa-footer p { color: #8c939d; font-size: 12px; line-height: 1.7; margin: 0; }
+@media(max-width:720px) {
+  [data-testid="stMainBlockContainer"] { padding: 20px 16px 28px; }
+  .nasa-brand h1 { font-size: 24px; }
+  .nasa-brand { padding-bottom: 6px; gap: 11px; }
+  .nasa-brand p { font-size: 11px; }
+}

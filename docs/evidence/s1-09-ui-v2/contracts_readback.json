@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "validated_downloads": [
+    "after_immediate_save.json",
+    "deleted.json",
+    "desktop.json",
+    "edited.json",
+    "mobile.json",
+    "moved.json",
+    "resized.json",
+    "returned.json",
+    "returned_b.json",
+    "second_image.json"
+  ],
+  "unchanged_helpers": {
+    "src/crater_canvas/geometry.js": true,
+    "src/player_annotations.py": true,
+    "src/contracts.py": true
+  },
+  "recorded_at_utc": "2026-10-14T14:21:31.145325+00:00"
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap15_hia_c01",
+  "source": "player",
+  "reference_source": null,
+  "circles": [
+    {
+      "crater_id": "U1",
+      "x": 128,
+      "y": 192,
+      "r": 32,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U2",
+      "x": 320,
+      "y": 320,
+      "r": 24,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

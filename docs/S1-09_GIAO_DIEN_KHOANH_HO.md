@@ -20,10 +20,12 @@ Trên Windows dùng `python -m venv .venv`, rồi `.venv\Scripts\activate` trong
 
 1. Chọn một ảnh ở **Chọn ảnh để mở**. Ảnh và khu vực chụp hiển thị ngay trong danh sách.
 2. Chọn **Vẽ vòng tròn**, nhấn tại tâm một hố và kéo ra vành. Bỏ chuột để ghi nhận vòng tròn. Một cú nhấn không kéo sẽ không tạo vòng tròn.
-3. Chọn **Chọn / sửa**. Nhấn vào vòng tròn rồi kéo phần trong vòng để chuyển tâm, hoặc kéo vành để đổi bán kính. Khi các vòng chồng nhau, chọn vòng cần sửa trong danh sách bên dưới ảnh.
-4. Có thể sửa chính xác tại **Tâm x**, **Tâm y**, **Bán kính**, rồi bấm **Áp dụng tọa độ**. Tâm thuộc 0–511, bán kính lớn hơn 0; vành có thể vượt ra ngoài mép ảnh.
+3. Chọn **Chọn / sửa**. Nhấn vào vòng tròn rồi kéo phần trong vòng để chuyển tâm, hoặc kéo vành để đổi bán kính. Khi các vòng chồng nhau, chọn vòng cần sửa trong bảng **Vòng tròn** bên phải ảnh; trên điện thoại bảng nằm phía dưới phần lưu. Vòng được chọn có màu vàng, các vòng khác màu xanh lam.
+4. Khi chọn một vòng, phần **Chỉnh vòng đã chọn** hiện ra. Có thể sửa chính xác tại **Tâm x**, **Tâm y**, **Bán kính**, rồi bấm **Áp dụng tọa độ**. Tâm thuộc 0–511, bán kính lớn hơn 0; vành có thể vượt ra ngoài mép ảnh.
 5. Bấm **Xóa vòng đã chọn** để xóa một vòng. **Hoàn tác** quay lại thay đổi trước đó, tối đa 50 thay đổi trong lượt mở ảnh hiện tại.
-6. Bấm **Tải câu trả lời JSON** để lấy file nhỏ gửi cho người tích hợp, hoặc **Lưu câu trả lời trên máy** để lưu một lần chạy riêng. Sau đó đổi sang ảnh khác và quay lại để thấy bản nháp vẫn giữ đúng ảnh.
+6. Bấm **Tải JSON** để lấy file nhỏ gửi cho người tích hợp, hoặc nút vàng **Lưu trên máy** để lưu một lần chạy riêng. Chờ thông báo **Đã lưu … vòng**; có thể sao chép đường dẫn tương đối bằng biểu tượng bên cạnh. Trong lúc lưu, thao tác sửa tạm khóa để giữ đúng bộ vòng vừa gửi. Sau đó đổi sang ảnh khác và quay lại để thấy bản nháp vẫn giữ đúng ảnh.
+
+Trên desktop, ảnh và bảng chỉnh/lưu nằm cạnh nhau. Trên điện thoại, thứ tự là ảnh → chỉnh vòng → lưu/tải JSON → danh sách vòng. Phần chỉnh ẩn khi chưa chọn vòng. Nếu sửa thêm sau khi lưu, thông báo lần lưu cũ ẩn đi; bấm lưu lần nữa để tạo kết quả mới. Lưu 0 vòng cũng hợp lệ.
 
 Bản nháp giữ trong phiên Streamlit hiện tại, không tự lưu bền vững khi đóng tab, tải lại trang hoặc khởi động lại server. Lưu hoặc tải JSON trước khi kết thúc. Lịch sử hoàn tác làm mới khi đổi ảnh; các vòng tròn đã vẽ vẫn giữ trong bản nháp. Giao diện hiện chưa có nút nhập lại JSON đã tải.
 
@@ -56,7 +58,7 @@ Nút lưu tạo thư mục riêng tại `outputs/player_answers/player_<UTC>_<id
 
 Kết quả không đưa vào Git; các lần lưu có tên riêng, không ghi đè lần trước. `src/player_annotations.py` cung cấp `build_player_crater_set`, `apply_canvas_event` và `save_player_answers` để S1-13 dùng lại. Sự kiện canvas có `image_id`, khóa phiên và revision tăng dần; sự kiện cũ hoặc của ảnh khác không thay thế bản nháp hiện tại. Payload sai tâm/bán kính/ID bị từ chối trước khi lưu. Khi chuyển ảnh, ứng dụng nhận sự kiện mới nhất của ảnh trước từ trạng thái widget trước khi mở ảnh tiếp theo.
 
-Nút tải JSON đọc trực tiếp các vòng tròn hiện tại trong canvas, gồm thay đổi vừa sửa, nên không lấy bản JSON cũ đang chờ Python chạy lại. Nút lưu trên máy vẫn nhận và kiểm tra sự kiện qua hợp đồng Python trước khi ghi dữ liệu.
+Nút tải JSON đọc trực tiếp các vòng tròn hiện tại trong canvas, gồm thay đổi vừa sửa, nên không lấy bản JSON cũ đang chờ Python chạy lại. Nút **Lưu trên máy** nằm trong component và gửi yêu cầu riêng qua `save_nonce`; bấm lưu không tăng revision. `src/player_ui.py` kiểm ảnh đang mở, khóa phiên, revision và bộ vòng tròn trước khi ghi. Nonce được ghi nhận vào phiên trước khi ghi file, nên chạy lại cùng yêu cầu không tạo thêm thư mục, kể cả sau lỗi ghi. Muốn thử lại cần bấm lưu lần nữa. Khối nhận sự kiện của ảnh trước khi chuyển ảnh chỉ cập nhật bản nháp, không tự lưu.
 
 ## Kiểm tra khi nghiệm thu
 
@@ -64,8 +66,11 @@ Nút tải JSON đọc trực tiếp các vòng tròn hiện tại trong canvas,
 python scripts/check_contracts.py
 python -m unittest discover -s tests -v
 node tests/test_canvas_geometry.js
+node tests/test_canvas_save.js
 ```
 
 Đối chiếu thêm thao tác thật trong trình duyệt: vẽ/sửa/xóa, chuyển ảnh rồi quay lại, lưu và mở `craters.json`, thu nhỏ cửa sổ rồi vẽ lại tại cùng vị trí tương đối. Ví dụ tâm tại 1/4 chiều rộng và 3/4 chiều cao phải ra `(128, 384)` trên ảnh 512×512; không lấy kích thước màn hình làm tọa độ ảnh.
 
 Các bài kiểm tra Python/Node xác nhận hợp đồng và hình học; nghiệm thu giao diện cần cả thao tác trình duyệt. Bộ ảnh có `reference_status=unavailable`, nên không lấy các vòng tròn người chơi hay danh sách rỗng làm đáp án để chấm điểm. S1-13 sẽ ghép giao diện này với phần phát hiện hố sau khi nhóm thống nhất dữ liệu tham chiếu.
+
+Thiết kế UI v2 có [mẫu HTML ngoại tuyến](ui-design/mockup.html), [đặc tả](ui-design/SPEC.md) và [bằng chứng nghiệm thu](S1-09_UI_V2_NGHIEM_THU.md). Các vòng trong mẫu và ảnh kiểm thử chỉ minh họa thao tác, không phải đáp án hố thật.
