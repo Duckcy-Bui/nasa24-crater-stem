@@ -85,3 +85,9 @@ Nhấp vào tên tài liệu rồi tải file DOCX để đọc bằng Word ho�
 ## Đưa repo lên GitHub
 
 Repo local dùng nhánh `main`. Hướng dẫn từng bước, đúng tài khoản `Duckcy-Bui`, nằm tại [HUONG_DAN_GITHUB.md](docs/HUONG_DAN_GITHUB.md).
+
+## Bộ ảnh S1-06
+
+Repo chứa bundle ngoại tuyến 26 ảnh LROC thật, kèm metadata và mặt nạ. Sau khi cài thư viện, chạy `python scripts/install_s106_dataset.py` để xác minh và giải nén vào `data/processed/`. Xem [hướng dẫn dữ liệu](docs/S1-06_HUONG_DAN_DU_LIEU.md) và [bảng ánh xạ](docs/S1-06_BANG_ANH_XA_ANH_CAT.md).
+
+Bundle là ảnh browse cho demo môn học; chưa có danh mục hố đã xác minh. Không dùng nhãn giả hoặc danh mục thiếu để chấm Precision/Recall hay điểm danh mục. Môi trường kiểm tra cố định dùng Python 3.12 và `requirements-test.txt`; các test dataset tự kiểm tra bundle trong Git, không phụ thuộc file ảnh đã giải nén trên máy.
