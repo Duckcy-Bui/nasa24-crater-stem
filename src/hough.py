@@ -5,6 +5,7 @@ import numpy as np
 
 
 DEFAULT_PARAMS = {
+    "voting_method": "full_circle",
     "radius_step_px": 1,
     "r_min_limit_px": 5,
     "r_max_limit_px": 128,
@@ -32,6 +33,12 @@ def resolve_hough_params(params: dict) -> dict:
         raise ValueError(f"Tham so Hough khong ho tro: {sorted(unknown)}")
 
     config = {**DEFAULT_PARAMS, **supplied}
+
+    if (
+        not isinstance(config["voting_method"], str)
+        or config["voting_method"] not in ("full_circle", "gradient")
+    ):
+        raise ValueError("voting_method phai la full_circle hoac gradient.")
 
     for name in (
         "radius_step_px", "r_min_limit_px", "r_max_limit_px",
@@ -94,7 +101,7 @@ def _accumulate(
     batch_size: int,
 ) -> np.ndarray:
     height, width = shape
-    accumulator = np.zeros(shape, dtype=np.int32)
+    accumulator = np.zeros(height * width, dtype=np.int32)
     dx, dy = offsets.T
 
     for start in range(0, len(xs), batch_size):
@@ -107,10 +114,42 @@ def _accumulate(
             & (center_y >= 0) & (center_y < height)
         )
 
-        # add.at cong dung ca khi nhieu phieu cung tro den mot o.
-        np.add.at(accumulator, (center_y[inside], center_x[inside]), 1)
+        # bincount cong ca cac chi so trung nhau nhu add.at, nhung nhanh hon.
+        # Bo phieu theo lo de khong giu mang (so_diem_bien x so_goc) ca anh.
+        indices = center_y[inside] * width + center_x[inside]
+        accumulator += np.bincount(
+            indices, minlength=height * width,
+        ).astype(np.int32)
 
-    return accumulator
+    return accumulator.reshape(shape)
+
+
+def _accumulate_gradient(
+    ys: np.ndarray,
+    xs: np.ndarray,
+    shape: tuple[int, int],
+    theta: np.ndarray,
+    radius: int,
+) -> np.ndarray:
+    """Moi diem bien bo phieu o hai tam dọc theo phap tuyen gradient.
+
+    Khong biet ho sang/toi nen can ca hai dau cua phap tuyen. theta dung
+    radian, he toa do anh x sang phai, y xuong duoi (arctan2(gy, gx)).
+    """
+    height, width = shape
+    direction = theta[ys, xs]
+    dx = np.rint(radius * np.cos(direction)).astype(np.int32)
+    dy = np.rint(radius * np.sin(direction)).astype(np.int32)
+    center_x = np.concatenate((xs - dx, xs + dx))
+    center_y = np.concatenate((ys - dy, ys + dy))
+    inside = (
+        (center_x >= 0) & (center_x < width)
+        & (center_y >= 0) & (center_y < height)
+    )
+    indices = center_y[inside] * width + center_x[inside]
+    return np.bincount(indices, minlength=height * width).astype(
+        np.int32,
+    ).reshape(shape)
 
 
 def _local_peaks(accumulator: np.ndarray, threshold: int) -> np.ndarray:
@@ -144,7 +183,11 @@ def detect_circles(
     params: dict,
     theta: Any = None,
 ) -> list[dict]:
-    
+    """Phat hien Hough NumPy; mac dinh quet vong tron, gradient la tuy chon.
+
+    Ket qua chi gom tam trong anh; ban kinh duoc phep cat qua mep anh.
+    confidence=null vi phieu Hough chua duoc hieu chuan thanh xac suat.
+    """
     edges = np.asarray(edges)
 
     if edges.shape != (512, 512) or edges.dtype != np.bool_:
@@ -169,6 +212,7 @@ def detect_circles(
             "Dai ban kinh rong hoac ngoai gioi han cau hinh."
         )
 
+    theta_array = None
     if theta is not None:
         theta_array = np.asarray(theta)
 
@@ -181,7 +225,11 @@ def detect_circles(
                 "theta phai cung kich thuoc, huu han tai diem bien."
             )
 
+    if config["voting_method"] == "gradient" and theta_array is None:
+        raise ValueError("Bo phieu gradient can theta (radian) tai diem bien.")
+
     ys, xs = np.nonzero(edges)
+    ys, xs = ys.astype(np.int32), xs.astype(np.int32)
     if len(xs) == 0:
         return []
 
@@ -197,24 +245,33 @@ def detect_circles(
         int(r_max_px) + 1,
         config["radius_step_px"],
     ):
-        offsets = _circle_offsets(radius, angles)
-
-        accumulator = _accumulate(
-            ys,
-            xs,
-            edges.shape,
-            offsets,
-            config["edge_batch_size"],
-        )
+        if config["voting_method"] == "gradient":
+            # Gradient bo phieu tu moi pixel bien, khong tu mau goc 1 do.
+            # Uoc luong so pixel tren duong tron bang chu vi (2*pi*r),
+            # tranh uu tien r lon chi vi mau goc full_circle bi gioi han.
+            support_size = int(np.ceil(2 * np.pi * radius))
+            accumulator = _accumulate_gradient(
+                ys, xs, edges.shape, theta_array, radius,
+            )
+        else:
+            offsets = _circle_offsets(radius, angles)
+            support_size = len(offsets)
+            accumulator = _accumulate(
+                ys,
+                xs,
+                edges.shape,
+                offsets,
+                config["edge_batch_size"],
+            )
 
         threshold = max(
             config["min_votes"],
-            int(np.ceil(config["min_vote_ratio"] * len(offsets))),
+            int(np.ceil(config["min_vote_ratio"] * support_size)),
         )
 
         for y, x in _local_peaks(accumulator, threshold):
             votes = int(accumulator[y, x])
-            score = votes / len(offsets)
+            score = votes / support_size
 
             candidates.append(
                 (score, votes, int(y), int(x), radius)
