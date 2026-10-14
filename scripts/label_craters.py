@@ -64,24 +64,29 @@ STATE_WAIT_EDGE = "wait_edge"  # Đã click tâm, chờ click vành
 
 
 class LabelApp:
-    def __init__(self, image_id: str, source_arg: str, auto_uncertain: bool):
+    def __init__(
+        self,
+        image_id: str,
+        source_arg: str = "",
+        auto_uncertain: bool = False,
+        processed_dir: Path | None = None,
+        ref_dir: Path | None = None,
+    ):
         self.image_id = image_id
         self.source_arg = source_arg.strip()
         self.auto_uncertain = auto_uncertain
 
-        self.processed_dir = ROOT / "data" / "processed"
-        self.ref_dir = ROOT / "data" / "reference_labels"
+        self.processed_dir = processed_dir or (ROOT / "data" / "processed")
+        self.ref_dir = ref_dir or (ROOT / "data" / "reference_labels")
         self.ref_dir.mkdir(parents=True, exist_ok=True)
 
         meta_path = self.processed_dir / f"{image_id}.json"
         npy_path = self.processed_dir / f"{image_id}.npy"
 
         if not meta_path.exists():
-            print(f"Lỗi: Không tìm thấy metadata tại {meta_path}")
-            sys.exit(1)
+            raise FileNotFoundError(f"Không tìm thấy metadata tại {meta_path}")
         if not npy_path.exists():
-            print(f"Lỗi: Không tìm thấy ảnh .npy tại {npy_path}")
-            sys.exit(1)
+            raise FileNotFoundError(f"Không tìm thấy ảnh .npy tại {npy_path}")
 
         self.metadata = read_json(meta_path)
         validate_metadata(self.metadata)
