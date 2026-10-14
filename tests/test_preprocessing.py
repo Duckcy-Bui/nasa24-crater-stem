@@ -341,6 +341,20 @@ class PreprocessingFileAndCLI(unittest.TestCase):
         self.assertNotEqual(run.returncode, 0)
         self.assertIn("run_id", run.stderr)
 
+    def test_synthetic_truth_matches_search_radius_and_reports_exclusions(self):
+        craters = [(500, 520, 200), (-5, 10, 24), (200, 200, 14),
+                   (200, 200, 20), (200, 200, 250), (200, 200, 252), (1024, 100, 80)]
+        with patch("scripts.synthetic_scene.make_scene", return_value=(np.ones((1024, 1024), np.float32), craters)):
+            _, _, metadata, truth = cli.synthetic_input("oblique")
+        self.assertEqual([circle["r"] for circle in truth["circles"]], [100, 10, 125])
+        counts = metadata["synthetic_truth_scope"]
+        self.assertEqual(counts["generated_craters"], 7)
+        self.assertEqual(counts["centres_outside_image"], 2)
+        self.assertEqual(counts["radius_outside_search_range_with_center_in_image"], 2)
+        self.assertEqual(counts["reference_craters"], 3)
+        self.assertEqual(metadata["radius"]["r_min_px"], counts["r_min_px"])
+        self.assertEqual(metadata["radius"]["r_max_px"], counts["r_max_px"])
+
     def test_failed_render_does_not_leave_partial_output(self):
         np.save(self.folder / "masked_valid_mask.npy", self.mask)
         run_id = f"test_failed_render_{uuid4().hex}"

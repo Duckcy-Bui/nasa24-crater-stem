@@ -75,11 +75,25 @@ def synthetic_input(name: str):
     }
     # Hố đúng (đáp án của bộ tạo), đổi về ảnh 512: x = (x_src − (k−1)/2)/k.
     circles = []
+    outside_centres, outside_radius = 0, 0
     for x, y, r in craters:
         x512, y512, r512 = (x - (k - 1) / 2) / k, (y - (k - 1) / 2) / k, r / k
-        if 0 <= x512 <= 511 and 0 <= y512 <= 511:
-            circles.append({"crater_id": f"C{len(circles) + 1}", "x": round(x512, 2), "y": round(y512, 2),
-                            "r": round(r512, 2), "confidence": None, "votes": None})
+        if not (0 <= x512 <= 511 and 0 <= y512 <= 511):
+            outside_centres += 1
+            continue
+        if not r_min <= r512 <= r_max:
+            outside_radius += 1
+            continue
+        circles.append({"crater_id": f"C{len(circles) + 1}", "x": round(x512, 2), "y": round(y512, 2),
+                        "r": round(r512, 2), "confidence": None, "votes": None})
+    metadata["synthetic_truth_scope"] = {
+        "rule": "centre_in_image_and_radius_in_search_range",
+        "r_min_px": r_min, "r_max_px": r_max,
+        "generated_craters": len(craters), "centres_outside_image": outside_centres,
+        "radius_outside_search_range_with_center_in_image": outside_radius,
+        "reference_craters": len(circles),
+        "note": "Số hố ngoài bán kính chỉ đếm các hố đã có tâm trong ảnh; không lọc theo độ rõ vành hoặc mặt nạ nodata.",
+    }
     truth = {"schema_version": "1.0", "data_kind": "synthetic", "image_id": metadata["image_id"],
              "source": "catalogue", "reference_source": "Đáp án bộ tạo cảnh giả lập S1-08", "circles": circles}
     return image, None, metadata, truth

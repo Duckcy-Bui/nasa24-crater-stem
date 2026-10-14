@@ -45,6 +45,8 @@ Mỗi lần chạy tạo một thư mục mới `outputs/<run_id>/`, không ghi 
 | `result.npz` | Các mảng đầu ra để Hough (S1-07) đọc: `np.load(...)["edges"]` |
 | `truth_craters.json` | Chỉ có với cảnh giả lập: hố đúng do bộ tạo đặt, định dạng danh sách hố chung |
 
+Đáp án giả lập chỉ giữ hố có tâm trong ảnh và bán kính thuộc `radius.r_min_px..r_max_px`, cùng phạm vi Hough tìm kiếm. `metadata.json.synthetic_truth_scope` ghi rõ số hố được tạo, tâm ngoài ảnh, bán kính ngoài phạm vi và số hố trong đáp án. Các hố còn lại trong đáp án chưa được lọc theo độ rõ vành hoặc nodata; số đếm ngoài bán kính chỉ xét các hố đã có tâm trong ảnh.
+
 ## 3. Tự viết và thư viện
 
 | Bước | Thao tác | Cài đặt | Hàm |
