@@ -6,6 +6,10 @@ Phiên bản đề xuất `1.0`, dựa trên S1-04. Hưng và Tiến cần kiể
 
 Mỗi ảnh chuẩn có bộ tên `<image_id>.npy`, `<image_id>.png`, `<image_id>.json`.
 
+Ảnh thật bàn giao thêm `<image_id>_valid_mask.npy` (mảng bool 512×512), kể cả khi toàn bộ pixel hợp lệ. Metadata có thể ghi `valid_mask_file` để chỉ tên file. Mặt nạ lấy từ raster và kiểm tra giá trị hữu hạn; pixel 0 vẫn có thể hợp lệ. Khi đọc ảnh `.npy`/PNG đã cắt, phải nạp mặt nạ đi kèm: tỷ lệ `valid_ratio` không cho biết vị trí nodata và không thay thế mặt nạ.
+
+`reference_status="unavailable"` nghĩa là chưa có danh mục hố đã xác minh cho ảnh thật. Khi đó không sinh `<image_id>_craters_catalogue.json`, không xem danh mục thiếu là vùng không có hố, và không chấm Precision/Recall hay điểm danh mục. Trường `reference_note` ghi lý do hoặc việc cần làm tiếp. Đáp án của cảnh giả lập dùng `data_kind="synthetic"` và ghi đúng nguồn bộ tạo; tuyệt đối không ghi thành danh mục Robbins thật.
+
 | Trường | Quy ước |
 |---|---|
 | `schema_version` | `1.0` |
