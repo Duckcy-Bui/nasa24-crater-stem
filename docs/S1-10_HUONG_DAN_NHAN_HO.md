@@ -1,123 +1,142 @@
 # Hướng dẫn ghi nhãn hố tham chiếu — S1-10
 
-Phụ trách: **Hoàng Quốc Anh**. Phối hợp/nghiệm thu: **Nguyễn Mạnh Tiến**.
-Hạn ưu tiên: nhãn thật cho **ảnh demo trước trưa 15/10/2026**; Tiến kiểm tra chéo sau đó.
+Phụ trách: **Hoàng Quốc Anh**. Phối hợp/nghiệm thu: **Nguyễn Mạnh Tiến**.  
+Hạn ưu tiên: Nhãn thật cho **ảnh demo trước trưa 15/10/2026**; Tiến kiểm tra chéo và nghiệm thu sau đó.
 
 > [!IMPORTANT]
-> Nhãn thủ công và nhãn Robbins phải ghi nguồn **rõ ràng và riêng biệt**. Không gán nhãn Robbins cho hố chưa đối chiếu tọa độ pixel thực tế. Hố chưa chắc chắn phải đánh dấu `_uncertain` trong `crater_id`.
+> Nhãn thủ công và nhãn Robbins phải ghi nguồn **rõ ràng, tách biệt**. Không gán nhãn Robbins cho hố chưa đối chiếu tọa độ pixel thực tế. Hố chưa chắc chắn phải đánh dấu `_uncertain` trong `crater_id`. Toàn bộ nhãn tham chiếu bàn giao được lưu trong thư mục `data/reference_labels/` để Git theo dõi.
 
-## 1. Ảnh demo và thứ tự ưu tiên
+---
 
-| Ưu tiên | image_id | Scale | Góc tới | Lý do chọn demo |
+## 1. Thứ tự ưu tiên ảnh và cặp so sánh
+
+| Ưu tiên | image_id | Scale | Góc tới | Mục đích sử dụng |
 |---|---|---|---|---|
-| **1 (Demo)** | `moon_ap16_m106777343r_c01` | 2.0 m/px | 28.38° (Tây) | Hố rõ nhất, không bóng đổ cực đoan |
-| 2 | `moon_ap16_m109134835l_c01` | 2.0 m/px | 7.64° (gần đỉnh đầu) | Cùng vùng Apollo 16, ít bóng, Tiến kiểm tra chéo cặp này |
-| 3–5 | `moon_ap15_hia_c01..c03` | 20.0 m/px | 28°–53° | Hố lớn hơn, dễ đối chiếu Robbins |
+| **1 (Demo)** | `moon_ap16_m106777343r_c01` | 2.0 m/px | 28.38° (Tây) | **Ảnh demo chính S1-10**: Địa hình cao nguyên Apollo 16 rõ nét, tương phản tốt, không bóng đổ cực đoan. |
+| **2a (Cặp so sánh)** | `moon_ap16_m102064759r_c01` | 2.0 m/px | 81.08° (Đông) | Cùng cửa sổ mặt đất `(1190, 2750)`, cùng CRS/affine với 2b. Bóng đổ rất dài (Low-Sun). |
+| **2b (Cặp so sánh)** | `moon_ap16_m109134835l_c01` | 2.0 m/px | 7.64° (gần đỉnh đầu) | Cùng cửa sổ mặt đất `(1190, 2750)` với 2a. Chiếu sáng thẳng đứng, gần như không bóng (High-Sun). |
+| **3–5** | `moon_ap15_hia_c01..c03` | 20.0 m/px | 28°–53° | Khu vực Apollo 15, hố lớn hơn, phù hợp đối chiếu danh mục Robbins (D > 1–2 km). |
 
-## 2. Cách chạy script ghi nhãn
+> [!NOTE]
+> Cặp ảnh so sánh ánh sáng trên cùng một vùng địa hình đã được nhóm chốt tại [S1-06_BANG_ANH_XA_ANH_CAT.md](S1-06_BANG_ANH_XA_ANH_CAT.md) (dòng 7) là `moon_ap16_m102064759r_c01` và `moon_ap16_m109134835l_c01`.
+
+---
+
+## 2. Công cụ ghi nhãn `scripts/label_craters.py`
+
+### 2.1. Cách chạy script
 
 ```bash
 # Ảnh demo mặc định (moon_ap16_m106777343r_c01)
-python scripts/label_craters.py
+.venv\Scripts\python.exe scripts/label_craters.py
 
 # Chỉ định ảnh khác
-python scripts/label_craters.py moon_ap15_hia_c01
+.venv\Scripts\python.exe scripts/label_craters.py moon_ap15_hia_c01
 
-# Ghi nhãn từ Robbins (thêm note nguồn)
-python scripts/label_craters.py moon_ap15_hia_c01 --source "Robbins 2019 DOI:10.1029/2018JE005592 crater_id=XXXXX"
+# Ghi nhãn từ danh mục Robbins 2019
+.venv\Scripts\python.exe scripts/label_craters.py moon_ap15_hia_c01 --source "Robbins 2019 DOI:10.1029/2018JE005592 crater_id=XXXXX"
 
-# Ghi nhãn uncertain hàng loạt (toàn phiên đều uncertain)
-python scripts/label_craters.py moon_ap16_m106777343r_c01 --uncertain
+# Chế độ toàn bộ nhãn mới là uncertain
+.venv\Scripts\python.exe scripts/label_craters.py moon_ap16_m106777343r_c01 --uncertain
 ```
 
-> [!NOTE]
-> Script dùng backend `TkAgg`. Nếu gặp lỗi cửa sổ không mở, đảm bảo đã kích hoạt `.venv` trước khi chạy.
+### 2.2. Thao tác tương tác trong cửa sổ
 
-## 3. Thao tác trong cửa sổ
+| Thao tác | Tác dụng | Chi tiết kỹ thuật |
+|---|---|---|
+| **Click 1 (chuột trái)** | Chọn **TÂM** hố $(x, y)$ | Tọa độ phải thuộc phạm vi $[0, 511]$; hiển thị dấu `+` màu trắng. |
+| **Click 2 (chuột trái)** | Chọn điểm trên **VÀNH** | Tự tính bán kính $r = \sqrt{(x - x_c)^2 + (y - y_c)^2}$. Cảnh báo nếu $r$ nằm ngoài $[r_{\min}, r_{\max}]$. |
+| **Phím `U`** | Đổi trạng thái **Uncertain** | Chuyển đổi qua lại giữa nhãn chắc chắn (cyan) và uncertain (cam); tự cập nhật `_uncertain` trong ID và màu vòng tròn tức thì. |
+| **Phím `Z`** | **Hoàn tác** | Nếu đang chờ click vành: hủy click tâm. Nếu ở trạng thái nghỉ: xóa đúng vòng tròn và nhãn của hố vừa tạo. |
+| **Phím `S`** | **Lưu kết quả** | Gọi `validate_crater_set`; chỉ đóng cửa sổ khi lưu thành công cả JSON và ảnh overlay PNG. |
+| **Phím `Q`** | **Thoát** | Đóng cửa sổ không lưu thay đổi phiên hiện tại. |
 
-| Thao tác | Tác dụng |
-|---|---|
-| **Click chuột trái lần 1** | Đặt **TÂM** hố (dấu `+` trắng) |
-| **Click chuột trái lần 2** | Đặt điểm trên **VÀNH** miệng hố → bán kính `r` tự tính bằng khoảng cách Euclid |
-| **Phím `U`** | Đánh dấu hố vừa ghi là **uncertain** (màu cam) |
-| **Phím `Z`** | **Hoàn tác** hố cuối, hoặc hủy click tâm đang chờ |
-| **Phím `S`** | **Lưu** và thoát → file `_craters_catalogue.json` |
-| **Phím `Q`** | Thoát **không lưu** |
+---
 
-Hố chắc chắn hiển thị **màu xanh cyan**. Hố uncertain hiển thị **màu cam**. Góc dưới ảnh có 2 vòng tham chiếu kích thước `r_min` và `r_max` để so sánh mắt thường.
+## 3. Quy chuẩn tọa độ và quy tắc nhãn
 
-## 4. Quy tắc ghi nhãn
+### 3.1. Quy ước hệ tọa độ pixel
 
-### 4a. Nhãn thủ công (hố nhỏ < 1 km, thiếu Robbins)
+- Gốc tọa độ $(0, 0)$ đặt tại **góc trên-bên trái**, trục $x$ tăng dần sang phải $[0, 511]$, trục $y$ tăng dần xuống dưới $[0, 511]$.
+- Extent hiển thị được cấu hình `[-0.5, 511.5, 511.5, -0.5]` để tâm của pixel đầu tiên khớp chính xác với tọa độ $(0, 0)$.
 
-- `reference_source`: `"manual_label_s110; <mô tả ngắn>"`
-- `crater_id`: `C1`, `C2`... (hố chắc chắn) hoặc `C1_uncertain` (hố còn ngờ)
-- `confidence`: `null` — chưa hiệu chuẩn theo chuẩn nào
+### 3.2. Nhãn thủ công (`manual_label_s110`)
 
-**Không ghi:** phương vị nắng, độ chính xác phát hiện hoặc bất kỳ số đo phái sinh nào chưa có.
+- Áp dụng cho: Hố nhỏ $D < 1\text{ km}$ (đặc biệt các ảnh Apollo 16 có dải $D \in [20\text{ m}, 500\text{ m}]$, nơi danh mục Robbins không có dữ liệu).
+- `reference_source`: Bắt đầu bằng `"manual_label_s110; <ghi chú kiểm tra>"`.
+- `crater_id`: Đặt theo dạng `C1`, `C2`,... (chắc chắn) hoặc `C4_uncertain` (chưa chắc chắn).
+- `confidence`: `null` (không tự ý đặt điểm số khi chưa qua mô hình định lượng).
+- `votes`: `null`.
 
-### 4b. Nhãn từ danh mục Robbins 2019 (hố > 1 km)
+### 3.3. Nhãn từ danh mục Robbins 2019
 
-1. Tra tọa độ địa lý của hố trong file CSV Robbins.
-2. Quy đổi sang tọa độ pixel ảnh 512×512 bằng công thức:
-   - `x_px = (lon_crater - lon_topleft) / (lon_bottomright - lon_topleft) * 512`
-   - `y_px = (lat_topleft - lat_crater) / (lat_topleft - lat_bottomright) * 512`
-   - `r_px = D_km * 1000 / 2 / scale_m_per_px`
-3. Dùng file JSON metadata của ảnh để lấy `center_lat`, `center_lon`, `scale_m_per_px`.
-4. **Bắt buộc** mở ảnh `.png` và kiểm tra bằng mắt xem hố Robbins có xuất hiện đúng vị trí không.
-5. Nếu khớp: ghi vào script với `--source "Robbins 2019 DOI:10.1029/2018JE005592 crater_id=<id_Robbins>"`.
-6. Nếu không khớp hoặc còn ngờ: thêm `--uncertain` hoặc bấm `U` sau khi ghi.
+Chỉ sử dụng cho các hố lớn $D \ge 1\text{--}2\text{ km}$ (chủ yếu trên các ảnh Apollo 15 ở độ phân giải 20 m/px).
 
-> [!WARNING]
-> Robbins 2019 chỉ đầy đủ thống kê cho hố **D ≥ 1–2 km**. Các ảnh Apollo 16 ở 2 m/px có dải `D = [20 m, 500 m]` — Robbins **không đủ** cho các ảnh này, dùng nhãn thủ công.
+#### Quy trình quy đổi tọa độ chuẩn xác:
 
-### 4c. Hố đánh dấu uncertain — khi nào dùng
+1. **Chiếu tọa độ địa lý sang tọa độ phẳng ảnh nguồn:**
+   - Đọc định dạng CRS từ `metadata["source"]["source_crs_wkt"]`.
+   - Dùng thư viện phép chiếu (như `pyproj.Proj`) để biến đổi `(lon_crater, lat_crater)` $\to (X, Y)$ trong hệ tọa độ phẳng của ảnh nguồn.
+2. **Nghịch đảo affine sang tọa độ pixel ảnh nguồn:**
+   - Đọc ma trận biến đổi affine 6 tham số từ `metadata["source"]["source_transform"]`:
+     $$\begin{pmatrix} X \\ Y \end{pmatrix} = \begin{pmatrix} a & b & c \\ d & e & f \end{pmatrix} \begin{pmatrix} col_{source} \\ row_{source} \\ 1 \end{pmatrix}$$
+   - Giải phương trình nghịch đảo để tìm $(col_{source}, row_{source})$.
+3. **Quy đổi sang tọa độ ảnh cắt 512×512:**
+   - Dùng thông số cắt `crop_x0`, `crop_y0` và hệ số giảm mẫu `downsample_k` trong metadata:
+     $$x_{crop} = \frac{col_{source} - crop\_x0}{downsample\_k}$$
+     $$y_{crop} = \frac{row_{source} - crop\_y0}{downsample\_k}$$
+     $$r_{px} = \frac{D_{km} \times 1000}{2 \times scale\_m\_per\_px}$$
+4. **Bắt buộc đối chiếu trực quan bằng mắt:**
+   - Mở ảnh PNG tương ứng, kiểm tra xem tại $(x_{crop}, y_{crop})$ có thực sự tồn tại hình thái hố va chạm khớp với bán kính $r_{px}$ hay không.
+   - Nếu khớp: Ghi nhận với nguồn định danh rõ:
+     `--source "Robbins 2019 DOI:10.1029/2018JE005592 crater_id=<ID_cu_the>"`
+   - Nếu bị lệch hoặc mờ: Bấm `U` để gắn nhãn `_uncertain`. Tuyệt đối không gán nhãn Robbins nếu ảnh không quan sát thấy hố.
 
-Dùng `uncertain` khi:
-- Không thể phân biệt rõ là hố va chạm hay địa hình đá.
-- Hố bị bóng đổ che một phần lớn (thường gặp ở Low-Sun).
-- Tọa độ Robbins chiếu vào ảnh nhưng không thấy rõ hình tròn.
+---
 
-Tiến kiểm tra chéo sẽ quyết định giữ hoặc bỏ nhãn uncertain.
+## 4. Quản lý nhãn Uncertain và Kiểm tra chéo
 
-## 5. Format file đầu ra
+### 4.1. Tiêu chí gắn nhãn `uncertain`
+- Hố bị xói mòn nặng, bờ vành không khép kín.
+- Hố nằm trong vùng bóng đổ sâu hoặc có địa hình đá gồ ghề dễ gây nhầm lẫn.
+- Tọa độ danh mục chiếu vào nhưng độ tương phản quá thấp.
 
-File lưu tại `data/processed/<image_id>_craters_catalogue.json`, đạt 100% hợp đồng dữ liệu `validate_crater_set` của [contracts.py](../src/contracts.py):
+### 4.2. Vai trò của `validate_crater_set` vs Kiểm tra chéo
+- **`validate_crater_set`**: Chỉ kiểm tra hợp đồng cấu trúc dữ liệu, kiểu dữ liệu, các trường bắt buộc và giới hạn tọa độ trong $[0, 511]$. Hàm này **không** xác nhận vị trí hố có đúng thật trên ảnh hay không.
+- **Kiểm tra chéo (Nguyễn Mạnh Tiến)**:
+  - Mở file ảnh overlay minh chứng (`data/reference_labels/<image_id>_overlay.png`).
+  - Đối chiếu từng vòng tròn với địa hình thực tế.
+  - Quyết định: Giữ lại nhãn chắc chắn; xác nhận hoặc loại bỏ các nhãn `_uncertain`.
 
-```json
-{
-  "schema_version": "1.0",
-  "data_kind": "real",
-  "image_id": "moon_ap16_m106777343r_c01",
-  "source": "catalogue",
-  "reference_source": "manual_label_s110; visual inspection on 512x512 PNG",
-  "circles": [
-    {
-      "crater_id": "C1",
-      "x": 183.4,
-      "y": 256.7,
-      "r": 18.2,
-      "confidence": null,
-      "votes": null
-    },
-    {
-      "crater_id": "C2_uncertain",
-      "x": 390.1,
-      "y": 110.5,
-      "r": 9.5,
-      "confidence": null,
-      "votes": null
-    }
-  ]
-}
+### 4.3. Ứng dụng khi tính Precision / Recall (S1-11)
+- **Kịch bản A (Khắt khe)**: Chỉ sử dụng các hố chắc chắn (`C1, C2...`) làm Ground Truth.
+- **Kịch bản B (Thực tế)**: Nhãn `_uncertain` được đưa vào tập bỏ qua (ignored set) — nếu mô hình phát hiện trúng thì không phạt False Positive, nếu bỏ qua thì không phạt False Negative.
+
+---
+
+## 5. Quy chuẩn bàn giao qua Git
+
+Do thư mục `data/processed/*` bị loại trừ trong `.gitignore`, toàn bộ kết quả nhãn tham chiếu bàn giao được tổ chức trong thư mục **`data/reference_labels/`** (được Git theo dõi):
+
+```
+data/reference_labels/
+├── README.md
+├── moon_ap16_m106777343r_c01_craters_catalogue.json   # File nhãn JSON chuẩn
+└── moon_ap16_m106777343r_c01_overlay.png             # Ảnh vẽ vòng tròn minh chứng trực quan
 ```
 
-## 6. Checklist bàn giao cho Tiến kiểm tra chéo
+Khi chạy `scripts/label_craters.py`, script sẽ tự động đồng bộ file JSON vào cả `data/reference_labels/` và `data/processed/`.
 
-- [ ] Đã chạy `label_craters.py` cho ảnh demo và lưu file `_craters_catalogue.json`.
-- [ ] Tọa độ `(x, y)` nằm trong `[0, 511]`; `r > 0`.
-- [ ] Nhãn Robbins đã đối chiếu bằng mắt trên ảnh PNG.
-- [ ] Nhãn thủ công có ghi `reference_source = "manual_label_s110; ..."`.
-- [ ] Hố không chắc chắn có hậu tố `_uncertain` trong `crater_id`.
-- [ ] `validate_crater_set` chạy không báo lỗi (script tự gọi trước khi lưu).
-- [ ] Đã commit lên nhánh `s1-10-reference-labels` và tạo PR gán Tiến làm reviewer.
+---
+
+## 6. Checklist nghiệm thu S1-10
+
+- [x] Đã sửa lỗi nạp nhãn cũ: không làm mất nhãn cũ, bộ đếm `counter` tự tăng tiếp không trùng ID.
+- [x] Đã sửa phím `U`: đồng bộ trạng thái `_uncertain` cả trong dữ liệu JSON lẫn màu cam và text trên giao diện.
+- [x] Đã sửa phím `Z`: ưu tiên hủy tâm đang chờ click; xóa đúng đối tượng đồ họa của hố vừa tạo.
+- [x] Đã sửa `_save()`: kiểm tra `validate_crater_set` chặt chẽ, chỉ đóng cửa sổ khi lưu thành công.
+- [x] Đã chuẩn hóa extent `[-0.5, 511.5, 511.5, -0.5]` và kiểm tra tâm nằm trong $[0, 511]$.
+- [x] Đã tách bạch nguồn tham chiếu `manual_label_s110` vs `Robbins 2019`.
+- [x] Đã đưa dữ liệu nhãn tham chiếu và ảnh overlay vào thư mục `data/reference_labels/` được Git theo dõi.
+- [x] Đã hoàn thành bộ nhãn thật 4 hố trên ảnh demo `moon_ap16_m106777343r_c01` (C1, C2, C3 chắc chắn; C4_uncertain).
+- [ ] Nguyễn Mạnh Tiến kiểm tra chéo file overlay và xác nhận nghiệm thu PR.
