@@ -1,5 +1,7 @@
 # Text hashes in the dataset manifest must remain stable across Linux/Windows.
 *.py text eol=lf
+*.js text eol=lf
+*.html text eol=lf
 *.json text eol=lf
 *.csv text eol=lf
 *.zip binary
