@@ -2,7 +2,7 @@
 
 Phát hiện hố va chạm và trò chơi STEM cho học sinh.
 
-Repo chứa khung dùng chung S1-05 và các phần triển khai của Sprint 1: bộ ảnh S1-06, Hough NumPy S1-07, tiền xử lý B0–B8 S1-08 và giao diện khoanh hố S1-09. Chấm điểm, đánh giá và tích hợp phát hiện hố thuộc các đầu việc tiếp theo; những hàm chưa cài đặt báo `NotImplementedError`.
+Repo chứa khung dùng chung S1-05 và các phần triển khai của Sprint 1: bộ ảnh S1-06, Hough NumPy S1-07, tiền xử lý B0–B8 S1-08, giao diện khoanh hố S1-09 và bản chạy từ đầu đến cuối S1-13. Lọc sáng–tối, chấm điểm và đánh giá thuộc các đầu việc tiếp theo; những hàm chưa cài đặt báo `NotImplementedError`.
 
 ## Mở giao diện khoanh hố S1-09
 
@@ -52,6 +52,15 @@ node tests/test_canvas_save.js
 Xem [TIEN_XU_LY.md](docs/TIEN_XU_LY.md) để chạy tiền xử lý và đọc ảnh từng bước. Sau khi merge cả ba PR, xem thêm `docs/S1-06_BANG_ANH_XA_ANH_CAT.md` để lấy bộ ảnh và `docs/HOUGH.md` để chạy Hough. Ảnh thật có nguồn riêng; danh mục hố chỉ được dùng khi đã xác minh, không suy ra đáp án từ vị trí tâm ảnh.
 
 [S1-12](docs/S1-12_VI_DU_VA_DOI_CHIEU_HOUGH.md) / [S1-15](docs/S1-15_LY_THUYET_HOUGH.md) / [References](docs/TAI_LIEU_THAM_KHAO_HOUGH.md)
+
+## Chạy từ đầu đến cuối S1-13
+
+```bash
+python scripts/run_end_to_end.py moon_ap16_m106777343r_c01
+python scripts/run_end_to_end.py --all --no-render
+```
+
+Ảnh cắt → tiền xử lý B1–B8 → Hough NumPy → `outputs/e2e_<image_id>_.../` gồm `craters.json` (máy), `summary.json` và `overlay.png` vẽ cạnh vòng người chơi và nhãn thủ công. Lọc sáng–tối S1-11 và chấm điểm còn **bỏ qua** (chưa cài, chưa có danh mục đã xác minh); danh sách máy hiện là ứng viên thô. Xem [S1-13](docs/S1-13_CHAY_TU_DAU_DEN_CUOI.md) và [nháp Chương 1](docs/CHUONG_1_NHAP.md).
 
 ## Cấu trúc thư mục
 

@@ -1,0 +1,114 @@
+{
+  "pipeline_version": "s113-e2e-v1",
+  "preprocess": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 89.90766263008118,
+    "canny_low": 35.96306505203247,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 27882,
+    "edge_px_final": 26883,
+    "steps": [
+      {
+        "id": "B0",
+        "name": "Đọc file và cắt cửa sổ",
+        "impl": "THƯ VIỆN: rasterio (GDAL)"
+      },
+      {
+        "id": "B1",
+        "name": "Thu nhỏ trung bình khối k×k",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B2",
+        "name": "Ảnh xám BT.601",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B3",
+        "name": "Chuẩn hóa theo phân vị",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B4",
+        "name": "Tăng tương phản CLAHE",
+        "impl": "THƯ VIỆN: OpenCV createCLAHE"
+      },
+      {
+        "id": "B5",
+        "name": "Làm trơn Gaussian tách hai chiều",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B6",
+        "name": "Gradient Sobel 3×3",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B7",
+        "name": "Biên Canny",
+        "impl": "THƯ VIỆN: OpenCV Canny"
+      },
+      {
+        "id": "B8",
+        "name": "Mặt nạ biên",
+        "impl": "TỰ VIẾT: NumPy"
+      }
+    ]
+  },
+  "hough": {
+    "voting_method": "full_circle",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  },
+  "hough_defaults": {
+    "voting_method": "full_circle",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  },
+  "radius_px": [
+    5,
+    125
+  ]
+}

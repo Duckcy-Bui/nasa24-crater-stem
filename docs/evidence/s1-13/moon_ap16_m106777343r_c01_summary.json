@@ -1,0 +1,45 @@
+{
+  "pipeline_version": "s113-e2e-v1",
+  "image_id": "moon_ap16_m106777343r_c01",
+  "data_kind": "real",
+  "steps": {
+    "load": {
+      "status": "ok",
+      "valid_mask": true
+    },
+    "preprocess": {
+      "status": "ok",
+      "seconds": 0.072,
+      "edge_px": 26883,
+      "valid_ratio": 1.0
+    },
+    "hough": {
+      "status": "ok",
+      "seconds": 6.876,
+      "voting_method": "full_circle",
+      "r_min_px": 5,
+      "r_max_px": 125,
+      "circles": 100,
+      "hit_max_circles": true
+    },
+    "postprocess": {
+      "status": "skipped",
+      "reason": "S1-11 chưa cài: Cài kiểm tra sáng–tối và lọc trùng theo kế hoạch."
+    },
+    "player": {
+      "status": "none",
+      "circles": 0,
+      "path": null
+    },
+    "reference": {
+      "status": "loaded",
+      "circles": 4,
+      "reference_source": "manual_label_s110; sparse manual labels, unreviewed"
+    },
+    "scoring": {
+      "status": "skipped",
+      "reason": "reference_status=unavailable; chưa có danh mục đã xác minh, scoring.py/evaluation.py chưa cài. Vòng của máy không phải đáp án."
+    }
+  },
+  "seconds_total": 6.95
+}
