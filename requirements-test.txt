@@ -4,3 +4,4 @@ opencv-python-headless==5.0.0.93
 rasterio==1.5.2
 Pillow==12.3.0
 matplotlib==3.11.2
+streamlit==1.65.0

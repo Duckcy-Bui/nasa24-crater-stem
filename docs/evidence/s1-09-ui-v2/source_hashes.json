@@ -1,0 +1,17 @@
+{
+  "branch": "s1-09-interface",
+  "sha256": {
+    "app.py": "6caf43c163b4d43ef81aa660a4d185f11f072d01513aeaf6ed7b91cc90aa6b7d",
+    "src/player_ui.py": "1ff842704e7a346dace0857c49b8c209062a7f870de36a18e575c7d6ff722a98",
+    "src/player_annotations.py": "c30ce28aa9dc44473b7627c4bd5575dd6323ef15a7edd4be20f602e8ba91144f",
+    "src/contracts.py": "c2c5f9629cc4c3736e343206ab68a0fe38d688f7a7eb6a0e3566f522032db635",
+    "src/crater_canvas/geometry.js": "3350054d426e0d3a00ca7501912183e4da0d5b5525da17a9ba17a734dd33c5ff",
+    "src/crater_canvas/canvas.js": "9d14b977579f35daeda92a2d8457a7e9fa872821b718a6dfb1032f22890121e1",
+    "src/crater_canvas/index.html": "f83f4505e2c60602208ecb246eb7eaaa961af6e0d22d9dde33a91fd27ef645fb",
+    "src/crater_canvas/styles.css": "3e4a4a8d33a6b2b908a13e7312a43602d88bc956c297998fe15db4be75c25d0b",
+    "src/crater_canvas/app.css": "1e7518314e57d41a7971721ef6211f0cfb9109cd76cdc3b1c64b43094643fe11",
+    "tests/test_player_ui.py": "6181f1548f590b3e17b9802fa7acce3f5bab69855d5405538aa4fc44dab08fe6",
+    "tests/test_app_save_state.py": "b460147167cf491ca743a4a3cccdf44abdd6b8a235d63836b7336bb3825b5dc6",
+    "tests/test_canvas_save.js": "df601a9feb65dbc2645dbc7437509ffd03ec6b57b0b2616d7e0031e2af4a96a1"
+  }
+}

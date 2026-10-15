@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap16_m113853974r_c01",
+  "source": "player",
+  "reference_source": null,
+  "circles": [
+    {
+      "crater_id": "U1",
+      "x": 178.30405108848313,
+      "y": 211.77418363764045,
+      "r": 31.5273218047753,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

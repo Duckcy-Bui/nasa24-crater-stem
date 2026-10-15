@@ -2,7 +2,22 @@
 
 Phát hiện hố va chạm và trò chơi STEM cho học sinh.
 
-Repo chứa khung dùng chung S1-05 và các phần triển khai của Sprint 1. Ba PR S1-06, S1-07, S1-08 lần lượt bổ sung bộ ảnh, Hough NumPy và tiền xử lý B0–B8. Giao diện, chấm điểm và đánh giá còn thuộc các đầu việc tiếp theo; những hàm chưa cài đặt báo `NotImplementedError`.
+Repo chứa khung dùng chung S1-05 và các phần triển khai của Sprint 1: bộ ảnh S1-06, Hough NumPy S1-07, tiền xử lý B0–B8 S1-08 và giao diện khoanh hố S1-09. Chấm điểm, đánh giá và tích hợp phát hiện hố thuộc các đầu việc tiếp theo; những hàm chưa cài đặt báo `NotImplementedError`.
+
+## Mở giao diện khoanh hố S1-09
+
+Sau khi cài môi trường bên dưới, chạy từ thư mục repo:
+
+```bash
+python scripts/install_s106_dataset.py
+python -m streamlit run app.py --server.address 127.0.0.1
+```
+
+Mở địa chỉ local Streamlit in ra (mặc định `http://127.0.0.1:8501`). Chọn một trong 26 ảnh, kéo từ tâm ra vành để vẽ; chọn **Chọn / sửa** để di chuyển tâm, đổi bán kính hoặc xóa. Có thể nhập tọa độ chính xác rồi tải JSON hoặc lưu câu trả lời vào `outputs/player_answers/`. Nếu bộ ảnh chưa được giải nén, giao diện có nút chuẩn bị ảnh ngoại tuyến.
+
+Tọa độ luôn theo ảnh 512×512, kể cả khi cửa sổ hiển thị nhỏ hơn. Bản nháp từng ảnh giữ trong phiên đang mở; cần lưu hoặc tải JSON trước khi đóng trang. Đây là câu trả lời `source=player`, chưa có chấm điểm hoặc danh mục hố tham chiếu. Xem [hướng dẫn S1-09](docs/S1-09_GIAO_DIEN_KHOANH_HO.md).
+
+UI v2 dùng thiết kế Claude Design: ảnh bên trái, bảng vòng/chỉnh/lưu bên phải; trên điện thoại các phần xếp dọc. Nút **Lưu trên máy** màu vàng lưu đúng bản nháp hiện tại và báo đường dẫn tương đối. Xem [mẫu thiết kế](docs/ui-design/mockup.html) và [nghiệm thu UI v2](docs/S1-09_UI_V2_NGHIEM_THU.md).
 
 ## Chạy kiểm tra khung repo
 
@@ -31,6 +46,7 @@ Trên Windows dùng `python` và kích hoạt bằng `.venv\Scripts\activate` tr
 python -m pip install -r requirements-test.txt
 python scripts/check_contracts.py
 python -m unittest discover -s tests -v
+node tests/test_canvas_save.js
 ```
 
 Xem [TIEN_XU_LY.md](docs/TIEN_XU_LY.md) để chạy tiền xử lý và đọc ảnh từng bước. Sau khi merge cả ba PR, xem thêm `docs/S1-06_BANG_ANH_XA_ANH_CAT.md` để lấy bộ ảnh và `docs/HOUGH.md` để chạy Hough. Ảnh thật có nguồn riêng; danh mục hố chỉ được dùng khi đã xác minh, không suy ra đáp án từ vị trí tâm ảnh.
@@ -57,7 +73,7 @@ nasa24-crater-stem/
 │   ├── scoring.py             # Đức: chấm với máy và danh mục riêng
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
-├── app.py                     # Điểm vào giao diện, sẽ cài ở S1-09
+├── app.py                     # S1-09: mở ảnh, vẽ/sửa/xóa và lưu câu trả lời
 ├── scripts/
 │   ├── check_contracts.py     # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
 │   ├── run_preprocessing.py   # S1-08: chạy B0–B8, lưu ảnh từng bước + tham số

@@ -1,0 +1,10 @@
+ok - empty save submits explicit nonce at revision zero
+ok - save submits latest committed snapshot before any edit ACK without incrementing revision
+ok - pending freezes every mutation while download remains current and available
+ok - equal-revision ACK shows saved path; a committed edit makes success dirty
+ok - failed ACK unfreezes, shows no-overwrite error, and a new click retries with a new nonce
+ok - old render and unrelated ACK preserve pending snapshot and cannot unlock editing
+ok - switching image or session discards pending controls and isolates saved status
+ok - unloaded image and active drag cannot save; rejected numeric input never enters saved snapshot
+ok - a result for another image is hidden even when its revision matches
+Canvas save acceptance checks passed (9 scenarios)

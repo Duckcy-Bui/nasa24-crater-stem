@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "validated_downloads": [
+    "1440_invalid_unchanged.json",
+    "1440_many_saved.json",
+    "1440_other_image.json",
+    "1440_precision_after.json",
+    "1440_precision_before.json",
+    "1440_precision_edited.json",
+    "1440_restored_image.json",
+    "390_invalid_unchanged.json",
+    "390_many_saved.json",
+    "390_other_image.json",
+    "390_precision_after.json",
+    "390_precision_before.json",
+    "390_precision_edited.json",
+    "390_restored_image.json"
+  ]
+}

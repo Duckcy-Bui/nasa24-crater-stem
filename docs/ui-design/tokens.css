@@ -1,0 +1,64 @@
+/* NASA24 · Khoanh hố Mặt Trăng — design tokens (offline, no network fonts).
+   Paste into src/crater_canvas/index.html <style> or link it from there. */
+:root {
+  color-scheme: dark;
+
+  /* Ground and surfaces */
+  --bg: #0A0C0F;          /* page / Streamlit backgroundColor */
+  --surface-0: #0E1115;   /* inset: inputs, segmented track, panel footer */
+  --surface-1: #111419;   /* panels, cards / Streamlit secondaryBackgroundColor */
+  --surface-2: #171B21;   /* secondary buttons, picker, row hover */
+  --surface-3: #1E232B;   /* button hover, count badge */
+  --line: #222831;        /* panel border, dividers */
+  --line-2: #262C35;      /* image frame, track border */
+  --line-3: #303743;      /* control border */
+  --line-4: #3D4552;      /* control border on hover */
+
+  /* Text (contrast measured on --surface-1) */
+  --text: #ECEAE4;        /* 15.3:1 */
+  --text-2: #A7ADB6;      /* 8.2:1 — labels, secondary copy */
+  --text-3: #7D848E;      /* 4.9:1 — captions, units, column headers */
+
+  /* Accent: one amber CTA per screen (Lưu trên máy) + focus ring */
+  --accent: #F3B23C;
+  --accent-hover: #FFC457;
+  --on-accent: #1A1205;
+  --focus: #F3B23C;
+
+  /* Annotation on the lunar image */
+  --circle: #5FE3F5;            /* default circle, crosshair */
+  --circle-id-bg: #10303A;      /* id chip in list */
+  --circle-id-text: #8DEFFB;
+  --circle-selected: #FFD84D;   /* selected circle, handle, editor id */
+  --row-selected-bg: #2A2414;
+  --row-selected-text: #FFE3A3;
+  --halo: rgba(0, 0, 0, .55);   /* dark halo under every stroke so it reads on bright regolith */
+  --label-bg: rgba(10, 12, 15, .78);
+
+  /* Feedback */
+  --danger: #FF8A7A;  --danger-text: #FF9C8F;  --danger-bg: #2A1513;  --danger-line: #5A2A24;
+  --success: #6FD69B; --success-text: #CFF3DD; --success-bg: #102419; --success-line: #1F4A31;
+
+  /* Type — system stacks only (works offline, has Vietnamese glyphs) */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Noto Serif", "DejaVu Serif", Georgia, serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", "Ubuntu Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  --fs-display: 26px;   /* mobile 22px */
+  --fs-heading: 15px;
+  --fs-body: 14px;      /* mobile 15px */
+  --fs-small: 12px;
+  --fs-label: 11px;     /* uppercase, letter-spacing .06em */
+  --fs-mono: 13px;
+
+  /* Space (4-pt) and shape */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s7: 28px; --s8: 32px;
+  --r-control: 8px;     /* mobile 9px */
+  --r-chip: 6px;
+  --r-image: 12px;
+  --r-panel: 14px;
+  --h-control: 40px;    /* mobile 44px (touch target) */
+  --h-cta: 44px;        /* mobile 48px */
+  --panel-w: 380px;
+  --stage-max: 840px;    /* R2: map fills its column; was 720 */
+  --content-max: 1248px; /* stage-max + gap 28 + panel-w */
+}

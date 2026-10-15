@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "checks": [
+    "desktop draw + original coordinates + download",
+    "390px viewport resize + independent second draw",
+    "numeric edit + exact saved values",
+    "mouse center move + rim resize after viewport change",
+    "delete selected circle preserves surviving ID",
+    "A → B → A isolation + immediate edit/switch draft restoration",
+    "save on disk + readback matches download"
+  ],
+  "errors": [],
+  "saved": "outputs/player_answers/player_20261014T103232_2c059941779e",
+  "source_report_sha256": "1be569a5f985dcd0633cd6478f617ca1278b552f85cf35744e4ecbcb0106c7d0"
+}

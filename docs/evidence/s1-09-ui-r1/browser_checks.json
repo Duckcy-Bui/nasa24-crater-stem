@@ -1,0 +1,1074 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "viewport": 1440,
+      "state": "empty",
+      "status": "PASS",
+      "layout": {
+        "width": 1136,
+        "scrollWidth": 1136,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 768,
+          "height": 42,
+          "top": 2,
+          "right": 768,
+          "bottom": 44,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 59,
+          "width": 618,
+          "height": 618,
+          "bottom": 677
+        },
+        "meta": {
+          "x": 0,
+          "y": 690,
+          "width": 768,
+          "height": 17.390625,
+          "bottom": 707.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 132.390625,
+          "height": 34,
+          "bottom": 40
+        },
+        "edit": {
+          "x": 138.390625,
+          "y": 6,
+          "width": 122.296875,
+          "height": 34,
+          "bottom": 40
+        },
+        "undo": {
+          "x": 528.21875,
+          "y": 3,
+          "width": 94.03125,
+          "height": 40,
+          "bottom": 43
+        },
+        "remove": {
+          "x": 625.25,
+          "y": 3,
+          "width": 142.75,
+          "height": 40,
+          "bottom": 43
+        },
+        "save": {
+          "x": 813,
+          "y": 368.109375,
+          "width": 149,
+          "height": 40,
+          "bottom": 408.109375
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 132.390625,
+            "height": 34
+          },
+          {
+            "id": "editMode",
+            "width": 122.296875,
+            "height": 34
+          },
+          {
+            "id": "undo",
+            "width": 94.03125,
+            "height": 40
+          },
+          {
+            "id": "deleteCircle",
+            "width": 142.75,
+            "height": 40
+          },
+          {
+            "id": "saveAnswer",
+            "width": 149,
+            "height": 40
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 149,
+            "height": 40
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": -34,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": -34,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": -34,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 12.0703125,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "0.42"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 1440,
+      "state": "one_error",
+      "status": "PASS",
+      "layout": {
+        "width": 1136,
+        "scrollWidth": 1136,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 768,
+          "height": 42,
+          "top": 2,
+          "right": 768,
+          "bottom": 44,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 59,
+          "width": 618,
+          "height": 618,
+          "bottom": 677
+        },
+        "meta": {
+          "x": 0,
+          "y": 690,
+          "width": 768,
+          "height": 17.390625,
+          "bottom": 707.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 132.390625,
+          "height": 34,
+          "bottom": 40
+        },
+        "edit": {
+          "x": 138.390625,
+          "y": 6,
+          "width": 122.296875,
+          "height": 34,
+          "bottom": 40
+        },
+        "undo": {
+          "x": 528.21875,
+          "y": 3,
+          "width": 94.03125,
+          "height": 40,
+          "bottom": 43
+        },
+        "remove": {
+          "x": 625.25,
+          "y": 3,
+          "width": 142.75,
+          "height": 40,
+          "bottom": 43
+        },
+        "save": {
+          "x": 813,
+          "y": 423.53125,
+          "width": 149,
+          "height": 40,
+          "bottom": 463.53125
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 132.390625,
+            "height": 34
+          },
+          {
+            "id": "editMode",
+            "width": 122.296875,
+            "height": 34
+          },
+          {
+            "id": "undo",
+            "width": 94.03125,
+            "height": 40
+          },
+          {
+            "id": "deleteCircle",
+            "width": 142.75,
+            "height": 40
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "applyEdit",
+            "width": 306,
+            "height": 40
+          },
+          {
+            "id": "saveAnswer",
+            "width": 149,
+            "height": 40
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 149,
+            "height": 40
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": 60,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": 60,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": 60,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 11.0000016796875,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "1"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 1440,
+      "state": "many_saved",
+      "status": "PASS",
+      "layout": {
+        "width": 1136,
+        "scrollWidth": 1136,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 768,
+          "height": 42,
+          "top": 2,
+          "right": 768,
+          "bottom": 44,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 59,
+          "width": 618,
+          "height": 618,
+          "bottom": 677
+        },
+        "meta": {
+          "x": 0,
+          "y": 690,
+          "width": 768,
+          "height": 17.390625,
+          "bottom": 707.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 132.390625,
+          "height": 34,
+          "bottom": 40
+        },
+        "edit": {
+          "x": 138.390625,
+          "y": 6,
+          "width": 122.296875,
+          "height": 34,
+          "bottom": 40
+        },
+        "undo": {
+          "x": 528.21875,
+          "y": 3,
+          "width": 94.03125,
+          "height": 40,
+          "bottom": 43
+        },
+        "remove": {
+          "x": 625.25,
+          "y": 3,
+          "width": 142.75,
+          "height": 40,
+          "bottom": 43
+        },
+        "save": {
+          "x": 813,
+          "y": 503.15625,
+          "width": 149,
+          "height": 40,
+          "bottom": 543.15625
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 132.390625,
+            "height": 34
+          },
+          {
+            "id": "editMode",
+            "width": 122.296875,
+            "height": 34
+          },
+          {
+            "id": "undo",
+            "width": 94.03125,
+            "height": 40
+          },
+          {
+            "id": "deleteCircle",
+            "width": 142.75,
+            "height": 40
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "",
+            "width": 322,
+            "height": 41
+          },
+          {
+            "id": "applyEdit",
+            "width": 306,
+            "height": 40
+          },
+          {
+            "id": "saveAnswer",
+            "width": 149,
+            "height": 40
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 149,
+            "height": 40
+          },
+          {
+            "id": "copySavedPath",
+            "width": 30,
+            "height": 30
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": 60,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": 60,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": 60,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 11.0000016796875,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "1"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 1440,
+      "state": "precision_and_resize",
+      "status": "PASS",
+      "precisionSave": "outputs/player_answers/player_20261015T011052_edb208988d7e",
+      "saved": "outputs/player_answers/player_20261015T011054_24ccf774544c",
+      "displayedPath": "outputs/…/player_20261…_24ccf774544c"
+    },
+    {
+      "viewport": 390,
+      "state": "empty",
+      "status": "PASS",
+      "layout": {
+        "width": 358,
+        "scrollWidth": 358,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 358,
+          "height": 52,
+          "top": 2,
+          "right": 358,
+          "bottom": 54,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 69,
+          "width": 356,
+          "height": 356,
+          "bottom": 425
+        },
+        "meta": {
+          "x": 0,
+          "y": 438,
+          "width": 358,
+          "height": 17.390625,
+          "bottom": 455.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "edit": {
+          "x": 130.5,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "undo": {
+          "x": 267,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "remove": {
+          "x": 314,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "save": {
+          "x": 16,
+          "y": 587.234375,
+          "width": 326,
+          "height": 48,
+          "bottom": 635.234375
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "editMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "undo",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "deleteCircle",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "saveAnswer",
+            "width": 326,
+            "height": 48
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 326,
+            "height": 44
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": -34,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": -34,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": -34,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 6.953125,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "0.42"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 390,
+      "state": "one_error",
+      "status": "PASS",
+      "layout": {
+        "width": 358,
+        "scrollWidth": 358,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 358,
+          "height": 52,
+          "top": 2,
+          "right": 358,
+          "bottom": 54,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 69,
+          "width": 356,
+          "height": 356,
+          "bottom": 425
+        },
+        "meta": {
+          "x": 0,
+          "y": 438,
+          "width": 358,
+          "height": 17.390625,
+          "bottom": 455.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "edit": {
+          "x": 130.5,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "undo": {
+          "x": 267,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "remove": {
+          "x": 314,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "save": {
+          "x": 16,
+          "y": 770.796875,
+          "width": 326,
+          "height": 48,
+          "bottom": 818.796875
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "editMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "undo",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "deleteCircle",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "applyEdit",
+            "width": 326,
+            "height": 44
+          },
+          {
+            "id": "saveAnswer",
+            "width": 326,
+            "height": 48
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 326,
+            "height": 44
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": 67,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": 67,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": 67,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 10.9999828125,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "1"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 390,
+      "state": "many_saved",
+      "status": "PASS",
+      "layout": {
+        "width": 358,
+        "scrollWidth": 358,
+        "toolbar": {
+          "x": 0,
+          "y": 2,
+          "width": 358,
+          "height": 52,
+          "top": 2,
+          "right": 358,
+          "bottom": 54,
+          "left": 0
+        },
+        "canvas": {
+          "x": 1,
+          "y": 69,
+          "width": 356,
+          "height": 356,
+          "bottom": 425
+        },
+        "meta": {
+          "x": 0,
+          "y": 438,
+          "width": 358,
+          "height": 17.390625,
+          "bottom": 455.390625
+        },
+        "draw": {
+          "x": 4,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "edit": {
+          "x": 130.5,
+          "y": 6,
+          "width": 124.5,
+          "height": 44,
+          "bottom": 50
+        },
+        "undo": {
+          "x": 267,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "remove": {
+          "x": 314,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "bottom": 50
+        },
+        "save": {
+          "x": 16,
+          "y": 702.421875,
+          "width": 326,
+          "height": 48,
+          "bottom": 750.421875
+        },
+        "buttonSizes": [
+          {
+            "id": "drawMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "editMode",
+            "width": 124.5,
+            "height": 44
+          },
+          {
+            "id": "undo",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "deleteCircle",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "",
+            "width": 340,
+            "height": 44
+          },
+          {
+            "id": "applyEdit",
+            "width": 326,
+            "height": 44
+          },
+          {
+            "id": "saveAnswer",
+            "width": 326,
+            "height": 48
+          },
+          {
+            "id": "downloadAnswer",
+            "width": 326,
+            "height": 44
+          },
+          {
+            "id": "copySavedPath",
+            "width": 44,
+            "height": 44
+          }
+        ],
+        "inputWidths": [
+          {
+            "id": "centerX",
+            "available": 67,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "centerY",
+            "available": 67,
+            "required": 46.800018310546875
+          },
+          {
+            "id": "radius",
+            "available": 67,
+            "required": 46.800018310546875
+          }
+        ],
+        "fontPxOnScreen": 10.9999828125,
+        "ghost": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgba(0, 0, 0, 0)",
+          "opacity": "1"
+        },
+        "background": "rgb(10, 12, 15)",
+        "statusClipped": "rect(0px, 0px, 0px, 0px)"
+      }
+    },
+    {
+      "viewport": 390,
+      "state": "precision_and_resize",
+      "status": "PASS",
+      "precisionSave": "outputs/player_answers/player_20261015T011058_5d1f9e4be3db",
+      "saved": "outputs/player_answers/player_20261015T011100_65950d1e14b4",
+      "displayedPath": "outputs/…/player_202610…_65950d1e14b4"
+    }
+  ],
+  "captures": [
+    "1440_empty.png",
+    "1440_one_error.png",
+    "1440_many_saved.png",
+    "390_empty.png",
+    "390_one_error.png",
+    "390_many_saved.png"
+  ],
+  "errors": [],
+  "blockedExternal": [],
+  "lastLayout": {
+    "viewport": 390,
+    "state": "many_saved",
+    "width": 358,
+    "scrollWidth": 358,
+    "toolbar": {
+      "x": 0,
+      "y": 2,
+      "width": 358,
+      "height": 52,
+      "top": 2,
+      "right": 358,
+      "bottom": 54,
+      "left": 0
+    },
+    "canvas": {
+      "x": 1,
+      "y": 69,
+      "width": 356,
+      "height": 356,
+      "bottom": 425
+    },
+    "meta": {
+      "x": 0,
+      "y": 438,
+      "width": 358,
+      "height": 17.390625,
+      "bottom": 455.390625
+    },
+    "draw": {
+      "x": 4,
+      "y": 6,
+      "width": 124.5,
+      "height": 44,
+      "bottom": 50
+    },
+    "edit": {
+      "x": 130.5,
+      "y": 6,
+      "width": 124.5,
+      "height": 44,
+      "bottom": 50
+    },
+    "undo": {
+      "x": 267,
+      "y": 6,
+      "width": 44,
+      "height": 44,
+      "bottom": 50
+    },
+    "remove": {
+      "x": 314,
+      "y": 6,
+      "width": 44,
+      "height": 44,
+      "bottom": 50
+    },
+    "save": {
+      "x": 16,
+      "y": 702.421875,
+      "width": 326,
+      "height": 48,
+      "bottom": 750.421875
+    },
+    "buttonSizes": [
+      {
+        "id": "drawMode",
+        "width": 124.5,
+        "height": 44
+      },
+      {
+        "id": "editMode",
+        "width": 124.5,
+        "height": 44
+      },
+      {
+        "id": "undo",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "id": "deleteCircle",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "",
+        "width": 340,
+        "height": 44
+      },
+      {
+        "id": "applyEdit",
+        "width": 326,
+        "height": 44
+      },
+      {
+        "id": "saveAnswer",
+        "width": 326,
+        "height": 48
+      },
+      {
+        "id": "downloadAnswer",
+        "width": 326,
+        "height": 44
+      },
+      {
+        "id": "copySavedPath",
+        "width": 44,
+        "height": 44
+      }
+    ],
+    "inputWidths": [
+      {
+        "id": "centerX",
+        "available": 67,
+        "required": 46.800018310546875
+      },
+      {
+        "id": "centerY",
+        "available": 67,
+        "required": 46.800018310546875
+      },
+      {
+        "id": "radius",
+        "available": 67,
+        "required": 46.800018310546875
+      }
+    ],
+    "fontPxOnScreen": 10.9999828125,
+    "ghost": {
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "rgba(0, 0, 0, 0)",
+      "opacity": "1"
+    },
+    "background": "rgb(10, 12, 15)",
+    "statusClipped": "rect(0px, 0px, 0px, 0px)"
+  },
+  "recorded_at_utc": "2026-10-15T01:11:01.421Z"
+}
