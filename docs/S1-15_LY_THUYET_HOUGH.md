@@ -292,11 +292,26 @@ bán kính theo quy trình riêng. Xem
 [tài liệu OpenCV](https://docs.opencv.org/4.x/d4/d70/tutorial_hough_circle.html).
 Không thể đồng nhất mọi tham số của OpenCV với bộ ngưỡng của NumPy.
 
+Tham số của `cv2.HoughCircles(..., cv2.HOUGH_GRADIENT, dp, minDist, param1, param2, minRadius, maxRadius)`:
+
+| Tham số | Ý nghĩa |
+|---|---|
+| `dp` | Tỉ lệ nghịch độ phân giải accumulator so với ảnh. dp=1: cùng độ phân giải; dp=2: accumulator bằng nửa ảnh. |
+| `minDist` | Khoảng cách tối thiểu (px) giữa hai tâm được trả về; tâm gần hơn bị loại. |
+| `param1` | Ngưỡng cao của Canny bên trong; ngưỡng thấp bằng `param1/2`. |
+| `param2` | Ngưỡng tích lũy tại tâm: càng nhỏ càng nhiều vòng (kể cả vòng giả). |
+| `minRadius`, `maxRadius` | Khoảng bán kính tìm kiếm (px). |
+
+Tâm trả về là tâm ô accumulator: `(chỉ số ô + 0,5) × dp`. Với dp=1, một hố tâm
+nguyên (x, y) được trả về (x+0,5, y+0,5); cần trừ 0,5×dp trước khi so với tâm
+nguyên của NumPy.
+
 S1-12 đã lưu ảnh chung, gx/gy, biên dựng lại theo mã OpenCV 4.14.0,
 cấu hình, thời gian, phiên bản và mọi phát hiện.
 Với r=18…36: full-circle trả 3 vòng, gradient NumPy 1 vòng, OpenCV 4 vòng.
-OpenCV có lệch tâm/bán kính và thêm một vòng gần T3; không xóa vòng này
-để làm bảng kết quả đẹp hơn.
+Sau khi trừ quy ước tâm ô 0,5 px, ba vòng OpenCV trùng tâm thật; bán kính
+lệch dưới 1 px, và có thêm một vòng gần T3 (lệch 5,39 px, lớn hơn minDist=4 nên
+không bị loại). Không xóa vòng này để làm bảng kết quả đẹp hơn.
 Các độ lệch và cách tính nằm ở
 [S1-12 mục 5](S1-12_VI_DU_VA_DOI_CHIEU_HOUGH.md#5-đối-chiếu-thư-viện-trên-cùng-ảnh-512512).
 

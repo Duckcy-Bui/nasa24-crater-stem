@@ -250,12 +250,22 @@ Bộ ba trong hàng OpenCV dùng dấu chấm phẩy phân cách tọa độ đ�
 dấu phẩy thập phân. CSV/JSON giữ số dấu phẩy động gốc; không làm tròn chúng
 trước khi tính chênh lệch.
 
-| Phát hiện OpenCV | Tâm thật gần nhất | Δx | Δy | d tâm=√(Δx²+Δy²) | Δr |
-|---|---|---:|---:|---:|---:|
-| (160.5,180.5,31.7) | T1 | +0.5 | +0.5 | 0.707107 | khoảng -0.3 |
-| (350.5,310.5,19.6) | T2 | +0.5 | +0.5 | 0.707107 | khoảng -0.4 |
-| (8.5,420.5,23.4) | T3 | +0.5 | +0.5 | 0.707107 | khoảng -0.6 |
-| (6.5,415.5,28.5) | T3 | -1.5 | -4.5 | 4.743416 | +4.5 |
+| Phát hiện OpenCV | Tâm thật gần nhất | Δx | Δy | d tâm=√(Δx²+Δy²) | d sau khi trừ 0,5 | Δr |
+|---|---|---:|---:|---:|---:|---:|
+| (160.5,180.5,31.7) | T1 | +0.5 | +0.5 | 0.707107 | 0 | khoảng -0.3 |
+| (350.5,310.5,19.6) | T2 | +0.5 | +0.5 | 0.707107 | 0 | khoảng -0.4 |
+| (8.5,420.5,23.4) | T3 | +0.5 | +0.5 | 0.707107 | 0 | khoảng -0.6 |
+| (6.5,415.5,28.5) | T3 | -1.5 | -4.5 | 4.743416 | 5.385165 | +4.5 |
+
+**Δx = Δy = +0,5 là quy ước tọa độ của OpenCV, không phải sai số phát hiện.**
+HOUGH_GRADIENT trả tâm của ô accumulator, tức `(chỉ số ô + 0,5) × dp`.
+Kiểm tra độc lập: hình tròn đặc vẽ tâm (100, 100) r=20 cho kết quả (100,5; 100,5)
+với dp=1, và (99; 99) với dp=2 (ô 49 → (49+0,5)×2). Vì vậy cột
+"d sau khi trừ 0,5" mới là độ lệch tâm thật: ba phát hiện đầu trùng tâm thật,
+còn phát hiện thứ tư lệch T3 khoảng 5,39 px. Hai phát hiện gần T3 cách nhau
+√(2²+5²)≈5,39 px > minDist=4 nên OpenCV giữ cả hai. Khi so sánh với NumPy
+(tâm ở số nguyên pixel) phải trừ 0,5×dp trước. CSV/JSON vẫn lưu giá trị gốc
+OpenCV trả về.
 
 Ví dụ hàng đầu: Δx=160,5−160=0,5; Δy=180,5−180=0,5;
 d=√(0,25+0,25)=√0,5≈0,707107; Δr≈31,7−32=−0,3.
@@ -284,7 +294,8 @@ TP/FP, không tính Precision/Recall và không coi vòng thiếu là đã tìm 
 
 Lý do có thể khác: full-circle gom phiếu mọi hướng; gradient NumPy yêu cầu
 phiếu hội tụ tại từng bán kính và phụ thuộc hướng Sobel; OpenCV tìm tâm rồi
-ước lượng bán kính, có lượng tử hóa và loại gần tâm khác.
+ước lượng bán kính, có lượng tử hóa và loại gần tâm khác (độ lệch tâm 0,5 px
+ở bảng trên là quy ước tâm ô, không thuộc nhóm lý do này).
 Tâm bị cắt mép cũng mất hỗ trợ, trong khi mẫu số NumPy vẫn tính cả vòng.
 Kết quả này không chứng minh cách nào tốt hơn trên ảnh NASA.
 Thời gian từng lần chạy được lưu nhưng NumPy đo riêng Hough còn OpenCV gồm
