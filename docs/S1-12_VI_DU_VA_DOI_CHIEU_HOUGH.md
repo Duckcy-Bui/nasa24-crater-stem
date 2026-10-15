@@ -257,14 +257,17 @@ trước khi tính chênh lệch.
 | (8.5,420.5,23.4) | T3 | +0.5 | +0.5 | 0.707107 | 0 | khoảng -0.6 |
 | (6.5,415.5,28.5) | T3 | -1.5 | -4.5 | 4.743416 | 5.385165 | +4.5 |
 
-**Δx = Δy = +0,5 là quy ước tọa độ của OpenCV, không phải sai số phát hiện.**
-HOUGH_GRADIENT trả tâm của ô accumulator, tức `(chỉ số ô + 0,5) × dp`.
-Kiểm tra độc lập: hình tròn đặc vẽ tâm (100, 100) r=20 cho kết quả (100,5; 100,5)
-với dp=1, và (99; 99) với dp=2 (ô 49 → (49+0,5)×2). Vì vậy cột
-"d sau khi trừ 0,5" mới là độ lệch tâm thật: ba phát hiện đầu trùng tâm thật,
-còn phát hiện thứ tư lệch T3 khoảng 5,39 px. Hai phát hiện gần T3 cách nhau
-√(2²+5²)≈5,39 px > minDist=4 nên OpenCV giữ cả hai. Khi so sánh với NumPy
-(tâm ở số nguyên pixel) phải trừ 0,5×dp trước. CSV/JSON vẫn lưu giá trị gốc
+**Với dp=1, Δx = Δy = +0,5 là độ lệch lượng tử hóa có hệ thống, không phải lỗi phát hiện.**
+HOUGH_GRADIENT trả tâm của ô accumulator, tức `(chỉ số ô + 0,5) × dp`; tâm thật ở đây là
+số nguyên nên với dp=1 mọi tâm lệch đúng +0,5. Kiểm tra độc lập (hình tròn đặc, 8 vị trí
+và bán kính, `param1=100`, `param2=10`, `minDist=50`, r=10…40, OpenCV 5.0.0): dp=1 luôn
+cho Δ=(+0,5; +0,5). Vì vậy cột "d sau khi trừ 0,5" mới là độ lệch tâm thật: ba phát hiện
+đầu trùng tâm thật, còn phát hiện thứ tư lệch T3 khoảng 5,39 px. Hai phát hiện gần T3 cách
+nhau √(2²+5²)≈5,39 px > minDist=4 nên OpenCV giữ cả hai.
+
+Chỉ bù được khi dp=1: trừ 0,5 trước khi so với tâm nguyên của NumPy. Với dp>1, tâm bị
+lượng tử theo ô dp×dp pixel nên **không có số bù cố định**: cùng thí nghiệm với dp=2 cho Δ
+từ −3 đến +2 px (ví dụ tâm (100, 100) r=20 ra (99; 99)). CSV/JSON vẫn lưu giá trị gốc
 OpenCV trả về.
 
 Ví dụ hàng đầu: Δx=160,5−160=0,5; Δy=180,5−180=0,5;

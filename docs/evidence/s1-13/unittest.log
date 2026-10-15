@@ -1,49 +1,49 @@
-test_app_session_records_current_image_nonce_before_real_writer_runs (test_app_save_state.CanvasSaveAppStateTests.test_app_session_records_current_image_nonce_before_real_writer_runs) ... 2026-10-15 13:44:03.647 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:03.959 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_app_session_records_current_image_nonce_before_real_writer_runs (test_app_save_state.CanvasSaveAppStateTests.test_app_session_records_current_image_nonce_before_real_writer_runs) ... 2026-10-15 15:12:06.383 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.713 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_edit_keeps_old_ack_for_dirty_comparison_then_new_click_saves_new_run (test_app_save_state.CanvasSaveAppStateTests.test_edit_keeps_old_ack_for_dirty_comparison_then_new_click_saves_new_run) ... 2026-10-15 13:44:03.981 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.048 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.060 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.068 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.080 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_edit_keeps_old_ack_for_dirty_comparison_then_new_click_saves_new_run (test_app_save_state.CanvasSaveAppStateTests.test_edit_keeps_old_ack_for_dirty_comparison_then_new_click_saves_new_run) ... 2026-10-15 15:12:06.737 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.803 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.813 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.822 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.839 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_io_failure_is_acknowledged_once_and_new_click_can_retry (test_app_save_state.CanvasSaveAppStateTests.test_io_failure_is_acknowledged_once_and_new_click_can_retry) ... 2026-10-15 13:44:04.087 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.178 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.197 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_io_failure_is_acknowledged_once_and_new_click_can_retry (test_app_save_state.CanvasSaveAppStateTests.test_io_failure_is_acknowledged_once_and_new_click_can_retry) ... 2026-10-15 15:12:06.845 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.947 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:06.963 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_malformed_equal_revision_save_is_reported_without_consuming_or_writing (test_app_save_state.CanvasSaveAppStateTests.test_malformed_equal_revision_save_is_reported_without_consuming_or_writing) ... 2026-10-15 13:44:04.209 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.274 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.286 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_malformed_equal_revision_save_is_reported_without_consuming_or_writing (test_app_save_state.CanvasSaveAppStateTests.test_malformed_equal_revision_save_is_reported_without_consuming_or_writing) ... 2026-10-15 15:12:06.974 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.043 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.053 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_per_image_ack_and_empty_save_remain_isolated_after_switch_and_return (test_app_save_state.CanvasSaveAppStateTests.test_per_image_ack_and_empty_save_remain_isolated_after_switch_and_return) ... 2026-10-15 13:44:04.294 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.358 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.378 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_per_image_ack_and_empty_save_remain_isolated_after_switch_and_return (test_app_save_state.CanvasSaveAppStateTests.test_per_image_ack_and_empty_save_remain_isolated_after_switch_and_return) ... 2026-10-15 15:12:07.060 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.128 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.145 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_previous_image_drain_updates_draft_but_never_executes_its_save_command (test_app_save_state.CanvasSaveAppStateTests.test_previous_image_drain_updates_draft_but_never_executes_its_save_command) ... 2026-10-15 13:44:04.396 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.458 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_previous_image_drain_updates_draft_but_never_executes_its_save_command (test_app_save_state.CanvasSaveAppStateTests.test_previous_image_drain_updates_draft_but_never_executes_its_save_command) ... 2026-10-15 15:12:07.162 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.229 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_save_applies_latest_event_before_writing_and_acknowledges_same_revision_once (test_app_save_state.CanvasSaveAppStateTests.test_save_applies_latest_event_before_writing_and_acknowledges_same_revision_once) ... 2026-10-15 13:44:04.466 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.529 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_save_applies_latest_event_before_writing_and_acknowledges_same_revision_once (test_app_save_state.CanvasSaveAppStateTests.test_save_applies_latest_event_before_writing_and_acknowledges_same_revision_once) ... 2026-10-15 15:12:07.234 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.305 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_stale_origin_revision_and_mismatched_equal_revision_do_not_change_saved_state (test_app_save_state.CanvasSaveAppStateTests.test_stale_origin_revision_and_mismatched_equal_revision_do_not_change_saved_state) ... 2026-10-15 13:44:04.552 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.616 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.628 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.636 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.642 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:04.648 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_stale_origin_revision_and_mismatched_equal_revision_do_not_change_saved_state (test_app_save_state.CanvasSaveAppStateTests.test_stale_origin_revision_and_mismatched_equal_revision_do_not_change_saved_state) ... 2026-10-15 15:12:07.339 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.404 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.415 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.421 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.427 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:07.435 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_missing_dataset_can_be_prepared_through_the_app (test_app_smoke.AppStartupTests.test_missing_dataset_can_be_prepared_through_the_app) ... 2026-10-15 13:44:04.655 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_missing_dataset_can_be_prepared_through_the_app (test_app_smoke.AppStartupTests.test_missing_dataset_can_be_prepared_through_the_app) ... 2026-10-15 15:12:07.443 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_wrong_png_dimensions_show_error_instead_of_editable_canvas (test_app_smoke.AppStartupTests.test_wrong_png_dimensions_show_error_instead_of_editable_canvas) ... 2026-10-15 13:44:05.101 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_wrong_png_dimensions_show_error_instead_of_editable_canvas (test_app_smoke.AppStartupTests.test_wrong_png_dimensions_show_error_instead_of_editable_canvas) ... 2026-10-15 15:12:07.919 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_image_switch_drains_pending_previous_image_event_before_widget_cleanup (test_app_state.PlayerRerunStateTests.test_image_switch_drains_pending_previous_image_event_before_widget_cleanup) ... 2026-10-15 13:44:05.353 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:05.415 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_image_switch_drains_pending_previous_image_event_before_widget_cleanup (test_app_state.PlayerRerunStateTests.test_image_switch_drains_pending_previous_image_event_before_widget_cleanup) ... 2026-10-15 15:12:08.184 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:08.251 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_invalid_previous_event_is_reported_without_losing_draft_or_blocking_next_image (test_app_state.PlayerRerunStateTests.test_invalid_previous_event_is_reported_without_losing_draft_or_blocking_next_image) ... 2026-10-15 13:44:05.430 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:05.493 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_invalid_previous_event_is_reported_without_losing_draft_or_blocking_next_image (test_app_state.PlayerRerunStateTests.test_invalid_previous_event_is_reported_without_losing_draft_or_blocking_next_image) ... 2026-10-15 15:12:08.264 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:08.333 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
-test_previous_widget_from_an_old_session_cannot_contaminate_saved_draft (test_app_state.PlayerRerunStateTests.test_previous_widget_from_an_old_session_cannot_contaminate_saved_draft) ... 2026-10-15 13:44:05.501 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
-2026-10-15 13:44:05.563 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+test_previous_widget_from_an_old_session_cannot_contaminate_saved_draft (test_app_state.PlayerRerunStateTests.test_previous_widget_from_an_old_session_cannot_contaminate_saved_draft) ... 2026-10-15 15:12:08.341 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-15 15:12:08.406 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
 ok
 test_all_shared_sources_use_same_image (test_contracts.ContractsTest.test_all_shared_sources_use_same_image) ... ok
 test_cross_image_merge_is_rejected (test_contracts.ContractsTest.test_cross_image_merge_is_rejected) ... ok
@@ -91,6 +91,8 @@ test_output_format (test_hough.TestHough.test_output_format) ... ok
 test_radius_limits_and_max_circles (test_hough.TestHough.test_radius_limits_and_max_circles) ... ok
 test_single_circle (test_hough.TestHough.test_single_circle) ... ok
 test_two_circles (test_hough.TestHough.test_two_circles) ... ok
+test_full_circle_accumulator_matches_document (test_hough_examples.TestHoughTinyExample.test_full_circle_accumulator_matches_document) ... ok
+test_gradient_accumulator_matches_document (test_hough_examples.TestHoughTinyExample.test_gradient_accumulator_matches_document) ... ok
 test_clicks_are_ignored_while_toolbar_zoom_is_active (test_label_craters.TestLabelCraters.test_clicks_are_ignored_while_toolbar_zoom_is_active) ... ok
 test_default_source_is_unreviewed_not_verified (test_label_craters.TestLabelCraters.test_default_source_is_unreviewed_not_verified) ... ok
 test_extent_and_pixel_conventions (test_label_craters.TestLabelCraters.test_extent_and_pixel_conventions) ... ok
@@ -106,11 +108,16 @@ test_toggle_uncertain_key_u (test_label_craters.TestLabelCraters.test_toggle_unc
 test_undo_and_uncertain_do_not_touch_loaded_labels (test_label_craters.TestLabelCraters.test_undo_and_uncertain_do_not_touch_loaded_labels) ... ok
 test_undo_key_z_priority (test_label_craters.TestLabelCraters.test_undo_key_z_priority) ... ok
 test_unreadable_existing_file_stops_instead_of_overwriting (test_label_craters.TestLabelCraters.test_unreadable_existing_file_stops_instead_of_overwriting) ... ok
+test_failure_after_saving_removes_the_half_written_run (test_pipeline.TestEndToEnd.test_failure_after_saving_removes_the_half_written_run) ... ok
+test_latest_player_answer_uses_run_time_not_folder_name (test_pipeline.TestEndToEnd.test_latest_player_answer_uses_run_time_not_folder_name) ... ok
 test_machine_circles_saved_with_every_artifact (test_pipeline.TestEndToEnd.test_machine_circles_saved_with_every_artifact) ... ok
 test_overlay_file_with_wrong_source_is_rejected (test_pipeline.TestEndToEnd.test_overlay_file_with_wrong_source_is_rejected) ... ok
 test_player_answer_is_drawn_beside_but_never_merged_into_machine (test_pipeline.TestEndToEnd.test_player_answer_is_drawn_beside_but_never_merged_into_machine) ... ok
 test_player_search_ignores_other_images (test_pipeline.TestEndToEnd.test_player_search_ignores_other_images) ... ok
+test_reference_labels_are_drawn_with_their_review_status (test_pipeline.TestEndToEnd.test_reference_labels_are_drawn_with_their_review_status) ... ok
 test_scoring_and_unimplemented_filtering_are_reported_as_skipped (test_pipeline.TestEndToEnd.test_scoring_and_unimplemented_filtering_are_reported_as_skipped) ... ok
+test_valid_mask_is_loaded_and_used (test_pipeline.TestEndToEnd.test_valid_mask_is_loaded_and_used) ... ok
+test_player_file_is_rejected_with_all_or_no_player (test_pipeline.TestEndToEndCli.test_player_file_is_rejected_with_all_or_no_player) ... ok
 test_delayed_load_acknowledgements_and_edit_events (test_player_interface.CanvasGeometryTests.test_delayed_load_acknowledgements_and_edit_events) ... ok
 test_display_sizes_offsets_and_original_image_geometry (test_player_interface.CanvasGeometryTests.test_display_sizes_offsets_and_original_image_geometry) ... ok
 test_answer_requires_circle_objects_in_a_list (test_player_interface.PlayerAnnotationTests.test_answer_requires_circle_objects_in_a_list) ... ok
@@ -185,7 +192,7 @@ test_b6_sobel_matches_opencv (test_preprocessing.SelfWrittenVsOpenCV.test_b6_sob
 test_b8_erode_margin_from_border_and_nodata (test_preprocessing.SelfWrittenVsOpenCV.test_b8_erode_margin_from_border_and_nodata) ... ok
 
 ----------------------------------------------------------------------
-Ran 151 tests in 7.413s
+Ran 158 tests in 8.269s
 
 OK
 Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
@@ -194,7 +201,7 @@ OK
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 1 nhãn hố
-  → JSON tham chiếu (Git): /tmp/tmp5m47at9t/reference_labels/test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): /tmp/tmptwzq8soi/reference_labels/test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; sparse manual labels, unreviewed
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 150.0,  150.0) | r= 10.0px | D≈    40m
@@ -211,7 +218,7 @@ LỖI NGUỒN NHÃN: File đang là nhãn Robbins; nhãn tay mới phải lưu v
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 5 nhãn hố
-  → JSON tham chiếu (Git): /tmp/tmpe7_ycj9q/reference_labels/test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): /tmp/tmpc7r8ibe0/reference_labels/test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; fixture
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
@@ -238,7 +245,7 @@ Hãy bấm 'Z' để hủy nhãn vi phạm hoặc kiểm tra lại tọa độ.
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 4 nhãn hố
-  → JSON tham chiếu (Git): /tmp/tmp9j0baolg/reference_labels/test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): /tmp/tmp_n83t791/reference_labels/test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; fixture
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
