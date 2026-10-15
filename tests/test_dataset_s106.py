@@ -128,7 +128,7 @@ class RasterValidityTests(unittest.TestCase):
         cfg = {**CROPS_CONFIG[0], "image_id": "fixture_crop", "x0": 0, "y0": 0}
         output = self.directory / "processed"
         make_crop(path, cfg, {"filename": path.name, "sha256": sha256_file(path)}, output)
-        metadata = json.loads((output / "fixture_crop.json").read_text())
+        metadata = json.loads((output / "fixture_crop.json").read_text(encoding="utf-8"))
         mask = np.load(output / "fixture_crop_valid_mask.npy", allow_pickle=False)
         self.assertEqual(metadata["valid_ratio"], 1 - 625 / (512 * 512))
         self.assertEqual(metadata["valid_ratio"], float(mask.mean()))
