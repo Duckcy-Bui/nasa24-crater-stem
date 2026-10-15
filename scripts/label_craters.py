@@ -20,6 +20,13 @@ Thao tác trong cửa sổ ảnh:
   - Phím Z: Hoàn tác (nếu đang chọn tâm thì hủy tâm; nếu đã ghi thì xóa hố vừa ghi)
   - Phím S: Lưu file JSON và ảnh overlay kết quả (chỉ đóng cửa sổ khi lưu thành công)
   - Phím Q: Thoát không lưu
+
+Nhãn chỉ được ghi vào data/reference_labels/. Script không bao giờ ghi vào
+data/processed/: các script S1-06 coi <id>_craters_catalogue.json ở đó là
+catalogue cũ chưa xác minh và dừng lại.
+
+Nhãn thủ công mặc định là "chưa kiểm chéo" (unreviewed). Chỉ ghi "reviewed by ..."
+qua --source khi đã có người thứ hai kiểm chéo bằng mắt.
 """
 
 from __future__ import annotations
@@ -43,11 +50,8 @@ import numpy as np
 # pyrefly: ignore [missing-import]
 import matplotlib
 
-# Thử nạp TkAgg nếu có hỗ trợ GUI, giữ nguyên backend (ví dụ Agg) trên headless CI
-try:
-    matplotlib.use("TkAgg")
-except Exception:
-    pass
+# Không ép backend: để matplotlib (hoặc MPLBACKEND) tự chọn backend GUI có sẵn.
+# Ép "TkAgg" làm script crash trên máy thiếu tkinter.
 
 # pyrefly: ignore [missing-import]
 import matplotlib.pyplot as plt
@@ -64,6 +68,9 @@ COLOR_CERTAIN = "#00e5ff"    # Xanh cyan = nhãn chắc chắn
 COLOR_UNCERTAIN = "#ff9800"  # Cam = uncertain (chưa chắc chắn)
 COLOR_EXISTING = "#b0bec5"   # Xám nhạt = nhãn từ phiên trước
 COLOR_TEMP = "#ffffff"       # Trắng = đang chọn tâm
+
+# Nhãn tay mặc định chưa có người thứ hai kiểm chéo.
+DEFAULT_SOURCE = "manual_label_s110; sparse manual labels, unreviewed"
 
 STATE_IDLE = "idle"
 STATE_WAIT_EDGE = "wait_edge"  # Đã click tâm, chờ click vành
@@ -105,7 +112,6 @@ class LabelApp:
         # Đường dẫn file lưu
         self.ref_json_path = self.ref_dir / f"{image_id}_craters_catalogue.json"
         self.ref_overlay_path = self.ref_dir / f"{image_id}_overlay.png"
-        self.processed_json_path = self.processed_dir / f"{image_id}_craters_catalogue.json"
 
         # Cấu trúc lưu nhãn: danh sách các item
         # Mỗi item: {"data": dict, "patch": Patch, "text": Annotation, "is_existing": bool}
@@ -124,37 +130,38 @@ class LabelApp:
         self._setup_figure()
 
     def _load_existing_labels(self):
-        """Nạp nhãn cũ từ data/reference_labels/ hoặc data/processed/ nếu có."""
-        load_path = None
-        if self.ref_json_path.exists():
-            load_path = self.ref_json_path
-        elif self.processed_json_path.exists():
-            load_path = self.processed_json_path
+        """Nạp nhãn cũ chỉ từ data/reference_labels/.
 
+        File lỗi thì dừng hẳn: bắt đầu phiên trống rồi bấm S sẽ ghi đè mất nhãn cũ.
+        """
+        load_path = self.ref_json_path if self.ref_json_path.exists() else None
         if load_path:
             try:
                 old_data = read_json(load_path)
-                self.existing_ref_source = old_data.get("reference_source")
-                circles = old_data.get("circles", [])
-                for c in circles:
-                    is_unc = "_uncertain" in c["crater_id"]
-                    self.items.append({
-                        "data": {
-                            "crater_id": c["crater_id"],
-                            "x": float(c["x"]),
-                            "y": float(c["y"]),
-                            "r": float(c["r"]),
-                            "confidence": c.get("confidence"),
-                            "votes": c.get("votes"),
-                            "_uncertain": is_unc,
-                        },
-                        "patch": None,
-                        "text": None,
-                        "is_existing": True,
-                    })
-                print(f"Đã nạp {len(circles)} nhãn từ {load_path.name}")
+                validate_crater_set(old_data, self.metadata)
             except Exception as e:
-                print(f"Cảnh báo: Không thể đọc file nhãn cũ ({e}), bắt đầu mới.")
+                raise ValueError(
+                    f"Không đọc được file nhãn cũ {load_path} ({e}). Sửa hoặc di chuyển file trước khi ghi nhãn tiếp."
+                ) from e
+            self.existing_ref_source = old_data.get("reference_source")
+            circles = old_data.get("circles", [])
+            for c in circles:
+                is_unc = "_uncertain" in c["crater_id"]
+                self.items.append({
+                    "data": {
+                        "crater_id": c["crater_id"],
+                        "x": float(c["x"]),
+                        "y": float(c["y"]),
+                        "r": float(c["r"]),
+                        "confidence": c.get("confidence"),
+                        "votes": c.get("votes"),
+                        "_uncertain": is_unc,
+                    },
+                    "patch": None,
+                    "text": None,
+                    "is_existing": True,
+                })
+            print(f"Đã nạp {len(circles)} nhãn từ {load_path.name}")
 
     def _get_next_id_counter(self) -> int:
         """Tìm số thứ tự C{k} lớn nhất từ các nhãn hiện có để không trùng ID."""
@@ -166,19 +173,40 @@ class LabelApp:
                 max_idx = max(max_idx, int(m.group(1)))
         return max_idx + 1
 
-    def _determine_reference_source(self) -> str:
-        """Xác định reference_source rõ ràng, không trộn lẫn nguồn mơ hồ."""
+    def _session_source(self) -> str:
+        """Nguồn của các nhãn ghi trong phiên này."""
         if self.source_arg:
             if self.source_arg.lower().startswith("robbins"):
                 return self.source_arg
             return f"manual_label_s110; {self.source_arg}"
+        return DEFAULT_SOURCE
 
-        if self.existing_ref_source:
+    def _determine_reference_source(self) -> str:
+        """reference_source áp dụng cho cả file, nên không được trộn hai nguồn khác nhau.
+
+        - Không thêm nhãn mới: giữ nguyên nguồn cũ.
+        - Có nhãn mới và không có --source: dùng nguồn cũ (nếu có) cho cùng một bộ nhãn tay.
+        - Có --source khác nguồn cũ: báo lỗi, không ghi đè nguồn của các nhãn cũ.
+        """
+        has_new = any(not it["is_existing"] for it in self.items)
+        if self.existing_ref_source and (not has_new or not self.source_arg):
+            if has_new and self.existing_ref_source.lower().startswith("robbins"):
+                raise ValueError(
+                    "File đang là nhãn Robbins; nhãn tay mới phải lưu vào file khác hoặc truyền đúng --source Robbins."
+                )
             return self.existing_ref_source
-
-        return "manual_label_s110; visual inspection verified"
+        source = self._session_source()
+        if self.existing_ref_source and source != self.existing_ref_source:
+            raise ValueError(
+                f"Nguồn phiên này ({source}) khác nguồn nhãn cũ ({self.existing_ref_source}); "
+                "không trộn hai nguồn trong một file."
+            )
+        return source
 
     def _setup_figure(self):
+        # S/Q là phím của tool; bỏ phím mặc định "lưu hình" và "đóng cửa sổ" của matplotlib.
+        for keymap in ("keymap.save", "keymap.quit"):
+            plt.rcParams[keymap] = [k for k in plt.rcParams[keymap] if k.lower() not in ("s", "q")]
         self.fig, self.ax = plt.subplots(figsize=(9, 9))
         self.fig.patch.set_facecolor("#1a1a2e")
         self.ax.set_facecolor("#0f0f23")
@@ -289,6 +317,9 @@ class LabelApp:
     def _on_click(self, event):
         if event.inaxes != self.ax or event.button != 1:
             return
+        toolbar = getattr(self.fig.canvas, "toolbar", None)
+        if toolbar is not None and getattr(toolbar, "mode", ""):
+            return  # đang zoom/pan bằng thanh công cụ, không tính là click tâm/vành
         x, y = event.xdata, event.ydata
         if x is None or y is None:
             return
@@ -380,8 +411,8 @@ class LabelApp:
     def _on_key(self, event):
         if event.key in ("u", "U"):
             # Chuyển đổi trạng thái uncertain của hố gần nhất
-            if not self.items:
-                self._set_status("Chưa có hố nào để đổi trạng thái uncertain.")
+            if not self.items or self.items[-1]["is_existing"]:
+                self._set_status("Chỉ đổi uncertain được cho hố ghi trong phiên này.")
                 return
 
             last = self.items[-1]
@@ -428,8 +459,8 @@ class LabelApp:
                 self.fig.canvas.draw_idle()
                 return
 
-            # ƯU TIÊN 2: Xóa hố gần nhất đã ghi
-            if self.items:
+            # ƯU TIÊN 2: Xóa hố gần nhất ghi trong phiên này (không xóa nhãn cũ)
+            if self.items and not self.items[-1]["is_existing"]:
                 removed_item = self.items.pop()
                 cid = removed_item["data"]["crater_id"]
                 if removed_item["patch"]:
@@ -444,7 +475,7 @@ class LabelApp:
                 print(f"[Hoàn tác] Đã xóa {cid}. Còn lại {len(self.items)} nhãn.")
                 self.fig.canvas.draw_idle()
             else:
-                self._set_status("Không còn nhãn nào để hoàn tác.")
+                self._set_status("Không còn nhãn nào của phiên này để hoàn tác.")
 
         elif event.key in ("s", "S"):
             # Lưu file và chỉ đóng khi thành công
@@ -479,7 +510,12 @@ class LabelApp:
                 "votes": c.get("votes"),
             })
 
-        ref_src = self._determine_reference_source()
+        try:
+            ref_src = self._determine_reference_source()
+        except ValueError as e:
+            print(f"LỖI NGUỒN NHÃN: {e}")
+            self._set_status("Không lưu: nguồn nhãn bị trộn. Xem terminal.")
+            return False
         crater_set = {
             "schema_version": "1.0",
             "data_kind": self.metadata["data_kind"],
@@ -500,15 +536,14 @@ class LabelApp:
             print("=" * 60 + "\n")
             return False
 
-        # 1. Lưu file JSON vào cả data/reference_labels/ (Git theo dõi) và data/processed/
+        # 1. Chỉ lưu vào data/reference_labels/ (Git theo dõi). Không ghi data/processed/.
         json_content = json.dumps(crater_set, ensure_ascii=False, indent=2) + "\n"
         self.ref_json_path.write_text(json_content, encoding="utf-8")
-        self.processed_json_path.write_text(json_content, encoding="utf-8")
 
         # 2. Tự động lưu ảnh overlay PNG phục vụ kiểm tra chéo
         try:
             # Ẩn thanh trạng thái tạm thời khi xuất ảnh
-            self._status_text.set_text(f"Đã xác minh {len(clean_circles)} hố | Nguồn: {ref_src}")
+            self._status_text.set_text(f"{len(clean_circles)} hố đã ghi nhãn | Nguồn: {ref_src}")
             self.fig.savefig(self.ref_overlay_path, dpi=150, facecolor=self.fig.get_facecolor())
             print(f"Đã lưu ảnh overlay minh chứng: {self.ref_overlay_path.name}")
         except Exception as e:
@@ -517,9 +552,8 @@ class LabelApp:
         print("\n" + "─" * 60)
         print(f"LƯU THÀNH CÔNG: {len(clean_circles)} nhãn hố")
         print(f"  → JSON tham chiếu (Git): {self.ref_json_path}")
-        print(f"  → JSON bộ đệm cục bộ:   {self.processed_json_path}")
         print(f"  → Nguồn reference:       {ref_src}")
-        print("Danh sách hố đã xác nhận:")
+        print("Danh sách hố đã ghi nhãn:")
         for c in clean_circles:
             d_m = 2 * c["r"] * self.scale
             unc = " [uncertain]" if "_uncertain" in c["crater_id"] else ""
@@ -553,7 +587,8 @@ def main():
     parser.add_argument(
         "--source",
         default="",
-        help="Ghi chú nguồn nhãn (ví dụ: 'Robbins 2019 DOI:10.1029/2018JE005592 crater_id=12345' hoặc 'visual inspection')",
+        help="Nguồn nhãn (ví dụ: 'Robbins 2019 DOI:10.1029/2018JE005592 crater_id=12345'). "
+        "Bỏ trống = nhãn tay chưa kiểm chéo. Chỉ ghi 'reviewed by <tên>' khi đã có người thứ hai kiểm chéo.",
     )
     parser.add_argument(
         "--uncertain",
@@ -574,7 +609,11 @@ def main():
             print(f"  {iid}")
         sys.exit(1)
 
-    app = LabelApp(args.image_id, args.source, args.uncertain)
+    try:
+        app = LabelApp(args.image_id, args.source, args.uncertain)
+    except ValueError as e:
+        print(f"Lỗi: {e}")
+        sys.exit(1)
     app.run()
 
 

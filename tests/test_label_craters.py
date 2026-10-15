@@ -182,6 +182,87 @@ class TestLabelCraters(unittest.TestCase):
         self.assertTrue(success)
         self.assertTrue((self.ref_dir / f"{self.image_id}_craters_catalogue.json").exists())
 
+    def _new_item(self, cid="C5", x=150.0):
+        return {"data": {"crater_id": cid, "x": x, "y": 150.0, "r": 10.0, "confidence": None,
+                         "votes": None, "_uncertain": False},
+                "patch": None, "text": None, "is_existing": False}
+
+    def _fresh_app(self, source_arg=""):
+        plt.close(self.app.fig)
+        (self.ref_dir / f"{self.image_id}_craters_catalogue.json").unlink()
+        self.app = LabelApp(self.image_id, source_arg=source_arg, processed_dir=self.processed_dir, ref_dir=self.ref_dir)
+
+    def test_never_writes_processed_catalogue(self):
+        # S1-06 scripts reject <id>_craters_catalogue.json in data/processed as an unverified legacy file.
+        self.app.items.append(self._new_item())
+        self.assertTrue(self.app._save())
+        self.assertFalse((self.processed_dir / f"{self.image_id}_craters_catalogue.json").exists())
+        self.assertFalse(hasattr(self.app, "processed_json_path"))
+
+    def test_processed_catalogue_is_not_loaded(self):
+        (self.ref_dir / f"{self.image_id}_craters_catalogue.json").rename(
+            self.processed_dir / f"{self.image_id}_craters_catalogue.json")
+        plt.close(self.app.fig)
+        app = LabelApp(self.image_id, processed_dir=self.processed_dir, ref_dir=self.ref_dir)
+        self.assertEqual(app.items, [])
+        plt.close(app.fig)
+
+    def test_default_source_is_unreviewed_not_verified(self):
+        self._fresh_app()
+        self.app.items.append(self._new_item("C1"))
+        self.assertTrue(self.app._save())
+        saved = json.loads((self.ref_dir / f"{self.image_id}_craters_catalogue.json").read_text(encoding="utf-8"))
+        self.assertIn("unreviewed", saved["reference_source"])
+        self.assertNotIn("verified", saved["reference_source"].replace("unreviewed", ""))
+
+    def test_new_session_source_cannot_overwrite_existing_source(self):
+        plt.close(self.app.fig)
+        self.app = LabelApp(self.image_id, source_arg="Robbins 2019 crater_id=1",
+                            processed_dir=self.processed_dir, ref_dir=self.ref_dir)
+        self.app.items.append(self._new_item())
+        before = (self.ref_dir / f"{self.image_id}_craters_catalogue.json").read_text(encoding="utf-8")
+        self.assertFalse(self.app._save())
+        self.assertEqual(before, (self.ref_dir / f"{self.image_id}_craters_catalogue.json").read_text(encoding="utf-8"))
+
+    def test_manual_labels_cannot_join_a_robbins_file(self):
+        path = self.ref_dir / f"{self.image_id}_craters_catalogue.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["reference_source"] = "Robbins 2019 DOI:10.1029/2018JE005592 crater_id=7"
+        path.write_text(json.dumps(data), encoding="utf-8")
+        plt.close(self.app.fig)
+        self.app = LabelApp(self.image_id, processed_dir=self.processed_dir, ref_dir=self.ref_dir)
+        self.app.items.append(self._new_item())
+        self.assertFalse(self.app._save())
+
+    def test_unreadable_existing_file_stops_instead_of_overwriting(self):
+        path = self.ref_dir / f"{self.image_id}_craters_catalogue.json"
+        path.write_text("{not json", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            LabelApp(self.image_id, processed_dir=self.processed_dir, ref_dir=self.ref_dir)
+        self.assertEqual(path.read_text(encoding="utf-8"), "{not json")
+
+    def test_undo_and_uncertain_do_not_touch_loaded_labels(self):
+        class Key:
+            def __init__(self, key): self.key = key
+        before = [it["data"]["crater_id"] for it in self.app.items]
+        self.app._on_key(Key("z"))
+        self.app._on_key(Key("u"))
+        self.assertEqual([it["data"]["crater_id"] for it in self.app.items], before)
+
+    def test_matplotlib_save_and_quit_keys_are_released(self):
+        self.assertNotIn("s", plt.rcParams["keymap.save"])
+        self.assertNotIn("q", plt.rcParams["keymap.quit"])
+
+    def test_clicks_are_ignored_while_toolbar_zoom_is_active(self):
+        class Toolbar: mode = "zoom rect"
+        class Click:
+            inaxes = None; button = 1; xdata = 100.0; ydata = 100.0
+        click = Click(); click.inaxes = self.app.ax
+        self.app.fig.canvas.toolbar = Toolbar()
+        self.app._on_click(click)
+        self.assertEqual(self.app.state, "idle")
+        self.assertIsNone(self.app.pending_center)
+
 
 if __name__ == "__main__":
     unittest.main()

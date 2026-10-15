@@ -4,7 +4,10 @@ Phụ trách: **Hoàng Quốc Anh**. Phối hợp/nghiệm thu: **Nguyễn Mạn
 Hạn ưu tiên: Nhãn thật cho **ảnh demo trước trưa 15/10/2026**; Tiến kiểm tra chéo và nghiệm thu sau đó.
 
 > [!IMPORTANT]
-> Nhãn thủ công và nhãn Robbins phải ghi nguồn **rõ ràng, tách biệt**. Không gán nhãn Robbins cho hố chưa đối chiếu tọa độ pixel thực tế. Hố chưa chắc chắn phải đánh dấu `_uncertain` trong `crater_id`. Toàn bộ nhãn tham chiếu bàn giao được lưu trong thư mục `data/reference_labels/` để Git theo dõi.
+> Nhãn thủ công và nhãn Robbins phải ghi nguồn **rõ ràng, tách biệt**. Không gán nhãn Robbins cho hố chưa đối chiếu tọa độ pixel thực tế. Hố chưa chắc chắn phải đánh dấu `_uncertain` trong `crater_id`. Toàn bộ nhãn tham chiếu bàn giao được lưu trong thư mục `data/reference_labels/` để Git theo dõi; script không ghi vào `data/processed/`.
+
+> [!WARNING]
+> Nhãn thủ công hiện có là **nhãn thưa (sparse), chưa kiểm chéo** (`reference_source` ghi `unreviewed`). Đây chưa phải ground truth đã xác minh: không dùng để tính Precision/Recall hay chấm điểm cho tới khi có người thứ hai kiểm chéo và đổi nguồn thành `reviewed by <tên>`. Metadata ảnh vẫn giữ `reference_status="unavailable"` theo [DINH_DANG_DU_LIEU.md](DINH_DANG_DU_LIEU.md).
 
 ---
 
@@ -46,10 +49,12 @@ Hạn ưu tiên: Nhãn thật cho **ảnh demo trước trưa 15/10/2026**; Ti�
 |---|---|---|
 | **Click 1 (chuột trái)** | Chọn **TÂM** hố $(x, y)$ | Tọa độ phải thuộc phạm vi $[0, 511]$; hiển thị dấu `+` màu trắng. |
 | **Click 2 (chuột trái)** | Chọn điểm trên **VÀNH** | Tự tính bán kính $r = \sqrt{(x - x_c)^2 + (y - y_c)^2}$. Cảnh báo nếu $r$ nằm ngoài $[r_{\min}, r_{\max}]$. |
-| **Phím `U`** | Đổi trạng thái **Uncertain** | Chuyển đổi qua lại giữa nhãn chắc chắn (cyan) và uncertain (cam); tự cập nhật `_uncertain` trong ID và màu vòng tròn tức thì. |
-| **Phím `Z`** | **Hoàn tác** | Nếu đang chờ click vành: hủy click tâm. Nếu ở trạng thái nghỉ: xóa đúng vòng tròn và nhãn của hố vừa tạo. |
+| **Phím `U`** | Đổi trạng thái **Uncertain** | Chỉ áp dụng cho hố vừa ghi trong phiên này. Chuyển qua lại giữa nhãn chắc chắn (cyan) và uncertain (cam); tự cập nhật `_uncertain` trong ID và màu vòng tròn. |
+| **Phím `Z`** | **Hoàn tác** | Nếu đang chờ click vành: hủy click tâm. Nếu ở trạng thái nghỉ: xóa hố vừa tạo trong phiên này; không xóa nhãn cũ đã nạp. |
 | **Phím `S`** | **Lưu kết quả** | Gọi `validate_crater_set`; chỉ đóng cửa sổ khi lưu thành công cả JSON và ảnh overlay PNG. |
 | **Phím `Q`** | **Thoát** | Đóng cửa sổ không lưu thay đổi phiên hiện tại. |
+
+Phím `S`/`Q` mặc định của matplotlib (lưu hình, đóng cửa sổ) được tắt trong tool để không chạy kèm. Khi đang bật zoom/pan trên thanh công cụ, click không được tính là tâm/vành. Nếu file nhãn cũ bị lỗi, tool dừng ngay thay vì bắt đầu phiên trống rồi ghi đè.
 
 ---
 
@@ -63,7 +68,8 @@ Hạn ưu tiên: Nhãn thật cho **ảnh demo trước trưa 15/10/2026**; Ti�
 ### 3.2. Nhãn thủ công (`manual_label_s110`)
 
 - Áp dụng cho: Hố nhỏ $D < 1\text{ km}$ (đặc biệt các ảnh Apollo 16 có dải $D \in [20\text{ m}, 500\text{ m}]$, nơi danh mục Robbins không có dữ liệu).
-- `reference_source`: Bắt đầu bằng `"manual_label_s110; <ghi chú kiểm tra>"`.
+- `reference_source`: Bắt đầu bằng `"manual_label_s110; ..."`. Không truyền `--source` thì mặc định là `"manual_label_s110; sparse manual labels, unreviewed"`. Chỉ dùng `--source "reviewed by <tên>"` khi người thứ hai đã kiểm chéo.
+- Một file chỉ có **một** nguồn. Tool từ chối lưu nếu nguồn của phiên mới khác nguồn của nhãn cũ (ví dụ thêm nhãn tay vào file Robbins).
 - `crater_id`: Đặt theo dạng `C1`, `C2`,... (chắc chắn) hoặc `C4_uncertain` (chưa chắc chắn).
 - `confidence`: `null` (không tự ý đặt điểm số khi chưa qua mô hình định lượng).
 - `votes`: `null`.
@@ -108,9 +114,11 @@ Chỉ sử dụng cho các hố lớn $D \ge 1\text{--}2\text{ km}$ (chủ yếu
   - Đối chiếu từng vòng tròn với địa hình thực tế.
   - Quyết định: Giữ lại nhãn chắc chắn; xác nhận hoặc loại bỏ các nhãn `_uncertain`.
 
-### 4.3. Ứng dụng khi tính Precision / Recall (S1-11)
-- **Kịch bản A (Khắt khe)**: Chỉ sử dụng các hố chắc chắn (`C1, C2...`) làm Ground Truth.
-- **Kịch bản B (Thực tế)**: Nhãn `_uncertain` được đưa vào tập bỏ qua (ignored set) — nếu mô hình phát hiện trúng thì không phạt False Positive, nếu bỏ qua thì không phạt False Negative.
+### 4.3. Dùng nhãn cho đánh giá (S1-11): chỉ sau khi kiểm chéo
+- Khi `reference_source` còn `unreviewed`: **không** dùng nhãn để tính độ đo hay chấm điểm.
+- Nhãn thủ công là **thưa**: ảnh còn nhiều hố chưa được gán nhãn. Vì vậy **không tính Precision** trên bộ nhãn thưa (phát hiện đúng một hố chưa gán nhãn sẽ bị đếm nhầm là False Positive).
+- Sau khi kiểm chéo, chỉ được báo **recall trên tập hố đã gán nhãn**, ghi rõ số hố và phạm vi. Hố `_uncertain` đưa vào tập bỏ qua (ignored set): phát hiện trúng không được cộng, bỏ sót không bị trừ.
+- Precision chỉ tính được khi một vùng được gán nhãn **đầy đủ** (mọi hố trong dải $[r_{\min}, r_{\max}]$) và đã kiểm chéo.
 
 ---
 
@@ -125,7 +133,9 @@ data/reference_labels/
 └── moon_ap16_m106777343r_c01_overlay.png             # Ảnh vẽ vòng tròn minh chứng trực quan
 ```
 
-Khi chạy `scripts/label_craters.py`, script sẽ tự động đồng bộ file JSON vào cả `data/reference_labels/` và `data/processed/`.
+Khi chạy `scripts/label_craters.py`, script chỉ ghi vào `data/reference_labels/`. Script **không** ghi vào `data/processed/`: `generate_s106_crops.py`, `install_s106_dataset.py` và `build_s106_bundle.py` coi `<image_id>_craters_catalogue.json` ở đó là catalogue cũ chưa xác minh và dừng lại.
+
+Vẽ lại ảnh overlay từ file JSON: `python scripts/render_demo_overlay.py <image_id>`.
 
 ---
 
@@ -138,5 +148,6 @@ Khi chạy `scripts/label_craters.py`, script sẽ tự động đồng bộ fil
 - [x] Đã chuẩn hóa extent `[-0.5, 511.5, 511.5, -0.5]` và kiểm tra tâm nằm trong $[0, 511]$.
 - [x] Đã tách bạch nguồn tham chiếu `manual_label_s110` vs `Robbins 2019`.
 - [x] Đã đưa dữ liệu nhãn tham chiếu và ảnh overlay vào thư mục `data/reference_labels/` được Git theo dõi.
-- [x] Đã hoàn thành bộ nhãn thật 4 hố trên ảnh demo `moon_ap16_m106777343r_c01` (C1, C2, C3 chắc chắn; C4_uncertain).
+- [x] Đã ghi bộ nhãn thủ công **thưa** 4 hố trên ảnh demo `moon_ap16_m106777343r_c01` (C1, C2, C3; C4_uncertain). Chưa kiểm chéo, chưa phải danh mục đầy đủ.
+- [x] Tool chỉ ghi `data/reference_labels/`, không ghi `data/processed/`; không trộn nguồn; không tự ghi "verified".
 - [ ] Nguyễn Mạnh Tiến kiểm tra chéo file overlay và xác nhận nghiệm thu PR.
