@@ -1,0 +1,20 @@
+{
+  "base_commit": "3b4a977e75884ba81ba64b7d453dfcc1c36b14a3",
+  "branch": "s1-09-interface",
+  "sha256": {
+    "app.py": "9cff4a7fa9e0621d88a14211b66ab3c12388570f2f3873fb6e3bfb98ff94ae7c",
+    "src/crater_canvas/canvas.js": "a3f6b750beb415f2c55717beae296118b6a4f1ab72d250712d5dfcc28d4145bf",
+    "src/crater_canvas/index.html": "cb68d8b9ef30ca721cd60425f21440b09302917dad9924b0c7f18642b3fdafa5",
+    "src/crater_canvas/styles.css": "1e7ebbf60ccd10315fb4de94e8efc9c517dae4be370f36395f53b1b763c05c06",
+    "src/crater_canvas/app.css": "185ec58f67e185c935ce687129de269db80cb7dd58a0476ff96c2ad107e71e18",
+    ".github/workflows/tests.yml": "b28799663fcd8ea752c12a54ef199617a5c916063e0d3b728dd6ab71c6c5233f",
+    "tests/test_canvas_precision.js": "c7d4139aa09def4c417f52b07e55835c7b17a7a4e97a2c051486089df0e54669",
+    "scripts/check_ui_r1.cjs": "813ba393e69a43e112c4cb7ee789e18449b4786c9f58f0727637e5fd8193b780"
+  },
+  "unchanged_helpers": {
+    "src/crater_canvas/geometry.js": true,
+    "src/contracts.py": true,
+    "src/player_annotations.py": true,
+    "src/player_ui.py": true
+  }
+}

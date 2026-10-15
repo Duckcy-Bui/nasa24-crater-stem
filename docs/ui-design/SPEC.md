@@ -237,6 +237,14 @@ Các thông số vẽ trong `paint()`:
 - Hợp đồng sự kiện `streamlit:setComponentValue` (chỉ được thêm khóa, như cách A).
 - Chạy hoàn toàn offline: không CDN, không font tải từ mạng, không ảnh từ bên ngoài.
 
+## 8a. Cập nhật R2 (2026-10-15): bản đồ to hơn và zoom
+Phần này thay §4 ở 3 điểm:
+- Khung ảnh tối đa 840 px (`--stage-max`), nội dung rộng 1248 px.
+- Có chế độ thứ 3 "Kéo ảnh", cộng cụm nút zoom ở góc trên-phải của ảnh.
+- Màn 900 px được phép cuộn nhẹ.
+
+Chi tiết và test: `UI_FIX_R2.md`.
+
 ## 8b. Ghi chú phạm vi và dữ liệu mẫu
 - **Vòng trong mockup là vòng minh họa, không phải ground truth.** Các vòng U1–U8 trong `mockup.html` và trên canvas Claude Design được đặt bằng mắt lên `moon_ap16_m113853974r_c01`, chỉ để thể hiện bố cục và các trạng thái.
   - Đây không phải danh mục hố tham chiếu hay đáp án. Không dùng để chấm điểm, đánh giá Hough, hay làm fixture "đúng".

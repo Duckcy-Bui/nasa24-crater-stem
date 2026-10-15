@@ -59,6 +59,6 @@
   --h-control: 40px;    /* mobile 44px (touch target) */
   --h-cta: 44px;        /* mobile 48px */
   --panel-w: 380px;
-  --stage-max: 720px;
-  --content-max: 1128px; /* stage-max + gap 28 + panel-w */
+  --stage-max: 840px;    /* R2: map fills its column; was 720 */
+  --content-max: 1248px; /* stage-max + gap 28 + panel-w */
 }

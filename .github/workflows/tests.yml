@@ -31,5 +31,8 @@ jobs:
         run: python scripts/check_contracts.py
       - name: Run regression tests
         run: python -m unittest discover -s tests -v
-      - name: Check canvas save protocol
-        run: node tests/test_canvas_save.js
+      - name: Check canvas frontend
+        run: |
+          for test_file in tests/test_canvas_*.js; do
+            node "$test_file"
+          done

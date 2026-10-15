@@ -1,0 +1,31 @@
+Canvas event acceptance checks passed
+Canvas geometry acceptance checks passed
+ok - two-decimal inputs and list are display-only; unchanged Apply preserves full precision
+ok - editing only x preserves untouched full-precision values in download and save
+ok - editing only y preserves untouched full-precision values in download and save
+ok - editing only r preserves untouched full-precision values in download and save
+ok - valid sub-centipixel radius survives displayed 0.00 and editing another field
+ok - a deliberately changed string is parsed even if numerically equal to the displayed value
+ok - invalid x="" rejects atomically without rounding other fields
+ok - invalid x="NaN" rejects atomically without rounding other fields
+ok - invalid x="Infinity" rejects atomically without rounding other fields
+ok - invalid x="-0.01" rejects atomically without rounding other fields
+ok - invalid x="511.01" rejects atomically without rounding other fields
+ok - invalid y="512" rejects atomically without rounding other fields
+ok - invalid r="0" rejects atomically without rounding other fields
+ok - invalid r="-0.004" rejects atomically without rounding other fields
+ok - invalid r="Infinity" rejects atomically without rounding other fields
+ok - invalid r="   " rejects atomically without rounding other fields
+ok - one invalid field rejects all edits; correcting it preserves the other untouched original
+ok - Undo restores original precision and a subsequent unchanged Apply remains a no-op
+Canvas precision acceptance checks passed (18 scenarios)
+ok - empty save submits explicit nonce at revision zero
+ok - save submits latest committed snapshot before any edit ACK without incrementing revision
+ok - pending freezes every mutation while download remains current and available
+ok - equal-revision ACK shows saved path; a committed edit makes success dirty
+ok - failed ACK unfreezes, shows no-overwrite error, and a new click retries with a new nonce
+ok - old render and unrelated ACK preserve pending snapshot and cannot unlock editing
+ok - switching image or session discards pending controls and isolates saved status
+ok - unloaded image and active drag cannot save; rejected numeric input never enters saved snapshot
+ok - a result for another image is hidden even when its revision matches
+Canvas save acceptance checks passed (9 scenarios)

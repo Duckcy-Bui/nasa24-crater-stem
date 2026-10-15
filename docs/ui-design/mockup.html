@@ -53,7 +53,20 @@
   .short { display: none; }
 
   .stage { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--r-image); overflow: hidden; background: #000 radial-gradient(circle at 30% 40%, #2a2d31, #0b0c0e 70%); border: 1px solid var(--line-2); cursor: crosshair; }
-  .stage img, .stage svg.overlay { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stage[data-mode="pan"] { cursor: grab; }
+  .stage[data-mode="pan"].panning { cursor: grabbing; }
+  .stage[data-mode="edit"] { cursor: default; }
+  .view { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+  .view img, .view svg.overlay { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stage.pixel img { image-rendering: pixelated; }
+  /* R2 zoom cluster, top-right of the map */
+  .zoom { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(10,12,15,.82); border: 1px solid rgba(255,255,255,.08); }
+  .zoom button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 7px; background: transparent; color: #D6D9DE; cursor: pointer; }
+  .zoom button:hover:not(:disabled) { background: rgba(255,255,255,.08); }
+  .zoom button:disabled { opacity: .38; cursor: default; }
+  .zoom output { min-width: 48px; text-align: center; font: 600 12px/1 var(--font-mono); color: var(--text); font-variant-numeric: tabular-nums; }
+  .zoom .sep { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 2px; }
+  .zoom svg.i { width: 17px; height: 17px; }
   .overlay .halo { stroke: var(--halo); fill: none; }
   .overlay .ring { stroke: var(--circle); fill: none; }
   .overlay .sel .ring { stroke: var(--circle-selected); }
@@ -133,6 +146,9 @@
     .toolbar .btn.ghost .lbl, .long { display: none; }
     .short { display: inline; }
     .chip { display: none; }
+    .zoom button { width: 40px; height: 40px; }
+    .seg svg.i { display: none; }
+    .zoom output { display: none; }
     .coach { left: 12px; right: 12px; transform: none; white-space: normal; }
     .meta .cursor { display: none; }
     aside.panel { background: transparent; border: 0; border-radius: 0; overflow: visible; gap: 14px; }
@@ -185,6 +201,7 @@
         <div class="seg">
           <button id="drawMode" type="button" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 12l5.6-5.6"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg><span class="long">Vẽ vòng tròn</span><span class="short">Vẽ</span></button>
           <button id="editMode" type="button" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M6 3.5l12.5 7.2-5.6 1.7-2.4 5.6z"/></svg>Chọn / sửa</button>
+          <button id="panMode" type="button" aria-pressed="false" title="Kéo ảnh (giữ phím Space để kéo tạm)"><svg class="i" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11.5V4a1.5 1.5 0 0 1 3 0v7.5"/><path d="M14 11.5V6a1.5 1.5 0 0 1 3 0v7"/><path d="M17 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.5a6 6 0 0 1-4.6-2.2L4.6 15a1.5 1.5 0 0 1 2.3-1.9L8 14.5"/></svg><span class="long">Kéo ảnh</span><span class="short">Kéo</span></button>
         </div>
         <span class="spacer"></span>
         <button id="undo" class="btn ghost" type="button" aria-label="Hoàn tác"><svg class="i" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg><span class="lbl">Hoàn tác</span></button>
@@ -192,8 +209,17 @@
       </div>
 
       <div class="stage" id="stage">
-        <img src="../../data/processed/moon_ap16_m113853974r_c01.png" alt="Ảnh Mặt Trăng moon_ap16_m113853974r_c01, 512 × 512 px" onerror="this.remove()">
-        <svg class="overlay" id="overlay" viewBox="0 0 512 512" aria-hidden="true"></svg>
+        <div class="view" id="view">
+          <img src="../../data/processed/moon_ap16_m113853974r_c01.png" alt="Ảnh Mặt Trăng moon_ap16_m113853974r_c01, 512 × 512 px" onerror="this.remove()">
+          <svg class="overlay" id="overlay" viewBox="0 0 512 512" aria-hidden="true"></svg>
+        </div>
+        <div class="zoom" role="group" aria-label="Thu phóng ảnh">
+          <button type="button" id="zoomOut" aria-label="Thu nhỏ"><svg class="i" viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+          <output id="zoomLevel" aria-live="polite">100%</output>
+          <button type="button" id="zoomIn" aria-label="Phóng to"><svg class="i" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></svg></button>
+          <span class="sep"></span>
+          <button type="button" id="zoomFit" aria-label="Vừa khung (xem toàn ảnh)" title="Vừa khung"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        </div>
         <div class="chip" id="chip"><i></i><span id="chipText"></span></div>
         <div class="coach" id="coach" hidden>
           <svg class="i" viewBox="0 0 24 24" style="color: var(--circle)"><circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/><path d="M12 12l5.6-5.6"/></svg>
@@ -301,8 +327,10 @@
     const c = chosen(), n = s.circles.length;
     $("drawMode").setAttribute("aria-pressed", String(s.mode === "draw"));
     $("editMode").setAttribute("aria-pressed", String(s.mode === "edit"));
+    $("panMode").setAttribute("aria-pressed", String(s.mode === "pan"));
+    $("stage").dataset.mode = s.mode;
     $("chip").className = "chip" + (s.mode === "edit" ? " edit" : "");
-    $("chipText").textContent = s.mode === "draw" ? "Vẽ: nhấn tâm hố, kéo ra vành" : "Chọn / sửa: kéo tâm để dời, kéo vành để đổi bán kính";
+    $("chipText").textContent = s.mode === "draw" ? "Vẽ: nhấn tâm hố, kéo ra vành" : s.mode === "pan" ? "Kéo ảnh: kéo để di chuyển, cuộn chuột để phóng to" : "Chọn / sửa: kéo tâm để dời, kéo vành để đổi bán kính";
     $("undo").disabled = !s.history.length; $("deleteCircle").disabled = !c;
     $("count").textContent = $("count2").textContent = n;
     $("coach").hidden = n > 0; $("empty").hidden = n > 0; $("listWrap").hidden = n === 0;
@@ -326,6 +354,47 @@
   function commit(next) { s.history.push(s.circles); s.circles = next; s.saved = false; s.error = ""; s.draftR = undefined; render(); }
   $("drawMode").onclick = () => { s.mode = "draw"; render(); };
   $("editMode").onclick = () => { s.mode = "edit"; render(); };
+  $("panMode").onclick = () => { s.mode = "pan"; render(); };
+
+  // R2 zoom / pan. View = {z, x, y}: z in [1, 8]; x, y = top-left of the visible window in image px (0..512 - 512/z).
+  const view = { z: 1, x: 0, y: 0 }, ZMIN = 1, ZMAX = 8;
+  function applyView() {
+    view.z = Math.min(ZMAX, Math.max(ZMIN, view.z));
+    const span = 512 / view.z;
+    view.x = Math.min(512 - span, Math.max(0, view.x)); view.y = Math.min(512 - span, Math.max(0, view.y));
+    $("view").style.transform = `scale(${view.z}) translate(${-view.x / 512 * 100}%, ${-view.y / 512 * 100}%)`;
+    $("zoomLevel").textContent = Math.round(view.z * 100) + "%";
+    $("zoomOut").disabled = view.z <= ZMIN; $("zoomIn").disabled = view.z >= ZMAX; $("zoomFit").disabled = view.z === 1;
+    $("stage").classList.toggle("pixel", view.z >= 3);
+  }
+  function zoomAt(factor, fx = .5, fy = .5) { // fx, fy = anchor as fraction of the stage
+    const ax = view.x + fx * 512 / view.z, ay = view.y + fy * 512 / view.z;
+    view.z = Math.min(ZMAX, Math.max(ZMIN, view.z * factor));
+    view.x = ax - fx * 512 / view.z; view.y = ay - fy * 512 / view.z; applyView();
+  }
+  $("zoomIn").onclick = () => zoomAt(1.25); $("zoomOut").onclick = () => zoomAt(1 / 1.25);
+  $("zoomFit").onclick = () => { view.z = 1; view.x = view.y = 0; applyView(); };
+  $("stage").addEventListener("wheel", e => {
+    e.preventDefault(); const r = $("stage").getBoundingClientRect();
+    zoomAt(e.deltaY < 0 ? 1.25 : 1 / 1.25, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+  }, { passive: false });
+  let pan = null, space = false;
+  $("stage").tabIndex = 0;
+  $("stage").addEventListener("keydown", e => {
+    if (e.key === "+" || e.key === "=") zoomAt(1.25); else if (e.key === "-") zoomAt(1 / 1.25); else if (e.key === "0") $("zoomFit").onclick();
+    else if (e.code === "Space") { space = true; e.preventDefault(); }
+  });
+  $("stage").addEventListener("keyup", e => { if (e.code === "Space") space = false; });
+  $("stage").addEventListener("pointerdown", e => {
+    if (!(s.mode === "pan" || space || e.button === 1) || view.z === 1) return;
+    pan = { px: e.clientX, py: e.clientY, x: view.x, y: view.y }; $("stage").classList.add("panning"); $("stage").setPointerCapture(e.pointerId);
+  });
+  $("stage").addEventListener("pointermove", e => {
+    if (!pan) return; const r = $("stage").getBoundingClientRect(), k = 512 / view.z / r.width;
+    view.x = pan.x - (e.clientX - pan.px) * k; view.y = pan.y - (e.clientY - pan.py) * k; applyView();
+  });
+  $("stage").addEventListener("pointerup", () => { pan = null; $("stage").classList.remove("panning"); });
+  applyView();
   $("deleteCircle").onclick = () => { if (!chosen()) return; const id = s.selected; s.selected = null; commit(s.circles.filter(c => c.crater_id !== id)); };
   $("undo").onclick = () => { if (!s.history.length) return; s.circles = s.history.pop(); if (!chosen()) s.selected = null; s.saved = false; render(); };
   $("save").onclick = () => { s.saved = true; render(); };

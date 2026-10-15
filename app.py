@@ -74,8 +74,15 @@ def main() -> None:
         except ContractError as error:
             st.error(f"Thay đổi của {previous_id} chưa được lưu: {error}")
     groups = {item["image_id"]: item["region_group"] for item in json.loads((ROOT / "data" / "s106_bundle" / "crops.json").read_text(encoding="utf-8"))}
+    def image_label(ident: str) -> str:
+        count = len(drafts.get(ident, {}).get("circles", []))
+        return f"{ident} · {groups.get(ident, '')}" + (f" · {count} vòng" if count else "")
+    # Refresh the serialized selection together with changing draft-count labels.
+    # Otherwise the frontend can reset to its first option when a label changes.
+    if "player_image_picker" in st.session_state:
+        st.session_state["player_image_picker"] = st.session_state["player_image_picker"]
     with picker_column:
-        image_id = st.selectbox("Chọn ảnh để mở", image_ids, format_func=lambda ident: f"{groups.get(ident, '')} · {ident}")
+        image_id = st.selectbox("Chọn ảnh để mở", image_ids, format_func=image_label, key="player_image_picker")
     try:
         metadata, image_url = load_image(image_id, (DATA_DIR / f"{image_id}.json").read_bytes(), (DATA_DIR / f"{image_id}.png").read_bytes())
     except (OSError, ValueError, ContractError) as error:

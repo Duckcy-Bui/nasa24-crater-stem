@@ -14,5 +14,48 @@
     if (![screenDx, screenDy].every(Number.isFinite)) throw new Error("Bán kính không hợp lệ.");
     return Math.hypot(screenDx * width / rect.width, screenDy * height / rect.height);
   }
-  root.CraterGeometry = Object.freeze({ canvasToImage, imageRadius });
+  function checkView(view, boundedZoom = true) {
+    if (!view || ![view.z, view.x, view.y].every(Number.isFinite) || (boundedZoom && (view.z < 1 || view.z > 8))) throw new Error("Trạng thái xem không hợp lệ.");
+  }
+  function clampView(view, width = 512, height = 512) {
+    checkView(view, false);
+    if (![width, height].every(Number.isFinite) || width <= 0 || height <= 0) throw new Error("Kích thước ảnh không hợp lệ.");
+    const z = Math.min(8, Math.max(1, view.z));
+    return {
+      z,
+      x: Math.min(width - width / z, Math.max(0, view.x)),
+      y: Math.min(height - height / z, Math.max(0, view.y)),
+    };
+  }
+  function screenToImage(clientX, clientY, rect, view, width = 512, height = 512) {
+    if (!rect) throw new Error("Kích thước hiển thị không hợp lệ.");
+    checkRect(rect, width, height);
+    checkView(view);
+    if (![clientX, clientY].every(Number.isFinite)) throw new Error("Tọa độ không hợp lệ.");
+    return {
+      x: view.x + (clientX - rect.left) * width / (rect.width * view.z),
+      y: view.y + (clientY - rect.top) * height / (rect.height * view.z),
+    };
+  }
+  function imageToScreen(x, y, rect, view, width = 512, height = 512) {
+    if (!rect) throw new Error("Kích thước hiển thị không hợp lệ.");
+    checkRect(rect, width, height);
+    checkView(view);
+    if (![x, y].every(Number.isFinite)) throw new Error("Tọa độ không hợp lệ.");
+    return {
+      x: rect.left + (x - view.x) * rect.width * view.z / width,
+      y: rect.top + (y - view.y) * rect.height * view.z / height,
+    };
+  }
+  function zoomViewAt(view, newZ, clientX, clientY, rect, width = 512, height = 512) {
+    const anchor = screenToImage(clientX, clientY, rect, view, width, height);
+    if (!Number.isFinite(newZ)) throw new Error("Mức phóng to không hợp lệ.");
+    const z = Math.min(8, Math.max(1, newZ));
+    return clampView({
+      z,
+      x: anchor.x - (clientX - rect.left) * width / (rect.width * z),
+      y: anchor.y - (clientY - rect.top) * height / (rect.height * z),
+    }, width, height);
+  }
+  root.CraterGeometry = Object.freeze({ canvasToImage, imageRadius, clampView, screenToImage, imageToScreen, zoomViewAt });
 })(typeof window !== "undefined" ? window : globalThis);
