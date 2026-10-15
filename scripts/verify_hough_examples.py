@@ -213,10 +213,11 @@ def main() -> None:
 
     import cv2
     report, arrays = comparison()
-    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
-                          text=True, check=True).stdout.strip()
-    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True,
-                           text=True, check=True).stdout.strip()
+    # Outside a git checkout (zip/archive) record "unknown" instead of crashing after the run.
+    git_head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+    head = git_head.stdout.strip() if git_head.returncode == 0 else "unknown"
+    git_dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
+    dirty = git_dirty.stdout.strip() if git_dirty.returncode == 0 else ""
     source_paths = ("src/hough.py", "src/preprocessing.py", "scripts/demo_hough.py",
                     "scripts/verify_hough_examples.py")
     report.update({"tiny_example": tiny,
@@ -226,6 +227,9 @@ def main() -> None:
                    "code_version": head + ("+working-tree" if dirty else ""),
                    "source_sha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
                                      for p in source_paths},
+                   # Same hash on Windows (CRLF) and Linux (LF) checkouts of one commit.
+                   "source_sha256_lf": {p: hashlib.sha256((ROOT / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                                        for p in source_paths},
                    "created_at_utc": datetime.now(timezone.utc).isoformat()})
     # Render before writing, then reserve a new directory; never overwrite a run.
     png = render_comparison(arrays["gray_u8"], report)
