@@ -9,13 +9,13 @@
     },
     "preprocess": {
       "status": "ok",
-      "seconds": 0.072,
+      "seconds": 0.026,
       "edge_px": 26883,
       "valid_ratio": 1.0
     },
     "hough": {
       "status": "ok",
-      "seconds": 6.876,
+      "seconds": 7.076,
       "voting_method": "full_circle",
       "r_min_px": 5,
       "r_max_px": 125,
@@ -34,12 +34,13 @@
     "reference": {
       "status": "loaded",
       "circles": 4,
-      "reference_source": "manual_label_s110; sparse manual labels, unreviewed"
+      "reference_source": "manual_label_s110; sparse manual labels, unreviewed",
+      "reviewed": false
     },
     "scoring": {
       "status": "skipped",
       "reason": "reference_status=unavailable; chưa có danh mục đã xác minh, scoring.py/evaluation.py chưa cài. Vòng của máy không phải đáp án."
     }
   },
-  "seconds_total": 6.95
+  "seconds_total": 7.103
 }

@@ -6,7 +6,7 @@
 
 Đề tài xuất phát từ một vấn đề ở Việt Nam: học sinh vùng xa ít có cơ hội tiếp cận nội dung STEM về không gian. Nhóm hướng tới một trò chơi dùng ảnh thật của NASA về Mặt Trăng, Sao Hỏa và các thiết bị NASA để lại ở đó, để các em học qua trải nghiệm [1].
 
-Hố va chạm là dấu vết dễ nhận ra nhất trên bề mặt Mặt Trăng. Trên ảnh chụp từ quỹ đạo, một hố thường hiện thành một vành gần tròn, với một nửa sáng và một nửa tối tùy hướng nắng. Đếm hố theo kích thước giúp so sánh hai vùng: trong cùng điều kiện quan sát và cùng dải kích thước, vùng có mật độ hố cao hơn thường đã chịu va chạm lâu hơn. Đây chỉ là so sánh **tuổi tương đối**, không cho ra tuổi tuyệt đối.
+Hố va chạm là dấu vết phổ biến trên bề mặt Mặt Trăng [7]. Trên ảnh chụp từ quỹ đạo, một hố thường hiện thành một vành gần tròn, với một nửa sáng và một nửa tối tùy hướng nắng. Đếm hố theo kích thước giúp so sánh hai vùng: trong cùng điều kiện quan sát và cùng dải kích thước, vùng có mật độ hố cao hơn thường đã chịu va chạm lâu hơn. Đây chỉ là so sánh **tuổi tương đối**, không cho ra tuổi tuyệt đối.
 
 Việc khoanh và đếm hố bằng tay vừa là một hoạt động học tập tốt, vừa là bài toán xử lý ảnh rõ ràng. Máy có thể đề xuất vị trí hố bằng biến đổi Hough tròn. Học sinh có thể tự khoanh rồi so sánh với máy và với danh mục hố đã công bố. Đề tài nối hai việc này trong cùng một sản phẩm.
 
@@ -34,8 +34,8 @@ Nhóm thực hiện **Đề 24 — Phát hiện hố va chạm và trò chơi ST
 ## 1.4. Phạm vi và giới hạn
 
 - **Thiên thể:** làm Mặt Trăng trước. Bộ ảnh hiện có **26 ảnh cắt 512 × 512** từ **16 ảnh LROC** tải từ máy chủ LROC/PDS chính thức, mỗi ảnh có metadata về tỷ lệ (2 hoặc 20 m/px), góc tới và dải bán kính tìm kiếm [3]. Sao Hỏa (CTX/HiRISE) để sau.
-- **Kích thước hố:** mỗi ảnh có dải đường kính riêng, đổi ra bán kính pixel và kẹp trong [5, 128] px để Hough chạy được trên máy cá nhân.
-- **Danh mục tham chiếu:** danh mục Robbins [4] không đủ cho hố nhỏ hơn 1 km ở ảnh 2 m/px. Bộ ảnh vì vậy ghi `reference_status="unavailable"`. Nhãn thủ công S1-10 hiện mới có 4 hố thưa trên một ảnh và chưa kiểm chéo [5]. **Chưa có Precision/Recall hay điểm trò chơi nào được tính.**
+- **Kích thước hố:** dải đường kính đặt theo tỷ lệ ảnh: 11 ảnh 2 m/px xét hố 20–500 m (bán kính 5–125 px), 15 ảnh 20 m/px xét hố 200 m–4 km (bán kính 5–100 px). Bán kính được kẹp trong [5, 128] px để Hough chạy được trên máy cá nhân.
+- **Danh mục tham chiếu:** danh mục Robbins [4] chỉ đầy đủ cho hố từ khoảng 1–2 km, nên không dùng được cho hố nhỏ ở 11 ảnh 2 m/px. Với 15 ảnh 20 m/px, phần hố lớn nằm trong phạm vi Robbins nhưng chưa được quy đổi tọa độ và đối chiếu trên ảnh (việc của S1-10). Vì vậy cả bộ ảnh đang ghi `reference_status="unavailable"`. Nhãn thủ công S1-10 hiện mới có 4 hố thưa trên một ảnh và chưa kiểm chéo [5]. **Chưa có Precision/Recall hay điểm trò chơi nào được tính.**
 - **Diễn giải khoa học:** so sánh mật độ chỉ gợi ý tuổi tương đối giữa hai vùng có điều kiện phù hợp. Kết luận bị ảnh hưởng nếu máy bỏ sót hoặc khoanh nhầm.
 - **Thời gian:** ba tuần, bốn thành viên (mục 1.7).
 
@@ -64,14 +64,14 @@ Nhóm thực hiện **Đề 24 — Phát hiện hố va chạm và trò chơi ST
 
 Mọi bước trao đổi dữ liệu qua cùng một hợp đồng [2]. Ảnh xử lý luôn là 512 × 512 px, tâm và bán kính tính theo pixel ảnh xử lý, và đổi được về ảnh nguồn qua metadata. Danh sách hố của máy, danh mục và người chơi dùng chung cấu trúc nhưng **lưu riêng** (`source` = `machine`, `catalogue`, `player`). Mỗi lần chạy lưu thư mục riêng kèm tham số và mã commit để tái tạo được.
 
-Lý thuyết Hough và ví dụ tính tay được trình bày ở chương lý thuyết (S1-12, S1-15) [6][7].
+Lý thuyết Hough và ví dụ tính tay được trình bày ở chương lý thuyết (S1-12, S1-15) [6].
 
 ## 1.6. Hiện trạng sau tuần 1
 
 | Phần | Đã có trong repo | Bằng chứng | Còn lại |
 |---|---|---|---|
 | Dữ liệu (S1-06) | 26 ảnh LROC thật, metadata, mặt nạ hợp lệ, bundle ngoại tuyến có SHA256 | `docs/S1-06_*` | Nhãn tham chiếu đã xác minh |
-| Tiền xử lý (S1-08) | Chuỗi B1–B8 tự viết, lưu ảnh từng bước | `docs/TIEN_XU_LY.md` | — |
+| Tiền xử lý (S1-08) | Chuỗi B1–B8: B4 CLAHE và B7 Canny dùng OpenCV, các bước còn lại tự viết bằng NumPy; lưu ảnh từng bước | `docs/TIEN_XU_LY.md` | — |
 | Hough (S1-07, S1-12, S1-15) | Hough NumPy hai cách bỏ phiếu; ví dụ 5×5 tính tay khớp code; đối chiếu OpenCV trên cảnh giả lập | `docs/HOUGH.md`, `docs/S1-12_*`, `docs/S1-15_*` | Chọn tham số trên ảnh thật |
 | Nhãn tham chiếu (S1-10) | Công cụ ghi nhãn; 4 nhãn thưa trên ảnh demo, chưa kiểm chéo | `docs/S1-10_HUONG_DAN_NHAN_HO.md` | Kiểm chéo; nhiều ảnh hơn |
 | Giao diện khoanh hố (S1-09) | Giao diện tiếng Việt ngoại tuyến: vẽ, sửa, xóa, hoàn tác, phóng to, lưu và tải JSON | `docs/S1-09_*`, `docs/ui-design/` | Nối với kết quả máy |
@@ -116,4 +116,4 @@ Mỗi phần đi qua pull request có kiểm thử tự động (GitHub Actions)
 [7] NASA Science, *Earth's Moon*, https://science.nasa.gov/moon/.
 [8] Nhóm 2, *Chạy từ đầu đến cuối S1-13*, `docs/S1-13_CHAY_TU_DAU_DEN_CUOI.md` và `docs/evidence/s1-13/`.
 
-> Trước khi nộp cần: đọc toàn văn [4] để ghi đúng tập/trang; thay [1] bằng tên chính thức của tài liệu môn học; cập nhật mục 1.6 theo hiện trạng cuối tuần 3.
+> Trước khi nộp cần: đưa nguồn đề gốc [1] vào repo hoặc ghi tên chính thức và nơi lưu của tài liệu môn học; cập nhật mục 1.6 theo hiện trạng cuối tuần 3.

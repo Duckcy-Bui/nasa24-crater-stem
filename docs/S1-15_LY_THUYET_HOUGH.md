@@ -303,8 +303,9 @@ Tham số của `cv2.HoughCircles(..., cv2.HOUGH_GRADIENT, dp, minDist, param1, 
 | `minRadius`, `maxRadius` | Khoảng bán kính tìm kiếm (px). |
 
 Tâm trả về là tâm ô accumulator: `(chỉ số ô + 0,5) × dp`. Với dp=1, một hố tâm
-nguyên (x, y) được trả về (x+0,5, y+0,5); cần trừ 0,5×dp trước khi so với tâm
-nguyên của NumPy.
+nguyên (x, y) được trả về (x+0,5, y+0,5); trừ 0,5 trước khi so với tâm nguyên của
+NumPy. Với dp>1, sai số lượng tử theo ô dp×dp nên không bù bằng một hằng số
+(thử với dp=2: lệch từ −3 đến +2 px, xem S1-12).
 
 S1-12 đã lưu ảnh chung, gx/gy, biên dựng lại theo mã OpenCV 4.14.0,
 cấu hình, thời gian, phiên bản và mọi phát hiện.

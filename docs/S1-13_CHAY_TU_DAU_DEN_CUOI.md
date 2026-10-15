@@ -18,8 +18,10 @@ Phụ trách: **Bùi Hải Đức**. Mục tiêu tuần 1 là nối các phần 
 python scripts/install_s106_dataset.py          # một lần, giải nén 26 ảnh vào data/processed/
 python scripts/run_end_to_end.py moon_ap16_m106777343r_c01
 python scripts/run_end_to_end.py moon_ap16_m106777343r_c01 --voting gradient
-python scripts/run_end_to_end.py --all --no-render
+python scripts/run_end_to_end.py --all --no-render --csv outputs/e2e_26_anh.csv
 ```
+
+`--player` chỉ dùng cho một ảnh; với `--all`, mỗi ảnh tự lấy lần lưu mới nhất của chính nó. Một ảnh lỗi không dừng cả lượt `--all`; thư mục run của ảnh lỗi bị xóa, không để lại kết quả dở dang.
 
 Mỗi ảnh tạo thư mục mới `outputs/e2e_<image_id>_<UTC>_<id>/` (không ghi đè lần trước, Git bỏ qua):
 
@@ -30,15 +32,15 @@ Mỗi ảnh tạo thư mục mới `outputs/e2e_<image_id>_<UTC>_<id>/` (không 
 | `summary.json` | Trạng thái từng bước, thời gian, số ứng viên, lý do bỏ qua |
 | `arrays.npz` | `gray`, `edges`, `theta` để xem lại hoặc chạy lại Hough |
 | `overlay.png` | Ảnh và biên B8 với vòng máy (cyan, nét đứt), người chơi (vàng), nhãn thủ công chưa kiểm chéo (đỏ cam, chấm) |
-| `player.json`, `reference_unreviewed.json` | Có khi tìm thấy; chỉ để vẽ cạnh, không gộp vào kết quả máy |
+| `player.json`, `reference.json` | Có khi tìm thấy; chỉ để vẽ cạnh, không gộp vào kết quả máy. `summary.json` ghi nhãn tham chiếu đã kiểm chéo hay chưa (`reviewed`) |
 
 Lần lưu mới nhất của người chơi cho đúng `image_id` được lấy tự động từ `outputs/player_answers/` (dùng `--player <craters.json>` hoặc `--no-player` để chọn khác). Nhãn thủ công lấy từ `data/reference_labels/` nếu có.
 
 ## Kết quả lần chạy cả bộ (15/10/2026)
 
-Chạy `--all` trên 26 ảnh LROC thật, cấu hình mặc định (`full_circle`, `max_circles=100`). Bảng đầy đủ: [evidence/s1-13/e2e_26_anh.csv](evidence/s1-13/e2e_26_anh.csv).
+Chạy một lần `--all --csv` trên 26 ảnh LROC thật, cấu hình mặc định (`full_circle`, `max_circles=100`). Bảng đầy đủ: [evidence/s1-13/e2e_26_anh.csv](evidence/s1-13/e2e_26_anh.csv). Overlay, summary và params của ảnh demo lấy từ chính lần chạy đó (cột `run_dir`).
 
-- Cả 26 ảnh chạy hết chuỗi, không lỗi. Tiền xử lý dưới 0,1 s mỗi ảnh; Hough 5,0–8,2 s mỗi ảnh trên máy phát triển.
+- Cả 26 ảnh chạy hết chuỗi, không lỗi. Tiền xử lý dưới 0,1 s mỗi ảnh; Hough 5,1–8,3 s mỗi ảnh trên máy phát triển (thời gian đổi nhẹ giữa các lần chạy).
 - **Cả 26 ảnh đều chạm trần 100 ứng viên.** Biên B8 của ảnh thật có khoảng 27 nghìn pixel, gồm vệt tia, đá và địa hình, không chỉ vành hố. Vì vậy danh sách máy hiện là **ứng viên thô**, nhiều vòng nhỏ r≈5 px nằm trên nhiễu. Đây là lý do cần S1-11 (sáng–tối, lọc trùng) và chọn tham số ở tuần 2. Không đọc số 100 là số hố.
 - Ảnh demo `moon_ap16_m106777343r_c01`: [overlay](evidence/s1-13/moon_ap16_m106777343r_c01_overlay.png), [summary](evidence/s1-13/moon_ap16_m106777343r_c01_summary.json), [params](evidence/s1-13/moon_ap16_m106777343r_c01_params.json). 4 nhãn thủ công S1-10 chưa kiểm chéo được vẽ cạnh để nhìn bằng mắt, không dùng để chấm.
 - Chấm điểm và Precision/Recall: **bỏ qua** trên cả 26 ảnh vì `reference_status="unavailable"`.

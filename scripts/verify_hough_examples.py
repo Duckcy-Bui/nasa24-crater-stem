@@ -84,13 +84,16 @@ def tiny_example() -> dict:
         [0, 0, 1, 0, 0],
     ], dtype=np.int32)
     np.testing.assert_array_equal(gradient, expected_gradient)
+    gradient_support = int(np.ceil(2 * np.pi * 1))
     return {"shape": [5, 5], "radius": 1, "angle_step_deg": 1.0,
             "edges": edges.astype(int).tolist(), "offsets": offsets.tolist(),
             "trace": trace, "accumulator": actual.tolist(),
             "toy_min_votes": 3, "threshold": threshold,
-            "peaks_yx": peaks.tolist(), "score": 4 / 8,
+            "peaks_yx": peaks.tolist(), "score": float(actual.max()) / len(offsets),
             "gradient_accumulator": gradient.tolist(),
-            "gradient_support_size": 7, "gradient_score": 4 / 7,
+            # Same support rule as hough.detect_circles for the gradient vote: ceil(2*pi*r).
+            "gradient_support_size": gradient_support,
+            "gradient_score": float(gradient.max()) / gradient_support,
             "note": "Internal helpers only; detect_circles requires 512x512 and r>=5."}
 
 
@@ -214,10 +217,16 @@ def main() -> None:
     import cv2
     report, arrays = comparison()
     # Outside a git checkout (zip/archive) record "unknown" instead of crashing after the run.
-    git_head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
-    head = git_head.stdout.strip() if git_head.returncode == 0 else "unknown"
-    git_dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
-    dirty = git_dirty.stdout.strip() if git_dirty.returncode == 0 else ""
+    head, dirty = "unknown", ""
+    try:  # only this repo's own commit; no git, or a copy inside another repo, records "unknown"
+        top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=ROOT, capture_output=True, text=True)
+        if top.returncode == 0 and Path(top.stdout.strip()).resolve() == ROOT.resolve():
+            git_head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+            head = git_head.stdout.strip() if git_head.returncode == 0 else "unknown"
+            git_dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
+            dirty = git_dirty.stdout.strip() if git_dirty.returncode == 0 else ""
+    except OSError:
+        pass
     source_paths = ("src/hough.py", "src/preprocessing.py", "scripts/demo_hough.py",
                     "scripts/verify_hough_examples.py")
     report.update({"tiny_example": tiny,

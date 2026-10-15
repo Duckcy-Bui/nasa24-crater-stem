@@ -11,6 +11,7 @@ Lọc sáng–tối (S1-11) chưa cài nên ghi rõ là bỏ qua; máy trả ứ
 from __future__ import annotations
 
 import json
+import shutil
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -41,18 +42,32 @@ def load_image(image_id: str, processed_dir: str | Path) -> tuple[dict[str, Any]
 
 
 def find_player_answer(image_id: str, player_root: str | Path) -> Path | None:
-    """Lần lưu mới nhất của người chơi cho đúng image_id (tên run có mốc thời gian UTC)."""
+    """Lần lưu mới nhất của người chơi cho đúng image_id.
+
+    Xếp theo created_at_utc trong run.json (đủ độ chính xác dưới giây), rồi theo tên thư mục.
+    File hỏng hoặc không phải object JSON thì bỏ qua.
+    """
     root = Path(player_root)
     if not root.is_dir():
         return None
     matches = []
     for path in root.glob("*/craters.json"):
         try:
-            if read_json(path).get("image_id") == image_id:
-                matches.append(path)
+            data = read_json(path)
+            if not isinstance(data, dict) or data.get("image_id") != image_id:
+                continue
+            run = read_json(path.parent / "run.json") if (path.parent / "run.json").exists() else {}
+            created = run.get("created_at_utc", "") if isinstance(run, dict) else ""
         except (OSError, ValueError):
             continue
-    return max(matches, key=lambda p: p.parent.name) if matches else None
+        matches.append((str(created), path.parent.name, path))
+    return max(matches)[2] if matches else None
+
+
+def reference_is_reviewed(reference: dict[str, Any] | None) -> bool:
+    """Nhãn thủ công chỉ được coi là đã kiểm chéo khi nguồn ghi "reviewed by"."""
+    source = (reference or {}).get("reference_source") or ""
+    return "reviewed by" in source.lower() and "unreviewed" not in source.lower()
 
 
 def load_overlay_set(path: str | Path | None, metadata: dict[str, Any], expected_source: str) -> dict[str, Any] | None:
@@ -105,7 +120,8 @@ def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: di
     if player:
         handles.append(Line2D([], [], color="#FFD84D", label=f"Người chơi ({len(player['circles'])})"))
     if reference:
-        handles.append(Line2D([], [], color="#FF8A7A", linestyle=":", label=f"Nhãn thủ công chưa kiểm chéo ({len(reference['circles'])})"))
+        status = "đã kiểm chéo" if reference_is_reviewed(reference) else "chưa kiểm chéo"
+        handles.append(Line2D([], [], color="#FF8A7A", linestyle=":", label=f"Nhãn tham chiếu, {status} ({len(reference['circles'])})"))
     axes[0].legend(handles=handles, loc="upper right", fontsize=7, facecolor="#111419", edgecolor="#303743", labelcolor="#ECEAE4")
     figure.suptitle(f"S1-13 · {metadata['image_id']} · {metadata['scale_m_per_px']} m/px · không chấm điểm: chưa có danh mục đã xác minh",
                     color="#A7ADB6", fontsize=9)
@@ -130,13 +146,14 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
     hough = resolve_hough_params(hough_params or {})
     r_min, r_max = radius_range(metadata, hough)
     t0 = time.perf_counter()
-    circles = detect_circles(pre["edges"], r_min, r_max, hough, theta=pre["theta"])
+    raw_circles = detect_circles(pre["edges"], r_min, r_max, hough, theta=pre["theta"])
     t_hough = time.perf_counter() - t0
 
     try:
-        circles = filter_candidates(circles, pre["gray"], metadata, {})
-        postprocess = {"status": "applied"}
+        circles = filter_candidates(raw_circles, pre["gray"], metadata, {})
+        postprocess = {"status": "applied", "circles_in": len(raw_circles), "circles_out": len(circles)}
     except NotImplementedError as error:
+        circles = raw_circles
         postprocess = {"status": "skipped", "reason": f"S1-11 chưa cài: {error}"}
 
     machine = {"schema_version": "1.0", "data_kind": metadata["data_kind"], "image_id": image_id,
@@ -153,13 +170,14 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
             "preprocess": {"status": "ok", "seconds": round(t_pre, 3), "edge_px": int(pre["edges"].sum()),
                            "valid_ratio": pre["params"]["valid_ratio"]},
             "hough": {"status": "ok", "seconds": round(t_hough, 3), "voting_method": hough["voting_method"],
-                      "r_min_px": r_min, "r_max_px": r_max, "circles": len(circles),
-                      "hit_max_circles": len(circles) >= hough["max_circles"]},
+                      "r_min_px": r_min, "r_max_px": r_max, "circles": len(raw_circles),
+                      "hit_max_circles": len(raw_circles) >= hough["max_circles"]},
             "postprocess": postprocess,
             "player": {"status": "loaded" if player else "none", "circles": len(player["circles"]) if player else 0,
                        "path": str(player_path) if player else None},
             "reference": {"status": "loaded" if reference else "none", "circles": len(reference["circles"]) if reference else 0,
-                          "reference_source": reference["reference_source"] if reference else None},
+                          "reference_source": reference["reference_source"] if reference else None,
+                          "reviewed": reference_is_reviewed(reference)},
             "scoring": {"status": "skipped",
                         "reason": f"reference_status={reference_status}; chưa có danh mục đã xác minh, "
                                   "scoring.py/evaluation.py chưa cài. Vòng của máy không phải đáp án."},
@@ -169,13 +187,18 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
               "hough_defaults": HOUGH_DEFAULTS, "radius_px": [r_min, r_max]}
     run_id = f"e2e_{image_id}_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
     directory = save_run(output_root, run_id, metadata=metadata, crater_set=machine, params=params, code_version=code_version)
-    summary["seconds_total"] = round(time.perf_counter() - started, 3)
-    if player:
-        (directory / "player.json").write_text(json.dumps(player, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    if reference:
-        (directory / "reference_unreviewed.json").write_text(json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    np.savez_compressed(directory / "arrays.npz", gray=pre["gray"], edges=pre["edges"], theta=pre["theta"])
-    if render:
-        render_overlay(directory / "overlay.png", pre["gray"], pre["edges"], metadata, machine, player, reference)
-    (directory / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    # A run directory is either complete or removed: never leave craters.json without summary/overlay.
+    try:
+        summary["seconds_total"] = round(time.perf_counter() - started, 3)
+        if player:
+            (directory / "player.json").write_text(json.dumps(player, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        if reference:
+            (directory / "reference.json").write_text(json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        np.savez_compressed(directory / "arrays.npz", gray=pre["gray"], edges=pre["edges"], theta=pre["theta"])
+        if render:
+            render_overlay(directory / "overlay.png", pre["gray"], pre["edges"], metadata, machine, player, reference)
+        (directory / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except BaseException:
+        shutil.rmtree(directory, ignore_errors=True)
+        raise
     return directory, summary
