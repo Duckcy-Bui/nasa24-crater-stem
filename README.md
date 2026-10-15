@@ -35,6 +35,8 @@ python -m unittest discover -s tests -v
 
 Xem [TIEN_XU_LY.md](docs/TIEN_XU_LY.md) để chạy tiền xử lý và đọc ảnh từng bước. Sau khi merge cả ba PR, xem thêm `docs/S1-06_BANG_ANH_XA_ANH_CAT.md` để lấy bộ ảnh và `docs/HOUGH.md` để chạy Hough. Ảnh thật có nguồn riêng; danh mục hố chỉ được dùng khi đã xác minh, không suy ra đáp án từ vị trí tâm ảnh.
 
+[S1-12](docs/S1-12_VI_DU_VA_DOI_CHIEU_HOUGH.md) / [S1-15](docs/S1-15_LY_THUYET_HOUGH.md) / [References](docs/TAI_LIEU_THAM_KHAO_HOUGH.md)
+
 ## Cấu trúc thư mục
 
 ```text
