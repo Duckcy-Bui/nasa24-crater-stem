@@ -1,0 +1,259 @@
+{
+  "generated": "2026-10-15T03:24:49.531Z",
+  "url": "http://127.0.0.1:8501",
+  "note": "demo circles only, not ground truth",
+  "checks": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 957
+      },
+      "empty": {
+        "stage": 730,
+        "stageBottom": 786,
+        "panel": 474,
+        "fitted": true,
+        "zoom": "100%",
+        "count": "0",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [],
+        "saved": null,
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 957,
+        "scrollW": 1920,
+        "clientW": 1920,
+        "stageBottomInViewport": 893
+      },
+      "many": {
+        "stage": 730,
+        "stageBottom": 786,
+        "panel": 474,
+        "fitted": true,
+        "zoom": "100%",
+        "count": "8",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 957,
+        "scrollW": 1920,
+        "clientW": 1920,
+        "stageBottomInViewport": 893
+      },
+      "zoomed": {
+        "stage": 730,
+        "stageBottom": 786,
+        "panel": 474,
+        "fitted": true,
+        "zoom": "381%",
+        "count": "8",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 957,
+        "scrollW": 1920,
+        "clientW": 1920,
+        "stageBottomInViewport": 893
+      },
+      "afterZoomDraw": {
+        "count": "9",
+        "lastRow": "U9 158.13 263.57 7.37",
+        "zoom": "381%"
+      },
+      "jsErrors": []
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "empty": {
+        "stage": 673,
+        "stageBottom": 729,
+        "panel": 531,
+        "fitted": true,
+        "zoom": "100%",
+        "count": "0",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [],
+        "saved": null,
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 900,
+        "scrollW": 1440,
+        "clientW": 1440,
+        "stageBottomInViewport": 836
+      },
+      "many": {
+        "stage": 673,
+        "stageBottom": 729,
+        "panel": 531,
+        "fitted": true,
+        "zoom": "100%",
+        "count": "8",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 900,
+        "scrollW": 1440,
+        "clientW": 1440,
+        "stageBottomInViewport": 836
+      },
+      "zoomed": {
+        "stage": 673,
+        "stageBottom": 729,
+        "panel": 531,
+        "fitted": true,
+        "zoom": "381%",
+        "count": "8",
+        "iframeScrollW": 1232,
+        "iframeClientW": 1232,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 32,
+        "iframeTop": 107,
+        "innerHeight": 900,
+        "scrollW": 1440,
+        "clientW": 1440,
+        "stageBottomInViewport": 836
+      },
+      "afterZoomDraw": {
+        "count": "9",
+        "lastRow": "U9 158.03 263.33 8.00",
+        "zoom": "381%"
+      },
+      "jsErrors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "empty": {
+        "stage": 358,
+        "stageBottom": 418,
+        "panel": 358,
+        "fitted": false,
+        "zoom": "100%",
+        "count": "0",
+        "iframeScrollW": 358,
+        "iframeClientW": 358,
+        "rows": [],
+        "saved": null,
+        "minTarget": 38,
+        "iframeTop": 167,
+        "innerHeight": 844,
+        "scrollW": 390,
+        "clientW": 390,
+        "stageBottomInViewport": 585
+      },
+      "many": {
+        "stage": 358,
+        "stageBottom": 418,
+        "panel": 358,
+        "fitted": false,
+        "zoom": "100%",
+        "count": "8",
+        "iframeScrollW": 358,
+        "iframeClientW": 358,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 38,
+        "iframeTop": -586,
+        "innerHeight": 844,
+        "scrollW": 390,
+        "clientW": 390,
+        "stageBottomInViewport": -168
+      },
+      "zoomed": {
+        "stage": 358,
+        "stageBottom": 418,
+        "panel": 358,
+        "fitted": false,
+        "zoom": "381%",
+        "count": "8",
+        "iframeScrollW": 358,
+        "iframeClientW": 358,
+        "rows": [
+          "U1 105.42 200.18 108.64",
+          "U2 178.31 211.77 31.52",
+          "U3 433.04 35.21 7.38",
+          "U4 406.12 340.26 8.81",
+          "U5 243.20 183.47 6.09",
+          "U6 383.40 280.63 5.62",
+          "U7 313.00 272.40 5.20",
+          "U8 448.58 410.16 5.43"
+        ],
+        "saved": "Đã lưu 8 vòng · 10:25",
+        "minTarget": 38,
+        "iframeTop": -6,
+        "innerHeight": 844,
+        "scrollW": 390,
+        "clientW": 390,
+        "stageBottomInViewport": 412
+      },
+      "afterZoomDraw": {
+        "count": "9",
+        "lastRow": "U9 215.73 296.27 15.08",
+        "zoom": "381%"
+      },
+      "jsErrors": []
+    }
+  ]
+}
