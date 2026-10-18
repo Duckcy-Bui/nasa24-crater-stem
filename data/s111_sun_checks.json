@@ -1,0 +1,419 @@
+{
+  "schema": "s111_sun_checks/1",
+  "question": "Phía tối của thành hố có nằm về phía mũi tên (phía Mặt Trời) không?",
+  "how_to_fill": "Với mỗi hố: dark_side = 'toward_sun' nếu phía tối nằm về phía mũi tên, 'away' nếu ngược lại, 'unclear' nếu không nhìn rõ. verdict của ảnh: 'consistent' khi các hố nhìn rõ đều toward_sun; 'inverted' khi các hố nhìn rõ đều away; 'unclear' khi không đủ hố nhìn rõ hoặc mâu thuẫn. Nếu không ứng viên nào là hố rõ: ghi manual_craters = [{\"x\":..,\"y\":..,\"r\":..}] rồi chạy lại script để vẽ phiếu mới. Điền checked_by, checked_on (YYYY-MM-DD). Hố tham chiếu không dùng làm ví dụ đánh giá S1-11.",
+  "checks": [
+    {
+      "image_id": "moon_ap16_m102057602r_c01",
+      "stated_side": "west",
+      "stated_azimuth_deg": 270.0,
+      "stated_from": "metadata",
+      "incidence_deg": 79.94,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 298.0,
+          "y": 200.0,
+          "r": 18.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 127.0,
+          "y": 220.0,
+          "r": 14.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 3,
+          "x": 122.0,
+          "y": 335.0,
+          "r": 14.0,
+          "dark_side": "toward_sun"
+        }
+      ],
+      "manual_craters": [
+        {
+          "x": 298,
+          "y": 200,
+          "r": 18
+        },
+        {
+          "x": 127,
+          "y": 220,
+          "r": 14
+        },
+        {
+          "x": 122,
+          "y": 335,
+          "r": 14
+        }
+      ],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Cả 3 hố tự chọn rõ: tối phía Tây, vành sáng phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m102057602r_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m102064759r_c01",
+      "stated_side": "west",
+      "stated_azimuth_deg": 270.0,
+      "stated_from": "metadata",
+      "incidence_deg": 81.08,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 189.0,
+          "y": 375.0,
+          "r": 6.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 140.0,
+          "y": 387.0,
+          "r": 6.0,
+          "dark_side": "toward_sun"
+        }
+      ],
+      "manual_craters": [
+        {
+          "x": 189,
+          "y": 375,
+          "r": 6
+        },
+        {
+          "x": 140,
+          "y": 387,
+          "r": 6
+        }
+      ],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Cả 2 hố tự chọn rõ: tối phía Tây, sáng phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m102064759r_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m1108182629l_c01",
+      "stated_side": "east",
+      "stated_azimuth_deg": 90.0,
+      "stated_from": "side_candidate (chưa xác minh)",
+      "incidence_deg": 65.27,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 249.0,
+          "y": 180.0,
+          "r": 120.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 51.0,
+          "y": 490.0,
+          "r": 6.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 3,
+          "x": 207.0,
+          "y": 450.0,
+          "r": 7.0,
+          "dark_side": "unclear"
+        }
+      ],
+      "manual_craters": [
+        {
+          "x": 249,
+          "y": 180,
+          "r": 120
+        },
+        {
+          "x": 51,
+          "y": 490,
+          "r": 6
+        },
+        {
+          "x": 207,
+          "y": 450,
+          "r": 7
+        }
+      ],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Hố lớn: thành Tây sáng, bên trong tối phía Đông; hố 2 rõ; hố 3 chưa rõ → xác nhận nắng từ phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m1108182629l_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m113853974r_c01",
+      "stated_side": "east",
+      "stated_azimuth_deg": 90.0,
+      "stated_from": "side_candidate (chưa xác minh)",
+      "incidence_deg": 54.72,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 435.0,
+          "y": 32.0,
+          "r": 8.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 405.0,
+          "y": 340.0,
+          "r": 8.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 3,
+          "x": 383.0,
+          "y": 218.0,
+          "r": 10.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 4,
+          "x": 137.0,
+          "y": 270.0,
+          "r": 9.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 5,
+          "x": 179.0,
+          "y": 57.0,
+          "r": 10.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 6,
+          "x": 161.0,
+          "y": 358.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        }
+      ],
+      "manual_craters": [],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Hố 1, 2 rõ: sáng phía Tây, tối phía Đông → xác nhận nắng từ phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m113853974r_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m117392541l_c01",
+      "stated_side": "west",
+      "stated_azimuth_deg": 270.0,
+      "stated_from": "metadata",
+      "incidence_deg": 83.3,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 285.0,
+          "y": 127.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 2,
+          "x": 418.0,
+          "y": 167.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 3,
+          "x": 162.0,
+          "y": 358.0,
+          "r": 8.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 4,
+          "x": 407.0,
+          "y": 424.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 5,
+          "x": 282.0,
+          "y": 40.0,
+          "r": 8.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 6,
+          "x": 449.0,
+          "y": 220.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        }
+      ],
+      "manual_craters": [],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Hố 3, 5 rõ: tối phía Tây, sáng phía Đông; hố 4 trong bóng.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m117392541l_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "stated_side": "west",
+      "stated_azimuth_deg": 270.0,
+      "stated_from": "metadata",
+      "incidence_deg": 87.7,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 110.0,
+          "y": 424.0,
+          "r": 10.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 298.0,
+          "y": 17.0,
+          "r": 10.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 3,
+          "x": 52.0,
+          "y": 372.0,
+          "r": 9.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 4,
+          "x": 162.0,
+          "y": 240.0,
+          "r": 10.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 5,
+          "x": 402.0,
+          "y": 441.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 6,
+          "x": 226.0,
+          "y": 211.0,
+          "r": 9.0,
+          "dark_side": "unclear"
+        }
+      ],
+      "manual_craters": [],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Hố 1, 3 rõ: tối phía Tây, vành sáng phía Đông; hố 2 chìm trong bóng.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m132732855l_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m132732855r_c01",
+      "stated_side": "west",
+      "stated_azimuth_deg": 270.0,
+      "stated_from": "metadata",
+      "incidence_deg": 87.78,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 266.0,
+          "y": 34.0,
+          "r": 8.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 2,
+          "x": 463.0,
+          "y": 40.0,
+          "r": 6.0,
+          "dark_side": "toward_sun"
+        }
+      ],
+      "manual_craters": [
+        {
+          "x": 266,
+          "y": 34,
+          "r": 8
+        },
+        {
+          "x": 463,
+          "y": 40,
+          "r": 6
+        }
+      ],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Cả 2 hố tự chọn rõ: tối phía Tây, sáng phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m132732855r_c01.png"
+    },
+    {
+      "image_id": "moon_ap16_m175179080r_c01",
+      "stated_side": "east",
+      "stated_azimuth_deg": 90.0,
+      "stated_from": "side_candidate (chưa xác minh)",
+      "incidence_deg": 41.95,
+      "reference_craters": [
+        {
+          "n": 1,
+          "x": 441.0,
+          "y": 49.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 2,
+          "x": 202.0,
+          "y": 279.0,
+          "r": 12.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 3,
+          "x": 485.0,
+          "y": 153.0,
+          "r": 8.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 4,
+          "x": 174.0,
+          "y": 168.0,
+          "r": 9.0,
+          "dark_side": "unclear"
+        },
+        {
+          "n": 5,
+          "x": 342.0,
+          "y": 265.0,
+          "r": 14.0,
+          "dark_side": "toward_sun"
+        },
+        {
+          "n": 6,
+          "x": 436.0,
+          "y": 237.0,
+          "r": 9.0,
+          "dark_side": "unclear"
+        }
+      ],
+      "manual_craters": [],
+      "verdict": "consistent",
+      "checked_by": "Đinh Quang Hưng",
+      "checked_on": "2026-10-18",
+      "note": "Hố 2, 5 rõ: sáng phía Tây, tối phía Đông → xác nhận nắng từ phía Đông.",
+      "evidence": "docs/evidence/s1-11/sun_check_moon_ap16_m175179080r_c01.png"
+    }
+  ]
+}
