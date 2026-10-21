@@ -67,7 +67,7 @@ Trường hợp đặc biệt: nếu $P_{hi} = P_{lo}$ nhưng ảnh vẫn có bi
 
 $$\beta = \max\!\left(1,\; \frac{\text{clipLimit} \times N_{\text{ô}}}{N_{\text{bin}}}\right)$$
 
-với $N_{\text{ô}}$ là số pixel một ô và $N_{\text{bin}}$ là số mức xám. Với ảnh 8 bit ($N_{\text{bin}} = 256$), ô 64 × 64 và clipLimit = 2 thì β = 32: clipLimit có tác dụng đúng như mong muốn. Với ảnh 16 bit ($N_{\text{bin}} = 65536$) thì $2 \times 4096 / 65536 < 1$, nên β luôn bằng 1 bất kể clipLimit. Vì lý do này nhóm chạy CLAHE trên ảnh 8 bit, khác với đặc tả ban đầu S1-04 (ghi 16 bit); chi tiết và số đo ở mục 3.2.6.
+với $N_{\text{ô}}$ là số pixel một ô và $N_{\text{bin}}$ là số mức xám. Với ảnh 8 bit ($N_{\text{bin}} = 256$), ô 64 × 64 và clipLimit = 2 thì β = 32: clipLimit có tác dụng đúng như mong muốn. Với ảnh 16 bit ($N_{\text{bin}} = 65536$) thì $2 \times 4096 / 65536 < 1$, nên với các clipLimit thường dùng (1–4; cụ thể mọi clipLimit < 16 với ô 64 × 64) β đều bằng 1. Vì lý do này nhóm chạy CLAHE trên ảnh 8 bit, khác với đặc tả ban đầu S1-04 (ghi 16 bit); chi tiết và số đo ở mục 3.2.6.
 
 **Thứ tự CLAHE trước Gauss.** CLAHE khuếch đại cả nhiễu, nên đặt làm trơn Gauss ngay sau để dập phần nhiễu vừa bị khuếch đại trước khi tính gradient [1].
 
@@ -253,7 +253,7 @@ Tham số mặc định nằm trong [configs/default.json](../configs/default.js
 | `clahe_grid` | 8 | B4 | Lưới 8 × 8, mỗi ô 64 × 64 px, đủ lớn để histogram cục bộ có ý nghĩa |
 | `clahe_bits` | 8 | B4 | Để clipLimit có tác dụng (mục 2.1.5); khác S1-04 |
 | `gauss_sigma` | 1,5 | B5 | σ ≤ r_min/3 |
-| `gauss_kernel_size` | 11 | B5 | 2⌈3σ⌉ + 1 |
+| `gauss_kernel_size` | 11 | B5 | 2⌈3σ⌉ + 1. `configs/default.json` cố định 11, nên khi đổi σ phải đổi cả kích thước kernel (hoặc đặt `null` để tự tính) |
 | `border_mode` | `reflect_101` | B5, B6 | Khớp mặc định OpenCV để đối chiếu |
 | `canny_high_pct` | 90 | B7 | $T_{high}$ = P90 của \|G\|·255 |
 | `canny_low_ratio` | 0,4 | B7 | $T_{low}$ = 0,4 · $T_{high}$ |
@@ -283,7 +283,7 @@ Giá trị tính ra trên hai ảnh (file đầy đủ: [docs/evidence/s1-14/](e
 
 | Đại lượng | STT 13 (87,7°) | STT 17 (7,64°) |
 |---|---|---|
-| $P_{lo}$ ; $P_{hi}$ sau B3 | 0,0 ; 1,0 | 0,0 ; 1,0 |
+| Biên B3 ($P_{lo}$ ; $P_{hi}$) tính trên ảnh vào | 0,0 ; 1,0 | 0,0 ; 1,0 |
 | $T_{low}$ ; $T_{high}$ của Canny | 63,6 ; 159,0 | 46,3 ; 115,8 |
 | Lề biên thực tế | 6 px | 6 px |
 | Tỷ lệ pixel hợp lệ | 100 % | 100 % |
@@ -293,7 +293,7 @@ Ngưỡng Canny của ảnh nắng đứng thấp hơn khoảng 27 % so với �
 
 ### 3.2.5. Kiểm chứng phần tự viết
 
-So sánh với hàm OpenCV tương ứng (S1-04 mục 9), đo trên ảnh thật STT 13 và trong bộ kiểm thử `tests/test_preprocessing.py`:
+So sánh với hàm OpenCV tương ứng (S1-04 mục 9), đo trên ảnh thật STT 13 và trong bộ kiểm thử `tests/test_preprocessing.py`. Số trên STT 13 là đo thủ công, chưa có script trong repo; Sobel được đo trên ảnh sau B5 (đo trên ảnh vào thì gx lệch tới 2,4·10⁻⁷):
 
 | Phần tự viết | Đối chiếu với | Sai khác tuyệt đối lớn nhất trên STT 13 | Tiêu chí |
 |---|---|---|---|
@@ -313,7 +313,7 @@ Bộ kiểm thử còn kiểm tra chuẩn hóa phân vị trên ma trận tính 
 | 2 | 0,188 | 0,056 |
 | 4 | 0,188 | 0,090 |
 
-Với 16 bit, clipLimit không có tác dụng và nhiễu bị khuếch đại khoảng 9 lần. Việc lượng tử về 8 bit ảnh hưởng không đáng kể tới các bước sau: hướng gradient ở các điểm biên mạnh lệch trung vị 0,05–0,08°, biên Canny trùng 93–96 %. Phương án 16 bit vẫn chạy được (`clahe_bits = 16`) để so sánh.
+Với 16 bit, clipLimit không có tác dụng và nhiễu bị khuếch đại khoảng 9 lần. Riêng phép lượng tử về 8 bit (so ảnh 8 bit với ảnh số thực, **không qua CLAHE**) ảnh hưởng không đáng kể tới các bước sau: hướng gradient ở các điểm biên mạnh lệch trung vị 0,05–0,08°, biên Canny trùng 93–96 %. Con số này **không** so sánh CLAHE 8 bit với CLAHE 16 bit: hai phương án đó cho kết quả khác hẳn. Đo ngày 21/10/2026 trên STT 13, STT 17 và hai ảnh 20 m/px (ap15_hia_c01, marefrig_loc_c01), tại các điểm biên chung của hai phương án: hướng gradient lệch trung vị 1,35–2,14°; chỉ 56–76 % biên của bản 8 bit cũng có trong bản 16 bit. Bảng trên tái lập được bằng dữ liệu của `tests/test_preprocessing.py` (seed 0); phép đo lượng tử chưa có script trong repo. Phương án 16 bit vẫn chạy được (`clahe_bits = 16`) để so sánh.
 
 ### 3.2.7. Hạn chế ban đầu
 
@@ -329,7 +329,7 @@ Với 16 bit, clipLimit không có tác dụng và nhiễu bị khuếch đại 
 ```bash
 python scripts/run_preprocessing.py --input data/processed/<image_id>.npy --metadata data/processed/<image_id>.json
 python scripts/run_preprocessing.py --input <ảnh> --metadata <json> --set gauss_sigma=2.0 canny_high_pct=95
-python scripts/s114_figures.py        # tạo lại hình của tài liệu này
+python scripts/s114_figures.py        # tạo lại hình của tài liệu này (ghi vào docs/; thêm --out-dir <thư mục> để ghi chỗ khác)
 ```
 
 Mỗi lần chạy lưu thư mục riêng `outputs/<run_id>/` gồm ảnh từng bước, `params.json`, `metadata.json` và `run.json` (mã commit, SHA-256 file đầu vào). Hướng dẫn chi tiết ở [TIEN_XU_LY.md](TIEN_XU_LY.md).
@@ -409,7 +409,7 @@ Trên STT 13, sau khi loại 9 vòng trùng hố tham chiếu, 4 vòng điểm c
 | M11, M3, M66 | hợp (+0,69 đến +0,74) | Không phải hố, chỉ là địa hình gồ ghề |
 | M51, M92, M71, M60 | ngược (−0,72 đến −0,79) | Không phải hố: mép bóng, ranh giới bóng, địa hình nhiễu |
 
-Kiểm thử trên cảnh giả lập có đáp án (`tests/test_postprocessing.py`, 23 bài):
+Kiểm thử trên cảnh giả lập có đáp án (`tests/test_postprocessing.py`). Bài kiểm thử dùng góc tới 70°; các dòng 40° và 87° tính thêm bằng cùng cảnh giả lập của bài kiểm thử, chưa nằm trong bộ test:
 
 | Trường hợp | S_raw | S sau trừ dốc | Nhãn |
 |---|---|---|---|
@@ -421,7 +421,7 @@ Kiểm thử trên cảnh giả lập có đáp án (`tests/test_postprocessing.
 
 ### 3.4.6. Hạn chế ban đầu
 
-- **Nhãn "hợp" không khẳng định là hố.** 3/4 vòng điểm cao nhất của STT 13 không phải hố. Thả 500 vòng ngẫu nhiên lên STT 8, 13, 18 thì 11–16 % được chấm "hợp" (vòng Hough: 24–28 %). Địa hình gồ ghề đôi khi tình cờ có quy luật sáng–tối giống hố. Nhãn "ngược" đáng tin hơn: cả 4 vòng điểm thấp nhất đều không phải hố. Vì vậy S1-11 phù hợp để **loại bớt ứng viên sai**, không phù hợp làm đáp án chấm người chơi.
+- **Điểm sáng–tối chưa tách được hố thật với ứng viên sai.** 3/4 vòng điểm cao nhất của STT 13 không phải hố; 4 vòng điểm thấp nhất cũng không phải hố, nhưng đó mới là 4 vòng do một người nhìn. So với 500 vòng đặt ngẫu nhiên mỗi ảnh, vòng Hough nhiều hơn ở **cả hai** nhãn (STT 8, 13, 16, 18: Hough hợp 17–28 %, ngược 22–27 %; ngẫu nhiên hợp 12–17 %, ngược 16–18 %; bảng ở `docs/S1-11_SANG_TOI.md` mục 7). Vì vậy S1-11 hiện chỉ chấm thêm thông tin cho từng vòng; muốn dùng để loại ứng viên (S2-02) phải đo lại trên nhãn đã kiểm chéo, và không dùng làm đáp án chấm người chơi.
 - **Chỉ 8/26 ảnh có hướng nắng đủ tin cậy.** 15 mosaic không có hướng nắng; nếu cần, có thể tính phương vị từ tọa độ điểm dưới Mặt Trời trong nhãn PDS của ảnh thành phần.
 - **STT 16 cần xem lại.** Đây là ảnh duy nhất có số vòng ngược (27) nhiều hơn hợp (17), và cũng là ảnh có căn cứ kiểm tra bằng mắt yếu nhất (một hố lớn và một hố nhỏ). Chưa đủ để kết luận phía Đông sai.
 - **Mép bóng cắt qua bên trong vòng** vẫn bị chấm "ngược". Nhãn này đúng về hướng, nhưng không phân biệt được với gò nổi.

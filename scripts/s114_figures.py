@@ -204,7 +204,13 @@ def detrend_figure(path: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))
+    parser.add_argument("--out-dir", default=None,
+                        help="ghi hình và tham số vào thư mục này thay vì docs/ (để chạy thử không làm bẩn repo)")
     args = parser.parse_args(argv)
+    global OUT, EVIDENCE
+    if args.out_dir:
+        OUT = Path(args.out_dir) / "images"
+        EVIDENCE = Path(args.out_dir) / "evidence"
     OUT.mkdir(parents=True, exist_ok=True)
     EVIDENCE.mkdir(parents=True, exist_ok=True)
 
