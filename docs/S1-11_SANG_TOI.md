@@ -124,9 +124,20 @@ Không vòng nào bị đảo từ hợp sang ngược hay ngược lại. Mỗi
 | **M51, M92, M71, M60** | ngược (−0,72 đến −0,79) | **Ứng viên sai**: mép bóng, ranh giới bóng hoặc địa hình nhiễu. Máy đánh dấu đúng là đáng ngờ |
 
 Rút ra:
-- Nhãn **"ngược" đáng tin**: cả 4 vòng điểm thấp nhất đều không phải hố.
-- Nhãn **"hợp" chưa đủ để khẳng định là hố**: 3/4 vòng điểm cao nhất không phải hố. Số liệu khác cũng cho thấy điều này: thả 500 vòng ngẫu nhiên lên STT 8, 13, 18 thì 11–16% được chấm "hợp", so với 24–28% ở vòng Hough.
-- Vì vậy S1-11 phù hợp để **loại bớt ứng viên sai** (S2-02), không phù hợp làm đáp án chấm người chơi.
+- Trên ví dụ này, cả 4 vòng điểm thấp nhất ("ngược") đều không phải hố. Đây mới là **4 vòng do một người nhìn**, chưa đủ để kết luận nhãn "ngược" đáng tin.
+- Nhãn **"hợp" chưa đủ để khẳng định là hố**: 3/4 vòng điểm cao nhất không phải hố.
+- So với vòng đặt ngẫu nhiên, vòng Hough nhiều hơn ở **cả hai** nhãn, gần như đối xứng. Đo lại ngày 21/10/2026: 500 vòng ngẫu nhiên mỗi ảnh (seed 0, bán kính lấy từ chính các vòng Hough của ảnh, tâm đều trong ảnh) trên STT 8, 13, 16, 18:
+
+  | Ảnh | Hough: hợp / ngược | Ngẫu nhiên: hợp / ngược |
+  |---|---|---|
+  | STT 8 | 26% / 26% | 12% / 18% |
+  | STT 13 | 28% / 25% | 12% / 18% |
+  | STT 16 | 17% / 27% | 17% / 17% |
+  | STT 18 | 24% / 22% | 16% / 16% |
+
+  Vậy điểm số hiện chủ yếu cho biết vòng nằm trên vùng có dải sáng–tối rõ, **chưa tách được hố thật với ứng viên sai**.
+- Vì vậy S1-11 hiện chỉ **chấm thêm thông tin** cho từng vòng. Muốn dùng để loại ứng viên (S2-02) cần nhãn đã kiểm chéo để đo lại; không dùng làm đáp án chấm người chơi.
+- 8 phiếu kiểm tra hướng nắng bằng mắt hiện do một người kiểm. Nên nhờ người thứ hai kiểm chéo STT 11, 15, 16 trước khi chép hướng nắng sang `crops.json`. Phiếu chỉ xác nhận hướng nắng trong hệ tọa độ ảnh, với giả định `north_angle_deg = 0`.
 
 ## 8. Hạn chế đã biết
 

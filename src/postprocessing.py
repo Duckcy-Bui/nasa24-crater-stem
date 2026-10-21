@@ -214,6 +214,7 @@ def score_one(image: np.ndarray, valid: np.ndarray, c: dict, u: tuple[float, flo
 def resolve_params(params: dict | None) -> dict:
     params = dict(params or {})
     params.pop("sun_checks", None)
+    params.pop("valid_mask", None)
     unknown = set(params) - set(DEFAULT_PARAMS)
     if unknown:
         raise ValueError("Tham số S1-11 không biết: " + ", ".join(sorted(unknown)))
@@ -228,9 +229,14 @@ def score_candidates(circles: list[dict], image: Any, metadata: dict, params: di
                "score_raw": float|None (ảnh gốc), "reason": str|None}
     """
     sun_checks = (params or {}).get("sun_checks")
+    if valid_mask is None:
+        valid_mask = (params or {}).get("valid_mask")
     p = resolve_params(params)
     image = np.asarray(image, dtype=np.float32)
     valid = np.ones(image.shape, dtype=bool) if valid_mask is None else np.asarray(valid_mask, dtype=bool)
+    # NaN/inf pixels are nodata: exclude them, otherwise a score becomes NaN and breaks JSON output.
+    valid = valid & np.isfinite(image)
+    image = np.where(valid, image, 0.0).astype(np.float32)
     checks = sun_checks if isinstance(sun_checks, dict) else load_sun_checks(sun_checks)
     image_id = metadata.get("image_id")
     sun = resolve_sun(metadata, checks.get(image_id), p)
@@ -271,6 +277,7 @@ def filter_candidates(circles: list[dict], image, metadata: dict, params: dict) 
     """Giữ nguyên hệ tọa độ và số vòng; chỉ thêm trường "shading" (S1-11 không lọc).
 
     Thiếu hướng nắng đủ tin cậy thì mọi vòng ghi not_checked kèm lý do và ghi log.
+    params có thể chứa "valid_mask" (mặt nạ bool cùng kích thước ảnh) để bỏ pixel nodata.
     """
     scored, _ = score_candidates(circles, image, metadata, params)
     return scored

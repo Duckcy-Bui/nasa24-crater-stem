@@ -150,6 +150,13 @@ def main(argv: list[str] | None = None) -> int:
         })
         print(f"đã tạo phiếu {image_id}: {len(craters)} hố → {evidence.relative_to(ROOT)}")
 
+    # Ảnh không có trong --processed-dir của lần chạy này: giữ nguyên phiếu cũ, không xóa kết quả đã kiểm.
+    seen = {c["image_id"] for c in checks}
+    kept = [c for image_id, c in old.items() if image_id not in seen]
+    for c in kept:
+        print(f"giữ nguyên   {c['image_id']}: không có trong lần chạy này")
+    checks = sorted(checks + kept, key=lambda c: c["image_id"])
+
     record = {
         "schema": "s111_sun_checks/1",
         "question": QUESTION,

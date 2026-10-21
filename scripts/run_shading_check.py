@@ -12,7 +12,7 @@ report.json (căn cứ hướng nắng, số vòng mỗi nhãn, tham số), cand
 overlay.png và examples.png (các vòng điểm cao nhất/thấp nhất phóng to để người
 kiểm tra xác nhận bằng mắt). Hố tham chiếu trong data/s111_sun_checks.json
 được đánh dấu và không đưa vào examples.png.
---all ghi docs/evidence/s1-11/s111_tong_hop.csv.
+--all ghi docs/evidence/s1-11/s111_tong_hop.csv (đổi bằng --summary-csv; --preview ghi vào --output-root).
 """
 from __future__ import annotations
 
@@ -169,6 +169,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--preview", action="store_true", help="bỏ yêu cầu kiểm tra bằng mắt (chỉ để xem trước)")
     parser.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))
     parser.add_argument("--output-root", default=str(ROOT / "outputs"))
+    parser.add_argument("--summary-csv", default=None,
+                        help="bảng tổng hợp của --all (mặc định docs/evidence/s1-11/s111_tong_hop.csv; "
+                             "với --preview mặc định ghi vào --output-root để không ghi đè minh chứng)")
     parser.add_argument("--no-render", action="store_true")
     args = parser.parse_args(argv)
     if bool(args.image_id) == args.all:
@@ -195,13 +198,15 @@ def main(argv: list[str] | None = None) -> int:
                      " | ".join(report["sun_basis"]), report["hough_circles"], k["consistent"], k["inverted"],
                      k["unclear"], k["not_checked"], report["preview"], directory.name])
         print(f"{image_id:30s} {'chấm' if report['checked'] else 'bỏ qua'}: {report['reason'] or k}")
-    SUMMARY_CSV.parent.mkdir(parents=True, exist_ok=True)
-    with SUMMARY_CSV.open("w", newline="", encoding="utf-8") as f:
+    summary_csv = Path(args.summary_csv) if args.summary_csv else (
+        Path(args.output_root) / "s111_tong_hop_xem_truoc.csv" if args.preview else SUMMARY_CSV)
+    summary_csv.parent.mkdir(parents=True, exist_ok=True)
+    with summary_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["image_id", "stt", "sun_quality", "incidence_deg", "kiem_tra_bang_mat", "duoc_cham", "ly_do_khong_cham",
                     "can_cu_huong_nang", "ung_vien_hough", "hop", "nguoc", "khong_ro", "khong_kiem_tra", "xem_truoc", "run_dir"])
         w.writerows(rows)
-    print(f"Đã ghi {SUMMARY_CSV.relative_to(ROOT)}")
+    print(f"Đã ghi {summary_csv}")
     return 0
 
 

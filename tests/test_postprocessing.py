@@ -231,6 +231,43 @@ class FilterCandidates(unittest.TestCase):
         with self.assertRaises(ValueError):
             score_candidates(self.circles, self.image, self.meta, {"threshold": 1})
 
+    def test_nan_pixels_are_nodata_and_never_give_nan_scores(self):
+        image = self.image.copy()
+        c = self.circles[0]
+        image[int(c["y"]) - 3:int(c["y"]) + 3, int(c["x"]) - 3:int(c["x"]) + 3] = np.nan
+        out, _ = score_candidates(self.circles, image, self.meta, {"sun_checks": self.checks})
+        for shading in (o["shading"] for o in out):
+            for key in ("score", "score_raw"):
+                self.assertFalse(isinstance(shading[key], float) and math.isnan(shading[key]), shading)
+
+    def test_valid_mask_can_come_through_filter_candidates_params(self):
+        mask = np.ones(self.image.shape, dtype=bool)
+        mask[:, :] = False  # everything nodata: every circle must be not_checked, none scored
+        out = filter_candidates(self.circles, self.image, self.meta, {"sun_checks": self.checks, "valid_mask": mask})
+        self.assertEqual({c["shading"]["status"] for c in out}, {"not_checked"})
+
+
+class SunCheckSheet(unittest.TestCase):
+    def test_rerun_keeps_checks_of_images_not_in_this_run(self):
+        import json
+        import tempfile
+        from unittest import mock
+        import scripts.s111_sun_check_sheet as sheet
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checks_path, empty = root / "data" / "s111_sun_checks.json", root / "processed"
+            checks_path.parent.mkdir(parents=True)
+            empty.mkdir()
+            done = [{"image_id": "img_a", "verdict": "consistent", "checked_by": "A"},
+                    {"image_id": "img_b", "verdict": "pending", "checked_by": None}]
+            checks_path.write_text(json.dumps({"checks": done}), encoding="utf-8")
+            with mock.patch.object(sheet, "ROOT", root), mock.patch.object(sheet, "SUN_CHECKS_PATH", checks_path), \
+                    mock.patch.object(sheet, "EVIDENCE", root / "evidence"), mock.patch("builtins.print"):
+                sheet.main(["--processed-dir", str(empty)])
+            kept = json.loads(checks_path.read_text(encoding="utf-8"))["checks"]
+            self.assertEqual([c["image_id"] for c in kept], ["img_a", "img_b"])
+            self.assertEqual(kept[0]["verdict"], "consistent")
+
 
 if __name__ == "__main__":
     unittest.main()

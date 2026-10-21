@@ -60,6 +60,7 @@ class TestEndToEnd(unittest.TestCase):
         # Metadata giả lập không có hướng nắng: S1-11 ghi not_checked kèm lý do, không lọc.
         shading = [c["shading"] for c in read_json(directory / "craters.json")["circles"]]
         self.assertTrue(shading and all(s["status"] == "not_checked" and s["reason"] for s in shading))
+        self.assertEqual(post["shading_counts"], {"not_checked": len(shading)})
         self.assertEqual(summary["steps"]["scoring"]["status"], "skipped")
         self.assertIn("không phải đáp án", summary["steps"]["scoring"]["reason"])
 
