@@ -86,12 +86,14 @@ Chỉ sử dụng cho các hố lớn $D \ge 1\text{--}2\text{ km}$ (chủ yếu
 2. **Nghịch đảo affine sang tọa độ pixel ảnh nguồn:**
    - Đọc ma trận biến đổi affine 6 tham số từ `metadata["source"]["source_transform"]`:
      $$\begin{pmatrix} X \\ Y \end{pmatrix} = \begin{pmatrix} a & b & c \\ d & e & f \end{pmatrix} \begin{pmatrix} col_{source} \\ row_{source} \\ 1 \end{pmatrix}$$
-   - Giải phương trình nghịch đảo để tìm $(col_{source}, row_{source})$.
+   - Giải phương trình nghịch đảo để tìm $(col_{source}, row_{source})$. Affine của `rasterio` tính theo **góc** pixel, còn quy ước chung của nhóm ([DINH_DANG_DU_LIEU.md](DINH_DANG_DU_LIEU.md) mục 2, `src/contracts.py::source_coordinates`) lấy **tâm pixel có tọa độ nguyên**. Vì vậy đổi sang quy ước nhóm bằng:
+     $$x_{src} = col_{source} - 0{,}5,\qquad y_{src} = row_{source} - 0{,}5$$
 3. **Quy đổi sang tọa độ ảnh cắt 512×512:**
    - Dùng thông số cắt `crop_x0`, `crop_y0` và hệ số giảm mẫu `downsample_k` trong metadata:
-     $$x_{crop} = \frac{col_{source} - crop\_x0}{downsample\_k}$$
-     $$y_{crop} = \frac{row_{source} - crop\_y0}{downsample\_k}$$
+     $$x_{crop} = \frac{x_{src} - crop\_x0 - (downsample\_k - 1)/2}{downsample\_k}$$
+     $$y_{crop} = \frac{y_{src} - crop\_y0 - (downsample\_k - 1)/2}{downsample\_k}$$
      $$r_{px} = \frac{D_{km} \times 1000}{2 \times scale\_m\_per\_px}$$
+   - Đây là chiều ngược của `x_src = crop_x0 + k·x + (k − 1)/2` trong `contracts.py`. Với mọi ảnh hiện tại `downsample_k = 1`, nên `x_crop = x_src − crop_x0`. Kiểm tra lại bằng `python scripts/verify_s116_coords.py`.
 4. **Bắt buộc đối chiếu trực quan bằng mắt:**
    - Mở ảnh PNG tương ứng, kiểm tra xem tại $(x_{crop}, y_{crop})$ có thực sự tồn tại hình thái hố va chạm khớp với bán kính $r_{px}$ hay không.
    - Nếu khớp: Ghi nhận với nguồn định danh rõ:
