@@ -99,6 +99,8 @@ Lưu ý thiết kế: dùng cùng 5 câu trước và sau nên người làm có
 
 Ẩn danh: chỉ dùng mã tham gia; không thu tên, mã sinh viên hay ảnh người tham gia; nói rõ tự nguyện, được dừng bất cứ lúc nào, dữ liệu chỉ dùng cho báo cáo môn học.
 
+Nếu người tham gia là học sinh phổ thông (dưới 18 tuổi) thay vì sinh viên: cần sự đồng ý của nhà trường và thông báo/đồng ý của phụ huynh trước buổi khảo sát, có mẫu thông báo ngắn và lưu bằng chứng đồng ý (không lưu thông tin cá nhân của học sinh).
+
 ## 9. Việc còn mở
 
 - [ ] Chốt ngày giờ, địa điểm; xin đồng ý của giảng viên/đại diện lớp; lưu ảnh chụp xác nhận.

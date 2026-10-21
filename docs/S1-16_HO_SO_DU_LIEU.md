@@ -111,7 +111,7 @@ kinh độ λ = λ0 + X / (R·cos φ1)                          (λ0 = central_m
 
 Script [`scripts/verify_s116_coords.py`](../scripts/verify_s116_coords.py) lặp lại phép tính này cho cả 26 ảnh, so với `center_lat`/`center_lon` đã lưu và kiểm dải bán kính, cửa sổ nằm trong ảnh nguồn. Kết quả ngày 15/10/2026: **26/26 ảnh khớp** (chênh lệch tối đa ≈ 6·10⁻¹⁴ độ, tức sai số làm tròn số thực).
 
-> **Lưu ý đồng nhất.** `S1-10_HUONG_DAN_NHAN_HO.md` mục 3.3 (bước 2–3) từng viết `x_crop = (col_source − crop_x0)/k`, thiếu `(k − 1)/2` và bước trừ 0,5. Với `k = 1` chênh 0,5 pixel (≈ 1 m ở 2 m/px, 10 m ở 20 m/px) — nhỏ so với ngưỡng 0,5·r, nhưng cần một công thức duy nhất. Bản vá `S1-10_dong_nhat_cong_thuc.patch` đưa S1-10 về đúng quy ước trên.
+> **Lưu ý đồng nhất.** `S1-10_HUONG_DAN_NHAN_HO.md` mục 3.3 (bước 2–3) từng viết `x_crop = (col_source − crop_x0)/k`, thiếu `(k − 1)/2` và bước trừ 0,5. Với `k = 1` chênh 0,5 pixel (≈ 1 m ở 2 m/px, 10 m ở 20 m/px) — nhỏ so với ngưỡng 0,5·r, nhưng cần một công thức duy nhất. PR #10 đã sửa trực tiếp S1-10 mục 3.3 về đúng quy ước trên.
 
 ## 5. Metadata mỗi ảnh
 
@@ -122,8 +122,8 @@ Các trường theo [DINH_DANG_DU_LIEU.md](DINH_DANG_DU_LIEU.md) mục 1: `image
 ## 6. Hướng nắng và các cặp so sánh
 
 - **Apollo 16** (11 ảnh): góc tới lấy từ trang sản phẩm (7,64°–87,78°). 8 ảnh có `side_only` (nắng phía Tây, `azimuth_deg = 270` là **quy ước, không phải số đo**): STT 8, 9, 10, 13, 14, 17 (2 ảnh), 18. 3 ảnh STT 11, 15, 16 có phía Đông chỉ là **suy từ quy ước dấu**, nên giữ `quality = "none"`, `azimuth_deg = null`.
-- **Mosaic STT 1–6**: chỉ có dải góc tới của các ảnh thành phần, lưu ở `incidence_range_deg`; `incidence_deg = null`, không lấy trung điểm làm số đo; không có hướng nắng.
-- Với góc tới < 30° (STT 10: 28,38°; STT 17: 7,64°) S1-11 coi như không đủ căn cứ sáng–tối ([S1-04](S1-04_Dac_ta_tien_xu_ly.docx), ngưỡng đề xuất, chờ kiểm chứng).
+- **Mosaic STT 1–6**: chỉ có dải góc tới của các ảnh thành phần, lưu ở `incidence_range_deg` (trừ 3 ảnh STT 2 `moon_ap15_loc_c01..03`: nguồn chỉ ghi "Low-Sun" nên `incidence_range_deg = null`); `incidence_deg = null`, không lấy trung điểm làm số đo; không có hướng nắng.
+- Với góc tới < 30° (STT 10: 28,38°; STT 17: 7,64°) S1-11 không chấm sáng–tối ([S1-04](S1-04_Dac_ta_tien_xu_ly.docx) đề xuất ngưỡng này; S1-11 dùng làm giá trị ban đầu, chưa chỉnh trên tập điều chỉnh).
 
 Ba kiểu so sánh (chi tiết và giới hạn ở [S1-06_HUONG_DAN_DU_LIEU.md](S1-06_HUONG_DAN_DU_LIEU.md)):
 
@@ -143,8 +143,8 @@ Ba kiểu so sánh (chi tiết và giới hạn ở [S1-06_HUONG_DAN_DU_LIEU.md]
 ## 8. Việc còn mở
 
 - [ ] Xác nhận lý do không dùng STT 7 (mục 2.1).
-- [ ] [S1-04](S1-04_Dac_ta_tien_xu_ly.docx) mục 5.3 yêu cầu S1-06 kiểm bằng mắt hướng nắng trên một hố rõ ràng (vẽ vector nắng, xem phía tối có nằm về phía +u). Repo **chưa có minh chứng** bước này; cần làm trước khi S1-11 dùng hướng nắng, nhất là `side_only`.
-- [ ] Nhóm xác nhận quy đổi tọa độ thống nhất (mục 4) và áp bản vá S1-10.
+- [ ] [S1-04](S1-04_Dac_ta_tien_xu_ly.docx) mục 5.3 yêu cầu S1-06 kiểm bằng mắt hướng nắng trên một hố rõ ràng (vẽ vector nắng, xem phía tối có nằm về phía +u). S1-11 đã làm bước này cho 8 ảnh Apollo 16 (`data/s111_sun_checks.json`, ảnh phiếu ở `docs/evidence/s1-11/`), do một người kiểm; còn cần người thứ hai kiểm chéo STT 11, 15, 16.
+- [x] Đồng nhất công thức quy đổi tọa độ giữa S1-10 và `contracts.py` (PR #10).
 - [ ] Đọc toàn văn Robbins (2019) và các nguồn trích dẫn trước khi nộp báo cáo.
 - [ ] Điều khoản sử dụng riêng của LROC và của danh mục Robbins chưa tìm thấy (S1-02 mục 5); ghi rõ khi nộp.
 

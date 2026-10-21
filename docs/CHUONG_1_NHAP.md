@@ -1,6 +1,6 @@
 # Chương 1. Giới thiệu
 
-> **Bản nháp S1-13** (Bùi Hải Đức, 15/10/2026), chưa qua nhóm duyệt. Hiện trạng ghi theo repo tại nhánh `main` sau khi merge PR #4–#6. Mục 1.8 là cấu trúc báo cáo đề xuất; nhóm cần chốt.
+> **Bản nháp S1-13** (Bùi Hải Đức, 15/10/2026), chưa qua nhóm duyệt. Hiện trạng ghi theo repo tại nhánh `main` sau khi merge PR #4–#6. Mục 1.8 theo cấu trúc 5 chương của bảng giao việc (cập nhật 21/10/2026).
 
 ## 1.1. Bối cảnh và vấn đề
 
@@ -96,14 +96,15 @@ Lần chạy cả bộ cho thấy vấn đề chính của tuần 2. Không có 
 
 Mỗi phần đi qua pull request có kiểm thử tự động (GitHub Actions). Mỗi thành viên ghi nhật ký vào `docs/NHAT_KY_NHOM.csv`.
 
-## 1.8. Cấu trúc báo cáo (đề xuất)
+## 1.8. Cấu trúc báo cáo
 
-1. **Chương 1 — Giới thiệu:** bối cảnh, yêu cầu đề, mục tiêu, phạm vi, cách tiếp cận.
-2. **Chương 2 — Cơ sở lý thuyết:** tiền xử lý, biên Canny, biến đổi Hough tròn, kiểm tra sáng–tối (S1-14, S1-15).
-3. **Chương 3 — Thiết kế và cài đặt hệ thống:** hợp đồng dữ liệu, chuỗi xử lý, giao diện và trò chơi.
-4. **Chương 4 — Dữ liệu:** nguồn ảnh, cách cắt, metadata, nhãn tham chiếu và giới hạn (S1-16).
-5. **Chương 5 — Thực nghiệm và đánh giá:** Precision/Recall trên danh mục đã xác minh, ba thí nghiệm, khảo sát học sinh.
-6. **Chương 6 — Kết luận và hướng phát triển.**
+Báo cáo gồm 5 chương, theo bảng giao việc và mục nghiệm thu "Báo cáo PDF: đủ 5 chương":
+
+1. **Chương 1 — Giới thiệu:** bối cảnh, yêu cầu đề, mục tiêu, phạm vi, cách tiếp cận (S1-13, S3-08).
+2. **Chương 2 — Cơ sở lý thuyết:** tiền xử lý, biên Canny, biến đổi Hough tròn, kiểm tra sáng–tối (S1-14, S1-15, S2-11).
+3. **Chương 3 — Phương pháp và cài đặt:** chuỗi xử lý, sáng–tối, lọc trùng, thống kê hố (S1-14, S2-12).
+4. **Chương 4 — Dữ liệu, đánh giá và khảo sát:** nguồn ảnh, cách cắt, metadata, nhãn tham chiếu; Precision/Recall trên nhãn đã kiểm chéo; ba thí nghiệm; khảo sát người chơi (S1-16, S2-14, S3-09).
+5. **Chương 5 — Hệ thống, trò chơi và kết luận:** hợp đồng dữ liệu, giao diện, chấm điểm và thẻ khoa học; kết luận, hạn chế và hướng phát triển (S3-08).
 
 ## Tài liệu tham khảo của chương
 

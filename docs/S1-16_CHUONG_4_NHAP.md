@@ -1,6 +1,6 @@
 # Chương 4 — Khung và nháp mục Dữ liệu (S1-16)
 
-> **Bản nháp S1-16** (15/10/2026), chưa qua nhóm duyệt. Khung theo bảng giao việc: Chương 4 gồm **dữ liệu, Precision/Recall, ba thí nghiệm, khảo sát** (S2-14, S3-09); báo cáo 5 chương. Mục 1.8 của [CHUONG_1_NHAP.md](CHUONG_1_NHAP.md) hiện đề xuất 6 chương, Chương 4 chỉ là "Dữ liệu"; cần Bùi Hải Đức cập nhật khi chốt Chương 1 (S3-08). Chỗ đánh dấu `[Hình …]`, `[Bảng …]`, `[chờ …]` là phần chưa có dữ liệu thật, không điền số giả.
+> **Bản nháp S1-16** (15/10/2026), chưa qua nhóm duyệt. Khung theo bảng giao việc: Chương 4 gồm **dữ liệu, Precision/Recall, ba thí nghiệm, khảo sát** (S2-14, S3-09); báo cáo 5 chương. Mục 1.8 của [CHUONG_1_NHAP.md](CHUONG_1_NHAP.md) đã được sửa theo cùng cấu trúc 5 chương này.
 
 ## Khung Chương 4
 
@@ -38,7 +38,7 @@ Nhóm dùng ảnh Mặt Trăng do camera góc hẹp NAC của tàu LRO chụp, p
 
 ### 4.1.2. Cách cắt và chuẩn hóa
 
-Từ mỗi ảnh nguồn, nhóm cắt một cửa sổ vuông 512 × 512 pixel nằm hoàn toàn trong vùng có ảnh, tránh khoảng trống và đường ghép mosaic. Không thu nhỏ ảnh (hệ số thu nhỏ bằng 1). Mặt nạ hợp lệ được lấy từ mặt nạ raster của nguồn và kiểm tra giá trị hữu hạn; pixel bằng 0 không bị coi là thiếu dữ liệu. Giá trị pixel được chuẩn hóa về đoạn [0, 1] bằng phân vị 0,5 % và 99,5 % của các pixel hợp lệ để mọi tham số xử lý phía sau có cùng ý nghĩa trên mọi ảnh. Toàn bộ quá trình được tái tạo bằng một script cố định, và mã băm của script, của cấu hình cửa sổ và của từng file nguồn được ghi vào metadata để truy vết `[Hình 4.1: sơ đồ nguồn → cắt → chuẩn hóa → metadata]`.
+Từ mỗi ảnh nguồn, nhóm cắt một hoặc vài cửa sổ vuông 512 × 512 pixel (26 cửa sổ từ 16 ảnh nguồn) nằm hoàn toàn trong vùng có ảnh, tránh khoảng trống và đường ghép mosaic. Không thu nhỏ ảnh (hệ số thu nhỏ bằng 1). Mặt nạ hợp lệ được lấy từ mặt nạ raster của nguồn và kiểm tra giá trị hữu hạn; pixel bằng 0 không bị coi là thiếu dữ liệu. Giá trị pixel được chuẩn hóa về đoạn [0, 1] bằng phân vị 0,5 % và 99,5 % của các pixel hợp lệ để mọi tham số xử lý phía sau có cùng ý nghĩa trên mọi ảnh. Toàn bộ quá trình được tái tạo bằng một script cố định, và mã băm của script, của cấu hình cửa sổ và của từng file nguồn được ghi vào metadata để truy vết `[Hình 4.1: sơ đồ nguồn → cắt → chuẩn hóa → metadata]`.
 
 ### 4.1.3. Metadata và quy đổi tọa độ
 
@@ -56,7 +56,7 @@ $$r_{min} = \max\!\left(5,\ \left\lceil \frac{D_{min}}{2s} \right\rceil\right),\
 
 ### 4.1.4. Chiếu sáng và các cặp so sánh
 
-Hướng nắng chỉ có ở mức thô: với một số ảnh Apollo 16, trang sản phẩm cho biết nắng từ phía Tây; phía Đông của ba ảnh còn lại chỉ được suy từ quy ước dấu và chưa xác minh; mosaic chỉ có dải góc tới của các ảnh thành phần. Nhóm vì vậy ghi mức tin cậy (`measured`, `side_only`, `none`) thay vì suy đoán, và bỏ qua kiểm tra sáng–tối khi góc tới nhỏ hơn 30° hoặc thiếu căn cứ về hướng nắng.
+Hướng nắng chỉ có ở mức thô: với một số ảnh Apollo 16, trang sản phẩm cho biết nắng từ phía Tây; phía Đông của ba ảnh còn lại chỉ được suy từ quy ước dấu và chưa xác minh; mosaic chỉ có dải góc tới của các ảnh thành phần. Nhóm vì vậy ghi mức tin cậy (`measured`, `side_only`, `none`) thay vì suy đoán, S1-11 ([S1-11_SANG_TOI.md](S1-11_SANG_TOI.md)) bỏ qua kiểm tra sáng–tối khi góc tới nhỏ hơn 30° hoặc thiếu căn cứ về hướng nắng; ngưỡng 30° là giá trị ban đầu theo đề xuất của S1-04, chưa chỉnh trên tập điều chỉnh.
 
 Dữ liệu cho ba kiểu so sánh: (i) hai ảnh Apollo 16 cùng cửa sổ, góc tới 81,08° và 7,64°, dùng để minh họa ảnh hưởng của chiếu sáng; (ii) Van de Graaff (cao nguyên) và Mare Frigoris (mare) cùng 20 m/px, dải D 200–4000 m, dùng để minh họa so sánh mật độ hố; (iii) hai nhóm ảnh Apollo 15 high-Sun và low-Sun ở các tọa độ khác nhau, chỉ là hai nhóm điều kiện, không phải thí nghiệm cùng vùng chỉ đổi góc nắng. Các cửa sổ cùng mosaic có thể chồng lấp, nên không coi là mẫu độc lập và không cộng diện tích.
 

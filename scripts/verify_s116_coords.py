@@ -5,6 +5,9 @@ nguồn theo công thức của src/contracts.py, đổi sang kinh/vĩ độ b�
 Equirectangular của chính metadata, rồi so với center_lat/center_lon đã lưu. Kiểm tra
 thêm dải bán kính theo D_min/D_max và cửa sổ cắt nằm trong ảnh nguồn.
 
+Giới hạn: chỉ kiểm tâm ảnh cắt, và cả 26 ảnh đều có k = 1, nên số hạng (k − 1)/2 và
+chiều ngược (kinh/vĩ độ → pixel ảnh cắt) của S1-10 chưa được kiểm tự động ở đây.
+
 Chạy từ thư mục gốc repo:  python scripts/verify_s116_coords.py
 """
 from __future__ import annotations
