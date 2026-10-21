@@ -1,0 +1,27 @@
+image_id,stt,sun_quality,incidence_deg,kiem_tra_bang_mat,duoc_cham,ly_do_khong_cham,can_cu_huong_nang,ung_vien_hough,hop,nguoc,khong_ro,khong_kiem_tra,xem_truoc,run_dir
+moon_ap15_hia_c01,1,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_hia_c01_20261018T144057302266Z
+moon_ap15_hia_c02,1,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_hia_c02_20261018T144111229548Z
+moon_ap15_hia_c03,1,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_hia_c03_20261018T144123981371Z
+moon_ap15_loc_c01,2,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_loc_c01_20261018T144136216223Z
+moon_ap15_loc_c02,2,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_loc_c02_20261018T144152004274Z
+moon_ap15_loc_c03,2,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_ap15_loc_c03_20261018T144208633262Z
+moon_ap16_m102057602r_c01,8,side_only,79.94,consistent,có,,"metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 79.94°) | hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,26,26,48,0,False,s111_moon_ap16_m102057602r_c01_20261018T144224247726Z
+moon_ap16_m102064759r_c01,9,side_only,81.08,consistent,có,,"metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 81.08°) | hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,27,24,49,0,False,s111_moon_ap16_m102064759r_c01_20261018T144239859577Z
+moon_ap16_m106777343r_c01,10,side_only,28.38,,không,"góc tới 28.38° < 30°: nắng gần đứng, bóng quá ngắn","metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 28.38°)",100,0,0,0,100,False,s111_moon_ap16_m106777343r_c01_20261018T144256118314Z
+moon_ap16_m109134835l_c01,17,side_only,7.64,,không,"góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn","metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 7.64° (gần đỉnh đầu))",100,0,0,0,100,False,s111_moon_ap16_m109134835l_c01_20261018T144313126068Z
+moon_ap16_m109134835l_c02,17,side_only,7.64,,không,"góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn","metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 7.64°)",100,0,0,0,100,False,s111_moon_ap16_m109134835l_c02_20261018T144326083551Z
+moon_ap16_m1108182629l_c01,16,none,65.27,consistent,có,,"side_candidate=east được xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,17,27,56,0,False,s111_moon_ap16_m1108182629l_c01_20261018T144341958615Z
+moon_ap16_m113853974r_c01,11,none,54.72,consistent,có,,"side_candidate=east được xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,31,25,44,0,False,s111_moon_ap16_m113853974r_c01_20261018T144400611612Z
+moon_ap16_m117392541l_c01,18,side_only,83.3,consistent,có,,"metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 83.30°) | hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,24,22,54,0,False,s111_moon_ap16_m117392541l_c01_20261018T144416640966Z
+moon_ap16_m132732855l_c01,13,side_only,87.7,consistent,có,,"metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 87.70°) | hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,28,25,47,0,False,s111_moon_ap16_m132732855l_c01_20261018T144431703027Z
+moon_ap16_m132732855r_c01,14,side_only,87.78,consistent,có,,"metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 87.78°) | hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,28,24,48,0,False,s111_moon_ap16_m132732855r_c01_20261018T144447838256Z
+moon_ap16_m175179080r_c01,15,none,41.95,consistent,có,,"side_candidate=east được xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)",100,28,18,54,0,False,s111_moon_ap16_m175179080r_c01_20261018T144505264264Z
+moon_lunokhod1_loc_c01,4,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_lunokhod1_loc_c01_20261018T144519316805Z
+moon_lunokhod1_loc_c02,4,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_lunokhod1_loc_c02_20261018T144534518569Z
+moon_lunokhod2_loc_c01,5,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_lunokhod2_loc_c01_20261018T144547616078Z
+moon_lunokhod2_loc_c02,5,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_lunokhod2_loc_c02_20261018T144559887236Z
+moon_marefrig_loc_c01,6,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_marefrig_loc_c01_20261018T144612127107Z
+moon_marefrig_loc_c02,6,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_marefrig_loc_c02_20261018T144629453755Z
+moon_marefrig_loc_c03,6,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_marefrig_loc_c03_20261018T144659556596Z
+moon_vandegraff_hia_c01,3,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_vandegraff_hia_c01_20261018T144735046247Z
+moon_vandegraff_hia_c02,3,none,,,không,metadata không có hướng nắng (sun.quality=none),,100,0,0,0,100,False,s111_moon_vandegraff_hia_c02_20261018T144749823835Z
