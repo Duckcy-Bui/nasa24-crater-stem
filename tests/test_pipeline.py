@@ -52,9 +52,15 @@ class TestEndToEnd(unittest.TestCase):
         self.assertEqual(summary["steps"]["hough"]["r_min_px"], 10)
         self.assertEqual(summary["steps"]["hough"]["r_max_px"], 40)
 
-    def test_scoring_and_unimplemented_filtering_are_reported_as_skipped(self):
-        _, summary = self.run_pipeline(render=False)
-        self.assertEqual(summary["steps"]["postprocess"]["status"], "skipped")
+    def test_scoring_skipped_and_shading_check_never_removes_circles(self):
+        directory, summary = self.run_pipeline(render=False)
+        post = summary["steps"]["postprocess"]
+        self.assertEqual(post["status"], "applied")
+        self.assertEqual(post["circles_in"], post["circles_out"])
+        # Metadata giả lập không có hướng nắng: S1-11 ghi not_checked kèm lý do, không lọc.
+        shading = [c["shading"] for c in read_json(directory / "craters.json")["circles"]]
+        self.assertTrue(shading and all(s["status"] == "not_checked" and s["reason"] for s in shading))
+        self.assertEqual(post["shading_counts"], {"not_checked": len(shading)})
         self.assertEqual(summary["steps"]["scoring"]["status"], "skipped")
         self.assertIn("không phải đáp án", summary["steps"]["scoring"]["reason"])
 

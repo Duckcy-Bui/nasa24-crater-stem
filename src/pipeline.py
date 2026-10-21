@@ -150,8 +150,13 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
     t_hough = time.perf_counter() - t0
 
     try:
-        circles = filter_candidates(raw_circles, pre["gray"], metadata, {})
-        postprocess = {"status": "applied", "circles_in": len(raw_circles), "circles_out": len(circles)}
+        circles = filter_candidates(raw_circles, pre["gray"], metadata, {"valid_mask": pre["valid_mask"]})
+        shading_counts: dict[str, int] = {}
+        for c in circles:
+            status = (c.get("shading") or {}).get("status", "none")
+            shading_counts[status] = shading_counts.get(status, 0) + 1
+        postprocess = {"status": "applied", "circles_in": len(raw_circles), "circles_out": len(circles),
+                       "shading_counts": shading_counts}
     except NotImplementedError as error:
         circles = raw_circles
         postprocess = {"status": "skipped", "reason": f"S1-11 chưa cài: {error}"}

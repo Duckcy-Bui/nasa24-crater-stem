@@ -1,0 +1,146 @@
+{
+  "module_version": "s111-2",
+  "image_id": "moon_ap16_m132732855l_c01",
+  "checked": true,
+  "reason": null,
+  "sun_basis": [
+    "metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 87.70°)",
+    "hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)"
+  ],
+  "azimuth_deg": 270.0,
+  "quality": "side_only",
+  "incidence_deg": 87.7,
+  "visual_check": "consistent",
+  "sun_vector_xy": [
+    -1.0,
+    1.8369701987210297e-16
+  ],
+  "counts": {
+    "consistent": 28,
+    "inverted": 25,
+    "unclear": 47,
+    "not_checked": 0
+  },
+  "params": {
+    "min_incidence_deg": 30.0,
+    "require_visual_check": true,
+    "disk_fraction": 1.0,
+    "min_pixels": 30,
+    "min_valid_fraction": 0.8,
+    "score_threshold": 0.15,
+    "score_threshold_side_only": 0.25,
+    "detrend": true,
+    "annulus_inner": 1.3,
+    "annulus_outer": 2.0,
+    "min_annulus_pixels": 30,
+    "min_annulus_fraction": 0.5
+  },
+  "removed": 0,
+  "preview": false,
+  "hough_circles": 100,
+  "radius_px": [
+    5,
+    125
+  ],
+  "reference_craters_excluded": 9,
+  "code_version": "029c76f+working-tree",
+  "examples": [
+    {
+      "group": "Điểm cao nhất",
+      "crater_id": "M9",
+      "x": 313.0,
+      "y": 476.0,
+      "r": 6.0,
+      "score": 0.7461,
+      "status": "consistent",
+      "visual_verdict": "crater_correct",
+      "visual_note": "Hố thật: tối phía Tây, vành sáng lưỡi liềm phía Đông."
+    },
+    {
+      "group": "Điểm cao nhất",
+      "crater_id": "M11",
+      "x": 169.0,
+      "y": 371.0,
+      "r": 5.0,
+      "score": 0.7406,
+      "status": "consistent",
+      "visual_verdict": "not_crater",
+      "visual_note": "Địa hình gồ ghề, không thấy hố."
+    },
+    {
+      "group": "Điểm cao nhất",
+      "crater_id": "M3",
+      "x": 94.0,
+      "y": 133.0,
+      "r": 5.0,
+      "score": 0.735,
+      "status": "consistent",
+      "visual_verdict": "not_crater",
+      "visual_note": "Đốm sáng, không rõ là hố."
+    },
+    {
+      "group": "Điểm cao nhất",
+      "crater_id": "M66",
+      "x": 53.0,
+      "y": 262.0,
+      "r": 5.0,
+      "score": 0.6864,
+      "status": "consistent",
+      "visual_verdict": "not_crater",
+      "visual_note": "Địa hình nhiễu, không thấy hố."
+    },
+    {
+      "group": "Điểm thấp nhất",
+      "crater_id": "M51",
+      "x": 259.0,
+      "y": 45.0,
+      "r": 5.0,
+      "score": -0.7907,
+      "status": "inverted",
+      "visual_verdict": "wrong_candidate_flagged",
+      "visual_note": "Mép bóng lớn / tảng đá cắt qua vòng."
+    },
+    {
+      "group": "Điểm thấp nhất",
+      "crater_id": "M92",
+      "x": 17.0,
+      "y": 275.0,
+      "r": 6.0,
+      "score": -0.7659,
+      "status": "inverted",
+      "visual_verdict": "wrong_candidate_flagged",
+      "visual_note": "Mép vùng bóng lớn."
+    },
+    {
+      "group": "Điểm thấp nhất",
+      "crater_id": "M71",
+      "x": 161.0,
+      "y": 321.0,
+      "r": 5.0,
+      "score": -0.7482,
+      "status": "inverted",
+      "visual_verdict": "wrong_candidate_flagged",
+      "visual_note": "Ranh giới bóng."
+    },
+    {
+      "group": "Điểm thấp nhất",
+      "crater_id": "M60",
+      "x": 166.0,
+      "y": 150.0,
+      "r": 5.0,
+      "score": -0.7187,
+      "status": "inverted",
+      "visual_verdict": "wrong_candidate_flagged",
+      "visual_note": "Địa hình nhiễu."
+    }
+  ],
+  "visual_review": {
+    "checked_by": "Đinh Quang Hưng",
+    "checked_on": "2026-10-18",
+    "legend": {
+      "crater_correct": "hố thật, máy chấm hợp",
+      "not_crater": "máy chấm hợp nhưng không phải hố",
+      "wrong_candidate_flagged": "không phải hố, máy chấm ngược (đánh dấu đúng là đáng ngờ)"
+    }
+  }
+}
