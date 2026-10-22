@@ -16,11 +16,25 @@
 [role="option"]:hover { background: #232934; }
 [data-testid="stButton"] button { background: #171b21; color: #eceae4; border: 1px solid #303743; border-radius: 8px; min-height: 40px; font-size: 13px; }
 [data-testid="stButton"] button:hover { color: #eceae4; border-color: #f3b23c; background: #232934; }
+[data-testid="stButton"] button[kind="primary"] { background: #f3b23c; color: #0a0c0f; border-color: #f3b23c; font-weight: 600; }
+[data-testid="stButton"] button[kind="primary"]:hover { background: #ffc65c; color: #0a0c0f; }
+[data-testid="stButton"] button[kind="primary"] p { color: #0a0c0f; font-size: 14px; font-weight: 600; }
 [data-testid="stButton"] button:focus-visible { outline: 2px solid #f3b23c; outline-offset: 3px; }
 [data-testid="stMarkdownContainer"] p { color: #c9cdd3; font-size: 12px; }
 [data-testid="stCaptionContainer"] p { color: #a7adb6; font-size: 12px; }
 [data-testid="stExpander"] { background: #111419; border-color: #262c35; color: #eceae4; }
 [data-testid="stAlert"] p { color: inherit; }
+.nasa-results-head h2 { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Noto Serif", "DejaVu Serif", Georgia, serif; font-weight: 600; color: #eceae4; font-size: 19px; margin: 0; padding: 0; }
+.nasa-results-head p { color: #a7adb6; font-size: 12px; margin: 2px 0 0; }
+.nasa-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; color: #c9cdd3; font-size: 12px; }
+.nasa-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.nasa-legend i { display: inline-block; width: 12px; height: 12px; border: 2px solid; border-radius: 50%; }
+[data-testid="stMetricLabel"] p { color: #a7adb6; font-size: 12px; }
+[data-testid="stMetricValue"], [data-testid="stMetricValue"] div, [data-testid="stMetricValue"] p { color: #eceae4; font-size: 26px; line-height: 1.2; }
+[data-testid="stAlertContentInfo"] p { color: #b9d7f5; font-size: 13px; }
+[data-testid="stAlertContentWarning"] p { color: #f6d58a; font-size: 13px; }
+[data-testid="stDownloadButton"] button { background: #171b21; color: #eceae4; border: 1px solid #303743; border-radius: 8px; font-size: 13px; }
+[data-testid="stDownloadButton"] button:hover { border-color: #f3b23c; color: #eceae4; }
 .nasa-footer { margin: 6px 0 0; padding-top: 16px; border-top: 1px solid #222831; }
 .nasa-footer p { color: #8c939d; font-size: 12px; line-height: 1.7; margin: 0; }
 @media(max-width:720px) {
