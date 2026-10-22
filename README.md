@@ -15,7 +15,9 @@ python -m streamlit run app.py --server.address 127.0.0.1
 
 Mở địa chỉ local Streamlit in ra (mặc định `http://127.0.0.1:8501`). Chọn một trong 26 ảnh, kéo từ tâm ra vành để vẽ; chọn **Chọn / sửa** để di chuyển tâm, đổi bán kính hoặc xóa. Có thể nhập tọa độ chính xác rồi tải JSON hoặc lưu câu trả lời vào `outputs/player_answers/`. Nếu bộ ảnh chưa được giải nén, giao diện có nút chuẩn bị ảnh ngoại tuyến.
 
-Tọa độ luôn theo ảnh 512×512, kể cả khi cửa sổ hiển thị nhỏ hơn. Bản nháp từng ảnh giữ trong phiên đang mở; cần lưu hoặc tải JSON trước khi đóng trang. Đây là câu trả lời `source=player`, chưa có chấm điểm hoặc danh mục hố tham chiếu. Xem [hướng dẫn S1-09](docs/S1-09_GIAO_DIEN_KHOANH_HO.md).
+Tọa độ luôn theo ảnh 512×512, kể cả khi cửa sổ hiển thị nhỏ hơn. Bản nháp từng ảnh giữ trong phiên đang mở; cần lưu hoặc tải JSON trước khi đóng trang. Đây là câu trả lời `source=player`. Xem [hướng dẫn S1-09](docs/S1-09_GIAO_DIEN_KHOANH_HO.md).
+
+Bên dưới bản đồ, nút **Chấm bài** (S2-08) cho máy tìm hố trên ảnh đang mở rồi so với các vòng đã khoanh: hiện ảnh đối chiếu, mức trùng với máy, điểm theo nhãn đã kiểm chéo (nếu có) và dải bán kính máy thật sự tìm. Mỗi lần chấm lưu một lượt mới trong `outputs/player_scores/`. Xem [S2-08](docs/S2-08_MAN_HINH_KET_QUA.md).
 
 UI v2 dùng thiết kế Claude Design: ảnh bên trái, bảng vòng/chỉnh/lưu bên phải; trên điện thoại các phần xếp dọc. Nút **Lưu trên máy** màu vàng lưu đúng bản nháp hiện tại và báo đường dẫn tương đối. Xem [mẫu thiết kế](docs/ui-design/mockup.html) và [nghiệm thu UI v2](docs/S1-09_UI_V2_NGHIEM_THU.md).
 
@@ -81,9 +83,10 @@ nasa24-crater-stem/
 │   ├── statistics.py          # Hưng: kích thước và mật độ hố
 │   ├── scoring.py             # Đức: chấm với máy và danh mục riêng
 │   ├── matching.py            # Đức: ghép hố một–một, tâm lệch ≤ 0,5 r
+│   ├── game_results.py        # Đức: lượt chấm bài, ảnh đối chiếu, lưu lượt
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
-├── app.py                     # S1-09: mở ảnh, vẽ/sửa/xóa và lưu câu trả lời
+├── app.py                     # S1-09/S2-08: mở ảnh, vẽ/sửa/xóa, lưu và chấm bài
 ├── scripts/
 │   ├── check_contracts.py     # Kiểm tra dữ liệu mẫu và lưu một bản chạy mẫu
 │   ├── run_preprocessing.py   # S1-08: chạy B0–B8, lưu ảnh từng bước + tham số

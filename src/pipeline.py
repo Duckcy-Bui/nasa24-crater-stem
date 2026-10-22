@@ -124,16 +124,14 @@ def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: di
     plt.close(figure)
 
 
-def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str | Path, code_version: str,
-                   player_path: str | Path | None = None, reference_path: str | Path | None = None,
-                   hough_params: dict[str, Any] | None = None, preprocess_params: dict[str, Any] | None = None,
-                   scoring_params: dict[str, Any] | None = None, render: bool = True) -> tuple[Path, dict[str, Any]]:
-    """Chạy một ảnh từ đầu đến cuối; trả (thư mục run, tóm tắt)."""
-    started = time.perf_counter()
-    metadata, image, valid = load_image(image_id, processed_dir)
-    player = load_overlay_set(player_path, metadata, "player")
-    reference = load_overlay_set(reference_path, metadata, "catalogue")
+def detect_machine(metadata: dict[str, Any], image: np.ndarray, valid: np.ndarray | None, *,
+                   hough_params: dict[str, Any] | None = None,
+                   preprocess_params: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Tiền xử lý → Hough → chấm sáng–tối S1-11 cho một ảnh đã nạp.
 
+    Trả danh sách hố của máy (source="machine") cùng tham số và thời gian từng
+    bước; dùng chung cho run_end_to_end và màn hình chấm bài (S2-08).
+    """
     t0 = time.perf_counter()
     pre = preprocess(image, metadata, preprocess_params, valid_mask=valid)
     t_pre = time.perf_counter() - t0
@@ -156,9 +154,28 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
         circles = raw_circles
         postprocess = {"status": "skipped", "reason": f"S1-11 chưa cài: {error}"}
 
-    machine = {"schema_version": "1.0", "data_kind": metadata["data_kind"], "image_id": image_id,
+    machine = {"schema_version": "1.0", "data_kind": metadata["data_kind"], "image_id": metadata["image_id"],
                "source": "machine", "reference_source": None, "circles": circles}
     validate_crater_set(machine, metadata)
+    return {"pre": pre, "hough": hough, "r_min": r_min, "r_max": r_max, "raw_circles": raw_circles,
+            "machine": machine, "postprocess": postprocess,
+            "seconds_preprocess": t_pre, "seconds_hough": t_hough}
+
+
+def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str | Path, code_version: str,
+                   player_path: str | Path | None = None, reference_path: str | Path | None = None,
+                   hough_params: dict[str, Any] | None = None, preprocess_params: dict[str, Any] | None = None,
+                   scoring_params: dict[str, Any] | None = None, render: bool = True) -> tuple[Path, dict[str, Any]]:
+    """Chạy một ảnh từ đầu đến cuối; trả (thư mục run, tóm tắt)."""
+    started = time.perf_counter()
+    metadata, image, valid = load_image(image_id, processed_dir)
+    player = load_overlay_set(player_path, metadata, "player")
+    reference = load_overlay_set(reference_path, metadata, "catalogue")
+
+    detected = detect_machine(metadata, image, valid, hough_params=hough_params, preprocess_params=preprocess_params)
+    pre, hough, machine = detected["pre"], detected["hough"], detected["machine"]
+    r_min, r_max, raw_circles = detected["r_min"], detected["r_max"], detected["raw_circles"]
+    t_pre, t_hough, postprocess = detected["seconds_preprocess"], detected["seconds_hough"], detected["postprocess"]
 
     score = None
     if player:
