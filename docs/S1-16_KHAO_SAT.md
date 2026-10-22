@@ -1,6 +1,6 @@
 # Khung khảo sát người chơi và lịch tiếp cận — S1-16
 
-> **Bản nháp S1-16** (15/10/2026), chưa qua nhóm duyệt. **Lịch chưa chốt** nên S1-16 chưa đạt tiêu chí "lịch tiếp cận ít nhất 10 học sinh đã được thu xếp" (mục 3). Câu hỏi hiểu bài (mục 6) bám nội dung đã có trong repo; câu liên quan thẻ khoa học và phần nội dung game chưa cài phải được nhóm chốt lại khi game hoàn thiện (S2-07, S2-14).
+> **Bản nháp S1-16** (15/10/2026), chưa qua nhóm duyệt. **Lịch chưa chốt.** Ngày 22/10/2026 trưởng nhóm quyết định đóng S1-16 với phần hồ sơ dữ liệu, khung Chương 4 và khung khảo sát; phần xác nhận lịch tiếp cận ít nhất 10 người (mục 3) chuyển sang **S2-14**. Câu hỏi hiểu bài (mục 6) bám nội dung đã có trong repo; câu liên quan thẻ khoa học và phần nội dung game chưa cài phải được nhóm chốt lại khi game hoàn thiện (S2-07, S2-14).
 
 ## 1. Mục tiêu và yêu cầu
 
@@ -27,7 +27,7 @@ Ràng buộc từ bảng giao việc (ngày 1 = 09/10/2026): S2-14 xác nhận l
 | Thiết bị | Máy tính cá nhân của người tổ chức hoặc máy của từng bạn | Cần chốt cách chạy (mục 3.1) |
 | Bằng chứng xác nhận | Ảnh chụp tin nhắn/email xác nhận ngày giờ | `[chưa có]` |
 
-**Điều kiện đánh dấu S1-16 là Hoàn thành:** các ô "Ngày giờ", "Địa điểm", "đồng ý" và "Bằng chứng xác nhận" đã điền và có minh chứng. Trước đó nên để trạng thái **Đang làm**.
+**Điều kiện đánh dấu S2-14 là Hoàn thành** (nhận phần lịch từ S1-16 ngày 22/10/2026): các ô "Ngày giờ", "Địa điểm", "đồng ý" và "Bằng chứng xác nhận" đã điền và có minh chứng. Không điền ô nào khi chưa có xác nhận thật.
 
 ### 3.1. Cách chạy trên máy (cần nhóm chốt, nhất là Bùi Hải Đức)
 
