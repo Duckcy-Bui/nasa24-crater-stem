@@ -60,7 +60,7 @@ python scripts/run_end_to_end.py moon_ap16_m106777343r_c01
 python scripts/run_end_to_end.py --all --no-render
 ```
 
-Ảnh cắt → tiền xử lý B1–B8 → Hough NumPy → `outputs/e2e_<image_id>_.../` gồm `craters.json` (máy), `summary.json` và `overlay.png` vẽ cạnh vòng người chơi và nhãn thủ công. Lọc sáng–tối S1-11 và chấm điểm còn **bỏ qua** (chưa cài, chưa có danh mục đã xác minh); danh sách máy hiện là ứng viên thô. Xem [S1-13](docs/S1-13_CHAY_TU_DAU_DEN_CUOI.md) và [nháp Chương 1](docs/CHUONG_1_NHAP.md).
+Ảnh cắt → tiền xử lý B1–B8 → Hough NumPy → `outputs/e2e_<image_id>_.../` gồm `craters.json` (máy), `summary.json` và `overlay.png` vẽ cạnh vòng người chơi và nhãn thủ công. Khi có câu trả lời người chơi, run có thêm `score.json` (S2-04): so với máy chỉ là mức trùng, so với danh mục chỉ khi nhãn đã kiểm chéo. Xem [S2-04](docs/S2-04_CHAM_DIEM.md). Xem [S1-13](docs/S1-13_CHAY_TU_DAU_DEN_CUOI.md) và [nháp Chương 1](docs/CHUONG_1_NHAP.md).
 
 ## Cấu trúc thư mục
 
@@ -80,6 +80,7 @@ nasa24-crater-stem/
 │   ├── postprocessing.py      # Hưng: sáng–tối và lọc trùng
 │   ├── statistics.py          # Hưng: kích thước và mật độ hố
 │   ├── scoring.py             # Đức: chấm với máy và danh mục riêng
+│   ├── matching.py            # Đức: ghép hố một–một, tâm lệch ≤ 0,5 r
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
 ├── app.py                     # S1-09: mở ảnh, vẽ/sửa/xóa và lưu câu trả lời
