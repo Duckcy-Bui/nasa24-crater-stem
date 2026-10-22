@@ -4,9 +4,9 @@
 → danh sách hố của máy (source="machine") → lưu run, ảnh overlay và tóm tắt.
 
 Cùng run có thể đặt cạnh vòng của người chơi (S1-09) và nhãn thủ công (S1-10)
-để nhìn bằng mắt. Không chấm điểm, không tính Precision/Recall: bộ ảnh còn
-reference_status="unavailable" và scoring/evaluation chưa được cài.
-Lọc sáng–tối (S1-11) chưa cài nên ghi rõ là bỏ qua; máy trả ứng viên thô.
+để nhìn bằng mắt. Khi có câu trả lời người chơi, S2-04 chấm riêng so với máy
+(chỉ mức trùng) và so với danh mục (chỉ khi nhãn đã kiểm chéo), lưu score.json.
+Không tính Precision/Recall của máy: việc đó thuộc evaluation.py (S3-02).
 """
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ from src.contracts import ContractError, read_json, save_run, validate_crater_se
 from src.hough import DEFAULT_PARAMS as HOUGH_DEFAULTS, detect_circles, resolve_hough_params
 from src.postprocessing import filter_candidates
 from src.preprocessing import preprocess
+from src.scoring import reference_is_reviewed, score_player
 
 PIPELINE_VERSION = "s113-e2e-v1"
 
@@ -62,12 +63,6 @@ def find_player_answer(image_id: str, player_root: str | Path) -> Path | None:
             continue
         matches.append((str(created), path.parent.name, path))
     return max(matches)[2] if matches else None
-
-
-def reference_is_reviewed(reference: dict[str, Any] | None) -> bool:
-    """Nhãn thủ công chỉ được coi là đã kiểm chéo khi nguồn ghi "reviewed by"."""
-    source = (reference or {}).get("reference_source") or ""
-    return "reviewed by" in source.lower() and "unreviewed" not in source.lower()
 
 
 def load_overlay_set(path: str | Path | None, metadata: dict[str, Any], expected_source: str) -> dict[str, Any] | None:
@@ -132,7 +127,7 @@ def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: di
 def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str | Path, code_version: str,
                    player_path: str | Path | None = None, reference_path: str | Path | None = None,
                    hough_params: dict[str, Any] | None = None, preprocess_params: dict[str, Any] | None = None,
-                   render: bool = True) -> tuple[Path, dict[str, Any]]:
+                   scoring_params: dict[str, Any] | None = None, render: bool = True) -> tuple[Path, dict[str, Any]]:
     """Chạy một ảnh từ đầu đến cuối; trả (thư mục run, tóm tắt)."""
     started = time.perf_counter()
     metadata, image, valid = load_image(image_id, processed_dir)
@@ -165,7 +160,16 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
                "source": "machine", "reference_source": None, "circles": circles}
     validate_crater_set(machine, metadata)
 
-    reference_status = metadata.get("reference_status", "unavailable")
+    score = None
+    if player:
+        score = score_player(player, machine, reference, scoring_params or {}, metadata=metadata)
+        catalogue = score["vs_catalogue"]
+        scoring = {"status": "scored" if catalogue["status"] == "scored" else "machine_agreement_only",
+                   "score": score["score"], "reason": catalogue["reason"],
+                   "matched_machine": score["vs_machine"]["matched"], "catalogue_correct": catalogue["correct"]}
+    else:
+        scoring = {"status": "skipped",
+                   "reason": "Chưa có câu trả lời người chơi để chấm. Vòng của máy không phải đáp án."}
     summary = {
         "pipeline_version": PIPELINE_VERSION,
         "image_id": image_id,
@@ -183,9 +187,7 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
             "reference": {"status": "loaded" if reference else "none", "circles": len(reference["circles"]) if reference else 0,
                           "reference_source": reference["reference_source"] if reference else None,
                           "reviewed": reference_is_reviewed(reference)},
-            "scoring": {"status": "skipped",
-                        "reason": f"reference_status={reference_status}; chưa có danh mục đã xác minh, "
-                                  "scoring.py/evaluation.py chưa cài. Vòng của máy không phải đáp án."},
+            "scoring": scoring,
         },
     }
     params = {"pipeline_version": PIPELINE_VERSION, "preprocess": pre["params"], "hough": hough,
@@ -197,6 +199,8 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
         summary["seconds_total"] = round(time.perf_counter() - started, 3)
         if player:
             (directory / "player.json").write_text(json.dumps(player, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        if score:
+            (directory / "score.json").write_text(json.dumps(score, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if reference:
             (directory / "reference.json").write_text(json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         np.savez_compressed(directory / "arrays.npz", gray=pre["gray"], edges=pre["edges"], theta=pre["theta"])

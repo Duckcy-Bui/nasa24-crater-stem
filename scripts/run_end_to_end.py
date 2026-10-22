@@ -8,7 +8,8 @@ Ví dụ:
 Mỗi ảnh tạo outputs/e2e_<image_id>_<UTC>_<id>/ gồm metadata.json, params.json,
 craters.json (máy), run.json, summary.json, arrays.npz và overlay.png.
 Tự lấy lần lưu mới nhất của người chơi trong outputs/player_answers/ và nhãn thủ
-công trong data/reference_labels/ nếu có, chỉ để vẽ cạnh. Không chấm điểm.
+công trong data/reference_labels/ nếu có. Khi có người chơi, ghi thêm score.json
+(S2-04): so với máy chỉ là mức trùng; so với danh mục chỉ khi nhãn đã kiểm chéo.
 """
 from __future__ import annotations
 
@@ -78,6 +79,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--player và --no-player mâu thuẫn nhau.")
 
     ids = read_json(ROOT / "data" / "s106_bundle" / "manifest.json")["image_ids"] if args.all else [args.image_id]
+    scoring_params = read_json(ROOT / "configs" / "default.json")["evaluation"]
     version = code_version()
     failed, rows = 0, []
     for image_id in ids:
@@ -88,17 +90,20 @@ def main(argv: list[str] | None = None) -> int:
                 image_id, processed_dir=args.processed_dir, output_root=args.output_root, code_version=version,
                 player_path=player, reference_path=reference if reference.exists() else None,
                 hough_params={"voting_method": args.voting, "max_circles": args.max_circles},
-                render=not args.no_render)
+                scoring_params=scoring_params, render=not args.no_render)
         except Exception as error:  # one bad image must not stop --all; KeyboardInterrupt still stops
             failed += 1
             print(f"[LỖI] {image_id}: {type(error).__name__}: {error}")
             continue
         rows.append(csv_row(directory, read_json(directory / "metadata.json"), summary))
         steps = summary["steps"]
+        scoring = steps["scoring"]
+        scored = {"skipped": "bỏ qua", "machine_agreement_only": f"chỉ so máy ({scoring.get('matched_machine')} vòng trùng)",
+                  "scored": f"{scoring.get('score')} điểm"}[scoring["status"]]
         print(f"{image_id}: {steps['hough']['circles']} ứng viên máy "
               f"(r {steps['hough']['r_min_px']}–{steps['hough']['r_max_px']} px, {steps['hough']['voting_method']}, "
               f"{steps['hough']['seconds']} s); người chơi {steps['player']['circles']}; "
-              f"nhãn tham chiếu {steps['reference']['circles']}; chấm điểm: bỏ qua → {directory}")
+              f"nhãn tham chiếu {steps['reference']['circles']}; chấm điểm: {scored} → {directory}")
     if args.csv:
         with args.csv.open("w", newline="", encoding="utf-8") as handle:
             writer = csv.writer(handle, lineterminator="\n")

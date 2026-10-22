@@ -73,6 +73,29 @@ class TestEndToEnd(unittest.TestCase):
         self.assertEqual(summary["steps"]["player"]["circles"], 1)
         self.assertEqual(read_json(directory / "player.json")["source"], "player")
         self.assertTrue(all(c["crater_id"].startswith("M") for c in read_json(directory / "craters.json")["circles"]))
+        # S2-04: without reviewed labels the player is only compared with the machine, never scored.
+        scoring = summary["steps"]["scoring"]
+        self.assertEqual(scoring["status"], "machine_agreement_only")
+        self.assertIsNone(scoring["score"])
+        self.assertEqual(scoring["matched_machine"], 1)
+        self.assertEqual(read_json(directory / "score.json")["vs_machine"]["matched"], 1)
+
+    def test_player_is_scored_only_against_reviewed_labels(self):
+        reference = {"schema_version": "1.0", "data_kind": self.metadata["data_kind"], "image_id": self.image_id,
+                     "source": "catalogue", "reference_source": "manual_label_s110; sparse manual labels, reviewed by Tiến",
+                     "circles": [{"crater_id": "C1", "x": 160.0, "y": 180.0, "r": 32.0, "confidence": None, "votes": None},
+                                 {"crater_id": "C2", "x": 350.0, "y": 310.0, "r": 20.0, "confidence": None, "votes": None}]}
+        reference_path = Path(self.tmp.name) / "reference.json"
+        reference_path.write_text(json.dumps(reference), encoding="utf-8")
+        player = build_player_crater_set([{"crater_id": "U1", "x": 162.0, "y": 179.0, "r": 30.0}], self.metadata)
+        player_dir = save_player_answers(self.players, self.metadata, player["circles"], run_id="player_20261022T000000_a")
+        directory, summary = self.run_pipeline(player_path=player_dir / "craters.json", reference_path=reference_path,
+                                               render=False, scoring_params={"center_tolerance_fraction": 0.5})
+        scoring = summary["steps"]["scoring"]
+        self.assertEqual(scoring["status"], "scored")
+        self.assertEqual(scoring["catalogue_correct"], 1)
+        self.assertEqual(scoring["score"], 50.0)
+        self.assertEqual(read_json(directory / "score.json")["vs_catalogue"]["missed_ids"], ["C2"])
 
     def test_player_search_ignores_other_images(self):
         other = dict(self.metadata, image_id="other_image")
