@@ -103,7 +103,7 @@ class TestResultsScreen(unittest.TestCase):
             "    machine = {'schema_version': '1.0', 'data_kind': meta['data_kind'], 'image_id': image_id,\n"
             "               'source': 'machine', 'reference_source': None, 'circles': circles}\n"
             "    return {'machine': machine, 'hough': resolve_hough_params({}), 'postprocess': {'status': 'applied'},\n"
-            "            'raw_count': 1, 'seconds': 0.1}\n"
+            "            'raw_count': 1, 'valid_pixels': 512 * 512, 'seconds': 0.1}\n"
             "app.machine_for_image = fake_machine\n"
             "app.code_version = lambda: 'test'\n"
             "app.main()\n"

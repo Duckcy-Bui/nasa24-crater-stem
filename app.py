@@ -1,4 +1,4 @@
-"""S1-09/S2-08: open lunar images, edit circles, then score them against the machine and labels."""
+"""S1-09/S2-08/S2-13: open lunar images, edit and score circles, then show statistics and science cards."""
 from __future__ import annotations
 
 import base64
@@ -14,6 +14,7 @@ from PIL import Image
 
 from src.contracts import ContractError, read_json, validate_metadata
 from src.game_results import COLORS, render_overlay, save_round, score_round
+from src.integration import cards_view, statistics_view
 from src.pipeline import detect_machine, load_image as load_processed_image, load_overlay_set
 from src.player_annotations import apply_canvas_event
 from src.player_ui import handle_save_request
@@ -46,7 +47,7 @@ def machine_for_image(image_id: str, data_dir: str, stamp: float) -> dict:
     metadata, image, valid = load_processed_image(image_id, data_dir)
     detected = detect_machine(metadata, image, valid, hough_params=read_json(CONFIG_PATH)["hough"])
     return {"machine": detected["machine"], "hough": detected["hough"], "postprocess": detected["postprocess"],
-            "raw_count": len(detected["raw_circles"]),
+            "raw_count": len(detected["raw_circles"]), "valid_pixels": int(detected["pre"]["valid_mask"].sum()),
             "seconds": round(detected["seconds_preprocess"] + detected["seconds_hough"], 1)}
 
 
@@ -113,12 +114,68 @@ def show_result(result: dict, draft: dict) -> None:
                            key=f"player_score_download_{result['run_id']}")
 
 
+def section_head(title: str, text: str) -> None:
+    st.html(f'<div class="nasa-results-head"><h2>{title}</h2><p>{text}</p></div>')
+
+
+def show_statistics(result: dict, metadata: dict) -> None:
+    """S2-13: thống kê ứng viên máy của lượt chấm gần nhất (hàm do S2-09 cài)."""
+    st.html('<div class="nasa-rule"></div>')
+    section_head("Thống kê hố trên ảnh", "Đếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. "
+                 "Đây là ứng viên chưa kiểm chứng, không phải số hố thật.")
+    view = statistics_view(result["scored"]["machine"], metadata, result["detected"]["valid_pixels"])
+    if view["status"] == "pending":
+        st.info(f"Chưa có thống kê. {view['reason']}")
+        return
+    if view["status"] == "error":
+        st.error(view["reason"])
+        return
+    data = view["data"]
+    count, area, density = st.columns(3)
+    count.metric("Số ứng viên", data["count"])
+    area.metric("Diện tích hợp lệ", "—" if data.get("valid_area_km2") is None else f"{data['valid_area_km2']:.2f} km²")
+    density.metric("Mật độ", "—" if data.get("density_per_km2") is None else f"{data['density_per_km2']:.2f} /km²")
+    histogram = data.get("histogram")
+    if histogram and histogram["counts"]:
+        edges = histogram["bin_edges_m"]
+        labels = [f"{a:g}–{b:g}" for a, b in zip(edges, edges[1:])]
+        st.caption("Phân bố đường kính (m), số ứng viên mỗi khoảng")
+        st.bar_chart({"Đường kính (m)": labels, "Số ứng viên": histogram["counts"]}, x="Đường kính (m)",
+                     y="Số ứng viên", color=COLORS["machine"], height=220)
+    for note in data.get("limitations") or []:
+        st.caption(str(note))
+
+
+def show_cards(image_id: str) -> None:
+    """S2-13: thẻ khoa học của ảnh đang mở (dữ liệu do S2-10 cài); thẻ thiếu nguồn không hiện."""
+    st.html('<div class="nasa-rule"></div>')
+    section_head("Thẻ khoa học", "Kiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.")
+    view = cards_view(image_id)
+    if view["status"] == "pending":
+        st.info(f"Chưa có thẻ. {view['reason']}")
+        return
+    if view["status"] == "error":
+        st.error(view["reason"])
+        return
+    if not view["cards"]:
+        st.caption("Ảnh này chưa có thẻ khoa học.")
+    for card in view["cards"]:
+        with st.container(border=True):
+            st.markdown(f"**{card['title']}**")
+            st.markdown(card["body"])
+            position = card.get("position")
+            where = f"Vị trí trên ảnh: x = {position['x']:.0f}, y = {position['y']:.0f} px · " if position else ""
+            st.caption(f"{where}Nguồn: [{card['source_title']}]({card['source_url']})")
+    if view["rejected"]:
+        st.warning("Không hiện các thẻ sai hợp đồng: " + "; ".join(view["rejected"]))
+
+
 def render_results(image_id: str, metadata: dict, draft: dict, png_bytes: bytes) -> None:
     st.html('<div class="nasa-rule"></div>')
     head_column, button_column = st.columns([2.4, 1], vertical_alignment="center")
     with head_column:
-        st.html('<div class="nasa-results-head"><h2>Chấm bài</h2><p>Máy tìm hố bằng Hough NumPy rồi so với các vòng '
-                'bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.</p></div>')
+        section_head("Chấm bài", "Máy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. "
+                     "Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.")
     with button_column:
         clicked = st.button("Chấm bài", key=f"player_score_{image_id}", type="primary", width="stretch")
     results = st.session_state.setdefault("player_results", {})
@@ -130,8 +187,11 @@ def render_results(image_id: str, metadata: dict, draft: dict, png_bytes: bytes)
             st.error(f"Chưa chấm được: {error}")
     if image_id in results:
         show_result(results[image_id], draft)
+        show_statistics(results[image_id], metadata)
     else:
-        st.caption("Khoanh xong rồi bấm Chấm bài. Mỗi lần chấm được lưu thành một lượt riêng trong outputs/player_scores/.")
+        st.caption("Khoanh xong rồi bấm Chấm bài. Mỗi lần chấm được lưu thành một lượt riêng trong outputs/player_scores/. "
+                   "Thống kê hố hiện sau khi máy chạy.")
+    show_cards(image_id)
 
 
 def main() -> None:
