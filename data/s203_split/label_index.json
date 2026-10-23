@@ -1,0 +1,14 @@
+{
+  "moon_ap16_m106777343r_c01": {
+    "split": "tuning",
+    "label_file": "moon_ap16_m106777343r_c01_craters_catalogue.json",
+    "n_circles": 4,
+    "n_certain": 3,
+    "n_uncertain": 1,
+    "label_status": "sparse_unreviewed",
+    "radius_range_px": [
+      5.45,
+      7.88
+    ]
+  }
+}
