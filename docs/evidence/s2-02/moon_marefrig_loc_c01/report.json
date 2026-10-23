@@ -1,0 +1,82 @@
+{
+  "image_id": "moon_marefrig_loc_c01",
+  "seconds": {
+    "preprocess": 0.15,
+    "hough": 16.82,
+    "shading_review": 0.03
+  },
+  "preprocess_params": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 90.94043353199962,
+    "canny_low": 36.37617341279985,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 27101,
+    "edge_px_final": 26046
+  },
+  "review": {
+    "params": {
+      "dark_level": 0.06,
+      "shadow_min_area_px": 1500,
+      "shadow_edge_dist_px": 2,
+      "rim_band_px": 1.5,
+      "radial_tol_deg": 30.0,
+      "angle_bins": 36,
+      "min_radial_coverage": 0.5,
+      "min_rim_contrast": 1.5,
+      "max_shadow_edge_fraction": 0.5
+    },
+    "counts": {
+      "rim": 27,
+      "shadow_edge": 4,
+      "texture": 69,
+      "unclear": 0
+    },
+    "removed": 0,
+    "shadow_area_fraction": 0.2864,
+    "edge_px": 26046,
+    "shadow_edge_px": 3705,
+    "shadow_edge_fraction_of_edges": 0.1422
+  },
+  "shading": {
+    "checked": false,
+    "reason": "metadata không có hướng nắng (sun.quality=none)",
+    "sun_basis": [],
+    "azimuth_deg": null,
+    "quality": "none",
+    "counts": {
+      "consistent": 0,
+      "inverted": 0,
+      "unclear": 0,
+      "not_checked": 100
+    }
+  },
+  "hough_circles": 100,
+  "labels": "data\\s202_labels\\moon_marefrig_loc_c01.json",
+  "evaluation": "chưa có nhãn người: chưa đối chiếu, chưa gọi là lọc"
+}
