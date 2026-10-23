@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_lunokhod1_loc_c02",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, unreviewed",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 50.0,
+      "y": 70.0,
+      "r": 50.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 90.0,
+      "y": 270.0,
+      "r": 32.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 180.0,
+      "y": 140.0,
+      "r": 14.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 220.0,
+      "y": 330.0,
+      "r": 11.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 300.0,
+      "y": 135.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 330.0,
+      "y": 310.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 185.0,
+      "y": 445.0,
+      "r": 9.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C8",
+      "x": 80.0,
+      "y": 445.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C9",
+      "x": 445.0,
+      "y": 250.0,
+      "r": 7.5,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

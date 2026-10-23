@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap16_m132732855r_c01",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, unreviewed",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 380.0,
+      "y": 95.0,
+      "r": 16.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 295.0,
+      "y": 130.0,
+      "r": 12.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 460.0,
+      "y": 185.0,
+      "r": 11.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 340.0,
+      "y": 220.0,
+      "r": 9.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 420.0,
+      "y": 300.0,
+      "r": 10.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 220.0,
+      "y": 200.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 490.0,
+      "y": 395.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C8",
+      "x": 365.0,
+      "y": 390.0,
+      "r": 8.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C9",
+      "x": 275.0,
+      "y": 315.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C10",
+      "x": 450.0,
+      "y": 470.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}
