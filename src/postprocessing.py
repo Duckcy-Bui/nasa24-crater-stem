@@ -281,3 +281,128 @@ def filter_candidates(circles: list[dict], image, metadata: dict, params: dict) 
     """
     scored, _ = score_candidates(circles, image, metadata, params)
     return scored
+
+
+# ============================================================ S2-02: rà ứng viên
+# Phân biệt vành hố với ranh giới bóng đổ và biên kết cấu. Mặc định CHỈ GẮN NHÃN;
+# apply_filter chỉ loại khi người gọi bật rõ ràng các lớp cần loại, và mỗi vòng bị
+# loại ghi lý do. Ngưỡng là giá trị ban đầu, phải đối chiếu trên nhãn đã kiểm chéo.
+
+REVIEW_DEFAULTS = {
+    "dark_level": 0.06,            # gray (B3) dưới mức này coi là bóng
+    "shadow_min_area_px": 1500,    # vùng tối liền khối lớn hơn → bóng địa hình, không phải bóng trong hố nhỏ
+    "shadow_edge_dist_px": 2,      # điểm biên cách vùng bóng lớn <= 2 px → ranh giới bóng
+    "rim_band_px": 1.5,            # điểm biên trong |d − r| <= 1,5 px thuộc vòng
+    "radial_tol_deg": 30.0,        # gradient lệch hướng xuyên tâm <= 30° → hợp vành tròn
+    "angle_bins": 36,
+    "min_radial_coverage": 0.5,    # vành hố: >= 50% số cung 10° có điểm biên xuyên tâm
+    "min_rim_contrast": 1.5,       # |G| trên vành / trung vị |G| vành ngoài
+    "max_shadow_edge_fraction": 0.5,
+}
+REVIEW_CLASSES = ("rim", "shadow_edge", "texture", "unclear")
+
+
+def resolve_review_params(params: dict | None) -> dict:
+    params = dict(params or {})
+    unknown = set(params) - set(REVIEW_DEFAULTS)
+    if unknown:
+        raise ValueError("Tham số S2-02 không biết: " + ", ".join(sorted(unknown)))
+    return {**REVIEW_DEFAULTS, **params}
+
+
+def shadow_regions(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray, p: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Vùng bóng lớn và các điểm biên nằm trên ranh giới của nó.
+
+    Tìm vùng liền khối: THƯ VIỆN OpenCV connectedComponentsWithStats. Giãn vùng
+    bằng phép co phần bù (erode tự viết của S1-08).
+    """
+    import cv2
+    from src.preprocessing import erode
+
+    dark = (np.asarray(gray) < p["dark_level"]) & valid
+    _, labels, stats, _ = cv2.connectedComponentsWithStats(dark.astype(np.uint8), connectivity=8)
+    big_ids = np.where(stats[:, cv2.CC_STAT_AREA] >= p["shadow_min_area_px"])[0]
+    big = np.isin(labels, big_ids[big_ids != 0])
+    near = ~erode(~big, int(p["shadow_edge_dist_px"]))
+    return big, np.asarray(edges, dtype=bool) & near
+
+
+def candidate_features(c: dict, mag: np.ndarray, theta: np.ndarray, edges: np.ndarray, shadow_edges: np.ndarray,
+                       valid: np.ndarray, p: dict) -> dict:
+    """[TỰ VIẾT] Đặc trưng một vòng: độ phủ biên xuyên tâm, tỉ lệ biên là ranh giới bóng, độ nổi của vành."""
+    x, y, r = c["x"], c["y"], c["r"]
+    xs, ys, _ = _pixels_in_ring(valid, x, y, r - p["rim_band_px"], r + p["rim_band_px"])
+    on = edges[ys, xs]
+    if not on.any():
+        return {"edge_px": 0, "radial_coverage": 0.0, "shadow_edge_fraction": 0.0, "rim_contrast": 0.0}
+    ang = np.arctan2(ys - y, xs - x)
+    radial = np.abs(np.cos(theta[ys, xs] - ang)) >= math.cos(math.radians(p["radial_tol_deg"]))
+    bins = ((ang + np.pi) / (2 * np.pi) * p["angle_bins"]).astype(int) % p["angle_bins"]
+    rim = on & radial
+    coverage = len(np.unique(bins[rim])) / p["angle_bins"]
+    shadow_fraction = float(shadow_edges[ys, xs][on].mean())
+    ax, ay, _ = _pixels_in_ring(valid, x, y, 1.3 * r, 2.0 * r)
+    background = float(np.median(mag[ay, ax])) if len(ax) else 0.0
+    rim_mag = float(mag[ys, xs][rim].mean()) if rim.any() else 0.0
+    contrast = rim_mag / background if background > 1e-9 else (99.0 if rim_mag > 0 else 0.0)
+    return {"edge_px": int(on.sum()), "radial_coverage": round(coverage, 3),
+            "shadow_edge_fraction": round(shadow_fraction, 3), "rim_contrast": round(min(contrast, 99.0), 3)}
+
+
+def classify_candidate(f: dict, p: dict) -> tuple[str, str]:
+    """Lớp của một vòng theo đặc trưng hình học, kèm lý do. Không dùng điểm sáng–tối."""
+    if f["edge_px"] == 0:
+        return "unclear", "không có điểm biên trên vòng"
+    if f["shadow_edge_fraction"] >= p["max_shadow_edge_fraction"]:
+        return "shadow_edge", f"{f['shadow_edge_fraction']:.0%} điểm biên trên vòng là ranh giới vùng bóng lớn"
+    if f["radial_coverage"] < p["min_radial_coverage"]:
+        return "texture", f"biên xuyên tâm chỉ phủ {f['radial_coverage']:.0%} chu vi"
+    if f["rim_contrast"] < p["min_rim_contrast"]:
+        return "texture", f"vành không nổi hơn nền (|G| vành / nền = {f['rim_contrast']:.2f})"
+    return "rim", f"biên xuyên tâm phủ {f['radial_coverage']:.0%} chu vi, vành nổi {f['rim_contrast']:.1f}× nền"
+
+
+def review_candidates(circles: list[dict], pre: dict, params: dict | None = None) -> tuple[list[dict], dict]:
+    """Thêm trường "review" = {class, reason, features} vào bản sao từng vòng. Không loại vòng nào.
+
+    pre: kết quả preprocess() (cần gray, mag, theta, edges, valid_mask).
+    """
+    p = resolve_review_params(params)
+    valid = np.asarray(pre["valid_mask"], dtype=bool)
+    big, shadow_edges = shadow_regions(pre["gray"], pre["edges"], valid, p)
+    out, counts = [], {k: 0 for k in REVIEW_CLASSES}
+    for c in circles:
+        f = candidate_features(c, pre["mag"], pre["theta"], pre["edges"], shadow_edges, valid, p)
+        cls, reason = classify_candidate(f, p)
+        counts[cls] += 1
+        out.append({**c, "review": {"class": cls, "reason": reason, "features": f}})
+    edges = int(np.asarray(pre["edges"]).sum())
+    report = {"params": p, "counts": counts, "removed": 0,
+              "shadow_area_fraction": round(float(big.mean()), 4),
+              "edge_px": edges, "shadow_edge_px": int(shadow_edges.sum()),
+              "shadow_edge_fraction_of_edges": round(int(shadow_edges.sum()) / edges, 4) if edges else 0.0}
+    return out, report
+
+
+def apply_filter(circles: list[dict], remove_classes=(), remove_shading=()) -> tuple[list[dict], list[dict]]:
+    """LỌC THẬT: loại vòng có review.class thuộc remove_classes hoặc shading.status thuộc remove_shading.
+
+    Trả (giữ lại, bị loại); mỗi vòng bị loại có "filter_reason". Gọi không tham số thì không loại gì.
+    """
+    bad = set(remove_classes) - set(REVIEW_CLASSES)
+    if bad:
+        raise ValueError("Lớp không biết: " + ", ".join(sorted(bad)))
+    kept, removed = [], []
+    for c in circles:
+        cls = (c.get("review") or {}).get("class")
+        st = (c.get("shading") or {}).get("status")
+        why = []
+        if cls in remove_classes:
+            why.append(f"review={cls}")
+        if st in remove_shading:
+            why.append(f"shading={st}")
+        if why:
+            removed.append({**c, "filter_reason": "; ".join(why)})
+        else:
+            kept.append(c)
+    return kept, removed

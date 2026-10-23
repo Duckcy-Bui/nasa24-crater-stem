@@ -1,0 +1,84 @@
+{
+  "image_id": "moon_ap16_m109134835l_c01",
+  "seconds": {
+    "preprocess": 0.13,
+    "hough": 25.82,
+    "shading_review": 0.04
+  },
+  "preprocess_params": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 115.78955505788326,
+    "canny_low": 46.31582202315331,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 27517,
+    "edge_px_final": 26642
+  },
+  "review": {
+    "params": {
+      "dark_level": 0.06,
+      "shadow_min_area_px": 1500,
+      "shadow_edge_dist_px": 2,
+      "rim_band_px": 1.5,
+      "radial_tol_deg": 30.0,
+      "angle_bins": 36,
+      "min_radial_coverage": 0.5,
+      "min_rim_contrast": 1.5,
+      "max_shadow_edge_fraction": 0.5
+    },
+    "counts": {
+      "rim": 61,
+      "shadow_edge": 0,
+      "texture": 39,
+      "unclear": 0
+    },
+    "removed": 0,
+    "shadow_area_fraction": 0.0092,
+    "edge_px": 26642,
+    "shadow_edge_px": 186,
+    "shadow_edge_fraction_of_edges": 0.007
+  },
+  "shading": {
+    "checked": false,
+    "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn",
+    "sun_basis": [
+      "metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 7.64° (gần đỉnh đầu))"
+    ],
+    "azimuth_deg": null,
+    "quality": "side_only",
+    "counts": {
+      "consistent": 0,
+      "inverted": 0,
+      "unclear": 0,
+      "not_checked": 100
+    }
+  },
+  "hough_circles": 100,
+  "labels": "data\\s202_labels\\moon_ap16_m109134835l_c01.json",
+  "evaluation": "chưa có nhãn người: chưa đối chiếu, chưa gọi là lọc"
+}
