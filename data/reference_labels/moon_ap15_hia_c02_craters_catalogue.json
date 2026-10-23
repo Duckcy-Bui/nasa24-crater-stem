@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap15_hia_c02",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, unreviewed",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 70.0,
+      "y": 150.0,
+      "r": 30.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 155.0,
+      "y": 420.0,
+      "r": 20.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 390.0,
+      "y": 460.0,
+      "r": 15.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 465.0,
+      "y": 185.0,
+      "r": 10.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 330.0,
+      "y": 200.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 265.0,
+      "y": 310.0,
+      "r": 7.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 200.0,
+      "y": 125.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C8",
+      "x": 430.0,
+      "y": 340.0,
+      "r": 7.0,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

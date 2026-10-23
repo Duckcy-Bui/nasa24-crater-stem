@@ -1,7 +1,7 @@
 {
   "schema_version": "s203-split-1",
   "task_id": "S2-03",
-  "created_at_utc": "2026-10-23T06:41:51.339892+00:00",
+  "created_at_utc": "2026-10-23T08:19:02.222141+00:00",
   "crops_source": "data/s106_bundle/crops.json",
   "crops_sha256": "bb7fbac5ebb0d36f23c7da546908675280790fa1ca7d607669213ec5c3df9a7a",
   "split_strategy": "group_by_product_id",
@@ -21,8 +21,8 @@
     "holdout_images": 8,
     "tuning_groups": 11,
     "holdout_groups": 5,
-    "labeled_tuning": 1,
-    "labeled_holdout": 0
+    "labeled_tuning": 18,
+    "labeled_holdout": 8
   },
   "images": [
     {
@@ -35,12 +35,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m102057602r_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m102064759r_c01",
@@ -52,12 +52,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m102064759r_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 11,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m106777343r_c01",
@@ -86,12 +86,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m109134835l_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m109134835l_c02",
@@ -103,12 +103,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m109134835l_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 11,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m1108182629l_c01",
@@ -120,12 +120,12 @@
       "sun_side": "east",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m1108182629l_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 11,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m117392541l_c01",
@@ -137,12 +137,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m117392541l_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 12,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m175179080r_c01",
@@ -154,12 +154,12 @@
       "sun_side": "east",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m175179080r_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 13,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_hia_c01",
@@ -171,12 +171,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_hia_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_hia_c02",
@@ -188,12 +188,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_hia_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 8,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_hia_c03",
@@ -205,12 +205,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_hia_c03_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 7,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_lunokhod1_loc_c01",
@@ -222,12 +222,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_lunokhod1_loc_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_lunokhod1_loc_c02",
@@ -239,12 +239,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_lunokhod1_loc_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_marefrig_loc_c01",
@@ -256,12 +256,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_marefrig_loc_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 6,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_marefrig_loc_c02",
@@ -273,12 +273,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_marefrig_loc_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 7,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_marefrig_loc_c03",
@@ -290,12 +290,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_marefrig_loc_c03_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_vandegraff_hia_c01",
@@ -307,12 +307,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_vandegraff_hia_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_vandegraff_hia_c02",
@@ -324,12 +324,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_vandegraff_hia_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 11,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m113853974r_c01",
@@ -341,12 +341,12 @@
       "sun_side": "east",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m113853974r_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m132732855l_c01",
@@ -358,12 +358,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m132732855l_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap16_m132732855r_c01",
@@ -375,12 +375,12 @@
       "sun_side": "west",
       "d_min_m": 20.0,
       "d_max_m": 500.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap16_m132732855r_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 10,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_loc_c01",
@@ -392,12 +392,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_loc_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 8,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_loc_c02",
@@ -409,12 +409,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_loc_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_ap15_loc_c03",
@@ -426,12 +426,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_ap15_loc_c03_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_lunokhod2_loc_c01",
@@ -443,12 +443,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_lunokhod2_loc_c01_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     },
     {
       "image_id": "moon_lunokhod2_loc_c02",
@@ -460,12 +460,12 @@
       "sun_side": null,
       "d_min_m": 200.0,
       "d_max_m": 4000.0,
-      "has_reference_label": false,
-      "reference_label_file": null,
-      "label_status": "unlabeled",
-      "n_labels": 0,
+      "has_reference_label": true,
+      "reference_label_file": "moon_lunokhod2_loc_c02_craters_catalogue.json",
+      "label_status": "sparse_unreviewed",
+      "n_labels": 9,
       "n_uncertain": 0,
-      "label_note": "Chua co nhan tham chieu."
+      "label_note": "Nhan thua thu cong S1-10; chua kiem cheo. Recall do tren nhan da biet, khong suy F1 toan anh."
     }
   ]
 }
