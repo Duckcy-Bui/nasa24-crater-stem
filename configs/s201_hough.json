@@ -1,0 +1,15 @@
+{
+  "hough": {
+    "voting_method": "full_circle",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  }
+}
