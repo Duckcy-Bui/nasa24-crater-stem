@@ -1,0 +1,434 @@
+test_app_save_state (unittest.loader._FailedTest.test_app_save_state) ... ERROR
+test_app_smoke (unittest.loader._FailedTest.test_app_smoke) ... ERROR
+test_app_state (unittest.loader._FailedTest.test_app_state) ... ERROR
+test_all_shared_sources_use_same_image (test_contracts.ContractsTest.test_all_shared_sources_use_same_image) ... ok
+test_cross_image_merge_is_rejected (test_contracts.ContractsTest.test_cross_image_merge_is_rejected) ... ok
+test_duplicate_crater_id_is_rejected (test_contracts.ContractsTest.test_duplicate_crater_id_is_rejected) ... ok
+test_invalid_geometry_is_rejected (test_contracts.ContractsTest.test_invalid_geometry_is_rejected) ... ok
+test_metadata_radius_cannot_be_typed_inconsistently (test_contracts.ContractsTest.test_metadata_radius_cannot_be_typed_inconsistently) ... ok
+test_radius_conversion_from_s104_example (test_contracts.ContractsTest.test_radius_conversion_from_s104_example) ... ok
+test_resize_center_offset_and_crop_origin (test_contracts.ContractsTest.test_resize_center_offset_and_crop_origin) ... ok
+test_run_id_cannot_escape_output_folder (test_contracts.ContractsTest.test_run_id_cannot_escape_output_folder) ... ok
+test_saved_run_can_be_read_back_and_cannot_be_overwritten (test_contracts.ContractsTest.test_saved_run_can_be_read_back_and_cannot_be_overwritten) ... ok
+test_synthetic_results_cannot_be_mixed_with_real_metadata (test_contracts.ContractsTest.test_synthetic_results_cannot_be_mixed_with_real_metadata) ... ok
+test_unknown_sun_direction_is_not_invented (test_contracts.ContractsTest.test_unknown_sun_direction_is_not_invented) ... ok
+test_unusable_radius_range_is_rejected (test_contracts.ContractsTest.test_unusable_radius_range_is_rejected) ... ok
+test_dataset_s106 (unittest.loader._FailedTest.test_dataset_s106) ... ERROR
+test_game_results (unittest.loader._FailedTest.test_game_results) ... ERROR
+test_accumulator_counts_duplicates_and_clips_centers (test_hough.TestHough.test_accumulator_counts_duplicates_and_clips_centers) ... ok
+test_circle_at_border (test_hough.TestHough.test_circle_at_border) ... ok
+test_default_method_remains_full_circle (test_hough.TestHough.test_default_method_remains_full_circle) ... ok
+test_empty_edges (test_hough.TestHough.test_empty_edges) ... ok
+test_gradient_at_supported_radius_boundaries (test_hough.TestHough.test_gradient_at_supported_radius_boundaries) ... ok
+test_gradient_recovers_circle_with_sparse_noise (test_hough.TestHough.test_gradient_recovers_circle_with_sparse_noise) ... ok
+test_gradient_requires_valid_theta_even_on_empty_edges (test_hough.TestHough.test_gradient_requires_valid_theta_even_on_empty_edges) ... ok
+test_gradient_straight_edge_is_not_circle (test_hough.TestHough.test_gradient_straight_edge_is_not_circle) ... ok
+test_gradient_two_circles_and_border (test_hough.TestHough.test_gradient_two_circles_and_border) ... ok
+test_invalid_inputs (test_hough.TestHough.test_invalid_inputs) ... ok
+test_large_finite_nms_distance_does_not_overflow (test_hough.TestHough.test_large_finite_nms_distance_does_not_overflow) ... ok
+test_nested_config (test_hough.TestHough.test_nested_config) ... ok
+test_output_format (test_hough.TestHough.test_output_format) ... ok
+test_radius_limits_and_max_circles (test_hough.TestHough.test_radius_limits_and_max_circles) ... ok
+test_single_circle (test_hough.TestHough.test_single_circle) ... ok
+test_two_circles (test_hough.TestHough.test_two_circles) ... ok
+test_full_circle_accumulator_matches_document (test_hough_examples.TestHoughTinyExample.test_full_circle_accumulator_matches_document) ... ok
+test_gradient_accumulator_matches_document (test_hough_examples.TestHoughTinyExample.test_gradient_accumulator_matches_document) ... ok
+test_label_craters (unittest.loader._FailedTest.test_label_craters) ... ERROR
+test_failure_after_saving_removes_the_half_written_run (test_pipeline.TestEndToEnd.test_failure_after_saving_removes_the_half_written_run) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_latest_player_answer_uses_run_time_not_folder_name (test_pipeline.TestEndToEnd.test_latest_player_answer_uses_run_time_not_folder_name) ... ok
+test_machine_circles_saved_with_every_artifact (test_pipeline.TestEndToEnd.test_machine_circles_saved_with_every_artifact) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ERROR
+test_overlay_file_with_wrong_source_is_rejected (test_pipeline.TestEndToEnd.test_overlay_file_with_wrong_source_is_rejected) ... ok
+test_player_answer_is_drawn_beside_but_never_merged_into_machine (test_pipeline.TestEndToEnd.test_player_answer_is_drawn_beside_but_never_merged_into_machine) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_player_is_scored_only_against_reviewed_labels (test_pipeline.TestEndToEnd.test_player_is_scored_only_against_reviewed_labels) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_player_search_ignores_other_images (test_pipeline.TestEndToEnd.test_player_search_ignores_other_images) ... ok
+test_reference_labels_are_drawn_with_their_review_status (test_pipeline.TestEndToEnd.test_reference_labels_are_drawn_with_their_review_status) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_scoring_skipped_and_shading_check_never_removes_circles (test_pipeline.TestEndToEnd.test_scoring_skipped_and_shading_check_never_removes_circles) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_valid_mask_is_loaded_and_used (test_pipeline.TestEndToEnd.test_valid_mask_is_loaded_and_used) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_player_file_is_rejected_with_all_or_no_player (test_pipeline.TestEndToEndCli.test_player_file_is_rejected_with_all_or_no_player) ... ok
+test_delayed_load_acknowledgements_and_edit_events (test_player_interface.CanvasGeometryTests.test_delayed_load_acknowledgements_and_edit_events) ... ok
+test_display_sizes_offsets_and_original_image_geometry (test_player_interface.CanvasGeometryTests.test_display_sizes_offsets_and_original_image_geometry) ... ok
+test_answer_requires_circle_objects_in_a_list (test_player_interface.PlayerAnnotationTests.test_answer_requires_circle_objects_in_a_list) ... ok
+test_automatic_saves_produce_separate_recoverable_runs (test_player_interface.PlayerAnnotationTests.test_automatic_saves_produce_separate_recoverable_runs) ... ok
+test_circle_ids_do_not_change_when_circle_is_deleted_or_edited (test_player_interface.PlayerAnnotationTests.test_circle_ids_do_not_change_when_circle_is_deleted_or_edited) ... ok
+test_cross_image_and_old_session_events_cannot_contaminate_draft (test_player_interface.PlayerAnnotationTests.test_cross_image_and_old_session_events_cannot_contaminate_draft) ... ok
+test_delete_and_edit_events_keep_original_coordinate_units (test_player_interface.PlayerAnnotationTests.test_delete_and_edit_events_keep_original_coordinate_units) ... ok
+test_empty_answer_is_a_valid_player_answer_without_catalogue_claim (test_player_interface.PlayerAnnotationTests.test_empty_answer_is_a_valid_player_answer_without_catalogue_claim) ... ok
+test_export_does_not_mutate_or_share_mutable_input (test_player_interface.PlayerAnnotationTests.test_export_does_not_mutate_or_share_mutable_input) ... ok
+test_export_preserves_real_image_provenance_and_player_schema (test_player_interface.PlayerAnnotationTests.test_export_preserves_real_image_provenance_and_player_schema) ... ok
+test_geometry_rejects_nonfinite_bool_and_outside_centres (test_player_interface.PlayerAnnotationTests.test_geometry_rejects_nonfinite_bool_and_outside_centres) ... ok
+test_ids_must_exist_be_strings_and_be_unique (test_player_interface.PlayerAnnotationTests.test_ids_must_exist_be_strings_and_be_unique) ... ok
+test_invalid_metadata_is_rejected_before_export (test_player_interface.PlayerAnnotationTests.test_invalid_metadata_is_rejected_before_export) ... ok
+test_invalid_save_leaves_no_partial_run (test_player_interface.PlayerAnnotationTests.test_invalid_save_leaves_no_partial_run) ... ok
+test_malformed_new_events_are_rejected_without_partial_updates (test_player_interface.PlayerAnnotationTests.test_malformed_new_events_are_rejected_without_partial_updates) ... ok
+test_none_and_replayed_events_cannot_reset_existing_answers (test_player_interface.PlayerAnnotationTests.test_none_and_replayed_events_cannot_reset_existing_answers) ... ok
+test_player_cannot_claim_machine_confidence_or_votes (test_player_interface.PlayerAnnotationTests.test_player_cannot_claim_machine_confidence_or_votes) ... ok
+test_repeated_manual_save_cannot_overwrite_an_existing_run (test_player_interface.PlayerAnnotationTests.test_repeated_manual_save_cannot_overwrite_an_existing_run) ... ok
+test_rim_can_cross_image_edge_when_centre_is_inside (test_player_interface.PlayerAnnotationTests.test_rim_can_cross_image_edge_when_centre_is_inside) ... ok
+test_save_run_id_cannot_escape_outputs (test_player_interface.PlayerAnnotationTests.test_save_run_id_cannot_escape_outputs) ... ok
+test_saved_answer_can_be_read_by_the_shared_contract (test_player_interface.PlayerAnnotationTests.test_saved_answer_can_be_read_by_the_shared_contract) ... ok
+test_synthetic_fixture_keeps_its_declared_data_kind (test_player_interface.PlayerAnnotationTests.test_synthetic_fixture_keeps_its_declared_data_kind) ... ok
+test_valid_event_updates_revision_without_mutating_prior_draft (test_player_interface.PlayerAnnotationTests.test_valid_event_updates_revision_without_mutating_prior_draft) ... ok
+test_callback_checkpoints_consumed_nonce_before_writer_and_blocks_reentrant_replay (test_player_ui.SaveRequestTests.test_callback_checkpoints_consumed_nonce_before_writer_and_blocks_reentrant_replay) ... ok
+test_checkpoint_survives_interrupted_writer_and_rerun_cannot_repeat_same_click (test_player_ui.SaveRequestTests.test_checkpoint_survives_interrupted_writer_and_rerun_cannot_repeat_same_click) ... ok
+test_consumed_nonce_replay_keeps_latest_ack_without_revalidating_payload (test_player_ui.SaveRequestTests.test_consumed_nonce_replay_keeps_latest_ack_without_revalidating_payload) ... ok
+test_edit_without_explicit_nonce_never_saves (test_player_ui.SaveRequestTests.test_edit_without_explicit_nonce_never_saves) ... ok
+test_empty_player_answer_can_be_saved_at_revision_zero (test_player_ui.SaveRequestTests.test_empty_player_answer_can_be_saved_at_revision_zero) ... ok
+test_equal_revision_with_different_valid_snapshot_is_ignored (test_player_ui.SaveRequestTests.test_equal_revision_with_different_valid_snapshot_is_ignored) ... ok
+test_existing_run_is_immutable_and_collision_is_consumed (test_player_ui.SaveRequestTests.test_existing_run_is_immutable_and_collision_is_consumed) ... ok
+test_invalid_nonce_preserves_prior_ack_and_files (test_player_ui.SaveRequestTests.test_invalid_nonce_preserves_prior_ack_and_files) ... ok
+test_io_error_consumes_click_rerun_does_not_retry_but_new_click_can (test_player_ui.SaveRequestTests.test_io_error_consumes_click_rerun_does_not_retry_but_new_click_can) ... ok
+test_malformed_matching_circles_raise_before_io_or_nonce_consumption (test_player_ui.SaveRequestTests.test_malformed_matching_circles_raise_before_io_or_nonce_consumption) ... ok
+test_new_click_makes_separate_run_and_old_nonce_after_new_nonce_never_resaves (test_player_ui.SaveRequestTests.test_new_click_makes_separate_run_and_old_nonce_after_new_nonce_never_resaves) ... ok
+test_nonce_length_boundaries_are_valid_and_nonce_is_not_an_output_path (test_player_ui.SaveRequestTests.test_nonce_length_boundaries_are_valid_and_nonce_is_not_an_output_path) ... ok
+test_old_future_or_noninteger_revision_cannot_write_or_consume_nonce (test_player_ui.SaveRequestTests.test_old_future_or_noninteger_revision_cannot_write_or_consume_nonce) ... ok
+test_rejected_or_malformed_requests_never_call_checkpoint_or_writer (test_player_ui.SaveRequestTests.test_rejected_or_malformed_requests_never_call_checkpoint_or_writer) ... ok
+test_valid_save_preserves_contract_and_inputs_and_returns_relative_ack (test_player_ui.SaveRequestTests.test_valid_save_preserves_contract_and_inputs_and_returns_relative_ack) ... ERROR
+test_wrong_image_or_session_ignores_request_even_if_circles_are_malformed (test_player_ui.SaveRequestTests.test_wrong_image_or_session_ignores_request_even_if_circles_are_malformed) ... ok
+test_nan_pixels_are_nodata_and_never_give_nan_scores (test_postprocessing.FilterCandidates.test_nan_pixels_are_nodata_and_never_give_nan_scores) ... ok
+test_scores_without_removing_and_keeps_contract (test_postprocessing.FilterCandidates.test_scores_without_removing_and_keeps_contract) ... ok
+test_unknown_parameter_rejected (test_postprocessing.FilterCandidates.test_unknown_parameter_rejected) ... ok
+test_unreliable_image_marks_all_not_checked_and_logs (test_postprocessing.FilterCandidates.test_unreliable_image_marks_all_not_checked_and_logs) ... ok
+test_valid_mask_can_come_through_filter_candidates_params (test_postprocessing.FilterCandidates.test_valid_mask_can_come_through_filter_candidates_params) ... ok
+test_circle_mostly_outside_image_is_not_scored (test_postprocessing.ShadingScore.test_circle_mostly_outside_image_is_not_scored) ... ok
+test_circle_on_flat_ground_is_unclear (test_postprocessing.ShadingScore.test_circle_on_flat_ground_is_unclear) ... ok
+test_dome_is_inverted (test_postprocessing.ShadingScore.test_dome_is_inverted) ... ok
+test_invalid_pixels_are_excluded (test_postprocessing.ShadingScore.test_invalid_pixels_are_excluded) ... ok
+test_score_ignores_brightness_and_contrast_scale (test_postprocessing.ShadingScore.test_score_ignores_brightness_and_contrast_scale) ... ok
+test_true_craters_are_consistent (test_postprocessing.ShadingScore.test_true_craters_are_consistent) ... ok
+test_wrong_sun_side_flips_every_verdict (test_postprocessing.ShadingScore.test_wrong_sun_side_flips_every_verdict)
+Lý do bắt buộc kiểm tra hướng nắng: ghi nhầm Đông/Tây thì hố thật bị chấm là ngược. ... ok
+test_rerun_keeps_checks_of_images_not_in_this_run (test_postprocessing.SunCheckSheet.test_rerun_keeps_checks_of_images_not_in_this_run) ... ok
+test_documented_side_plus_visual_check_is_usable (test_postprocessing.SunReliability.test_documented_side_plus_visual_check_is_usable) ... ok
+test_east_candidate_needs_visual_confirmation (test_postprocessing.SunReliability.test_east_candidate_needs_visual_confirmation) ... ok
+test_missing_visual_check_is_reported (test_postprocessing.SunReliability.test_missing_visual_check_is_reported) ... ok
+test_mosaic_without_window_incidence (test_postprocessing.SunReliability.test_mosaic_without_window_incidence) ... ok
+test_near_overhead_sun_is_skipped (test_postprocessing.SunReliability.test_near_overhead_sun_is_skipped) ... ok
+test_no_sun_metadata (test_postprocessing.SunReliability.test_no_sun_metadata) ... ok
+test_visual_check_contradiction_blocks_image (test_postprocessing.SunReliability.test_visual_check_contradiction_blocks_image) ... ok
+test_north_angle_rotates_clockwise (test_postprocessing.SunVector.test_north_angle_rotates_clockwise) ... ok
+test_s104_convention (test_postprocessing.SunVector.test_s104_convention) ... ok
+test_annulus_in_nodata_is_not_checked (test_postprocessing.TerrainSlope.test_annulus_in_nodata_is_not_checked) ... ok
+test_detrend_keeps_flat_circle_unclear_and_craters_correct (test_postprocessing.TerrainSlope.test_detrend_keeps_flat_circle_unclear_and_craters_correct) ... ok
+test_shadow_edge_next_to_circle_is_unclear_not_consistent (test_postprocessing.TerrainSlope.test_shadow_edge_next_to_circle_is_unclear_not_consistent)
+Mép bóng sắc sát vòng: mặt phẳng trừ dốc tự tạo dấu giả; quy tắc 'hai cách phải cùng nhãn' chặn lại. ... ok
+test_slope_alone_fools_raw_score (test_postprocessing.TerrainSlope.test_slope_alone_fools_raw_score)
+Tái hiện lỗi: không trừ dốc thì vòng chỗ phẳng bị chấm theo độ dốc. ... ok
+test_already_downsampled_input_skips_b1 (test_preprocessing.PipelineContract.test_already_downsampled_input_skips_b1) ... ok
+test_circle_rim_is_covered (test_preprocessing.PipelineContract.test_circle_rim_is_covered) ... ok
+test_edges_respect_margin_and_nodata (test_preprocessing.PipelineContract.test_edges_respect_margin_and_nodata) ... ok
+test_output_contract (test_preprocessing.PipelineContract.test_output_contract) ... ok
+test_params_are_saved_and_json_serializable (test_preprocessing.PipelineContract.test_params_are_saved_and_json_serializable) ... ok
+test_unknown_param_rejected (test_preprocessing.PipelineContract.test_unknown_param_rejected) ... ok
+test_cli_rejects_path_traversal_before_writing (test_preprocessing.PreprocessingFileAndCLI.test_cli_rejects_path_traversal_before_writing) ... ERROR
+test_cli_saves_mask_threshold_strategy_and_input_hashes (test_preprocessing.PreprocessingFileAndCLI.test_cli_saves_mask_threshold_strategy_and_input_hashes) ... ERROR
+test_explicit_mask_and_invalid_mask_files (test_preprocessing.PreprocessingFileAndCLI.test_explicit_mask_and_invalid_mask_files) ... ERROR
+test_failed_render_does_not_leave_partial_output (test_preprocessing.PreprocessingFileAndCLI.test_failed_render_does_not_leave_partial_output) ... ERROR
+test_mask_and_metadata_mismatch_is_rejected (test_preprocessing.PreprocessingFileAndCLI.test_mask_and_metadata_mismatch_is_rejected) ... ERROR
+test_missing_mask_is_not_silently_ignored (test_preprocessing.PreprocessingFileAndCLI.test_missing_mask_is_not_silently_ignored) ... ERROR
+test_npy_sidecar_mask_preserves_nodata_and_valid_zeros (test_preprocessing.PreprocessingFileAndCLI.test_npy_sidecar_mask_preserves_nodata_and_valid_zeros) ... ERROR
+test_png_alpha_is_kept_as_mask_and_channels_stay_rgb (test_preprocessing.PreprocessingFileAndCLI.test_png_alpha_is_kept_as_mask_and_channels_stay_rgb) ... ERROR
+test_synthetic_truth_matches_search_radius_and_reports_exclusions (test_preprocessing.PreprocessingFileAndCLI.test_synthetic_truth_matches_search_radius_and_reports_exclusions) ... ERROR
+test_all_invalid_and_too_small_support_rejected (test_preprocessing.RegressionAndInputValidation.test_all_invalid_and_too_small_support_rejected) ... ok
+test_clean_discs_on_flat_background_keep_rims (test_preprocessing.RegressionAndInputValidation.test_clean_discs_on_flat_background_keep_rims) ... ok
+test_flat_image_returns_empty_edges_with_explanation (test_preprocessing.RegressionAndInputValidation.test_flat_image_returns_empty_edges_with_explanation) ... ok
+test_invalid_downsample_and_mask_are_rejected (test_preprocessing.RegressionAndInputValidation.test_invalid_downsample_and_mask_are_rejected) ... ok
+test_invalid_parameters_fail_clearly (test_preprocessing.RegressionAndInputValidation.test_invalid_parameters_fail_clearly) ... ok
+test_larger_gaussian_increases_mask_margin (test_preprocessing.RegressionAndInputValidation.test_larger_gaussian_increases_mask_margin) ... ok
+test_unsupported_image_types_rejected (test_preprocessing.RegressionAndInputValidation.test_unsupported_image_types_rejected) ... ok
+test_b1_block_mean_matches_inter_area (test_preprocessing.SelfWrittenVsOpenCV.test_b1_block_mean_matches_inter_area) ... ok
+test_b1_invalid_pixel_invalidates_block (test_preprocessing.SelfWrittenVsOpenCV.test_b1_invalid_pixel_invalidates_block) ... ok
+test_b2_gray_bt601 (test_preprocessing.SelfWrittenVsOpenCV.test_b2_gray_bt601) ... ok
+test_b3_ignores_invalid_pixels (test_preprocessing.SelfWrittenVsOpenCV.test_b3_ignores_invalid_pixels) ... ok
+test_b3_percentile_by_hand (test_preprocessing.SelfWrittenVsOpenCV.test_b3_percentile_by_hand) ... ok
+test_b4_clip_limit_has_effect_in_8bit_only (test_preprocessing.SelfWrittenVsOpenCV.test_b4_clip_limit_has_effect_in_8bit_only) ... ok
+test_b5_default_kernel_size_is_11 (test_preprocessing.SelfWrittenVsOpenCV.test_b5_default_kernel_size_is_11) ... ok
+test_b5_gaussian_matches_opencv (test_preprocessing.SelfWrittenVsOpenCV.test_b5_gaussian_matches_opencv) ... ok
+test_b6_gradient_sign_convention (test_preprocessing.SelfWrittenVsOpenCV.test_b6_gradient_sign_convention) ... ok
+test_b6_sobel_matches_opencv (test_preprocessing.SelfWrittenVsOpenCV.test_b6_sobel_matches_opencv) ... ok
+test_b8_erode_margin_from_border_and_nodata (test_preprocessing.SelfWrittenVsOpenCV.test_b8_erode_margin_from_border_and_nodata) ... ok
+test_bounded_bins_equal_scalar_votes_for_random_and_outside_centers (test_s201.TestAccumulationS201.test_bounded_bins_equal_scalar_votes_for_random_and_outside_centers) ... ok
+test_radius_intersection_and_sparse_grid (test_s201.TestAccumulationS201.test_radius_intersection_and_sparse_grid) ... ok
+test_bad_config_fails_before_running (test_s201.TestHoughConfigCli.test_bad_config_fails_before_running) ... ok
+test_defaults_config_and_explicit_overrides (test_s201.TestHoughConfigCli.test_defaults_config_and_explicit_overrides) ... ok
+test_saved_grid_reports_last_sample_instead_of_upper_bound (test_s201.TestRadiusRun.test_saved_grid_reports_last_sample_instead_of_upper_bound) ... S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+ok
+test_center_tolerance_is_half_the_reference_radius (test_scoring.TestMatching.test_center_tolerance_is_half_the_reference_radius) ... ok
+test_large_sets_run_quickly (test_scoring.TestMatching.test_large_sets_run_quickly) ... ok
+test_matches_brute_force_on_random_scenes (test_scoring.TestMatching.test_matches_brute_force_on_random_scenes) ... ok
+test_maximum_pairs_beats_greedy_nearest (test_scoring.TestMatching.test_maximum_pairs_beats_greedy_nearest) ... ok
+test_one_reference_is_never_counted_twice (test_scoring.TestMatching.test_one_reference_is_never_counted_twice) ... ok
+test_result_does_not_depend_on_input_order (test_scoring.TestMatching.test_result_does_not_depend_on_input_order) ... ok
+test_complete_labels_count_wrong_circles (test_scoring.TestScorePlayer.test_complete_labels_count_wrong_circles) ... ok
+test_empty_answer_scores_zero_on_reviewed_labels (test_scoring.TestScorePlayer.test_empty_answer_scores_zero_on_reviewed_labels) ... ok
+test_machine_comparison_is_agreement_only (test_scoring.TestScorePlayer.test_machine_comparison_is_agreement_only) ... ok
+test_sparse_reviewed_labels_give_recall_without_false_positives (test_scoring.TestScorePlayer.test_sparse_reviewed_labels_give_recall_without_false_positives) ... ok
+test_unreviewed_labels_are_not_scored (test_scoring.TestScorePlayer.test_unreviewed_labels_are_not_scored) ... ok
+test_wrong_sources_and_images_are_rejected (test_scoring.TestScorePlayer.test_wrong_sources_and_images_are_rejected) ... ok
+
+======================================================================
+ERROR: test_app_save_state (unittest.loader._FailedTest.test_app_save_state)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_app_save_state
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_app_save_state.py", line 15, in <module>
+    from streamlit.testing.v1 import AppTest
+ModuleNotFoundError: No module named 'streamlit'
+
+
+======================================================================
+ERROR: test_app_smoke (unittest.loader._FailedTest.test_app_smoke)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_app_smoke
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_app_smoke.py", line 8, in <module>
+    from PIL import Image
+ModuleNotFoundError: No module named 'PIL'
+
+
+======================================================================
+ERROR: test_app_state (unittest.loader._FailedTest.test_app_state)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_app_state
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_app_state.py", line 10, in <module>
+    from streamlit.testing.v1 import AppTest
+ModuleNotFoundError: No module named 'streamlit'
+
+
+======================================================================
+ERROR: test_dataset_s106 (unittest.loader._FailedTest.test_dataset_s106)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_dataset_s106
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_dataset_s106.py", line 13, in <module>
+    import rasterio
+ModuleNotFoundError: No module named 'rasterio'
+
+
+======================================================================
+ERROR: test_game_results (unittest.loader._FailedTest.test_game_results)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_game_results
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_game_results.py", line 8, in <module>
+    from PIL import Image
+ModuleNotFoundError: No module named 'PIL'
+
+
+======================================================================
+ERROR: test_label_craters (unittest.loader._FailedTest.test_label_craters)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_label_craters
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_label_craters.py", line 15, in <module>
+    import matplotlib
+ModuleNotFoundError: No module named 'matplotlib'
+
+
+======================================================================
+ERROR: test_machine_circles_saved_with_every_artifact (test_pipeline.TestEndToEnd.test_machine_circles_saved_with_every_artifact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_pipeline.py", line 42, in test_machine_circles_saved_with_every_artifact
+    directory, summary = self.run_pipeline()
+                         ^^^^^^^^^^^^^^^^^^^
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_pipeline.py", line 38, in run_pipeline
+    return run_end_to_end(self.image_id, processed_dir=self.processed, output_root=self.outputs,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\src\pipeline.py", line 231, in run_end_to_end
+    render_overlay(directory / "overlay.png", pre["gray"], pre["edges"], metadata, machine, player, reference)
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\src\pipeline.py", line 91, in render_overlay
+    import matplotlib
+ModuleNotFoundError: No module named 'matplotlib'
+
+======================================================================
+ERROR: test_valid_save_preserves_contract_and_inputs_and_returns_relative_ack (test_player_ui.SaveRequestTests.test_valid_save_preserves_contract_and_inputs_and_returns_relative_ack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_player_ui.py", line 71, in test_valid_save_preserves_contract_and_inputs_and_returns_relative_ack
+    metadata = json.loads((directory / "metadata.json").read_text())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8f in position 3169: character maps to <undefined>
+
+======================================================================
+ERROR: test_cli_rejects_path_traversal_before_writing (test_preprocessing.PreprocessingFileAndCLI.test_cli_rejects_path_traversal_before_writing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_cli_saves_mask_threshold_strategy_and_input_hashes (test_preprocessing.PreprocessingFileAndCLI.test_cli_saves_mask_threshold_strategy_and_input_hashes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_explicit_mask_and_invalid_mask_files (test_preprocessing.PreprocessingFileAndCLI.test_explicit_mask_and_invalid_mask_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_failed_render_does_not_leave_partial_output (test_preprocessing.PreprocessingFileAndCLI.test_failed_render_does_not_leave_partial_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_mask_and_metadata_mismatch_is_rejected (test_preprocessing.PreprocessingFileAndCLI.test_mask_and_metadata_mismatch_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_missing_mask_is_not_silently_ignored (test_preprocessing.PreprocessingFileAndCLI.test_missing_mask_is_not_silently_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_npy_sidecar_mask_preserves_nodata_and_valid_zeros (test_preprocessing.PreprocessingFileAndCLI.test_npy_sidecar_mask_preserves_nodata_and_valid_zeros)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_png_alpha_is_kept_as_mask_and_channels_stay_rgb (test_preprocessing.PreprocessingFileAndCLI.test_png_alpha_is_kept_as_mask_and_channels_stay_rgb)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+======================================================================
+ERROR: test_synthetic_truth_matches_search_radius_and_reports_exclusions (test_preprocessing.PreprocessingFileAndCLI.test_synthetic_truth_matches_search_radius_and_reports_exclusions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\tests\test_preprocessing.py", line 266, in setUp
+    self.metadata = json.loads((cli.ROOT / "data/examples/s105_synthetic_512.json").read_text())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1028, in read_text
+    return f.read()
+           ^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 743: character maps to <undefined>
+
+----------------------------------------------------------------------
+Ran 162 tests in 19.546s
+
+FAILED (errors=17)
