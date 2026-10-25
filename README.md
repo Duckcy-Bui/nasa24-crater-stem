@@ -137,6 +137,6 @@ Repo chứa bundle ngoại tuyến 26 ảnh LROC thật, kèm metadata và mặt
 
 Bundle là ảnh browse cho demo môn học; chưa có danh mục hố đã xác minh. Không dùng nhãn giả hoặc danh mục thiếu để chấm Precision/Recall hay điểm danh mục. Môi trường kiểm tra cố định dùng Python 3.12 và `requirements-test.txt`; các test dataset tự kiểm tra bundle trong Git, không phụ thuộc file ảnh đã giải nén trên máy.
 
-## S2-01: Hough NumPy v? nh?t k? th?i gian
+## S2-01: Hough NumPy — nhật ký thời gian
 
-Xem [h??ng d?n S2-01](docs/S2-01_HOUGH_CAI_THIEN.md) ?? n?p c?u h?nh Hough, ki?m tra d?i b?n k?nh th?c qu?t v? ?o tr??c/sau tr?n c?ng m?y.
+Xem [hướng dẫn S2-01](docs/S2-01_HOUGH_CAI_THIEN.md) để nạp cấu hình Hough, kiểm tra dải bán kính thực quét và đo trước/sau trên cùng máy.
