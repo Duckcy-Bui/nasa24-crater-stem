@@ -56,6 +56,6 @@ Kết quả đo thực tế và giới hạn xem `docs/evidence/s2-01/` sau lầ
 
 Ba ảnh thật, mỗi bản đo 5 lần sau warm-up: tăng tốc 2,10–2,40 lần trên toàn dải metadata; đầu ra giống hệt ở mọi lần đo. Xem [bảng số liệu và giới hạn](evidence/s2-01/README.md), [CSV](evidence/s2-01/timings.csv), [báo cáo JSON](evidence/s2-01/report.json).
 
-Trên Windows, bật UTF-8 cho cả tiến trình con trước khi chạy bộ test cũ: `$env:PYTHONUTF8 = "1"`. Venv cần đủ dependency trong `requirements-test.txt`. Lần kiểm tra ban đầu thiếu thư viện và đọc dữ liệu bằng cp1252; log giữ ở `docs/evidence/s2-01/regression_initial_environment.log`. Không sửa test hoặc module của task khác để xử lý điều kiện môi trường này.
+Trên Windows, bật UTF-8 cho cả tiến trình con trước khi chạy bộ test cũ: `$env:PYTHONUTF8 = "1"`. Venv cần đủ dependency trong `requirements-test.txt`. Lần kiểm tra ban đầu thiếu thư viện và đọc dữ liệu bằng cp1252; log đó đã bỏ vì không phải minh chứng. Không sửa test hoặc module của task khác để xử lý điều kiện môi trường này.
 
 Kết quả kiểm tra cuối: **209/209 test Python đạt**, gồm **5 test S2-01** và **18 test Hough/ví dụ hiện có**. Log: [regression.log](evidence/s2-01/regression.log).
