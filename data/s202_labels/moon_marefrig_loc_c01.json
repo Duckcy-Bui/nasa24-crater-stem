@@ -1,0 +1,811 @@
+{
+  "schema": "s202_labels/1",
+  "image_id": "moon_marefrig_loc_c01",
+  "how_to_fill": "Nhìn phieu_nhan.png. label: rim = vành hố thật; shadow_edge = ranh giới bóng đổ địa hình; texture = biên kết cấu/đốm, không phải hố; unclear = không chắc. Ghi labeled_by, labeled_on; người thứ hai kiểm chéo ghi reviewed_by, reviewed_on và sửa label nếu không đồng ý.",
+  "labeled_by": null,
+  "labeled_on": null,
+  "reviewed_by": null,
+  "reviewed_on": null,
+  "candidates": [
+    {
+      "n": 1,
+      "crater_id": "M1",
+      "x": 113.0,
+      "y": 17.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 2,
+      "crater_id": "M2",
+      "x": 72.0,
+      "y": 80.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 3,
+      "crater_id": "M3",
+      "x": 106.0,
+      "y": 22.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 4,
+      "crater_id": "M4",
+      "x": 478.0,
+      "y": 91.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 5,
+      "crater_id": "M5",
+      "x": 73.0,
+      "y": 104.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 6,
+      "crater_id": "M6",
+      "x": 427.0,
+      "y": 132.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 7,
+      "crater_id": "M7",
+      "x": 217.0,
+      "y": 356.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 8,
+      "crater_id": "M8",
+      "x": 421.0,
+      "y": 406.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 9,
+      "crater_id": "M9",
+      "x": 424.0,
+      "y": 77.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 10,
+      "crater_id": "M10",
+      "x": 438.0,
+      "y": 36.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 11,
+      "crater_id": "M11",
+      "x": 413.0,
+      "y": 66.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 12,
+      "crater_id": "M12",
+      "x": 285.0,
+      "y": 91.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 13,
+      "crater_id": "M13",
+      "x": 338.0,
+      "y": 179.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 14,
+      "crater_id": "M14",
+      "x": 215.0,
+      "y": 351.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 15,
+      "crater_id": "M15",
+      "x": 67.0,
+      "y": 417.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 16,
+      "crater_id": "M16",
+      "x": 59.0,
+      "y": 436.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 17,
+      "crater_id": "M17",
+      "x": 128.0,
+      "y": 97.0,
+      "r": 7.0,
+      "label": null
+    },
+    {
+      "n": 18,
+      "crater_id": "M18",
+      "x": 20.0,
+      "y": 138.0,
+      "r": 8.0,
+      "label": null
+    },
+    {
+      "n": 19,
+      "crater_id": "M19",
+      "x": 123.0,
+      "y": 74.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 20,
+      "crater_id": "M20",
+      "x": 35.0,
+      "y": 134.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 21,
+      "crater_id": "M21",
+      "x": 217.0,
+      "y": 323.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 22,
+      "crater_id": "M22",
+      "x": 452.0,
+      "y": 100.0,
+      "r": 7.0,
+      "label": null
+    },
+    {
+      "n": 23,
+      "crater_id": "M23",
+      "x": 141.0,
+      "y": 15.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 24,
+      "crater_id": "M24",
+      "x": 304.0,
+      "y": 62.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 25,
+      "crater_id": "M25",
+      "x": 32.0,
+      "y": 67.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 26,
+      "crater_id": "M26",
+      "x": 403.0,
+      "y": 80.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 27,
+      "crater_id": "M27",
+      "x": 388.0,
+      "y": 94.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 28,
+      "crater_id": "M28",
+      "x": 224.0,
+      "y": 174.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 29,
+      "crater_id": "M29",
+      "x": 19.0,
+      "y": 189.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 30,
+      "crater_id": "M30",
+      "x": 21.0,
+      "y": 299.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 31,
+      "crater_id": "M31",
+      "x": 209.0,
+      "y": 331.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 32,
+      "crater_id": "M32",
+      "x": 211.0,
+      "y": 373.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 33,
+      "crater_id": "M33",
+      "x": 65.0,
+      "y": 423.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 34,
+      "crater_id": "M34",
+      "x": 62.0,
+      "y": 111.0,
+      "r": 8.0,
+      "label": null
+    },
+    {
+      "n": 35,
+      "crater_id": "M35",
+      "x": 60.0,
+      "y": 14.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 36,
+      "crater_id": "M36",
+      "x": 438.0,
+      "y": 55.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 37,
+      "crater_id": "M37",
+      "x": 438.0,
+      "y": 66.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 38,
+      "crater_id": "M38",
+      "x": 154.0,
+      "y": 77.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 39,
+      "crater_id": "M39",
+      "x": 481.0,
+      "y": 84.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 40,
+      "crater_id": "M40",
+      "x": 107.0,
+      "y": 96.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 41,
+      "crater_id": "M41",
+      "x": 413.0,
+      "y": 128.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 42,
+      "crater_id": "M42",
+      "x": 224.0,
+      "y": 323.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 43,
+      "crater_id": "M43",
+      "x": 228.0,
+      "y": 353.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 44,
+      "crater_id": "M44",
+      "x": 62.0,
+      "y": 417.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 45,
+      "crater_id": "M45",
+      "x": 363.0,
+      "y": 182.0,
+      "r": 7.0,
+      "label": null
+    },
+    {
+      "n": 46,
+      "crater_id": "M46",
+      "x": 75.0,
+      "y": 383.0,
+      "r": 9.0,
+      "label": null
+    },
+    {
+      "n": 47,
+      "crater_id": "M47",
+      "x": 497.0,
+      "y": 11.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 48,
+      "crater_id": "M48",
+      "x": 107.0,
+      "y": 16.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 49,
+      "crater_id": "M49",
+      "x": 56.0,
+      "y": 20.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 50,
+      "crater_id": "M50",
+      "x": 422.0,
+      "y": 26.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 51,
+      "crater_id": "M51",
+      "x": 132.0,
+      "y": 50.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 52,
+      "crater_id": "M52",
+      "x": 160.0,
+      "y": 61.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 53,
+      "crater_id": "M53",
+      "x": 474.0,
+      "y": 70.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 54,
+      "crater_id": "M54",
+      "x": 87.0,
+      "y": 71.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 55,
+      "crater_id": "M55",
+      "x": 484.0,
+      "y": 71.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 56,
+      "crater_id": "M56",
+      "x": 29.0,
+      "y": 73.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 57,
+      "crater_id": "M57",
+      "x": 485.0,
+      "y": 76.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 58,
+      "crater_id": "M58",
+      "x": 413.0,
+      "y": 77.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 59,
+      "crater_id": "M59",
+      "x": 153.0,
+      "y": 87.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 60,
+      "crater_id": "M60",
+      "x": 65.0,
+      "y": 98.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 61,
+      "crater_id": "M61",
+      "x": 420.0,
+      "y": 102.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 62,
+      "crater_id": "M62",
+      "x": 331.0,
+      "y": 107.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 63,
+      "crater_id": "M63",
+      "x": 462.0,
+      "y": 123.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 64,
+      "crater_id": "M64",
+      "x": 40.0,
+      "y": 124.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 65,
+      "crater_id": "M65",
+      "x": 423.0,
+      "y": 130.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 66,
+      "crater_id": "M66",
+      "x": 33.0,
+      "y": 144.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 67,
+      "crater_id": "M67",
+      "x": 292.0,
+      "y": 149.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 68,
+      "crater_id": "M68",
+      "x": 343.0,
+      "y": 164.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 69,
+      "crater_id": "M69",
+      "x": 360.0,
+      "y": 170.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 70,
+      "crater_id": "M70",
+      "x": 371.0,
+      "y": 224.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 71,
+      "crater_id": "M71",
+      "x": 38.0,
+      "y": 314.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 72,
+      "crater_id": "M72",
+      "x": 209.0,
+      "y": 351.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 73,
+      "crater_id": "M73",
+      "x": 218.0,
+      "y": 375.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 74,
+      "crater_id": "M74",
+      "x": 430.0,
+      "y": 389.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 75,
+      "crater_id": "M75",
+      "x": 465.0,
+      "y": 406.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 76,
+      "crater_id": "M76",
+      "x": 62.0,
+      "y": 411.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 77,
+      "crater_id": "M77",
+      "x": 69.0,
+      "y": 411.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 78,
+      "crater_id": "M78",
+      "x": 85.0,
+      "y": 421.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 79,
+      "crater_id": "M79",
+      "x": 497.0,
+      "y": 445.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 80,
+      "crater_id": "M80",
+      "x": 478.0,
+      "y": 451.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 81,
+      "crater_id": "M81",
+      "x": 252.0,
+      "y": 456.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 82,
+      "crater_id": "M82",
+      "x": 34.0,
+      "y": 463.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 83,
+      "crater_id": "M83",
+      "x": 46.0,
+      "y": 476.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 84,
+      "crater_id": "M84",
+      "x": 469.0,
+      "y": 480.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 85,
+      "crater_id": "M85",
+      "x": 286.0,
+      "y": 484.0,
+      "r": 5.0,
+      "label": null
+    },
+    {
+      "n": 86,
+      "crater_id": "M86",
+      "x": 100.0,
+      "y": 12.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 87,
+      "crater_id": "M87",
+      "x": 449.0,
+      "y": 22.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 88,
+      "crater_id": "M88",
+      "x": 56.0,
+      "y": 31.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 89,
+      "crater_id": "M89",
+      "x": 409.0,
+      "y": 63.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 90,
+      "crater_id": "M90",
+      "x": 117.0,
+      "y": 83.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 91,
+      "crater_id": "M91",
+      "x": 442.0,
+      "y": 91.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 92,
+      "crater_id": "M92",
+      "x": 97.0,
+      "y": 92.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 93,
+      "crater_id": "M93",
+      "x": 303.0,
+      "y": 167.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 94,
+      "crater_id": "M94",
+      "x": 366.0,
+      "y": 188.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 95,
+      "crater_id": "M95",
+      "x": 316.0,
+      "y": 321.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 96,
+      "crater_id": "M96",
+      "x": 41.0,
+      "y": 385.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 97,
+      "crater_id": "M97",
+      "x": 68.0,
+      "y": 395.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 98,
+      "crater_id": "M98",
+      "x": 110.0,
+      "y": 434.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 99,
+      "crater_id": "M99",
+      "x": 431.0,
+      "y": 438.0,
+      "r": 6.0,
+      "label": null
+    },
+    {
+      "n": 100,
+      "crater_id": "M100",
+      "x": 176.0,
+      "y": 456.0,
+      "r": 6.0,
+      "label": null
+    }
+  ]
+}

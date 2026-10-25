@@ -1,0 +1,160 @@
+{
+  "image_id": "moon_ap16_m132732855l_c01",
+  "seconds": {
+    "preprocess": 0.18,
+    "hough": 19.44,
+    "shading_review": 0.06
+  },
+  "preprocess_params": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 158.99831101298335,
+    "canny_low": 63.59932440519334,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 25203,
+    "edge_px_final": 24291
+  },
+  "review": {
+    "params": {
+      "dark_level": 0.06,
+      "shadow_min_area_px": 1500,
+      "shadow_edge_dist_px": 2,
+      "rim_band_px": 1.5,
+      "radial_tol_deg": 30.0,
+      "angle_bins": 36,
+      "min_radial_coverage": 0.5,
+      "min_rim_contrast": 1.5,
+      "max_shadow_edge_fraction": 0.5
+    },
+    "counts": {
+      "rim": 35,
+      "shadow_edge": 13,
+      "texture": 52,
+      "unclear": 0
+    },
+    "removed": 0,
+    "shadow_area_fraction": 0.4975,
+    "edge_px": 24291,
+    "shadow_edge_px": 4422,
+    "shadow_edge_fraction_of_edges": 0.182
+  },
+  "shading": {
+    "checked": true,
+    "reason": null,
+    "sun_basis": [
+      "metadata: side_only 270° (LROC PHO; nắng phía Tây, góc tới 87.70°)",
+      "hướng Bắc/nắng xác nhận bằng mắt (Đinh Quang Hưng, 2026-10-18)"
+    ],
+    "azimuth_deg": 270.0,
+    "quality": "side_only",
+    "counts": {
+      "consistent": 28,
+      "inverted": 25,
+      "unclear": 47,
+      "not_checked": 0
+    }
+  },
+  "hough_circles": 100,
+  "labels": "data\\s202_labels\\moon_ap16_m132732855l_c01.json",
+  "evaluation": {
+    "n_labeled": 94,
+    "n_rim": 8,
+    "confusion_machine_x_human": {
+      "rim": {
+        "rim": 7,
+        "shadow_edge": 2,
+        "texture": 24
+      },
+      "shadow_edge": {
+        "rim": 1,
+        "shadow_edge": 4,
+        "texture": 8
+      },
+      "texture": {
+        "rim": 0,
+        "shadow_edge": 1,
+        "texture": 47
+      },
+      "unclear": {
+        "rim": 0,
+        "shadow_edge": 0,
+        "texture": 0
+      }
+    },
+    "filters": [
+      {
+        "cach_loc": "không lọc",
+        "loai": 0,
+        "loai_nham_ho_that": 0,
+        "con_lai": 94,
+        "ho_that_con_lai": 8,
+        "ty_le_ho_that_trong_con_lai": 0.085
+      },
+      {
+        "cach_loc": "bỏ shadow_edge",
+        "loai": 13,
+        "loai_nham_ho_that": 1,
+        "con_lai": 81,
+        "ho_that_con_lai": 7,
+        "ty_le_ho_that_trong_con_lai": 0.086
+      },
+      {
+        "cach_loc": "bỏ texture",
+        "loai": 48,
+        "loai_nham_ho_that": 0,
+        "con_lai": 46,
+        "ho_that_con_lai": 8,
+        "ty_le_ho_that_trong_con_lai": 0.174
+      },
+      {
+        "cach_loc": "bỏ shadow_edge + texture",
+        "loai": 61,
+        "loai_nham_ho_that": 1,
+        "con_lai": 33,
+        "ho_that_con_lai": 7,
+        "ty_le_ho_that_trong_con_lai": 0.212
+      },
+      {
+        "cach_loc": "bỏ sáng–tối ngược",
+        "loai": 23,
+        "loai_nham_ho_that": 2,
+        "con_lai": 71,
+        "ho_that_con_lai": 6,
+        "ty_le_ho_that_trong_con_lai": 0.085
+      },
+      {
+        "cach_loc": "bỏ shadow_edge + texture + ngược",
+        "loai": 66,
+        "loai_nham_ho_that": 3,
+        "con_lai": 28,
+        "ho_that_con_lai": 5,
+        "ty_le_ho_that_trong_con_lai": 0.179
+      }
+    ]
+  }
+}
