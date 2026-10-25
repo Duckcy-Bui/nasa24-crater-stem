@@ -1,11 +1,12 @@
-"""Tests cho S2-03: phan chia tập điều chỉnh / kiểm tra và nhãn tham chiếu.
+"""Tests cho S2-03: phan chia tap dieu chinh / kiem tra va nhan tham chieu.
 
 Kiem tra:
-- Crops cung product_id luon o cung tap (khong bi tach thi).
-- Khong co overlap giua tuning va holdout (theo image_id va product_id).
+- Anh cung ground_patch (cung file goc + cung offset x0,y0) luon o cung tap.
+- Khong co overlap giua tuning va holdout (theo image_id va ground_patch).
+- Anh da dung chon filter S2-02 (m132732855l_c01) bat buoc o tuning.
 - label_index chi chua anh thuc su co file nhan.
 - matching_rules co center_tolerance = 0.5.
-- Nhan thua: n_uncertain < n_circles (neu co nhan).
+- Nhan thua: n_uncertain <= n_circles (neu co nhan).
 """
 
 from __future__ import annotations
@@ -58,16 +59,98 @@ class TestSplitManifest(unittest.TestCase):
         overlap = tuning_ids & holdout_ids
         self.assertFalse(overlap, f"image_id xuat hien o ca hai tap: {overlap}")
 
-    def test_product_id_not_split_across_sets(self):
-        """Cac crops cung product_id luon o cung tap."""
-        pid_splits: dict[str, set[str]] = {}
+    def test_ground_patch_field_present(self):
+        """Moi anh phai co truong ground_patch."""
         for img in self.manifest["images"]:
-            pid_splits.setdefault(img["product_id"], set()).add(img["split"])
-        for pid, splits in pid_splits.items():
+            self.assertIn(
+                "ground_patch",
+                img,
+                f"{img['image_id']}: thieu truong ground_patch",
+            )
+            self.assertTrue(
+                img["ground_patch"],
+                f"{img['image_id']}: ground_patch rong",
+            )
+
+    def test_ground_patch_not_split_across_sets(self):
+        """Anh cung ground_patch luon o cung tap (chinh sach v2)."""
+        patch_splits: dict[str, set[str]] = {}
+        for img in self.manifest["images"]:
+            patch_splits.setdefault(img["ground_patch"], set()).add(img["split"])
+        for patch, splits in patch_splits.items():
             self.assertEqual(
                 len(splits),
                 1,
-                f"product_id '{pid}' bi chia ra 2 tap: {splits}",
+                f"ground_patch '{patch}' bi chia ra 2 tap: {splits}",
+            )
+
+    def test_forced_tuning_m132732855l_c01(self):
+        """m132732855l_c01 da dung chon filter S2-02 -> bat buoc o tuning."""
+        target_id = "moon_ap16_m132732855l_c01"
+        entries = [e for e in self.manifest["images"] if e["image_id"] == target_id]
+        self.assertEqual(len(entries), 1, f"{target_id} khong tim thay trong manifest")
+        self.assertEqual(
+            entries[0]["split"],
+            "tuning",
+            f"{target_id} phai o tuning (da dung chon filter S2-02), nhung dang o: {entries[0]['split']}",
+        )
+
+    def test_m113853974r_same_patch_as_tuning(self):
+        """m113853974r_c01 cung ground_patch voi m102064759r_c01 (x1190_y2750) -> cung tuning."""
+        entries = {e["image_id"]: e for e in self.manifest["images"]}
+        # Ca hai phai co mat trong manifest
+        a_id = "moon_ap16_m113853974r_c01"
+        b_id = "moon_ap16_m102064759r_c01"
+        if a_id not in entries or b_id not in entries:
+            self.skipTest("Mot trong hai image_id khong ton tai trong manifest")
+        self.assertEqual(
+            entries[a_id]["ground_patch"],
+            entries[b_id]["ground_patch"],
+            "Hai anh phai cung ground_patch",
+        )
+        self.assertEqual(
+            entries[a_id]["split"],
+            entries[b_id]["split"],
+            "Hai anh cung ground_patch phai cung tap",
+        )
+
+    def test_all_apollo16_in_tuning(self):
+        """Toan bo anh Apollo 16 phai o tuning de tranh trung mat dat (<1.5 km)."""
+        ap16_entries = [e for e in self.manifest["images"] if "ap16" in e["image_id"]]
+        self.assertEqual(len(ap16_entries), 11)
+        for e in ap16_entries:
+            self.assertEqual(
+                e["split"],
+                "tuning",
+                f"{e['image_id']} phai o tuning de tranh chong lap mat dat, nhung dang o {e['split']}",
+            )
+
+    def test_holdout_ground_distance_from_tuning(self):
+        """Tat ca anh holdout phai cach tap tuning >= 50 km (tuyet doi khong chong lap mat dat)."""
+        import csv
+        import math
+        with (ROOT / "docs" / "S1-06_BANG_ANH_XA.csv").open(encoding="utf-8") as f:
+            rows = {r["image_id"]: r for r in csv.DictReader(f)}
+        r_moon = 1737400.0
+
+        def haversine(id1: str, id2: str) -> float:
+            r1, r2 = rows[id1], rows[id2]
+            lat1, lon1 = math.radians(float(r1["center_lat"])), math.radians(float(r1["center_lon"]))
+            lat2, lon2 = math.radians(float(r2["center_lat"])), math.radians(float(r2["center_lon"]))
+            a = (
+                math.sin((lat2 - lat1) / 2) ** 2
+                + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2
+            )
+            return 2 * r_moon * math.asin(math.sqrt(a))
+
+        tuning_ids = [e["image_id"] for e in self.manifest["images"] if e["split"] == "tuning"]
+        holdout_ids = [e["image_id"] for e in self.manifest["images"] if e["split"] == "holdout"]
+        for hid in holdout_ids:
+            min_dist = min(haversine(hid, tid) for tid in tuning_ids)
+            self.assertGreaterEqual(
+                min_dist,
+                50000.0,
+                f"Holdout {hid} chi cach tuning {min_dist:.1f}m (< 50 km), co nguy co chong lap!",
             )
 
     def test_statistics_counts_match(self):
@@ -77,6 +160,17 @@ class TestSplitManifest(unittest.TestCase):
         n_holdout = sum(1 for e in images if e["split"] == "holdout")
         self.assertEqual(n_tuning, stats["tuning_images"])
         self.assertEqual(n_holdout, stats["holdout_images"])
+        # Kiem tra truong ground_patches co trong statistics
+        self.assertIn(
+            "tuning_ground_patches",
+            stats,
+            "statistics thieu truong tuning_ground_patches",
+        )
+        self.assertIn(
+            "holdout_ground_patches",
+            stats,
+            "statistics thieu truong holdout_ground_patches",
+        )
 
     def test_matching_rules_center_tolerance(self):
         """center_tolerance phai = 0.5 (khop src/matching.py)."""
