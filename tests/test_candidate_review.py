@@ -77,6 +77,13 @@ class Filter(unittest.TestCase):
         with self.assertRaises(ValueError):
             resolve_review_params({"threshold": 1})
 
+    def test_misspelled_shading_status_is_rejected_not_silently_ignored(self):
+        """Nhận xét PR #19: gõ sai "invert" trước đây im lặng không loại gì."""
+        with self.assertRaises(ValueError):
+            apply_filter(self.circles, (), ("invert",))
+        with self.assertRaises(ValueError):
+            apply_filter(self.circles, (), "inverted")   # chuỗi, không phải tuple
+
 
 class Classify(unittest.TestCase):
     def test_rules(self):

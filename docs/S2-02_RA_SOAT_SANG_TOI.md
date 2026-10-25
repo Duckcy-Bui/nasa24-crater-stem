@@ -56,6 +56,8 @@ Nhãn người cho 100 ứng viên của STT 13 nằm ở [data/s202_labels/moon
 
 Kết quả: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. Các phép đo dưới đây dùng 94 vòng có nhãn khác `unclear`.
 
+**STT 13 thuộc tập điều chỉnh, không dùng làm ảnh kiểm tra.** Ảnh này đã được dùng để chọn cách lọc, nên không còn khách quan để đánh giá cuối. Việc chia tập do S2-03 (#20) quyết định; nhận xét PR #19 đã đề nghị chuyển STT 13 khỏi holdout.
+
 ### 3.2. Lớp máy so với nhãn người (STT 13)
 
 | Lớp máy \ Nhãn người | rim | shadow_edge | texture |
@@ -90,11 +92,31 @@ Kết quả: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. Các phép đo
 - Bỏ thêm `shadow_edge` tăng tỉ lệ hố thật lên 21,2 % nhưng mất 1/8 hố.
 - **Không lọc theo sáng–tối "ngược".**
 
-`pipeline.py` **chưa bật lọc**. Việc bật mặc định cần nhóm quyết định sau khi đo trên ít nhất một ảnh nữa.
+`pipeline.py` **chưa bật lọc**. Kết quả trên ảnh thứ hai (mục 3.5) cùng chiều với STT 13, và nhãn đã được kiểm chéo; việc bật mặc định trong `pipeline.py` cần nhóm quyết định.
+
+`apply_filter()` báo lỗi khi gặp lớp hoặc nhãn sáng–tối không hợp lệ (ví dụ gõ sai `"invert"`), không im lặng bỏ qua (sửa theo nhận xét PR #19).
 
 ### 3.4. Vì sao lọc theo sáng–tối "ngược" có hại
 
 Hai hố thật bị chấm "ngược" là M8 và M19. Hough tìm mỗi hố này **hai lần**: một vòng đúng cỡ (M32 r = 9, M15 r = 10) và một vòng nhỏ hơn lệch về phía Tây (M8 r = 6, M19 r = 6). Vòng nhỏ chỉ bao lòng hố tối và vách hố sáng, không chứa đủ hai nửa của vành, nên điểm sáng–tối bị đảo dấu. Đây là lỗi trùng vòng của Hough (S1-07). Khi Hough còn trả vòng lệch cỡ, nhãn "ngược" không đủ tin để loại.
+
+### 3.5. Ảnh thứ hai: STT 17 (nắng gần đứng 7,64°)
+
+Nhãn 100 ứng viên ở [data/s202_labels/moon_ap16_m109134835l_c01.json](../data/s202_labels/moon_ap16_m109134835l_c01.json), người gán: Đinh Quang Hưng; kiểm chéo: Hoàng Quốc Anh (25/10/2026). Ảnh nắng đứng nên hố hiện là vòng vành sáng, không có nửa tối; `rim` = vòng vành khép kín rõ. Kết quả: 17 `rim`, 0 `shadow_edge` (ảnh không có vùng bóng lớn), 66 `texture`, 17 `unclear`.
+
+| Lớp máy \ Nhãn người | rim | shadow_edge | texture |
+|---|---|---|---|
+| rim (48) | **17** | 0 | 31 |
+| shadow_edge (0) | 0 | 0 | 0 |
+| texture (35) | 0 | 0 | **35** |
+
+| Cách lọc | Loại | Loại nhầm hố thật | Tỉ lệ hố thật trong phần còn lại |
+|---|---|---|---|
+| Không lọc | 0 | 0 | 20,5 % |
+| **Bỏ `texture`** | **35** | **0** | **35,4 %** |
+| Bỏ sáng–tối `inverted` | 0 | 0 | 20,5 % (sáng–tối bỏ qua: góc tới < 30°) |
+
+Cùng chiều với STT 13: lớp `texture` của máy không chứa hố thật nào (35/35), và bỏ `texture` gần gấp đôi tỉ lệ hố thật mà không mất hố. Lớp `rim` của máy vẫn lẫn nhiều kết cấu (31/48).
 
 ## 4. Thử có kiểm soát: làm trơn, Canny, tương phản
 
@@ -187,15 +209,15 @@ Mỗi ảnh có một thư mục `docs/evidence/s2-02/<image_id>/` gồm:
 | `candidates.csv` | Từng vòng: đặc trưng, lớp máy, sáng–tối, nhãn người |
 | `report.json` | Tham số, thời gian, số đếm, đối chiếu |
 
-Đã chạy cho STT 13, STT 17 và mosaic `moon_marefrig_loc_c01`; chỉ STT 13 có nhãn.
+Đã chạy cho STT 13, STT 17 và mosaic `moon_marefrig_loc_c01`. STT 13 có nhãn đã kiểm chéo; STT 17 có nhãn đã kiểm chéo; mosaic chưa có nhãn. Ảnh minh chứng lưu ở dpi thấp hơn bản đầu (phiếu nhãn 48 dpi) để giảm dung lượng từ 8,2 MB xuống khoảng 5 MB.
 
 ## 8. Hạn chế và việc tiếp theo
 
-- **Mới một ảnh có nhãn, 8 hố thật.** Mọi tỉ lệ ở mục 3 có sai số lớn. Cần gán nhãn thêm ít nhất STT 17 hoặc mosaic (phiếu và mẫu nhãn đã có sẵn) trước khi bật lọc mặc định.
+- **Mới hai ảnh có nhãn** (8 và 17 hố thật), cùng là Apollo 16 ở 2 m/px. Chưa có nhãn cho ảnh 20 m/px (file nhãn mosaic hiện là mẫu trống).
 - **Hố sát vùng bóng lớn bị xếp nhầm `shadow_edge`** (M7). Hướng sửa: chỉ đếm điểm biên bóng nằm ở phía *về Mặt Trời* của vòng, vì vành hố thật có bóng ở phía đó.
 - **Lớp `rim` của máy còn lẫn 24 vòng kết cấu.** Ngưỡng độ phủ xuyên tâm 0,5 và độ nổi 1,5 là giá trị ban đầu, chưa chỉnh trên tập điều chỉnh.
 - **Lỗi của Hough cần báo Tiến (S1-07/S2-15):**
   - Danh sách luôn chạm trần 100 vòng nhỏ (r ≤ 16), nên hố lớn không vào được danh sách.
-  - Mỗi hố bị tìm hai lần (vòng đúng cỡ và vòng nhỏ lệch tâm).
+  - Mỗi hố bị tìm hai lần (vòng đúng cỡ và vòng nhỏ lệch tâm). Đã xử lý bằng lọc trùng S2-05 ([S2-05_LOC_TRUNG.md](S2-05_LOC_TRUNG.md)).
 - **So sánh cấu hình thiên vị cấu hình mặc định** (mục 4.4).
 - Ngưỡng vùng bóng (B3 < 0,06, diện tích ≥ 1500 px) đặt theo ảnh 2 m/px; với ảnh 20 m/px cần xem lại.

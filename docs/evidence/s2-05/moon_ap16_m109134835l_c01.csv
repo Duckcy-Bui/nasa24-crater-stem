@@ -1,0 +1,4 @@
+loai,r_loai,ty_le_phieu_loai,nhan_loai,giu,r_giu,ty_le_phieu_giu,nhan_giu,lop_may_giu,d_chia_R,r_chia_R,ly_do
+M67,7.0,0.5,rim,M66,7.0,0.5,rim,rim,0.714,1.0,"trùng M66: tâm lệch 0.71R, r/R = 1.00; giữ M66 vì cùng cỡ, tỉ lệ phiếu không thấp hơn"
+M53,5.0,0.525,unclear,M45,9.0,0.528,unclear,rim,0.401,0.556,"trùng M45: tâm lệch 0.40R, r/R = 0.56; giữ M45 vì vòng kia lớn hơn"
+M69,7.0,0.5,unclear,M46,9.0,0.528,unclear,rim,0.629,0.778,"trùng M46: tâm lệch 0.63R, r/R = 0.78; giữ M46 vì vòng kia đủ tin còn vòng này không"

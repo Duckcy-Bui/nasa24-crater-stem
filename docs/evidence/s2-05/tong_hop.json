@@ -1,0 +1,55 @@
+{
+  "params": {
+    "max_center_frac": 0.75,
+    "min_radius_ratio": 0.5,
+    "min_outer_vote_ratio": 0.35,
+    "unreliable_classes": [
+      "texture"
+    ],
+    "angle_step_deg": 1.0
+  },
+  "rows": [
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "co_nhan": true,
+      "nhan_da_kiem_cheo": true,
+      "vong_vao": 100,
+      "vong_ra": 96,
+      "loai_trung": 4,
+      "ho_that_truoc": 8,
+      "vong_ho_that_sau": 6,
+      "gop_dung_cung_ho": 2,
+      "mat_ho_that": 0,
+      "mat_ho_that_id": "",
+      "giay_hough": 35.77
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "co_nhan": true,
+      "nhan_da_kiem_cheo": true,
+      "vong_vao": 100,
+      "vong_ra": 97,
+      "loai_trung": 3,
+      "ho_that_truoc": 17,
+      "vong_ho_that_sau": 16,
+      "gop_dung_cung_ho": 1,
+      "mat_ho_that": 0,
+      "mat_ho_that_id": "",
+      "giay_hough": 42.55
+    },
+    {
+      "image_id": "moon_marefrig_loc_c01",
+      "co_nhan": false,
+      "nhan_da_kiem_cheo": false,
+      "vong_vao": 100,
+      "vong_ra": 100,
+      "loai_trung": 0,
+      "ho_that_truoc": "",
+      "vong_ho_that_sau": "",
+      "gop_dung_cung_ho": "",
+      "mat_ho_that": "",
+      "mat_ho_that_id": "",
+      "giay_hough": 28.55
+    }
+  ]
+}

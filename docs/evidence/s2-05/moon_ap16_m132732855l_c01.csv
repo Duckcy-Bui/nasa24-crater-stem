@@ -1,0 +1,5 @@
+loai,r_loai,ty_le_phieu_loai,nhan_loai,giu,r_giu,ty_le_phieu_giu,nhan_giu,lop_may_giu,d_chia_R,r_chia_R,ly_do
+M8,6.0,0.583,rim,M32,9.0,0.542,rim,rim,0.333,0.667,"trùng M32: tâm lệch 0.33R, r/R = 0.67; giữ M32 vì vòng kia lớn hơn"
+M19,6.0,0.562,rim,M15,10.0,0.562,rim,rim,0.447,0.6,"trùng M15: tâm lệch 0.45R, r/R = 0.60; giữ M15 vì vòng kia lớn hơn"
+M98,7.0,0.518,texture,M66,5.0,0.525,texture,rim,0.728,0.714,"trùng M66: tâm lệch 0.73R, r/R = 0.71; giữ M66 vì vòng kia đủ tin còn vòng này không"
+M65,5.0,0.525,texture,M40,10.0,0.537,texture,rim,0.566,0.5,"trùng M40: tâm lệch 0.57R, r/R = 0.50; giữ M40 vì vòng kia đủ tin còn vòng này không"

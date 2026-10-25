@@ -138,7 +138,7 @@ def steps_figure(path: Path, r: dict) -> None:
         ax.imshow(data, cmap=None if np.ndim(data) == 3 else "gray", vmin=0, vmax=1)
         ax.set_title(name, fontsize=9); ax.set_xticks([]); ax.set_yticks([])
     fig.suptitle(f"S2-02 · {r['metadata']['image_id']} · biên từng bước", fontsize=11)
-    fig.savefig(path, dpi=80)
+    fig.savefig(path, dpi=60)
     plt.close(fig)
 
 
@@ -165,7 +165,7 @@ def candidates_figure(path: Path, r: dict) -> None:
             else f"sáng–tối BỎ QUA: {sh['reason']}")
     ax.set_title(f"S2-02 · {r['metadata']['image_id']} · màu = lớp máy, nét = sáng–tối\n{head}", fontsize=9)
     ax.set_xticks([]); ax.set_yticks([])
-    fig.savefig(path, dpi=90)
+    fig.savefig(path, dpi=65)
     plt.close(fig)
 
 
@@ -200,7 +200,7 @@ def label_sheet(path: Path, r: dict) -> None:
     fig.suptitle(f"{r['metadata']['image_id']} — phiếu gán nhãn (không hiện kết quả máy). {sun} "
                  "Ghi rim / shadow_edge / texture / unclear cho từng số.", fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
-    fig.savefig(path, dpi=70)
+    fig.savefig(path, dpi=48)
     plt.close(fig)
 
 
@@ -230,7 +230,7 @@ def filter_figure(path: Path, r: dict, human: dict, classes=("shadow_edge", "tex
     h = [Line2D([], [], color=v, label=f"nhãn người: {k}") for k, v in HUMAN_COLORS.items()]
     axes[1].legend(handles=h, loc="lower right", fontsize=8, facecolor="#222", labelcolor="white")
     fig.suptitle(f"S2-02 · {r['metadata']['image_id']} · lọc theo lớp máy, tô màu theo nhãn người (đã kiểm chéo)", fontsize=11)
-    fig.savefig(path, dpi=85)
+    fig.savefig(path, dpi=60)
     plt.close(fig)
 
 
@@ -258,7 +258,7 @@ def examples_figure(path: Path, r: dict, human: dict) -> None:
             ax.set_title(f"{names[k]} · {c['crater_id']} r={c['r']:.0f}\nmáy: {c['review']['class']} {ok} · sáng–tối: {c['shading']['status']}",
                          fontsize=8)
     fig.suptitle(f"S2-02 · {r['metadata']['image_id']} · ví dụ theo nhãn người; ✓/✗ = lớp máy đúng/sai", fontsize=11)
-    fig.savefig(path, dpi=80)
+    fig.savefig(path, dpi=60)
     plt.close(fig)
 
 
