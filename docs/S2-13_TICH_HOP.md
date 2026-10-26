@@ -2,7 +2,7 @@
 
 Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration.py`, `app.py` (`show_statistics`, `show_cards`). Test: `tests/test_integration.py`.
 
-Trạng thái 22/10/2026: **khung đã ghép, chưa hoàn tất.** Phát hiện (S1-07/08/11) và trò chơi (S1-09, S2-04, S2-08) đã chạy. Thống kê (S2-09, Hưng) và thẻ khoa học (S2-10, Quốc Anh) đã có chỗ trong giao diện, nhưng hàm trên main vẫn báo `NotImplementedError`, nên app ghi "chưa có" thay vì tự tạo số liệu hay thẻ. Khi hai phần đó merge đúng hợp đồng dưới đây, app tự hiện, không cần sửa `app.py`.
+Trạng thái 26/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 vẫn báo `NotImplementedError` và app ghi "chưa có" thay vì tự tạo số liệu.
 
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
@@ -51,11 +51,11 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 | 1 | Canvas đặt mép trái pixel ở tọa độ 0, nên bấm vào giữa pixel 200 ghi x = 200,5. Hợp đồng S1-05 (`DINH_DANG_DU_LIEU.md`: "tâm pixel có tọa độ nguyên") và Hough dùng tâm pixel = 200. Vòng người chơi lệch +0,5 px so với máy và nhãn. | Thấp: nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nhưng sai hợp đồng | Đức | Sửa `canvasToImage`/`imageToScreen` trong `geometry.js` (trừ/cộng 0,5) kèm test JS; PR riêng |
 | 2 | Máy chạm trần 100 ứng viên trên cả 26 ảnh, nên "Chỉ máy có" luôn khoảng 100 và thống kê sẽ đếm ứng viên thô | Cao cho thống kê và thí nghiệm | Tiến, Hưng | S2-01, S2-02, S2-05 |
 | 3 | Chưa ảnh nào có nhãn đã kiểm chéo, nên trò chơi chưa ra điểm | Cao cho khảo sát | Tiến (S1-10), Quốc Anh (S2-03) | Kiểm chéo 4 nhãn S1-10, bổ sung nhãn cho ảnh dùng khi khảo sát |
-| 4 | Thống kê và thẻ khoa học chưa có | Cao, thiếu 2/4 chức năng | Hưng (S2-09), Quốc Anh (S2-10) | Cài theo hợp đồng mục 1 |
+| 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Cài S2-09; muốn pin cần crop mới bao phủ thiết bị |
 | 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Ghi vào S3-04 |
 | 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đo trên VPS sau khi deploy; nếu chậm thì tính sẵn ứng viên máy cho các ảnh dùng khi khảo sát |
 
 ## 4. Việc còn lại để đóng S2-13
 
-- Merge S2-09 và S2-10, chạy lại bảng mục 2 với số liệu và thẻ thật, kiểm vị trí thẻ trên ảnh.
+- Merge S2-09, chạy lại bảng mục 2 với số liệu; muốn kiểm pin S2-10 thì cần crop mới bao phủ thiết bị.
 - Sửa lỗi #1; đo lỗi #6 trên VPS.
