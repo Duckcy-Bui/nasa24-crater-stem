@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.contracts import read_json  # noqa: E402
 from src.pipeline import find_player_answer, run_end_to_end  # noqa: E402
+from src.hough import resolve_hough_params  # noqa: E402
 
 
 def code_version() -> str:
@@ -66,8 +67,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-player", action="store_true", help="Không vẽ vòng người chơi")
     parser.add_argument("--player-root", type=Path, default=ROOT / "outputs" / "player_answers", help=argparse.SUPPRESS)
     parser.add_argument("--reference-dir", type=Path, default=ROOT / "data" / "reference_labels", help=argparse.SUPPRESS)
-    parser.add_argument("--voting", choices=("full_circle", "gradient"), default="full_circle")
-    parser.add_argument("--max-circles", type=int, default=100)
+    parser.add_argument("--hough-config", type=Path, help="JSON Hough (hoac config co khoa hough)")
+    parser.add_argument("--voting", choices=("full_circle", "gradient"), default=None)
+    parser.add_argument("--max-circles", type=int, default=None)
     parser.add_argument("--no-render", action="store_true", help="Không vẽ overlay.png")
     parser.add_argument("--csv", type=Path, help="Ghi bảng tóm tắt mọi ảnh vừa chạy ra file CSV")
     args = parser.parse_args(argv)
@@ -77,6 +79,17 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--player là câu trả lời của một ảnh; không dùng cùng --all (khi đó mỗi ảnh tự lấy lần lưu mới nhất).")
     if args.player and args.no_player:
         parser.error("--player và --no-player mâu thuẫn nhau.")
+
+    try:
+        supplied = read_json(args.hough_config) if args.hough_config else {}
+        hough_params = resolve_hough_params(supplied)
+        if args.voting is not None:
+            hough_params["voting_method"] = args.voting
+        if args.max_circles is not None:
+            hough_params["max_circles"] = args.max_circles
+        hough_params = resolve_hough_params(hough_params)
+    except (OSError, TypeError, ValueError) as error:
+        parser.error(str(error))
 
     ids = read_json(ROOT / "data" / "s106_bundle" / "manifest.json")["image_ids"] if args.all else [args.image_id]
     scoring_params = read_json(ROOT / "configs" / "default.json")["evaluation"]
@@ -89,7 +102,7 @@ def main(argv: list[str] | None = None) -> int:
             directory, summary = run_end_to_end(
                 image_id, processed_dir=args.processed_dir, output_root=args.output_root, code_version=version,
                 player_path=player, reference_path=reference if reference.exists() else None,
-                hough_params={"voting_method": args.voting, "max_circles": args.max_circles},
+                hough_params=hough_params,
                 scoring_params=scoring_params, render=not args.no_render)
         except Exception as error:  # one bad image must not stop --all; KeyboardInterrupt still stops
             failed += 1

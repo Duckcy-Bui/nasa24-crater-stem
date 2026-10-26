@@ -209,6 +209,12 @@ def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str
     }
     params = {"pipeline_version": PIPELINE_VERSION, "preprocess": pre["params"], "hough": hough,
               "hough_defaults": HOUGH_DEFAULTS, "radius_px": [r_min, r_max]}
+    radii = range(r_min, r_max + 1, hough["radius_step_px"])
+    radius_search = {"metadata_px": [metadata["radius"]["r_min_px"], metadata["radius"]["r_max_px"]],
+                     "bounds_px": [r_min, r_max], "step_px": radii.step,
+                     "count": len(radii), "last_radius_px": radii[-1]}
+    params["radius_search"] = radius_search
+    summary["steps"]["hough"]["radius_search"] = radius_search
     run_id = f"e2e_{image_id}_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
     directory = save_run(output_root, run_id, metadata=metadata, crater_set=machine, params=params, code_version=code_version)
     # A run directory is either complete or removed: never leave craters.json without summary/overlay.

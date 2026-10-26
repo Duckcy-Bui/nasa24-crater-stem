@@ -117,9 +117,15 @@ def _accumulate(
         # bincount cong ca cac chi so trung nhau nhu add.at, nhung nhanh hon.
         # Bo phieu theo lo de khong giu mang (so_diem_bien x so_goc) ca anh.
         indices = center_y[inside] * width + center_x[inside]
-        accumulator += np.bincount(
-            indices, minlength=height * width,
-        ).astype(np.int32)
+        # S2-01: row-ordered edge batches usually vote into a narrow strip.
+        # Count only its flat-index interval, rather than allocating H*W bins
+        # for every batch. The translation preserves every integer vote.
+        if indices.size:
+            first = int(indices.min())
+            stop = int(indices.max()) + 1
+            accumulator[first:stop] += np.bincount(
+                indices - first, minlength=stop - first,
+            ).astype(np.int32)
 
     return accumulator.reshape(shape)
 
