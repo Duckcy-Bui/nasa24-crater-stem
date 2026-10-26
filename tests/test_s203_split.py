@@ -198,6 +198,34 @@ class TestSplitManifest(unittest.TestCase):
                 f"{img['image_id']}: label_status khong hop le = {img['label_status']}",
             )
 
+    def test_label_status_matches_reference_source(self):
+        """Manifest phai phan anh trang thai review trong JSON goc."""
+        for img in self.manifest["images"]:
+            if not img["has_reference_label"]:
+                self.assertEqual(img["label_status"], "unlabeled")
+                continue
+            source = json.loads(
+                (REF_LABEL_DIR / img["reference_label_file"]).read_text(encoding="utf-8")
+            )["reference_source"].lower()
+            expected = (
+                "reviewed"
+                if "reviewed by" in source and "unreviewed" not in source
+                else "sparse_unreviewed"
+            )
+            self.assertEqual(img["label_status"], expected, img["image_id"])
+
+    def test_reviewed_source_is_classified_as_reviewed(self):
+        from scripts.build_s203_split import _label_status
+
+        self.assertEqual(
+            _label_status({"reference_source": "manual labels; reviewed by Nguyen Manh Tien"}),
+            "reviewed",
+        )
+        self.assertEqual(
+            _label_status({"reference_source": "manual labels, unreviewed"}),
+            "sparse_unreviewed",
+        )
+
     def test_has_reference_label_consistent_with_file(self):
         """has_reference_label = True khi file ton tai thuc su."""
         for img in self.manifest["images"]:

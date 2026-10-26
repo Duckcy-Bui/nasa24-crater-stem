@@ -44,15 +44,25 @@ Tách 26 crops thành **tập điều chỉnh (tuning)** và **tập kiểm tra 
 | `NAC_ROI_LUNOKOD2LOA_...` | `moon_lunokhod2_loc_c0{1,2}` | Lunokhod 2 Low-Sun | null | Cách các vùng khác > 700 km; địa hình gồ ghề ven biển |
 | `NAC_ROI_MAREFRIGLOA_...` | `moon_marefrig_loc_c0{1,2,3}` | Mare Frigoris Basalt | null | Biển bazan phẳng, bóng sắc nét; cách > 1000 km |
 
+### 2.4 Hạn chế đại diện của holdout — cần nêu khi báo cáo kết quả
+
+Toàn bộ 8 crops holdout hiện là **mosaic 20 m/px** và có `sun.quality = none`. Đây là hệ quả của quyết định v3: giữ toàn bộ 11 crops Apollo 16 2 m/px trong tuning để tránh rò rỉ mặt đất, vì chúng chồng lấp nhau và một crop đã được dùng ở S2-02.
+
+- **Thí nghiệm 1 (Hough cơ bản so với thêm S1-11):** không có số đo holdout cho tác động của S1-11. Khi chạy holdout, mọi ứng viên phải được ghi `not_checked` vì thiếu hướng nắng đủ tin cậy; không được diễn giải đây là bằng chứng S1-11 có hoặc không có hiệu quả.
+- **Độ phân giải và nhãn:** holdout không có ảnh Apollo 16 2 m/px, trong khi nhãn thủ công và việc khảo sát S2-02/S2-05 tập trung đáng kể ở ảnh 2 m/px. Kết quả holdout chỉ đại diện cho mosaic 20 m/px, không đại diện độc lập cho hiệu năng trên Apollo 16 2 m/px.
+- **Cách báo cáo bắt buộc:** tách rõ (a) kết quả tuning Apollo 16 — chỉ là kết quả phát triển/chẩn đoán, và (b) kết quả holdout mosaic — kết quả ngoài mẫu cho 20 m/px. Không gộp hai phần thành một Precision/Recall hay một kết luận chung về S1-11.
+
+**Lựa chọn cần nhóm chốt trước báo cáo cuối:** (1) giữ split v3 và ghi rõ hai giới hạn trên; hoặc (2) bổ sung một cụm Apollo 16 2 m/px mới, không chồng lấp với mọi crop tuning và chưa từng dùng để chọn tham số, làm holdout riêng. Chỉ chuyển ảnh Apollo 16 hiện có sang holdout khi chứng minh được không chồng lấp và không đã dùng cho tuning; với 11 crop hiện tại, điều kiện này không đạt.
+
 ---
 
 ## 3. Nhãn tham chiếu (reference labels)
 
 ### 3.1 Trạng thái hiện tại
 
-✅ **Toàn bộ 26/26 ảnh** đã có nhãn tham chiếu (25/10/2026) — coverage 100%.
+✅ **Toàn bộ 26/26 ảnh** đã có file nhãn tham chiếu (25/10/2026) — file coverage 100%; đây không phải coverage đầy đủ của mọi hố trong ảnh. Theo xác nhận cập nhật ngày 26/10/2026, toàn bộ nhãn đã được Nguyễn Mạnh Tiến kiểm chéo.
 
-> ⚠️ **Quan trọng:** Tất cả nhãn hiện tại là `sparse_unreviewed`. Game và Precision/Recall **chỉ dùng được** sau khi Tiến kiểm chéo và đổi `label_status` thành `reviewed by <tên>`.
+> ⚠️ **Quan trọng:** Tất cả nhãn hiện tại là `reviewed` và vẫn là nhãn **thưa**. Game và **Recall trên nhãn đã biết** được dùng; Precision/F1 vẫn chỉ được báo cáo nếu có nhãn đầy đủ.
 
 **Tập Tuning (18 ảnh):**
 
@@ -161,14 +171,11 @@ Manifest được sinh tự động từ `data/s106_bundle/crops.json` — khôn
 
 ## 6. Việc cần làm tiếp
 
-### 6.1 Kiểm chéo nhãn (ưu tiên cao) — BẮT BUỘC trước khi dùng Precision/Recall
+### 6.1 Kiểm chéo nhãn — hoàn tất ngày 26/10/2026
 
-- [ ] **Tiến** kiểm chéo toàn bộ **26 overlay PNG** trong `data/reference_labels/`.
-- [ ] Ưu tiên 1 — Ap16 High-Sun (7.64°): `moon_ap16_m109134835l_c01`, `moon_ap16_m109134835l_c02`.
-- [ ] Ưu tiên 2 — Ap15 High-Sun: `moon_ap15_hia_c01/02/03` (scale 20m/px, ejecta ray nhiều).
-- [ ] Ưu tiên 3 — Holdout Grazing: `moon_ap16_m132732855r_c01` (87.78°, bóng dài).
-- [ ] Sau khi kiểm chéo xong → cập nhật `reference_source` thành `reviewed by Nguyen Manh Tien; ...`.
-- [ ] Chạy lại `build_s203_split.py` → commit.
+- [x] **Tiến** kiểm chéo toàn bộ **26 overlay PNG** trong `data/reference_labels/`, gồm **8 holdout** và các ảnh dùng để khảo sát.
+- [x] Cập nhật `reference_source` thành `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`.
+- [x] Chạy lại `build_s203_split.py` để tái sinh manifest và label index.
 
 ### 6.2 Quy trình sau kiểm chéo
 - [ ] Không dùng holdout để chỉnh tham số cho đến khi báo cáo cuối.

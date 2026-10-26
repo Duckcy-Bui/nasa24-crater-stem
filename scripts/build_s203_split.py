@@ -74,6 +74,16 @@ def _find_ref(image_id: str) -> dict | None:
     return json.loads(fp.read_text(encoding="utf-8")) if fp.exists() else None
 
 
+def _label_status(ref: dict | None) -> str:
+    """Tra trang thai nhan tu nguon thuc te, khong ghi cung trong manifest."""
+    if ref is None:
+        return "unlabeled"
+    source = str(ref.get("reference_source") or "").lower()
+    if "reviewed by" in source and "unreviewed" not in source:
+        return "reviewed"
+    return "sparse_unreviewed"
+
+
 def _ground_patch_key(crop: dict) -> str:
     """Key xac dinh vung mat dat:
     - Voi NAC_PHO (Apollo 16): tat ca anh deu chup tren footprint NAC_PHO_E090S0155
@@ -125,6 +135,7 @@ def build_split() -> None:
                 iid = crop["image_id"]
                 ref = _find_ref(iid)
                 has = ref is not None
+                label_status = _label_status(ref)
                 circles = ref.get("circles", []) if ref else []
                 n_unc = sum(
                     1 for c in circles if "uncertain" in c.get("crater_id", "")
@@ -154,12 +165,16 @@ def build_split() -> None:
                         "reference_label_file": (
                             f"{iid}_craters_catalogue.json" if has else None
                         ),
-                        "label_status": "sparse_unreviewed" if has else "unlabeled",
+                        "label_status": label_status,
                         "n_labels": len(circles),
                         "n_uncertain": n_unc,
                         "label_note": (
-                            "Nhan thua thu cong S1-10; chua kiem cheo. "
-                            "Recall do tren nhan da biet, khong suy F1 toan anh."
+                            (
+                                "Nhan thua thu cong S1-10; da kiem cheo. "
+                                if label_status == "reviewed"
+                                else "Nhan thua thu cong S1-10; chua kiem cheo. "
+                            )
+                            + "Recall do tren nhan da biet, khong suy F1 toan anh."
                             + forced_note
                             if has
                             else "Chua co nhan tham chieu."

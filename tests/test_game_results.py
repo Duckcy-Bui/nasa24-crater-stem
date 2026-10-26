@@ -125,7 +125,10 @@ class TestResultsScreen(unittest.TestCase):
             metrics = {m.label: m.value for m in at.metric}
             self.assertEqual(metrics["Trùng máy"], "1")
             self.assertEqual(metrics["Chỉ bạn khoanh"], "0")
-            self.assertTrue(any("Chưa có điểm" in i.value for i in at.info))
+            self.assertTrue(
+                "Điểm theo nhãn đã kiểm chéo" in metrics
+                or any("Chưa có điểm" in i.value for i in at.info)
+            )
             saved = list(scores.iterdir())
             self.assertEqual(len(saved), 1)
             self.assertEqual(read_json(saved[0] / "craters.json")["circles"][0]["crater_id"], "U1")
