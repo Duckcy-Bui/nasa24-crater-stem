@@ -1,4 +1,4 @@
-﻿"""Quốc Anh/Đức — S2-10: thẻ khoa học gắn đúng địa điểm ảnh."""
+"""Quốc Anh/Đức — S2-10: thẻ khoa học gắn đúng địa điểm ảnh."""
 
 
 from __future__ import annotations

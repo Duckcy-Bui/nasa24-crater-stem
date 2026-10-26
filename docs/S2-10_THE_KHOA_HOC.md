@@ -15,8 +15,8 @@ Tọa độ tâm crop lấy từ `docs/S1-06_BANG_ANH_XA.csv`; tọa độ thi�
 
 | Vùng thẻ | Thiết bị/bãi đáp chuẩn | Crop gần nhất | Khoảng cách xấp xỉ | Kết luận |
 |---|---|---:|---:|---|
-| Apollo 15 Hadley–Apennine | LM Falcon: 26,13239°N, 3,63330°E | `moon_ap15_hia_c02` | 10,3 km | ngoài crop (nửa bề rộng crop 20 m/px chỉ 5,12 km) |
-| Apollo 16 Descartes | LM Orion: 8,9734°S, 15,5011°E | `moon_ap16_m109134835l_c02` | 1,8 km | ngoài crop (nửa bề rộng crop 2 m/px chỉ 0,512 km) |
+| Apollo 15 Hadley–Apennine | LM Falcon: 26,13239°N, 3,63330°E | `moon_ap15_hia_c03` | 7,8 km | ngoài crop (nửa đường chéo crop 20 m/px chỉ 7,24 km) |
+| Apollo 16 Descartes | LM Orion: 8,9734°S, 15,5011°E | `moon_ap16_m109134835l_c02` | 1,8 km | ngoài crop (nửa đường chéo crop 2 m/px chỉ 0,72 km) |
 | Lunokhod 1 Mare Imbrium | rover: 38,3152°N, 35,0080°W | `moon_lunokhod1_loc_c01` | 26,0 km | ngoài crop |
 | Lunokhod 2 Le Monnier | rover: 25,8323°N, 30,9222°E | `moon_lunokhod2_loc_c01` | 14,7 km | ngoài crop |
 
@@ -31,6 +31,12 @@ Tọa độ tâm crop lấy từ `docs/S1-06_BANG_ANH_XA.csv`; tọa độ thi�
 
 Các ảnh Van de Graaff và Mare Frigoris trả `[]`: không gắn câu chuyện Apollo/rover tùy ý vào ảnh.
 
-## 4. Hướng phát triển
+## 4. Hạn chế và quyết định nhóm cần chốt
 
-Muốn có pin tương tác, cần bổ sung crop mới thực sự bao phủ vị trí thiết bị, lưu metadata/affine và xác minh phép đổi tọa độ sang pixel. Không dùng crop hiện tại để suy hoặc nội suy pin đó.
+Nhiệm vụ yêu cầu thẻ gắn vị trí thật nhìn thấy/định vị được, và tiêu chí nghiệm thu yêu cầu thẻ hiện khi người chơi tìm hoặc nhấp vùng đó. Bản hiện tại chỉ là thẻ theo vùng với `position: null`; vì thế **chưa đạt phần vị trí** và S2-10 giữ trạng thái **Đang làm** cho đến khi nhóm chốt hướng xử lý.
+
+Nếu nhóm không bổ sung crop, phải giữ giới hạn này trong báo cáo: thẻ cung cấp bối cảnh có nguồn nhưng không chứng minh vị trí thiết bị trong ảnh và không mở khóa bằng thao tác tìm/nhấp vị trí.
+
+## 5. Hướng phát triển
+
+Phương án để đạt phần vị trí là cắt thêm crop thật sự bao phủ thiết bị. Ưu tiên kiểm tra mosaic `NAC_ROI_APOLLO15HIA` có phủ LM Falcon hay không; nếu có, cắt crop chứa điểm 26,1324°N, 3,6333°E, đổi tọa độ qua affine sang pixel và kiểm bằng mắt. Crop mới phải có metadata, nhãn và được xếp cùng nhóm mặt đất với các crop Apollo 15 HIA trong split S2-03. Không dùng crop hiện tại để suy hoặc nội suy pin đó.
