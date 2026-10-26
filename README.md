@@ -84,6 +84,7 @@ nasa24-crater-stem/
 │   ├── scoring.py             # Đức: chấm với máy và danh mục riêng
 │   ├── matching.py            # Đức: ghép hố một–một, tâm lệch ≤ 0,5 r
 │   ├── game_results.py        # Đức: lượt chấm bài, ảnh đối chiếu, lưu lượt
+│   ├── integration.py         # Đức: ghép thống kê và thẻ khoa học vào app (S2-13)
 │   ├── science_cards.py       # Anh/Đức: nội dung và mở thẻ
 │   └── evaluation.py          # Anh/Tiến: Precision/Recall
 ├── app.py                     # S1-09/S2-08: mở ảnh, vẽ/sửa/xóa, lưu và chấm bài
