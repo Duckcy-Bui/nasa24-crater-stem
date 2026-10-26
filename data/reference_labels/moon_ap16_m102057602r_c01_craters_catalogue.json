@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap16_m102057602r_c01",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 289.73,
+      "y": 196.97,
+      "r": 16.18,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 264.86,
+      "y": 226.09,
+      "r": 23.83,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 461.97,
+      "y": 320.7,
+      "r": 7.3,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 130.22,
+      "y": 216.99,
+      "r": 8.16,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 117.49,
+      "y": 336.47,
+      "r": 14.67,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 21.66,
+      "y": 369.22,
+      "r": 12.28,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 76.85,
+      "y": 156.34,
+      "r": 5.15,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C8",
+      "x": 192.08,
+      "y": 104.18,
+      "r": 6.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C9",
+      "x": 142.35,
+      "y": 271.57,
+      "r": 7.1,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C10",
+      "x": 33.79,
+      "y": 156.34,
+      "r": 6.1,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

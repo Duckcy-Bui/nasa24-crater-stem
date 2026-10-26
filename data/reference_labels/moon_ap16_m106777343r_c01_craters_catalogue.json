@@ -3,7 +3,7 @@
   "data_kind": "real",
   "image_id": "moon_ap16_m106777343r_c01",
   "source": "catalogue",
-  "reference_source": "manual_label_s110; sparse manual labels, unreviewed",
+  "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
   "circles": [
     {
       "crater_id": "C1",

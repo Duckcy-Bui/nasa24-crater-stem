@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_marefrig_loc_c02",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 390.0,
+      "y": 90.0,
+      "r": 10.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 440.0,
+      "y": 200.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 390.0,
+      "y": 300.0,
+      "r": 11.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 350.0,
+      "y": 420.0,
+      "r": 8.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 480.0,
+      "y": 360.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 295.0,
+      "y": 210.0,
+      "r": 8.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 320.0,
+      "y": 490.0,
+      "r": 7.5,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

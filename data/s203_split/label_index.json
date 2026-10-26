@@ -1,0 +1,340 @@
+{
+  "moon_ap16_m102057602r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m102057602r_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      5.15,
+      23.83
+    ]
+  },
+  "moon_ap16_m102064759r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m102064759r_c01_craters_catalogue.json",
+    "n_circles": 11,
+    "n_certain": 11,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      6.0,
+      21.0
+    ]
+  },
+  "moon_ap16_m106777343r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m106777343r_c01_craters_catalogue.json",
+    "n_circles": 4,
+    "n_certain": 3,
+    "n_uncertain": 1,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      5.45,
+      7.88
+    ]
+  },
+  "moon_ap16_m113853974r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m113853974r_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.5,
+      16.0
+    ]
+  },
+  "moon_ap16_m132732855l_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m132732855l_c01_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      14.0
+    ]
+  },
+  "moon_ap16_m132732855r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m132732855r_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      16.0
+    ]
+  },
+  "moon_ap16_m175179080r_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m175179080r_c01_craters_catalogue.json",
+    "n_circles": 13,
+    "n_certain": 13,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      6.5,
+      22.0
+    ]
+  },
+  "moon_ap16_m1108182629l_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m1108182629l_c01_craters_catalogue.json",
+    "n_circles": 11,
+    "n_certain": 11,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      6.0,
+      16.0
+    ]
+  },
+  "moon_ap16_m109134835l_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m109134835l_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      22.0
+    ]
+  },
+  "moon_ap16_m109134835l_c02": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m109134835l_c02_craters_catalogue.json",
+    "n_circles": 11,
+    "n_certain": 11,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      6.5,
+      24.0
+    ]
+  },
+  "moon_ap16_m117392541l_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_PHO_E090S0155",
+    "label_file": "moon_ap16_m117392541l_c01_craters_catalogue.json",
+    "n_circles": 12,
+    "n_certain": 12,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      6.5,
+      26.0
+    ]
+  },
+  "moon_ap15_hia_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_APOLLO15HIA_E259N0036_20M",
+    "label_file": "moon_ap15_hia_c01_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.0,
+      26.0
+    ]
+  },
+  "moon_ap15_hia_c02": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_APOLLO15HIA_E259N0036_20M",
+    "label_file": "moon_ap15_hia_c02_craters_catalogue.json",
+    "n_circles": 8,
+    "n_certain": 8,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.0,
+      30.0
+    ]
+  },
+  "moon_ap15_hia_c03": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_APOLLO15HIA_E259N0036_20M",
+    "label_file": "moon_ap15_hia_c03_craters_catalogue.json",
+    "n_circles": 7,
+    "n_certain": 7,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.5,
+      18.0
+    ]
+  },
+  "moon_lunokhod1_loc_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_LUNOKOD1LOA_E381N3246_20M",
+    "label_file": "moon_lunokhod1_loc_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.5,
+      55.0
+    ]
+  },
+  "moon_lunokhod1_loc_c02": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_LUNOKOD1LOA_E381N3246_20M",
+    "label_file": "moon_lunokhod1_loc_c02_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.5,
+      50.0
+    ]
+  },
+  "moon_vandegraff_hia_c01": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_VANDGRAFHIA_E269S1722_20M",
+    "label_file": "moon_vandegraff_hia_c01_craters_catalogue.json",
+    "n_circles": 10,
+    "n_certain": 10,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.0,
+      18.0
+    ]
+  },
+  "moon_vandegraff_hia_c02": {
+    "split": "tuning",
+    "ground_patch": "NAC_ROI_VANDGRAFHIA_E269S1722_20M",
+    "label_file": "moon_vandegraff_hia_c02_craters_catalogue.json",
+    "n_circles": 11,
+    "n_certain": 11,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.0,
+      20.0
+    ]
+  },
+  "moon_ap15_loc_c01": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_APOLLO15LOC_E252N0018_20M",
+    "label_file": "moon_ap15_loc_c01_craters_catalogue.json",
+    "n_circles": 8,
+    "n_certain": 8,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      9.0,
+      18.0
+    ]
+  },
+  "moon_ap15_loc_c02": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_APOLLO15LOC_E252N0018_20M",
+    "label_file": "moon_ap15_loc_c02_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      12.0
+    ]
+  },
+  "moon_ap15_loc_c03": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_APOLLO15LOC_E252N0018_20M",
+    "label_file": "moon_ap15_loc_c03_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      32.0
+    ]
+  },
+  "moon_lunokhod2_loc_c01": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_LUNOKOD2LOA_E259N0306_20M",
+    "label_file": "moon_lunokhod2_loc_c01_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.5,
+      35.0
+    ]
+  },
+  "moon_lunokhod2_loc_c02": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_LUNOKOD2LOA_E259N0306_20M",
+    "label_file": "moon_lunokhod2_loc_c02_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      8.0,
+      50.0
+    ]
+  },
+  "moon_marefrig_loc_c01": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_MAREFRIGLOA_E598N0261_20M",
+    "label_file": "moon_marefrig_loc_c01_craters_catalogue.json",
+    "n_circles": 6,
+    "n_certain": 6,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      10.0,
+      20.0
+    ]
+  },
+  "moon_marefrig_loc_c02": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_MAREFRIGLOA_E598N0261_20M",
+    "label_file": "moon_marefrig_loc_c02_craters_catalogue.json",
+    "n_circles": 7,
+    "n_certain": 7,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.5,
+      11.0
+    ]
+  },
+  "moon_marefrig_loc_c03": {
+    "split": "holdout",
+    "ground_patch": "NAC_ROI_MAREFRIGLOA_E598N0261_20M",
+    "label_file": "moon_marefrig_loc_c03_craters_catalogue.json",
+    "n_circles": 9,
+    "n_certain": 9,
+    "n_uncertain": 0,
+    "label_status": "reviewed",
+    "radius_range_px": [
+      7.5,
+      24.0
+    ]
+  }
+}

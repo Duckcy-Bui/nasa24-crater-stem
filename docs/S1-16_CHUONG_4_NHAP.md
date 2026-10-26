@@ -7,8 +7,8 @@
 | Mục | Nội dung | Người/việc | Trạng thái |
 |---|---|---|---|
 | 4.1 | Dữ liệu: nguồn, cắt ảnh, metadata, quy đổi tọa độ, nhãn tham chiếu | Hoàng Quốc Anh, S1-16 | **Nháp bên dưới** |
-| 4.2 | Phương pháp đánh giá: đối sánh một–một, tâm lệch ≤ 0,5 bán kính tham chiếu, Precision/Recall, tập điều chỉnh và tập kiểm tra | S2-03, S2-14 | Chưa viết |
-| 4.3 | Ba thí nghiệm: (1) Hough cơ bản so với thêm sáng–tối; (2) ảnh hưởng tham số; (3) ảnh khó (bóng mạnh, hố chồng nhau) | S2-07, S3-05 | Chưa viết |
+| 4.2 | Phương pháp đánh giá: đối sánh một–một, tâm lệch ≤ 0,5 bán kính tham chiếu, Precision/Recall, tập điều chỉnh và tập kiểm tra | S2-03, S2-14 | Có giới hạn split cần giữ lại bên dưới |
+| 4.3 | Ba thí nghiệm: (1) Hough cơ bản so với thêm sáng–tối; (2) ảnh hưởng tham số; (3) ảnh khó (bóng mạnh, hố chồng nhau) | S2-07, S3-05 | Thí nghiệm 1 chưa có số holdout S1-11 |
 | 4.4 | Khảo sát người chơi: đối tượng, quy trình, phiếu, kết quả hứng thú và hiểu bài | S1-16 (khung), S3-01, S3-09 | Khung tại [S1-16_KHAO_SAT.md](S1-16_KHAO_SAT.md) |
 | 4.5 | Thống kê hố và so sánh mật độ hai vùng | Đinh Quang Hưng, S3-03 | Chưa viết (vị trí do nhóm chốt) |
 | 4.6 | Thảo luận và hạn chế | S3-09 | Chưa viết |
@@ -62,7 +62,13 @@ Dữ liệu cho ba kiểu so sánh: (i) hai ảnh Apollo 16 cùng cửa sổ, g�
 
 ### 4.1.5. Nhãn tham chiếu và giới hạn
 
-Danh mục hố toàn cầu của Robbins [5] đầy đủ cho hố lớn hơn khoảng 1–2 km, trong khi ảnh 2 m/px của nhóm chủ yếu chứa hố có đường kính 20–500 m, nên danh mục này không bao phủ phần lớn hố cần đánh giá. Do đó bộ ảnh ghi trạng thái nhãn là *chưa có*, và nhóm bổ sung nhãn thủ công cho một số ảnh: hiện mới có 4 nhãn thưa trên một ảnh, chưa được người thứ hai kiểm chéo `[cập nhật khi S1-10 xong]`. Vì nhãn thưa nên không tính Precision trên các nhãn này; chỉ báo Recall trên tập hố đã gán nhãn khi đã kiểm chéo, kèm số hố và phạm vi, và các hố chưa chắc chắn được tách thành tập bỏ qua `[chi tiết ở 4.2]`. Thiếu nhãn không có nghĩa vùng ảnh không có hố.
+Danh mục hố toàn cầu của Robbins [5] đầy đủ cho hố lớn hơn khoảng 1–2 km, trong khi ảnh 2 m/px của nhóm chủ yếu chứa hố có đường kính 20–500 m, nên danh mục này không bao phủ phần lớn hố cần đánh giá. Nhóm đã có file nhãn thủ công thưa cho 26/26 crops; theo xác nhận cập nhật ngày 26/10/2026, chúng đã được Nguyễn Mạnh Tiến kiểm chéo và ghi nguồn `reviewed by Nguyen Manh Tien`. Vì nhãn vẫn thưa nên không tính Precision/F1 trên các nhãn này; chỉ báo Recall trên tập hố đã gán nhãn, kèm số hố và phạm vi; các hố chưa chắc chắn được tách thành tập bỏ qua. Thiếu nhãn không có nghĩa vùng ảnh không có hố.
+
+### 4.2. Giới hạn của tập kiểm tra hiện tại
+
+Split S2-03 giữ toàn bộ 11 crops Apollo 16 2 m/px trong tuning vì chúng chồng lấp mặt đất và một crop đã được dùng chọn lọc ở S2-02. Do đó toàn bộ 8 crops holdout là mosaic 20 m/px và `sun.quality = none`. Hệ quả là S1-11 không thể được đo trên holdout: mọi ứng viên đều `not_checked`; thí nghiệm “Hough cơ bản so với thêm sáng–tối” không có kết quả ngoài mẫu để kết luận tác động của bước này. Holdout cũng không đánh giá độc lập cho Apollo 16 2 m/px, dù nhãn và các khảo sát S2-02/S2-05 có dùng ảnh này.
+
+Khi báo cáo, kết quả Apollo 16 tuning chỉ được trình bày là phát triển/chẩn đoán; kết quả holdout chỉ áp dụng cho mosaic 20 m/px. Nhóm cần chốt một trong hai phương án: giữ split này và nêu rõ giới hạn, hoặc bổ sung một cụm Apollo 16 2 m/px mới, không chồng lấp và chưa dùng để chọn tham số, làm holdout riêng.
 
 ## Tài liệu tham khảo của chương
 

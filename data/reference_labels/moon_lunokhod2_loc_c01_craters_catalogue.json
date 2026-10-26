@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_lunokhod2_loc_c01",
+  "source": "catalogue",
+  "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+  "circles": [
+    {
+      "crater_id": "C1",
+      "x": 95.0,
+      "y": 75.0,
+      "r": 35.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C2",
+      "x": 220.0,
+      "y": 185.0,
+      "r": 14.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C3",
+      "x": 255.0,
+      "y": 295.0,
+      "r": 10.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C4",
+      "x": 120.0,
+      "y": 280.0,
+      "r": 9.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C5",
+      "x": 430.0,
+      "y": 120.0,
+      "r": 20.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C6",
+      "x": 420.0,
+      "y": 260.0,
+      "r": 12.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C7",
+      "x": 450.0,
+      "y": 380.0,
+      "r": 9.5,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C8",
+      "x": 90.0,
+      "y": 445.0,
+      "r": 10.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "C9",
+      "x": 285.0,
+      "y": 430.0,
+      "r": 8.5,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}
