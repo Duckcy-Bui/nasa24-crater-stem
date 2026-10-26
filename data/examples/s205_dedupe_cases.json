@@ -1,0 +1,102 @@
+{
+  "schema": "s205_dedupe_cases/1",
+  "note": "Bộ ví dụ kiểm tra lọc trùng S2-05. Tọa độ px ảnh 512, votes theo thang Hough (r=5: 40 điểm chu vi; r=6: 48; r=7: 56; r=9: 72; r=10: 80). Ba ca 'thật' lấy đúng tọa độ, bán kính, phiếu và lớp S2-02 của ứng viên trên ảnh LROC; các ca còn lại là hình học dựng tay. expect_kept: crater_id phải còn sau lọc.",
+  "cases": [
+    {
+      "name": "that_stt13_vong_nho_trong_vanh_M8_M32",
+      "kind": "trùng — phải gộp",
+      "source": "moon_ap16_m132732855l_c01, nhãn S2-02 đã kiểm chéo: cả hai là cùng một hố",
+      "circles": [
+        {"crater_id": "M8", "x": 49.0, "y": 372.0, "r": 6.0, "votes": 28, "review": {"class": "rim"}},
+        {"crater_id": "M32", "x": 52.0, "y": 372.0, "r": 9.0, "votes": 39, "review": {"class": "rim"}}
+      ],
+      "expect_kept": ["M32"]
+    },
+    {
+      "name": "that_stt13_vong_nho_trong_vanh_M19_M15",
+      "kind": "trùng — phải gộp",
+      "source": "moon_ap16_m132732855l_c01, nhãn S2-02 đã kiểm chéo",
+      "circles": [
+        {"crater_id": "M15", "x": 110.0, "y": 424.0, "r": 10.0, "votes": 45, "review": {"class": "rim"}},
+        {"crater_id": "M19", "x": 106.0, "y": 422.0, "r": 6.0, "votes": 27, "review": {"class": "rim"}}
+      ],
+      "expect_kept": ["M15"]
+    },
+    {
+      "name": "that_stt17_hai_vong_cung_co_lech_tam_M66_M67",
+      "kind": "trùng — phải gộp",
+      "source": "moon_ap16_m109134835l_c01, nhãn S2-02 đã kiểm chéo: cùng một hố vành sáng",
+      "circles": [
+        {"crater_id": "M66", "x": 240.0, "y": 179.0, "r": 7.0, "votes": 28, "review": {"class": "rim"}},
+        {"crater_id": "M67", "x": 244.0, "y": 182.0, "r": 7.0, "votes": 28, "review": {"class": "rim"}}
+      ],
+      "expect_kept_count": 1
+    },
+    {
+      "name": "chuoi_ba_vong_cung_mot_ho",
+      "kind": "trùng — phải gộp",
+      "circles": [
+        {"crater_id": "A", "x": 200.0, "y": 200.0, "r": 12.0, "votes": 60},
+        {"crater_id": "B", "x": 203.0, "y": 200.0, "r": 9.0, "votes": 45},
+        {"crater_id": "C", "x": 206.0, "y": 201.0, "r": 7.0, "votes": 40}
+      ],
+      "expect_kept": ["A"]
+    },
+    {
+      "name": "vong_ngoai_la_ket_cau_giu_vong_trong",
+      "kind": "trùng — gộp nhưng giữ vòng trong vì vòng ngoài không đủ tin",
+      "circles": [
+        {"crater_id": "OUT", "x": 300.0, "y": 300.0, "r": 10.0, "votes": 45, "review": {"class": "texture"}},
+        {"crater_id": "IN", "x": 302.0, "y": 300.0, "r": 6.0, "votes": 30, "review": {"class": "rim"}}
+      ],
+      "expect_kept": ["IN"]
+    },
+    {
+      "name": "vong_ngoai_it_phieu_giu_vong_trong",
+      "kind": "trùng — gộp nhưng giữ vòng trong vì vòng ngoài dưới ngưỡng phiếu",
+      "circles": [
+        {"crater_id": "OUT", "x": 300.0, "y": 100.0, "r": 10.0, "votes": 20},
+        {"crater_id": "IN", "x": 302.0, "y": 100.0, "r": 6.0, "votes": 30}
+      ],
+      "expect_kept": ["IN"]
+    },
+    {
+      "name": "hai_ho_cham_mep",
+      "kind": "không trùng — phải giữ cả hai",
+      "circles": [
+        {"crater_id": "L", "x": 100.0, "y": 100.0, "r": 10.0, "votes": 50},
+        {"crater_id": "R", "x": 120.0, "y": 100.0, "r": 10.0, "votes": 50}
+      ],
+      "expect_kept": ["L", "R"]
+    },
+    {
+      "name": "hai_ho_chong_mep",
+      "kind": "không trùng — phải giữ cả hai",
+      "circles": [
+        {"crater_id": "L", "x": 100.0, "y": 300.0, "r": 10.0, "votes": 50},
+        {"crater_id": "R", "x": 114.0, "y": 300.0, "r": 8.0, "votes": 40}
+      ],
+      "expect_kept": ["L", "R"]
+    },
+    {
+      "name": "ho_nho_nam_trong_ho_lon",
+      "kind": "không trùng — phải giữ cả hai",
+      "circles": [
+        {"crater_id": "BIG", "x": 400.0, "y": 400.0, "r": 20.0, "votes": 100},
+        {"crater_id": "SMALL", "x": 405.0, "y": 403.0, "r": 6.0, "votes": 40}
+      ],
+      "expect_kept": ["BIG", "SMALL"]
+    },
+    {
+      "name": "cum_ho_gan_nhau",
+      "kind": "không trùng — phải giữ cả bốn",
+      "circles": [
+        {"crater_id": "H1", "x": 50.0, "y": 450.0, "r": 6.0, "votes": 40},
+        {"crater_id": "H2", "x": 63.0, "y": 450.0, "r": 6.0, "votes": 40},
+        {"crater_id": "H3", "x": 56.0, "y": 462.0, "r": 6.0, "votes": 40},
+        {"crater_id": "H4", "x": 70.0, "y": 462.0, "r": 5.0, "votes": 35}
+      ],
+      "expect_kept": ["H1", "H2", "H3", "H4"]
+    }
+  ]
+}

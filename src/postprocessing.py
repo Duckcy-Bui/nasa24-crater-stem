@@ -300,6 +300,7 @@ REVIEW_DEFAULTS = {
     "max_shadow_edge_fraction": 0.5,
 }
 REVIEW_CLASSES = ("rim", "shadow_edge", "texture", "unclear")
+SHADING_STATUSES = ("consistent", "inverted", "unclear", "not_checked")
 
 
 def resolve_review_params(params: dict | None) -> dict:
@@ -389,9 +390,14 @@ def apply_filter(circles: list[dict], remove_classes=(), remove_shading=()) -> t
 
     Trả (giữ lại, bị loại); mỗi vòng bị loại có "filter_reason". Gọi không tham số thì không loại gì.
     """
+    if isinstance(remove_classes, str) or isinstance(remove_shading, str):
+        raise ValueError("remove_classes / remove_shading phải là tuple hoặc list, không phải chuỗi.")
     bad = set(remove_classes) - set(REVIEW_CLASSES)
     if bad:
         raise ValueError("Lớp không biết: " + ", ".join(sorted(bad)))
+    bad = set(remove_shading) - set(SHADING_STATUSES)
+    if bad:
+        raise ValueError("Nhãn sáng–tối không biết: " + ", ".join(sorted(bad)) + f" (hợp lệ: {', '.join(SHADING_STATUSES)})")
     kept, removed = [], []
     for c in circles:
         cls = (c.get("review") or {}).get("class")
@@ -406,3 +412,101 @@ def apply_filter(circles: list[dict], remove_classes=(), remove_shading=()) -> t
         else:
             kept.append(c)
     return kept, removed
+
+
+# ============================================================ S2-05: lọc vòng trùng
+# Hough có thể tìm cùng một hố nhiều lần mà NMS của S1-07 (tâm <= 4 px VÀ bán kính
+# lệch <= 2 px) không gộp được. Hai dạng đã thấy trên ảnh thật:
+#   - vòng nhỏ lồng trong vành thật: mép bóng lòng hố (STT 13: M8 r=6 trong M32 r=9;
+#     M19 r=6 trong M15 r=10);
+#   - hai vòng cùng cỡ, tâm lệch nhau (STT 17: M66/M67, r=7, tâm cách 5 px).
+# Quy tắc (tự viết):
+#   Cặp (A, B), R = max(rA, rB), r = min:  trùng nếu  d(tâm) <= max_center_frac·R  VÀ  r/R >= min_radius_ratio.
+#   - Hai hố cạnh nhau/chồng mép có d >= khoảng R + r > 0,75R → không bị gộp.
+#   - Hố nhỏ nằm trong hố lớn có r/R < 0,5 → không bị gộp.
+#   Giữ vòng theo thứ tự ưu tiên: (1) vòng đủ tin (tỉ lệ phiếu >= min_outer_vote_ratio
+#   và không bị S2-02 xếp lớp không tin cậy); (2) vòng lớn hơn — vòng trong thường là
+#   mép bóng lòng hố; (3) tỉ lệ phiếu cao hơn; (4) số phiếu; (5) crater_id.
+#   Duyệt tham lam theo thứ tự đó; vòng trùng với một vòng đã giữ thì bị loại, ghi duplicate_of.
+
+DEDUPE_DEFAULTS = {
+    "max_center_frac": 0.75,
+    "min_radius_ratio": 0.5,
+    "min_outer_vote_ratio": 0.35,          # cùng ý nghĩa min_vote_ratio của Hough
+    "unreliable_classes": ("texture",),    # lớp S2-02 không đủ tin để làm vòng giữ lại
+    "angle_step_deg": 1.0,                 # phải khớp Hough để tính đúng số điểm trên chu vi
+}
+
+
+def resolve_dedupe_params(params: dict | None) -> dict:
+    params = dict(params or {})
+    unknown = set(params) - set(DEDUPE_DEFAULTS)
+    if unknown:
+        raise ValueError("Tham số S2-05 không biết: " + ", ".join(sorted(unknown)))
+    p = {**DEDUPE_DEFAULTS, **params}
+    if not 0 < p["max_center_frac"] <= 2 or not 0 < p["min_radius_ratio"] <= 1:
+        raise ValueError("Cần 0 < max_center_frac <= 2 và 0 < min_radius_ratio <= 1.")
+    bad = set(p["unreliable_classes"]) - set(REVIEW_CLASSES)
+    if isinstance(p["unreliable_classes"], str) or bad:
+        raise ValueError("unreliable_classes phải là tuple các lớp S2-02.")
+    return p
+
+
+def vote_ratio(c: dict, angle_step_deg: float = 1.0) -> float | None:
+    """Số phiếu / số điểm pixel khác nhau trên chu vi bán kính r (đúng mẫu số Hough dùng)."""
+    from src.hough import _circle_offsets
+
+    if c.get("votes") is None:
+        return None
+    angles = np.deg2rad(np.arange(0.0, 360.0, angle_step_deg))
+    return c["votes"] / len(_circle_offsets(int(round(c["r"])), angles))
+
+
+def duplicate_pair(a: dict, b: dict, p: dict) -> tuple[bool, float, float]:
+    """(trùng?, d/R, r/R) cho một cặp vòng."""
+    big, small = (a, b) if a["r"] >= b["r"] else (b, a)
+    d = math.hypot(a["x"] - b["x"], a["y"] - b["y"])
+    center, ratio = d / big["r"], small["r"] / big["r"]
+    return center <= p["max_center_frac"] and ratio >= p["min_radius_ratio"], round(center, 3), round(ratio, 3)
+
+
+def dedupe_circles(circles: list[dict], params: dict | None = None) -> tuple[list[dict], list[dict], dict]:
+    """LỌC TRÙNG: trả (giữ lại theo thứ tự gốc, bị loại, báo cáo).
+
+    Mỗi vòng bị loại có "duplicate_of" (crater_id vòng giữ) và "dedupe_reason".
+    Không đổi trường nào của vòng giữ lại.
+    """
+    p = resolve_dedupe_params(params)
+
+    def reliable(c):
+        vr = vote_ratio(c, p["angle_step_deg"])
+        cls = (c.get("review") or {}).get("class")
+        return (vr is None or vr >= p["min_outer_vote_ratio"]) and cls not in p["unreliable_classes"]
+
+    def key(c):
+        vr = vote_ratio(c, p["angle_step_deg"]) or 0.0
+        return (not reliable(c), -c["r"], -vr, -(c.get("votes") or 0), str(c["crater_id"]))
+
+    kept_ids, removed, pairs = [], [], []
+    by_id = {c["crater_id"]: c for c in circles}
+    for c in sorted(circles, key=key):
+        hit = None
+        for kid in kept_ids:
+            same, center, ratio = duplicate_pair(c, by_id[kid], p)
+            if same:
+                hit = (kid, center, ratio)
+                break
+        if hit is None:
+            kept_ids.append(c["crater_id"])
+            continue
+        kid, center, ratio = hit
+        why = (f"trùng {kid}: tâm lệch {center:.2f}R, r/R = {ratio:.2f}; giữ {kid} vì "
+               + ("vòng kia đủ tin còn vòng này không" if reliable(by_id[kid]) and not reliable(c)
+                  else "vòng kia lớn hơn" if by_id[kid]["r"] > c["r"] else "cùng cỡ, tỉ lệ phiếu không thấp hơn"))
+        removed.append({**c, "duplicate_of": kid, "dedupe_reason": why})
+        pairs.append({"kept": kid, "removed": c["crater_id"], "center_over_R": center, "r_over_R": ratio})
+    keep = set(kept_ids)
+    kept = [c for c in circles if c["crater_id"] in keep]
+    report = {"params": {**p, "unreliable_classes": list(p["unreliable_classes"])},
+              "n_in": len(circles), "n_kept": len(kept), "n_removed": len(removed), "pairs": pairs}
+    return kept, removed, report

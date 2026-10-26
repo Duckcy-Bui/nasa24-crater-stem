@@ -1,9 +1,9 @@
 {
   "image_id": "moon_ap16_m132732855l_c01",
   "seconds": {
-    "preprocess": 0.18,
-    "hough": 19.44,
-    "shading_review": 0.06
+    "preprocess": 0.26,
+    "hough": 17.38,
+    "shading_review": 0.05
   },
   "preprocess_params": {
     "version": "s108-2",

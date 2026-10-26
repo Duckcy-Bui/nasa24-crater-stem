@@ -1,9 +1,9 @@
 {
   "image_id": "moon_ap16_m109134835l_c01",
   "seconds": {
-    "preprocess": 0.13,
-    "hough": 25.82,
-    "shading_review": 0.04
+    "preprocess": 0.09,
+    "hough": 18.79,
+    "shading_review": 0.02
   },
   "preprocess_params": {
     "version": "s108-2",
@@ -80,5 +80,80 @@
   },
   "hough_circles": 100,
   "labels": "data\\s202_labels\\moon_ap16_m109134835l_c01.json",
-  "evaluation": "chưa có nhãn người: chưa đối chiếu, chưa gọi là lọc"
+  "evaluation": {
+    "n_labeled": 83,
+    "n_rim": 17,
+    "confusion_machine_x_human": {
+      "rim": {
+        "rim": 17,
+        "shadow_edge": 0,
+        "texture": 31
+      },
+      "shadow_edge": {
+        "rim": 0,
+        "shadow_edge": 0,
+        "texture": 0
+      },
+      "texture": {
+        "rim": 0,
+        "shadow_edge": 0,
+        "texture": 35
+      },
+      "unclear": {
+        "rim": 0,
+        "shadow_edge": 0,
+        "texture": 0
+      }
+    },
+    "filters": [
+      {
+        "cach_loc": "không lọc",
+        "loai": 0,
+        "loai_nham_ho_that": 0,
+        "con_lai": 83,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.205
+      },
+      {
+        "cach_loc": "bỏ shadow_edge",
+        "loai": 0,
+        "loai_nham_ho_that": 0,
+        "con_lai": 83,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.205
+      },
+      {
+        "cach_loc": "bỏ texture",
+        "loai": 35,
+        "loai_nham_ho_that": 0,
+        "con_lai": 48,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.354
+      },
+      {
+        "cach_loc": "bỏ shadow_edge + texture",
+        "loai": 35,
+        "loai_nham_ho_that": 0,
+        "con_lai": 48,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.354
+      },
+      {
+        "cach_loc": "bỏ sáng–tối ngược",
+        "loai": 0,
+        "loai_nham_ho_that": 0,
+        "con_lai": 83,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.205
+      },
+      {
+        "cach_loc": "bỏ shadow_edge + texture + ngược",
+        "loai": 35,
+        "loai_nham_ho_that": 0,
+        "con_lai": 48,
+        "ho_that_con_lai": 17,
+        "ty_le_ho_that_trong_con_lai": 0.354
+      }
+    ]
+  }
 }
