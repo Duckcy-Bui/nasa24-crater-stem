@@ -1,0 +1,270 @@
+{
+  "task_id": "S2-07",
+  "created_at_utc": "2026-10-26T03:56:10.846051+00:00",
+  "code_version": "dc43eac2dd1136ff43d5f31edfed4622348082fe",
+  "metric_scope": "reviewed sparse labels; Recall known only",
+  "results": [
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "split": "tuning",
+      "scale_m_per_px": 2.0,
+      "sun_quality": "side_only",
+      "experiment_1_s111": {
+        "baseline": {
+          "known_labels": 10,
+          "true_positive_known": 0,
+          "missed_reference_ids": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6",
+            "C7",
+            "C8",
+            "C9",
+            "C10"
+          ],
+          "recall_known": 0.0,
+          "precision": null,
+          "f1": null,
+          "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+        },
+        "with_s111_annotation": {
+          "known_labels": 10,
+          "true_positive_known": 0,
+          "missed_reference_ids": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6",
+            "C7",
+            "C8",
+            "C9",
+            "C10"
+          ],
+          "recall_known": 0.0,
+          "precision": null,
+          "f1": null,
+          "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+        },
+        "candidates_baseline": 100,
+        "candidates_with_s111": 100,
+        "shading_counts": {
+          "not_checked": 100
+        },
+        "status": "not_evaluable_no_usable_sun",
+        "note": "Thiếu hướng nắng đủ tin cậy hoặc ảnh thuộc holdout mosaic: mọi ứng viên not_checked; không kết luận S1-11."
+      },
+      "experiment_2_parameters": [
+        {
+          "variant": "baseline",
+          "hough_params_override": {},
+          "candidates": 100,
+          "seconds_hough": 9.136,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "scope": "tuning_selection"
+        },
+        {
+          "variant": "min_vote_ratio_030",
+          "hough_params_override": {
+            "min_vote_ratio": 0.3
+          },
+          "candidates": 100,
+          "seconds_hough": 8.437,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "scope": "tuning_selection"
+        },
+        {
+          "variant": "min_vote_ratio_040",
+          "hough_params_override": {
+            "min_vote_ratio": 0.4
+          },
+          "candidates": 100,
+          "seconds_hough": 8.375,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "scope": "tuning_selection"
+        },
+        {
+          "variant": "radius_step_2",
+          "hough_params_override": {
+            "radius_step_px": 2
+          },
+          "candidates": 100,
+          "seconds_hough": 4.325,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "scope": "tuning_selection"
+        }
+      ],
+      "experiment_3_hard_cases": {
+        "review_class_counts": {
+          "rim": 61,
+          "shadow_edge": 0,
+          "texture": 39,
+          "unclear": 0
+        },
+        "remove_texture": {
+          "candidates_kept": 61,
+          "candidates_removed": 39,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "scope": "tuning_diagnostic"
+        },
+        "dedupe": {
+          "candidates_kept": 97,
+          "candidates_removed": 3,
+          "recall": {
+            "known_labels": 10,
+            "true_positive_known": 0,
+            "missed_reference_ids": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5",
+              "C6",
+              "C7",
+              "C8",
+              "C9",
+              "C10"
+            ],
+            "recall_known": 0.0,
+            "precision": null,
+            "f1": null,
+            "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+          },
+          "report": {
+            "params": {
+              "max_center_frac": 0.75,
+              "min_radius_ratio": 0.5,
+              "min_outer_vote_ratio": 0.35,
+              "unreliable_classes": [
+                "texture"
+              ],
+              "angle_step_deg": 1.0
+            },
+            "n_in": 100,
+            "n_kept": 97,
+            "n_removed": 3,
+            "pairs": [
+              {
+                "kept": "M66",
+                "removed": "M67",
+                "center_over_R": 0.714,
+                "r_over_R": 1.0
+              },
+              {
+                "kept": "M45",
+                "removed": "M53",
+                "center_over_R": 0.401,
+                "r_over_R": 0.556
+              },
+              {
+                "kept": "M46",
+                "removed": "M69",
+                "center_over_R": 0.629,
+                "r_over_R": 0.778
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

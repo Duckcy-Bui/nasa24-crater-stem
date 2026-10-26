@@ -8,7 +8,7 @@
 |---|---|---|---|
 | 4.1 | Dữ liệu: nguồn, cắt ảnh, metadata, quy đổi tọa độ, nhãn tham chiếu | Hoàng Quốc Anh, S1-16 | **Nháp bên dưới** |
 | 4.2 | Phương pháp đánh giá: đối sánh một–một, tâm lệch ≤ 0,5 bán kính tham chiếu, Precision/Recall, tập điều chỉnh và tập kiểm tra | S2-03, S2-14 | Có giới hạn split cần giữ lại bên dưới |
-| 4.3 | Ba thí nghiệm: (1) Hough cơ bản so với thêm sáng–tối; (2) ảnh hưởng tham số; (3) ảnh khó (bóng mạnh, hố chồng nhau) | S2-07, S3-05 | Thí nghiệm 1 chưa có số holdout S1-11 |
+| 4.3 | Ba thí nghiệm: (1) Hough cơ bản so với thêm sáng–tối; (2) ảnh hưởng tham số; (3) ảnh khó (bóng mạnh, hố chồng nhau) | S2-07, S3-05 | Kịch bản tái tạo tại `S2-07_THI_NGHIEM_VA_THU_GAME.md`; thí nghiệm 1 chưa có số holdout S1-11 |
 | 4.4 | Khảo sát người chơi: đối tượng, quy trình, phiếu, kết quả hứng thú và hiểu bài | S1-16 (khung), S3-01, S3-09 | Khung tại [S1-16_KHAO_SAT.md](S1-16_KHAO_SAT.md) |
 | 4.5 | Thống kê hố và so sánh mật độ hai vùng | Đinh Quang Hưng, S3-03 | Chưa viết (vị trí do nhóm chốt) |
 | 4.6 | Thảo luận và hạn chế | S3-09 | Chưa viết |
