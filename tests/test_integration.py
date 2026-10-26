@@ -82,6 +82,7 @@ class TestIntegratedScreen(unittest.TestCase):
             "from src.hough import resolve_hough_params\n"
             f"app.DATA_DIR = Path({str(self.images)!r})\n"
             f"app.SCORE_OUTPUT_DIR = Path({str(Path(self.tmp.name) / 'scores')!r})\n"
+            f"app.REFERENCE_DIR = Path({str(Path(self.tmp.name) / 'no_labels')!r})\n"
             "def fake_machine(image_id, data_dir, stamp):\n"
             "    meta = read_json(Path(data_dir) / f'{image_id}.json')\n"
             "    machine = {'schema_version': '1.0', 'data_kind': meta['data_kind'], 'image_id': image_id,\n"
