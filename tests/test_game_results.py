@@ -89,7 +89,9 @@ class TestResultsScreen(unittest.TestCase):
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
-    def app(self, scores: Path):
+    def app(self, scores: Path, references: Path | None = None):
+        """App với Hough giả; nhãn tham chiếu chỉ lấy từ thư mục riêng của test, không đọc nhãn thật của repo."""
+        references = references or scores.parent / "no_labels"
         code = (
             "from pathlib import Path\n"
             "import app\n"
@@ -97,6 +99,7 @@ class TestResultsScreen(unittest.TestCase):
             "from src.hough import resolve_hough_params\n"
             f"app.DATA_DIR = Path({str(self.images)!r})\n"
             f"app.SCORE_OUTPUT_DIR = Path({str(scores)!r})\n"
+            f"app.REFERENCE_DIR = Path({str(references)!r})\n"
             "def fake_machine(image_id, data_dir, stamp):\n"
             "    meta = read_json(Path(data_dir) / f'{image_id}.json')\n"
             "    circles = [{'crater_id': 'M1', 'x': 100.0, 'y': 100.0, 'r': 20.0, 'confidence': None, 'votes': 30}]\n"
@@ -125,14 +128,32 @@ class TestResultsScreen(unittest.TestCase):
             metrics = {m.label: m.value for m in at.metric}
             self.assertEqual(metrics["Trùng máy"], "1")
             self.assertEqual(metrics["Chỉ bạn khoanh"], "0")
-            self.assertTrue(
-                "Điểm theo nhãn đã kiểm chéo" in metrics
-                or any("Chưa có điểm" in i.value for i in at.info)
-            )
+            self.assertNotIn("Điểm theo nhãn đã kiểm chéo", metrics)
+            self.assertTrue(any("Chưa có điểm" in i.value for i in at.info))
             saved = list(scores.iterdir())
             self.assertEqual(len(saved), 1)
             self.assertEqual(read_json(saved[0] / "craters.json")["circles"][0]["crater_id"], "U1")
             self.assertEqual(read_json(saved[0] / "score.json")["image_id"], image_id)
+
+    def test_reviewed_labels_give_a_score(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            labels = Path(tmp) / "labels"
+            labels.mkdir()
+            at = self.app(Path(tmp) / "scores", labels).run()
+            image_id = at.selectbox[0].value
+            meta = read_json(self.images / f"{image_id}.json")
+            catalogue = {"schema_version": "1.0", "data_kind": meta["data_kind"], "image_id": image_id,
+                         "source": "catalogue", "reference_source": "test labels, reviewed by Tester",
+                         "circles": [{"crater_id": "C1", "x": 100.0, "y": 100.0, "r": 20.0, "confidence": None, "votes": None},
+                                     {"crater_id": "C2", "x": 300.0, "y": 300.0, "r": 10.0, "confidence": None, "votes": None}]}
+            (labels / f"{image_id}_craters_catalogue.json").write_text(json.dumps(catalogue), encoding="utf-8")
+            at.session_state["player_drafts"] = {image_id: {"revision": 1, "circles": [
+                {"crater_id": "U1", "x": 101.0, "y": 100.0, "r": 19.0, "confidence": None, "votes": None}]}}
+            next(b for b in at.button if b.label == "Chấm bài").click().run()
+            self.assertEqual(len(at.exception), 0)
+            metrics = {m.label: m.value for m in at.metric}
+            self.assertEqual(metrics["Điểm theo nhãn đã kiểm chéo"], "50/100")
+            self.assertTrue(any("bỏ sót **1**" in m.value for m in at.markdown))
 
     def test_editing_after_scoring_warns_that_the_result_is_stale(self):
         with tempfile.TemporaryDirectory() as tmp:
