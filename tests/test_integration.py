@@ -45,8 +45,11 @@ class TestStatisticsView(unittest.TestCase):
 
 
 class TestCardsView(unittest.TestCase):
-    def test_unimplemented_cards_are_pending(self):
-        self.assertEqual(cards_view("any_image")["status"], "pending")
+    def test_cards_are_available_for_verified_regions(self):
+        view = cards_view("moon_ap16_m102064759r_c01")
+        self.assertEqual(view["status"], "ok")
+        self.assertEqual(view["cards"][0]["card_id"], "apollo16-descartes-region")
+        self.assertIsNone(view["cards"][0]["position"])
 
     def test_cards_without_source_or_outside_the_image_are_hidden(self):
         no_source = dict(CARD, card_id="B", source_url="")
@@ -95,10 +98,11 @@ class TestIntegratedScreen(unittest.TestCase):
         )
         return AppTest.from_string(code, default_timeout=30)
 
-    def test_pending_parts_are_labelled_not_faked(self):
+    def test_pending_statistics_and_implemented_cards_are_labelled_correctly(self):
         at = self.app().run()
         self.assertEqual(len(at.exception), 0)
-        self.assertTrue(any("S2-10" in i.value for i in at.info))
+        text = " ".join(m.value for m in at.markdown) + " ".join(c.value for c in at.caption)
+        self.assertIn("Apollo 15", text)
         next(b for b in at.button if b.label == "Chấm bài").click().run()
         self.assertEqual(len(at.exception), 0)
         self.assertTrue(any("S2-09" in i.value for i in at.info))
