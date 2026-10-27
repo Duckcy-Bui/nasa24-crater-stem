@@ -75,28 +75,29 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 - [ ] Bìa đủ tên trường, mã lớp, MSSV, giảng viên.
 - [ ] Phụ lục có bảng đóng góp đã được cả bốn người xác nhận và phần khai báo dùng AI.
 
-## 5. Trạng thái bản ghép đầu tiên (27/10/2026)
+## 5. Trạng thái bản ghép (cập nhật 27/10/2026, PR #29)
 
-Bản dựng ngày 27/10/2026 dài 55 trang: bìa và mục lục 4 trang, nội dung chính 45 trang, tài liệu tham khảo và phụ lục 6 trang. Báo cáo có 28 tài liệu, trong đó 7 bài có DOI. **Nội dung chính đang vượt mức 40 trang**, trong khi các kết quả còn chờ sẽ thêm khoảng 3–4 trang. Bảng dưới đề xuất số trang tối đa cho từng chương.
+Bản dựng sau PR #29 dài 55 trang: bìa và mục lục 4 trang, nội dung chính 45 trang (trang 5–49), tài liệu tham khảo và phụ lục 6 trang. Báo cáo có 28 tài liệu, trong đó 7 bài có DOI. **Nội dung chính đang vượt mức 40 trang**, trong khi các kết quả còn chờ sẽ thêm khoảng 3–4 trang. Bảng dưới đề xuất số trang tối đa cho từng chương.
 
 | Chương | Hiện tại | Tối đa đề xuất | Gợi ý rút gọn (người chốt quyết định) |
 |---|---:|---:|---|
-| 1 | 5 | 4 | Đức: gộp 1.2 và 1.3 |
+| 1 | 4 | 4 | Đã gộp 1.2 và 1.3, thay Bảng 1.2 bằng một đoạn (PR #29) |
 | 2 | 11 | 8 | Bỏ Hình 2.2 hoặc rút 2.2.5; rút ví dụ CLAHE và 2.3.3 |
 | 3 | 12 | 9 | Bảng 3.3 thành một câu; rút 3.4.2 (so với vòng ngẫu nhiên); cân nhắc bỏ Hình 3.1 |
-| 4 | 10 | 10 | Đã gồm chỗ cho kết quả thí nghiệm và khảo sát; rút ví dụ quy đổi ở 4.2 và chi tiết thử nhỏ ở 4.8.3 |
+| 4 | 11 | 10 | Đã gồm chỗ cho kết quả thí nghiệm và khảo sát; rút ví dụ quy đổi ở 4.2 và chi tiết thử nhỏ ở 4.8.3 |
 | 5 | 7 | 7 | — |
 
 Các dấu `[CHỜ]` còn lại:
 
-- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. PR này còn đổi mặc định chọn ứng viên của game sang `radius_balanced`, nên sau khi merge phải kiểm lại các câu tả danh sách máy ở 1.6, 3.7, 5.4 và chụp lại Hình 5.2. Sau đó người chốt xóa dấu.
-- PR #27 (Đức) chưa được merge: quy đổi tâm pixel, ảnh đối chiếu phóng 3 lần và các ảnh Hình 5.1, 5.2 ở mục 5.2–5.4 dựa trên bản sửa này.
+- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.5 (Bảng 1.1), 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Nếu PR này đổi cấu hình chọn ứng viên của game (review đề nghị giữ `score` cho tới khi chốt S2-15), phải kiểm lại các câu tả danh sách máy ở 1.5, 3.7, 5.4 và chụp lại Hình 5.2. Sau đó người chốt xóa dấu.
+- PR #27 đã merge và đã chạy trên VPS; dấu chờ ở mục 5.2 đã xóa. Hình 5.1–5.3 chụp lại trên main `3cff367` cho kết quả như cũ (`docs/S2-13_TICH_HOP.md` mục 2.1).
 - S2-09 (Hưng): mục 3.6, Bảng 1.1 và mục 5.7.
 - S2-15 (Tiến): mục 3.7.
 - S3-05 (Quốc Anh): mục 4.6.
 - S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.
 - Số test cuối: mục 5.6.
 - Phụ lục A, D: cả nhóm điền.
+- Bìa: còn tên khoa, mã lớp và họ tên giảng viên. Tên trường và MSSV đã điền.
 
 Còn để người chốt quyết định: Hình 3.4, 3.5 có mã việc nội bộ trong tiêu đề ảnh; sơ đồ dạng chữ ở mục 3.1 chưa có số hình; một số nội dung lặp giữa Chương 2 và 3 (công thức (4.4) = (2.14), (3.3) = (2.24), ví dụ bước bán kính, NMS) có thể bỏ để giảm trang.
 

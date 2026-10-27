@@ -1,5 +1,5 @@
 ::: {custom-style="Cover Strong"}
-[TÊN TRƯỜNG]
+TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI
 
 [TÊN KHOA / VIỆN]
 :::
@@ -21,7 +21,7 @@ PHÁT HIỆN HỐ VA CHẠM TRÊN ẢNH MẶT TRĂNG BẰNG BIẾN ĐỔI HOUGH 
 :::
 
 ::: {custom-style="Cover"}
-Đề tài NASA 24 — Nhóm 2
+Đề tài NASA 24: Tìm hố va chạm và trò chơi STEM — Nhóm 2
 :::
 
 ```{=openxml}
@@ -33,13 +33,13 @@ Giảng viên hướng dẫn: [HỌ TÊN GIẢNG VIÊN]
 
 Sinh viên thực hiện:
 
-Bùi Hải Đức — [MSSV] (nhóm trưởng)
+Bùi Hải Đức — 231230747 (nhóm trưởng)
 
-Nguyễn Mạnh Tiến — [MSSV]
+Nguyễn Mạnh Tiến — 231230923
 
-Đinh Quang Hưng — [MSSV]
+Đinh Quang Hưng — 231230804
 
-Hoàng Quốc Anh — [MSSV]
+Hoàng Quốc Anh — 231230703
 :::
 
 ```{=openxml}

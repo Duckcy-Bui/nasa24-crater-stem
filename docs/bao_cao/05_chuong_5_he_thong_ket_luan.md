@@ -2,7 +2,8 @@
 Người chốt: Bùi Hải Đức (S3-08). Nguồn: docs/DINH_DANG_DU_LIEU.md, docs/S1-09_GIAO_DIEN_KHOANH_HO.md,
 docs/S2-04_CHAM_DIEM.md, docs/S2-08_MAN_HINH_KET_QUA.md, docs/S2-10_THE_KHOA_HOC.md, docs/S2-13_TICH_HOP.md,
 src/contracts.py, src/matching.py, src/scoring.py, src/game_results.py, src/integration.py, app.py, src/crater_canvas/.
-Ảnh: docs/evidence/s3-08/ chụp ngày 27/10/2026 trên bản main + sửa S3-04 (tọa độ tâm pixel, màu link).
+Ảnh: docs/evidence/s3-08/ chụp ngày 27/10/2026. Đã chụp lại trên main 3cff367 (có S3-04: tọa độ tâm pixel, màu link):
+Hình 5.1 và 5.3 trùng từng byte, Hình 5.2 chỉ khác dòng thời điểm lưu lượt chấm, điểm vẫn 60/100.
 Việc còn lại: cập nhật 5.6 (số test, thời gian chạy) và 5.7 khi có S2-09, S3-01, S3-02, S3-05; cập nhật ảnh nếu giao diện đổi.
 -->
 
@@ -51,7 +52,7 @@ $$
 x = v_x + \frac{(u - L)\cdot 512}{W\,z} - \text{0,5}, \qquad y = v_y + \frac{(v - T)\cdot 512}{W\,z} - \text{0,5}. \qquad (5.1)
 $$
 
-Số hạng $-\text{0,5}$ đổi từ mép pixel sang tâm pixel: bấm vào giữa pixel 200 cho đúng $x = 200$, khớp quy ước của Hough và công cụ gán nhãn; khi vẽ thì cộng lại $\text{0,5}$. Test JavaScript khóa các trường hợp này ở nhiều cỡ hiển thị và mức phóng to; trên trình duyệt thật, vòng khoanh đúng tâm một ứng viên máy cho khoảng cách tâm 0,0 px. [CHỜ PR #27 được merge: quy đổi tâm pixel và Hình 5.1, 5.2 chụp trên bản sửa này]
+Số hạng $-\text{0,5}$ đổi từ mép pixel sang tâm pixel: bấm vào giữa pixel 200 cho đúng $x = 200$, khớp quy ước của Hough và công cụ gán nhãn; khi vẽ thì cộng lại $\text{0,5}$. Test JavaScript khóa các trường hợp này ở nhiều cỡ hiển thị và mức phóng to; trên trình duyệt thật, vòng khoanh đúng tâm một ứng viên máy cho khoảng cách tâm 0,0 px.
 
 ## 5.3. Chấm điểm người chơi
 
@@ -81,7 +82,7 @@ Mỗi lần chấm được lưu thành một thư mục mới gồm metadata, t
 
 ## 5.5. Thẻ khoa học
 
-Thẻ khoa học gắn với vùng chụp của ảnh đang mở (Hình 5.3), gồm tiêu đề, nội dung ngắn và nguồn chính thức. Các vùng có thẻ là Apollo 15 Hadley–Apennine, Apollo 16 Descartes [@nasa_apollo15; @nasa_apollo16], Lunokhod 1 và Lunokhod 2 [@lroc_lunokhod1; @nssdc_artifacts]. Ảnh Van de Graaff và Mare Frigoris không có thẻ, vì nhóm không gắn câu chuyện Apollo hay rover tùy ý vào ảnh không liên quan.
+Thẻ khoa học gắn với vùng chụp của ảnh đang mở (Hình 5.3), gồm tiêu đề, nội dung ngắn và nguồn chính thức. Các vùng có thẻ là Apollo 15 Hadley–Apennine, Apollo 16 Descartes [@nasa_apollo15; @nasa_apollo16], Lunokhod 1 và Lunokhod 2 [@lroc_lunokhod1; @nssdc_artifacts], phủ 21 trong 26 ảnh. Năm ảnh Van de Graaff và Mare Frigoris không có thẻ, vì nhóm không gắn câu chuyện Apollo hay rover tùy ý vào ảnh không liên quan.
 
 ![Hình 5.3. Thẻ khoa học của ảnh Apollo 16, kèm link nguồn.](../evidence/s3-08/the_khoa_hoc.jpg){width=100%}
 
