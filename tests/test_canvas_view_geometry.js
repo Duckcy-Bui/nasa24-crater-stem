@@ -117,4 +117,32 @@ for (const dimensions of [[0, 512], [512, -1], [NaN, 512], [512, Infinity]]) {
   invalid(() => geometry.imageToScreen(10, 20, rect, {z: 1, x: 0, y: 0}, ...dimensions));
   invalid(() => geometry.zoomViewAt({z: 1, x: 0, y: 0}, 2, 10, 20, rect, ...dimensions));
 }
+// Circles use integer pixel centres (data contract); the view stays in pixel-edge units.
+// screenToPixel/pixelToScreen are screenToImage/imageToScreen shifted by exactly half a pixel.
+near(geometry.PIXEL_CENTER, 0.5, "half-pixel shift between edge and centre units");
+for (const z of [1, 2.5, 8]) {
+  const view = {z, x: 23.125, y: 57.375};
+  for (const display of [358, 512, 900]) {
+    const rect = {left: 12.5, top: 40.25, width: display, height: display};
+    const scale = display * z / 512;
+    for (const point of [{x: 0, y: 0}, {x: 200, y: 100}, {x: 511, y: 511}, {x: 127.25, y: 333.75}]) {
+      const screen = geometry.pixelToScreen(point.x, point.y, rect, view);
+      near(screen.x, rect.left + (point.x + 0.5 - view.x) * scale, `pixel centre x on screen ${z}x at ${display}`);
+      near(screen.y, rect.top + (point.y + 0.5 - view.y) * scale, `pixel centre y on screen ${z}x at ${display}`);
+      const restored = geometry.screenToPixel(screen.x, screen.y, rect, view);
+      near(restored.x, point.x, `centre roundtrip x ${z}x at ${display}`);
+      near(restored.y, point.y, `centre roundtrip y ${z}x at ${display}`);
+      const edge = geometry.screenToImage(screen.x, screen.y, rect, view);
+      near(edge.x - restored.x, 0.5, `edge minus centre x ${z}x at ${display}`);
+    }
+  }
+}
+// At fit on a 512-px canvas, the middle of pixel 200 is 200.5 CSS px from the left edge.
+const fit = {z: 1, x: 0, y: 0}, unit = {left: 0, top: 0, width: 512, height: 512};
+near(geometry.screenToPixel(200.5, 100.5, unit, fit).x, 200, "middle of pixel 200");
+near(geometry.screenToPixel(200.5, 100.5, unit, fit).y, 100, "middle of pixel 100");
+near(geometry.pixelToScreen(0, 0, unit, fit).x, 0.5, "centre of the first pixel");
+invalid(() => geometry.pixelToScreen(NaN, 0, unit, fit));
+invalid(() => geometry.screenToPixel(0, Infinity, unit, fit));
+
 console.log(`Canvas view geometry: ${checks} acceptance assertions passed`);

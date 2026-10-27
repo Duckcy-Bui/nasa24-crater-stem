@@ -5,8 +5,10 @@
     "zoomIn", "zoomOut", "zoomFit", "zoomLevel", "canvasWrap", "workspace"].map(id => [id, document.getElementById(id)]));
   let image = new Image(), loaded = false, state = null, circles = [], selected = null, mode = "draw", drag = null, history = [];
   let pendingSave = null, saveResult = null;
-  // View-only state: zoom z in [1, 8] and the top-left of the visible window in image px.
+  // View-only state: zoom z in [1, 8] and the top-left of the visible window in pixel-edge units.
   // It never enters history, the Streamlit value, the saved answer or the JSON download.
+  // Circles use the data contract instead: pixel centres are integers (see geometry.js).
+  const HALF = CraterGeometry.PIXEL_CENTER;
   const FIT = Object.freeze({ z: 1, x: 0, y: 0 }), ZOOM_STEP = 1.25;
   let view = { ...FIT }, panDrag = null, gesture = null, spaceHeld = false;
   const touches = new Map();
@@ -18,7 +20,7 @@
   function frameHeight() { message("streamlit:setFrameHeight", { height: Math.ceil(document.body.getBoundingClientRect().height) + 8 }); }
   function chosen() { return circles.find(c => c.crater_id === selected); }
   function rect() { return canvas.getBoundingClientRect(); }
-  function imagePoint(event) { return CraterGeometry.screenToImage(event.clientX, event.clientY, rect(), view); }
+  function imagePoint(event) { return CraterGeometry.screenToPixel(event.clientX, event.clientY, rect(), view); }
   function point(event) { const p = imagePoint(event); return { x: clamp(p.x, 0, 511), y: clamp(p.y, 0, 511) }; }
   function screenScale() { return (rect().width || 512) * view.z / 512; } // CSS px per image px
   function nextId() { let n = 1; while (circles.some(c => c.crater_id === "U" + n)) n++; return "U" + n; }
@@ -94,7 +96,7 @@
     ctx.imageSmoothingEnabled = view.z < 3;
     const span = 512 / view.z, k = css / span;
     if (loaded) ctx.drawImage(image, view.x, view.y, span, span, 0, 0, css, css);
-    const screen = c => ({ x: (c.x - view.x) * k, y: (c.y - view.y) * k, r: c.r * k });
+    const screen = c => ({ x: (c.x + HALF - view.x) * k, y: (c.y + HALF - view.y) * k, r: c.r * k });
     const drawing = drag?.kind === "draw" ? [drag.circle] : [];
     const ordered = circles.filter(c => c.crater_id !== selected).concat(circles.filter(c => c.crater_id === selected), drawing);
     for (const c of ordered) {
@@ -116,7 +118,7 @@
       ctx.fillStyle = sketch ? "#ECEAE4" : active ? "#FFD84D" : "#8DEFFB"; ctx.fillText(label, lx, ly);
       if (active) {
         ctx.fillStyle = "#FFD84D"; ctx.strokeStyle = "#0A0C0F"; ctx.lineWidth = 1.5;
-        const hx = (Math.min(511, c.x + c.r) - view.x) * k;
+        const hx = (Math.min(511, c.x + c.r) + HALF - view.x) * k;
         ctx.fillRect(hx - 4, s.y - 4, 8, 8); ctx.strokeRect(hx - 4, s.y - 4, 8, 8);
       }
     }
@@ -375,7 +377,7 @@
     const args = event.data.args;
     if (!args || typeof args.image_id !== "string" || !Array.isArray(args.circles)) return;
     const metadataLabel = document.getElementById("imageMeta");
-    if (metadataLabel) metadataLabel.textContent = "512 × 512 px · Gốc (0, 0) ở góc trên-trái" + (Number.isFinite(args.scale_m_per_px) ? ` · ${args.scale_m_per_px} m/px` : "");
+    if (metadataLabel) metadataLabel.textContent = "512 × 512 px · (0, 0) là tâm điểm ảnh góc trên-trái" + (Number.isFinite(args.scale_m_per_px) ? ` · ${args.scale_m_per_px} m/px` : "");
     if (!state || state.image_id !== args.image_id || state.session_token !== args.session_token) {
       state = { image_id: args.image_id, session_token: args.session_token, data_kind: args.data_kind, revision: args.revision };
       pendingSave = null; saveResult = args.save_result || null;

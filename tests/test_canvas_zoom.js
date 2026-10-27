@@ -157,8 +157,9 @@ check("pinch to exact 4x and pan yield original-image draw, JSON and nonce save 
   const ui = boot(); ui.pinch(4); assertView(ui, {z: 4, x: 192, y: 192});
   ui.elements.panMode.click(); ui.pan(-128, -64); assertView(ui, {z: 4, x: 224, y: 208});
   assert.equal(ui.events().length, 0, "touch starts and pans do not commit a ghost ring");
+  // Screen (144, 128) at 4x over view (224, 208) is pixel edge (260, 240), i.e. centre coordinate (259.5, 239.5).
   ui.elements.drawMode.click(); ui.draw(144, 128, 20);
-  const circle = {crater_id: "U1", x: 260, y: 240, r: 5};
+  const circle = {crater_id: "U1", x: 259.5, y: 239.5, r: 5};
   assert.deepEqual(ui.events().at(-1).circles, [circle]); assert.equal(ui.events().at(-1).revision, 1);
   const downloaded = ui.download(); assertPlainSnapshot(downloaded);
   assert.deepEqual(downloaded.circles, [{...circle, confidence: null, votes: null}]);
@@ -216,7 +217,7 @@ check("keyboard zoom is local; Space and middle-button pan are temporary without
   assertView(ui, {z: 4, x: 224, y: 208});
   ui.pan(64, 32, {button: 1, buttons: 4}); assertView(ui, {z: 4, x: 208, y: 200});
   assert.equal(ui.events().length, 0); ui.draw(192, 224, 20);
-  assert.deepEqual(ui.events().at(-1).circles, [{crater_id: "U1", x: 256, y: 256, r: 5}]);
+  assert.deepEqual(ui.events().at(-1).circles, [{crater_id: "U1", x: 255.5, y: 255.5, r: 5}]);
 });
 check("two-finger movement pans and pointercancel rolls back an unfinished annotation", () => {
   const ui = boot(); ui.pinch(4);
@@ -254,5 +255,18 @@ check("DPR backing store, label font, strokes and pixel smoothing use screen dim
   assert.equal(ui.calls.filter(call => call.name === "stroke").at(-1).lineWidth, beforeStroke);
   assert.equal(ui.properties.imageSmoothingEnabled, false);
   ui.elements.zoomFit.click(); assert.equal(ui.properties.imageSmoothingEnabled, true);
+});
+check("rings are painted around pixel centres at fit and when zoomed", () => {
+  // Image x is the centre of pixel x, so on screen it sits (x + 0.5) image px from the visible edge.
+  const ui = boot([{crater_id: "U1", x: 256, y: 200, r: 10}]);
+  let arc = ui.calls.filter(call => call.name === "arc").at(-1);
+  near(arc.args[0], 256.5, "fit x"); near(arc.args[1], 200.5, "fit y"); near(arc.args[2], 10, "fit radius");
+  const before = ui.calls.length;
+  ui.pinch(4); assertView(ui, {z: 4, x: 192, y: 192});
+  arc = ui.calls.slice(before).filter(call => call.name === "arc").at(-1);
+  near(arc.args[0], (256.5 - 192) * 4, "4x x"); near(arc.args[1], (200.5 - 192) * 4, "4x y"); near(arc.args[2], 40, "4x radius");
+  const small = boot([{crater_id: "U1", x: 0, y: 511, r: 4}], {width: 358});
+  arc = small.calls.filter(call => call.name === "arc").at(-1);
+  near(arc.args[0], 0.5 * 358 / 512, "first pixel centre at 358 px"); near(arc.args[1], 511.5 * 358 / 512, "last pixel centre at 358 px");
 });
 console.log("Canvas zoom acceptance checks passed (" + checks + " scenarios)");

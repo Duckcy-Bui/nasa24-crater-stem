@@ -2,7 +2,7 @@
 
 Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration.py`, `app.py` (`show_statistics`, `show_cards`). Test: `tests/test_integration.py`.
 
-Trạng thái 26/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 vẫn báo `NotImplementedError` và app ghi "chưa có" thay vì tự tạo số liệu.
+Trạng thái 27/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 vẫn báo `NotImplementedError` và app ghi "chưa có" thay vì tự tạo số liệu.
 
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
@@ -48,14 +48,30 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 
 | # | Lỗi | Mức | Người | Đề xuất |
 |---|---|---|---|---|
-| 1 | Canvas đặt mép trái pixel ở tọa độ 0, nên bấm vào giữa pixel 200 ghi x = 200,5. Hợp đồng S1-05 (`DINH_DANG_DU_LIEU.md`: "tâm pixel có tọa độ nguyên") và Hough dùng tâm pixel = 200. Vòng người chơi lệch +0,5 px so với máy và nhãn. | Thấp: nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nhưng sai hợp đồng | Đức | Sửa `canvasToImage`/`imageToScreen` trong `geometry.js` (trừ/cộng 0,5) kèm test JS; PR riêng |
-| 2 | Máy chạm trần 100 ứng viên trên cả 26 ảnh, nên "Chỉ máy có" luôn khoảng 100 và thống kê sẽ đếm ứng viên thô | Cao cho thống kê và thí nghiệm | Tiến, Hưng | S2-01, S2-02, S2-05 |
-| 3 | Chưa ảnh nào có nhãn đã kiểm chéo, nên trò chơi chưa ra điểm | Cao cho khảo sát | Tiến (S1-10), Quốc Anh (S2-03) | Kiểm chéo 4 nhãn S1-10, bổ sung nhãn cho ảnh dùng khi khảo sát |
-| 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Cài S2-09; muốn pin cần crop mới bao phủ thiết bị |
-| 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Ghi vào S3-04 |
-| 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đo trên VPS sau khi deploy; nếu chậm thì tính sẵn ứng viên máy cho các ảnh dùng khi khảo sát |
+| 1 | Canvas đặt mép trái pixel ở tọa độ 0, nên bấm vào giữa pixel 200 ghi x = 200,5. Hợp đồng S1-05 (`DINH_DANG_DU_LIEU.md`: "tâm pixel có tọa độ nguyên") và Hough dùng tâm pixel = 200. Vòng người chơi lệch +0,5 px so với máy và nhãn. | Thấp: nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nhưng sai hợp đồng | Đức | **Đã sửa (S3-04, 27/10).** Xem mục 3.1 |
+| 2 | Máy chạm trần 100 ứng viên trên cả 26 ảnh, nên "Chỉ máy có" luôn khoảng 100 và thống kê sẽ đếm ứng viên thô | Cao cho thống kê và thí nghiệm | Tiến, Hưng | Còn mở. S2-07 đã đo: trên `moon_ap16_m109134835l_c01` cả 10 nhãn nằm trong dải tìm 5–125 px nhưng máy dừng ở 100 vòng r 5–10 px, Recall_known 0/10. Nếu không sửa kịp thì ghi là hạn chế trong báo cáo |
+| 3 | Chưa ảnh nào có nhãn đã kiểm chéo, nên trò chơi chưa ra điểm | Cao cho khảo sát | Tiến (S1-10), Quốc Anh (S2-03) | **Đã có nhãn (PR #20, 26/10):** 26/26 file ghi `reviewed by Nguyen Manh Tien`, game ra điểm thật trên VPS. Còn chờ Tiến tự xác nhận trên PR #20 |
+| 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Thẻ đã merge (PR #25) và hiện trên VPS. Thống kê S2-09 còn mở. Pin: nhóm chốt cắt crop mới hay ghi hạn chế |
+| 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Chưa sửa, có chủ đích. Mỗi ảnh là một component riêng (`key=player_canvas_<image_id>`), nên iframe của ảnh cũ bị hủy khi đổi ảnh. Muốn giữ lịch sử phải lưu ra ngoài iframe (sessionStorage hoặc Python), thêm rủi ro ngay trước khảo sát cho một lỗi mức thấp |
+| 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đã đo trên VPS (26/10): 9,4 s cho lượt chấm đầu trên `moon_ap15_hia_c01`. Ứng viên máy được cache trong tiến trình (`machine_for_image`, tối đa 8 ảnh) đến khi khởi động lại service. Cách xử lý khi khảo sát: sau khi deploy, người điều phối bấm Chấm bài một lần trên mỗi ảnh dùng khảo sát (≤ 8 ảnh) để làm nóng cache |
+| 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link `#8cc8ff`, tương phản 9,7–11:1 |
+
+### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
+
+Trước khi sửa, canvas và ảnh đối chiếu kết quả dùng **mép** pixel làm tọa độ: pixel i phủ đoạn [i, i + 1), nên bấm vào giữa pixel 200 ghi x = 200,5. Hough, công cụ gán nhãn (`scripts/label_craters.py`, `extent=[-0.5, 511.5, 511.5, -0.5]`) và các hình của pipeline đều dùng **tâm** pixel: tâm pixel i là số nguyên i.
+
+Cách sửa:
+
+- `geometry.js` thêm `PIXEL_CENTER = 0.5` và hai hàm `screenToPixel` / `pixelToScreen`: đổi giữa tọa độ màn hình và tọa độ tâm pixel bằng cách lệch đúng nửa pixel. `canvasToImage` cũng trừ 0,5 rồi mới kẹp vào 0–511.
+- `canvas.js` đọc con trỏ bằng `screenToPixel` và vẽ vòng tại `x + 0,5`. Thu phóng và kéo ảnh (`view`) vẫn tính theo mép pixel, vì đó là đơn vị của `drawImage`.
+- `render_overlay` (`src/game_results.py`) vẽ vòng tại `(x + 0,5) × upscale`. Trước đây vòng máy và nhãn trên ảnh đối chiếu lệch nửa pixel lên trên–sang trái so với ảnh.
+- Nhãn hiển thị dưới bản đồ đổi thành "(0, 0) là tâm điểm ảnh góc trên-trái".
+
+Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, bấm mép trái của nó ghi 199,5, và vòng (256, 200) được vẽ quanh 256,5 / 200,5 ở mức 1× cũng như 4×. Test Python khóa vòng (100, 100, r 20) trên ảnh phóng to 2× cắt hàng 201 tại 161 và 241, đối xứng quanh tâm pixel 201. Thao tác dời và đổi bán kính không đổi vì độ lệch triệt tiêu.
+
+Ảnh hưởng: câu trả lời đã lưu trước ngày sửa lệch +0,5 px so với hợp đồng. Mức lệch nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nên không làm đổi kết quả chấm của các lượt cũ. Nhãn tham chiếu không bị ảnh hưởng vì được tạo bằng công cụ gán nhãn đã dùng đúng quy ước từ 14/10 (commit `c967623`).
 
 ## 4. Việc còn lại để đóng S2-13
 
 - Merge S2-09, chạy lại bảng mục 2 với số liệu; muốn kiểm pin S2-10 thì cần crop mới bao phủ thiết bị.
-- Sửa lỗi #1; đo lỗi #6 trên VPS.
+- Trước buổi khảo sát: deploy bản cuối, làm nóng cache cho các ảnh khảo sát (lỗi #6).

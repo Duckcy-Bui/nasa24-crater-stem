@@ -82,10 +82,11 @@ function boot() {
   const events = () => messages.filter(m => m.type === "streamlit:setComponentValue")
     .map(m => JSON.parse(JSON.stringify(m.value)));
   function render(args) { listeners.message({source: parent, data: {type: "streamlit:render", args}}); }
+  // x, y are image coordinates; the pointer lands on that pixel's centre (+0.5 CSS px from its edge).
   function draw(x = 100, y = 120, r = 40) {
-    canvas.emit("pointerdown", {button: 0, pointerId: 1, clientX: rect.left + x, clientY: rect.top + y});
-    canvas.emit("pointermove", {pointerId: 1, clientX: rect.left + x + r, clientY: rect.top + y});
-    canvas.emit("pointerup", {pointerId: 1, clientX: rect.left + x + r, clientY: rect.top + y});
+    canvas.emit("pointerdown", {button: 0, pointerId: 1, clientX: rect.left + x + 0.5, clientY: rect.top + y + 0.5});
+    canvas.emit("pointermove", {pointerId: 1, clientX: rect.left + x + 0.5 + r, clientY: rect.top + y + 0.5});
+    canvas.emit("pointerup", {pointerId: 1, clientX: rect.left + x + 0.5 + r, clientY: rect.top + y + 0.5});
   }
   function edit(x) {
     elements.centerX.value = x;

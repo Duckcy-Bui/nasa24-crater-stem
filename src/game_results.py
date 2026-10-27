@@ -22,6 +22,7 @@ from src.pipeline import radius_range
 from src.player_annotations import build_player_crater_set
 from src.scoring import score_player
 
+PIXEL_CENTER = 0.5  # nửa pixel giữa mép và tâm pixel, như geometry.js
 # Vòng người chơi cùng màu xanh như trên canvas S1-09; máy màu tím để không lẫn với người chơi.
 COLORS = {"machine": "#B69CFF", "player": "#5FE3F5", "reference": "#FF8A7A"}
 SPARSE_STEP_PX = 2
@@ -78,8 +79,9 @@ def render_overlay(png_bytes: bytes, scored: dict[str, Any], *, upscale: int = 2
     layers = [("machine", scored["machine"], 1), ("reference", scored["reference"], 2), ("player", scored["player"], 3)]
     for name, crater_set, width in layers:
         for c in (crater_set or {}).get("circles", []):
-            # Cùng phép quy đổi với canvas S1-09 (geometry.js): màn hình = tọa độ ảnh × tỉ lệ.
-            x, y, r = c["x"] * upscale, c["y"] * upscale, c["r"] * upscale
+            # Tâm pixel i có tọa độ nguyên i (DINH_DANG_DU_LIEU.md), nên trên ảnh phóng to nó nằm ở
+            # (i + 0,5) × tỉ lệ; cùng phép quy đổi với canvas (geometry.js, pixelToScreen).
+            x, y, r = (c["x"] + PIXEL_CENTER) * upscale, (c["y"] + PIXEL_CENTER) * upscale, c["r"] * upscale
             draw.ellipse((x - r, y - r, x + r, y + r), outline=COLORS[name], width=width)
     output = io.BytesIO()
     picture.save(output, format="PNG")
