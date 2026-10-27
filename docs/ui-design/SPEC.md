@@ -116,7 +116,7 @@ Thanh lưu không dính đáy màn hình (no sticky) vì iframe Streamlit tự g
 - Giữ nguyên các id `drawMode`, `editMode`, `undo`, `deleteCircle` để canvas.js chỉ phải đổi tối thiểu.
 
 ### 5.3 Khung ảnh và cách vẽ trong canvas.js
-Hệ tọa độ **giữ nguyên**: ảnh gốc 512 × 512, gốc (0, 0) ở góc trên-trái, `CraterGeometry.canvasToImage` dùng như cũ.
+Hệ tọa độ **giữ nguyên**: ảnh gốc 512 × 512, gốc (0, 0) ở góc trên-trái, `CraterGeometry.canvasToImage` dùng như cũ. *(Cập nhật S3-04, 27/10/2026: tọa độ vòng theo tâm pixel nguyên, xem `docs/S2-13_TICH_HOP.md` mục 3.1.)*
 
 Các thông số vẽ trong `paint()`:
 

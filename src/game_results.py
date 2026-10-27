@@ -70,7 +70,7 @@ def save_round(output_root: str | Path, metadata: dict[str, Any], scored: dict[s
     return directory
 
 
-def render_overlay(png_bytes: bytes, scored: dict[str, Any], *, upscale: int = 2) -> bytes:
+def render_overlay(png_bytes: bytes, scored: dict[str, Any], *, upscale: int = 3) -> bytes:
     """Ảnh 512×512 phóng to, vẽ vòng máy (nét mảnh), người chơi (nét đậm) và nhãn tham chiếu."""
     with Image.open(io.BytesIO(png_bytes)) as source:
         picture = source.convert("RGB").resize((512 * upscale, 512 * upscale), Image.Resampling.LANCZOS)
@@ -78,8 +78,11 @@ def render_overlay(png_bytes: bytes, scored: dict[str, Any], *, upscale: int = 2
     layers = [("machine", scored["machine"], 1), ("reference", scored["reference"], 2), ("player", scored["player"], 3)]
     for name, crater_set, width in layers:
         for c in (crater_set or {}).get("circles", []):
-            # Cùng phép quy đổi với canvas S1-09 (geometry.js): màn hình = tọa độ ảnh × tỉ lệ.
-            x, y, r = c["x"] * upscale, c["y"] * upscale, c["r"] * upscale
+            # Tâm pixel i có tọa độ nguyên i (DINH_DANG_DU_LIEU.md). Phóng k lần thì pixel i thành các pixel
+            # k·i … k·i + k − 1, tâm ở k·i + (k − 1)/2 (cùng công thức đổi tỷ lệ của hợp đồng). PIL vẽ theo chỉ số
+            # pixel nguyên và bỏ phần lẻ, nên dùng k lẻ (mặc định 3) để tâm hố có tọa độ nguyên rơi đúng một pixel.
+            x, y = upscale * c["x"] + (upscale - 1) / 2, upscale * c["y"] + (upscale - 1) / 2
+            r = c["r"] * upscale
             draw.ellipse((x - r, y - r, x + r, y + r), outline=COLORS[name], width=width)
     output = io.BytesIO()
     picture.save(output, format="PNG")

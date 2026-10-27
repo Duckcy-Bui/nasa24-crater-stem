@@ -1,13 +1,23 @@
-/* Pure geometry shared by the local canvas and independent tests. */
+/* Pure geometry shared by the local canvas and independent tests.
+ *
+ * Two units appear here. The view (pan/zoom) and screenToImage/imageToScreen use pixel edges:
+ * the image spans [0, 512] and pixel i covers [i, i + 1). Circles follow the data contract
+ * (docs/DINH_DANG_DU_LIEU.md): pixel i has its centre at the integer i, the same as Hough and
+ * the labelling tool. canvasToImage, screenToPixel and pixelToScreen convert to and from that
+ * centre convention by shifting PIXEL_CENTER = 0.5 px. */
 (function (root) {
   "use strict";
+  const PIXEL_CENTER = 0.5;
   function checkRect(rect, width, height) {
     if (![rect.left, rect.top, rect.width, rect.height, width, height].every(Number.isFinite) || rect.width <= 0 || rect.height <= 0 || width <= 0 || height <= 0) throw new Error("Kích thước hiển thị không hợp lệ.");
   }
   function canvasToImage(clientX, clientY, rect, width = 512, height = 512) {
     checkRect(rect, width, height);
     if (![clientX, clientY].every(Number.isFinite)) throw new Error("Tọa độ không hợp lệ.");
-    return { x: Math.min(width - 1, Math.max(0, (clientX - rect.left) * width / rect.width)), y: Math.min(height - 1, Math.max(0, (clientY - rect.top) * height / rect.height)) };
+    return {
+      x: Math.min(width - 1, Math.max(0, (clientX - rect.left) * width / rect.width - PIXEL_CENTER)),
+      y: Math.min(height - 1, Math.max(0, (clientY - rect.top) * height / rect.height - PIXEL_CENTER)),
+    };
   }
   function imageRadius(screenDx, screenDy, rect, width = 512, height = 512) {
     checkRect(rect, width, height);
@@ -47,6 +57,14 @@
       y: rect.top + (y - view.y) * rect.height * view.z / height,
     };
   }
+  function screenToPixel(clientX, clientY, rect, view, width = 512, height = 512) {
+    const edge = screenToImage(clientX, clientY, rect, view, width, height);
+    return { x: edge.x - PIXEL_CENTER, y: edge.y - PIXEL_CENTER };
+  }
+  function pixelToScreen(x, y, rect, view, width = 512, height = 512) {
+    if (![x, y].every(Number.isFinite)) throw new Error("Tọa độ không hợp lệ.");
+    return imageToScreen(x + PIXEL_CENTER, y + PIXEL_CENTER, rect, view, width, height);
+  }
   function zoomViewAt(view, newZ, clientX, clientY, rect, width = 512, height = 512) {
     const anchor = screenToImage(clientX, clientY, rect, view, width, height);
     if (!Number.isFinite(newZ)) throw new Error("Mức phóng to không hợp lệ.");
@@ -57,5 +75,6 @@
       y: anchor.y - (clientY - rect.top) * height / (rect.height * z),
     }, width, height);
   }
-  root.CraterGeometry = Object.freeze({ canvasToImage, imageRadius, clampView, screenToImage, imageToScreen, zoomViewAt });
+  root.CraterGeometry = Object.freeze({ PIXEL_CENTER, canvasToImage, imageRadius, clampView, screenToImage, imageToScreen,
+    screenToPixel, pixelToScreen, zoomViewAt });
 })(typeof window !== "undefined" ? window : globalThis);

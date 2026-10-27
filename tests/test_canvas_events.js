@@ -54,13 +54,15 @@ function boot() {
   context.CraterGeometry = window.CraterGeometry;
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../src/crater_canvas/canvas.js"), "utf8"), context);
   function render(args) { listeners.message({source: parent, data: {type: "streamlit:render", args}}); }
+  // x, y are image coordinates (pixel centres are integers); on this 512-px canvas the pointer lands on
+  // the centre of that pixel, which is 0.5 CSS px right of and below its top-left edge.
   function draw(x = 100, y = 100, r = 40) {
-    canvas.emit("pointerdown", {button: 0, pointerId: 1, clientX: x, clientY: y});
-    canvas.emit("pointermove", {pointerId: 1, clientX: x + r, clientY: y});
-    canvas.emit("pointerup", {pointerId: 1, clientX: x + r, clientY: y});
+    canvas.emit("pointerdown", {button: 0, pointerId: 1, clientX: x + 0.5, clientY: y + 0.5});
+    canvas.emit("pointermove", {pointerId: 1, clientX: x + 0.5 + r, clientY: y + 0.5});
+    canvas.emit("pointerup", {pointerId: 1, clientX: x + 0.5 + r, clientY: y + 0.5});
   }
   const events = () => messages.filter(value => value.type === "streamlit:setComponentValue").map(value => JSON.parse(JSON.stringify(value.value)));
-  return {elements, images, render, draw, events, downloads};
+  return {elements, canvas, images, render, draw, events, downloads};
 }
 
 const args = {image_id: "image_a", data_kind: "real", session_token: "session_1", revision: 0, circles: [], image_url: "data:image/png;base64,a"};
@@ -180,6 +182,28 @@ const args = {image_id: "image_a", data_kind: "real", session_token: "session_1"
   circles = ui.events().at(-1).circles;
   assert.deepEqual(circles[0], {crater_id: "U1", x: 130, y: 120, r: 60});
   assert.deepEqual(circles[1], {crater_id: "U2", x: 100, y: 120, r: 20});
+}
+
+// Data contract: the centre of pixel i is the integer i. Clicking the middle of pixel 200 stores 200, not 200.5,
+// and clicking its top-left edge stores 199.5, so player rings line up with Hough and the labelling tool.
+{
+  const ui = boot();
+  ui.render(args);
+  ui.images.at(-1).onload();
+  for (const [clientX, clientY, expected] of [[200.5, 100.5, {x: 200, y: 100}], [200, 100, {x: 199.5, y: 99.5}]]) {
+    ui.canvas.emit("pointerdown", {button: 0, pointerId: 1, clientX, clientY});
+    ui.canvas.emit("pointermove", {pointerId: 1, clientX: clientX + 10, clientY});
+    ui.canvas.emit("pointerup", {pointerId: 1, clientX: clientX + 10, clientY});
+    const circle = ui.events().at(-1).circles.at(-1);
+    assert.equal(circle.x, expected.x, `pointer x ${clientX}`);
+    assert.equal(circle.y, expected.y, `pointer y ${clientY}`);
+    assert.equal(circle.r, 10);
+  }
+  ui.canvas.emit("pointerdown", {button: 0, pointerId: 2, clientX: 0, clientY: 0});
+  ui.canvas.emit("pointermove", {pointerId: 2, clientX: 5, clientY: 0});
+  ui.canvas.emit("pointerup", {pointerId: 2, clientX: 5, clientY: 0});
+  const corner = ui.events().at(-1).circles.at(-1);
+  assert.deepEqual([corner.x, corner.y], [0, 0], "the outer half of the first pixel clamps to its centre");
 }
 
 console.log("Canvas event acceptance checks passed");

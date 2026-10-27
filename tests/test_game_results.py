@@ -71,9 +71,22 @@ class TestScoreRound(unittest.TestCase):
         Image.new("L", (512, 512), 40).save(buffer, format="PNG")
         scored = score_round(self.player, METADATA, self.machine, HOUGH, None, {})
         with Image.open(io.BytesIO(render_overlay(buffer.getvalue(), scored))) as picture:
-            self.assertEqual(picture.size, (1024, 1024))
-            self.assertNotEqual(picture.getpixel((2 * 100 + 2 * 20, 2 * 100)), (40, 40, 40))  # machine ring
+            self.assertEqual(picture.size, (1536, 1536))
+            self.assertNotEqual(picture.getpixel((361, 301)), (40, 40, 40))  # vòng máy M1: 3·100 + 1 + 3·20
             self.assertEqual(picture.getpixel((10, 10)), (40, 40, 40))
+
+    def test_overlay_centres_rings_on_pixel_centres(self):
+        # Vòng (100, 100, r 20) trên ảnh phóng 3 lần: pixel 100 thành các pixel 300–302, tâm là pixel 301,
+        # nên vòng cắt hàng 301 tại 301 ± 60, đối xứng đúng quanh tâm pixel (sai số 0).
+        buffer = io.BytesIO()
+        Image.new("L", (512, 512), 40).save(buffer, format="PNG")
+        ring = {"circles": [{"crater_id": "M1", "x": 100.0, "y": 100.0, "r": 20.0}]}
+        scored = {"machine": ring, "reference": None, "player": None}
+        with Image.open(io.BytesIO(render_overlay(buffer.getvalue(), scored))) as picture:
+            row = [x for x in range(1536) if picture.getpixel((x, 301)) != (40, 40, 40)]
+            column = [y for y in range(1536) if picture.getpixel((301, y)) != (40, 40, 40)]
+        self.assertEqual(row, [241, 361])
+        self.assertEqual(column, [241, 361])
 
 
 class TestResultsScreen(unittest.TestCase):
