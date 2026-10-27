@@ -1,11 +1,11 @@
 ::: {custom-style="Cover Strong"}
 TRƯỜNG ĐẠI HỌC GIAO THÔNG VẬN TẢI
 
-[TÊN KHOA / VIỆN]
+KHOA CÔNG NGHỆ THÔNG TIN
 :::
 
 ::: {custom-style="Cover"}
-Học phần: Xử lý ảnh — Mã lớp: [MÃ LỚP]
+Học phần: Xử lý ảnh — Lớp: Công nghệ thông tin 2 – K64
 :::
 
 ```{=openxml}
@@ -29,7 +29,7 @@ PHÁT HIỆN HỐ VA CHẠM TRÊN ẢNH MẶT TRĂNG BẰNG BIẾN ĐỔI HOUGH 
 ```
 
 ::: {custom-style="Cover"}
-Giảng viên hướng dẫn: [HỌ TÊN GIẢNG VIÊN]
+Giảng viên hướng dẫn: Cao Thị Luyên
 
 Sinh viên thực hiện:
 

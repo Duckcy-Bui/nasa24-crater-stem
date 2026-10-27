@@ -97,7 +97,6 @@ Các dấu `[CHỜ]` còn lại:
 - S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.
 - Số test cuối: mục 5.6.
 - Phụ lục A, D: cả nhóm điền.
-- Bìa: còn tên khoa, mã lớp và họ tên giảng viên. Tên trường và MSSV đã điền.
 
 Còn để người chốt quyết định: Hình 3.4, 3.5 có mã việc nội bộ trong tiêu đề ảnh; sơ đồ dạng chữ ở mục 3.1 chưa có số hình; một số nội dung lặp giữa Chương 2 và 3 (công thức (4.4) = (2.14), (3.3) = (2.24), ví dụ bước bán kính, NMS) có thể bỏ để giảm trang.
 
