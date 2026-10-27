@@ -233,3 +233,13 @@ Manifest được sinh tự động từ `data/s106_bundle/crops.json` — khôn
 | 23/10/2026 | v1 | Chia lần đầu: group_by_product_id, 18 tuning / 8 holdout |
 | 25/10/2026 | v2 | Đổi sang group_by_ground_patch theo tọa độ offset; m113853974r_c01 → tuning; m132732855l_c01 → tuning (S2-02); m102057602r_c01 → holdout. Kết quả: 19 tuning / 7 holdout |
 | 25/10/2026 | v3 | Chuyển toàn bộ 11 ảnh Apollo 16 sang tuning (do các ảnh cách nhau < 1.5 km và chồng lấp mặt đất). Holdout gồm 3 vùng độc lập cách tuning $\ge 50\text{ km}$ (Apollo 15 LOC, Lunokhod 2, Mare Frigoris). Kết quả: 18 tuning / 8 holdout, 0% rò rỉ mặt đất. |
+
+
+## Xác nhận của Tiến ngày 27/10/2026
+
+Nguyễn Mạnh Tiến đã xác nhận trực tiếp trong phiên làm việc rằng đã kiểm bằng mắt đủ 26 overlay.
+Ghi nhận tại [review_confirmation.json](../data/reference_labels/review_confirmation.json).
+Đây là xác nhận của người kiểm, tách khỏi kiểm tra JSON/manifest tự động.
+Các mục yêu cầu kiểm chéo phía trên phản ánh tình trạng trước cập nhật này.
+Nhãn vẫn thưa; không suy Precision/F1 toàn ảnh. Tiến đã [xác nhận trên PR #20](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/20#issuecomment-6462992167)
+ngày 28/10/2026.

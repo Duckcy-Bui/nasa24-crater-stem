@@ -34,3 +34,11 @@ python -m unittest tests.test_scoring tests.test_pipeline
 
 - S2-08: hiện kết quả này trong giao diện và lưu từng lượt chấm.
 - S3-02 (Tiến): `evaluation.py` tính Precision/Recall của máy có thể dùng lại `match_one_to_one`.
+
+
+## Cập nhật nhãn 27/10/2026
+
+26/26 file hiện ghi đã kiểm chéo; Nguyễn Mạnh Tiến xác nhận đã kiểm đủ 26 overlay trong phiên làm việc.
+Vì vậy mô tả “chưa có nhãn đã kiểm chéo” phía trên là tình trạng lịch sử ngày 22/10.
+Điểm theo nhãn thưa vẫn chỉ là Recall trên hố đã biết; Tiến đã [xác nhận công khai trên PR #20](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/20#issuecomment-6462992167) ngày 28/10/2026.
+Xem [hồ sơ kiểm nhãn và đánh giá máy](S2-06_S3-02_KIEM_CHUNG.md).

@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "archive_root": "outputs/s2-06-s3-02",
+  "availability": "local_only",
+  "shared_url": null,
+  "note": "Chi tiết nằm ngoài Git. Chưa tải lên Drive; cần bản sao từ máy chạy gốc hoặc tái chạy theo README. tuning/report.json là lượt lỗi, chỉ lưu chẩn đoán và không dùng kết luận.",
+  "files": {
+    "archive_manifest_original.json": {
+      "sha256": "fd28183d787470574582273ec68b5332b70f1b0f5f84a89e92309073801d41d6",
+      "bytes": 1522
+    },
+    "details.zip": {
+      "sha256": "38322c49453a508676ba459404d42daa79192a8101ee61d41c7a073ddd4921d1",
+      "bytes": 4138099
+    },
+    "historical_adapter.json": {
+      "sha256": "b68fe1d0e8b122a452be21d7a2ff742611afd9054cf2b56c8780ed6094a4510b",
+      "bytes": 1424
+    },
+    "holdout/report.json": {
+      "sha256": "f21e467be91c520ce445c8ea49997432752bcf8f11820e56446dfa9c76785369",
+      "bytes": 2118250
+    },
+    "holdout/results.csv": {
+      "sha256": "e0651c4f2164cb6d4f3d94a9c499fc99f484ec7e8595a639ff069c999cbafb9c",
+      "bytes": 1739
+    },
+    "large_craters.png": {
+      "sha256": "fc23d8ffa9dd9c1f5c3db8ffc4f140f1f2e13002f202152f130e0d3f8d7c0131",
+      "bytes": 760284
+    },
+    "measured_source/configs/s201_hough.json": {
+      "sha256": "cd616d4bd501cde0df1d6ec1b15c6dec6b1a655d42b3cb37d44b5a12f6f2242a",
+      "bytes": 363
+    },
+    "measured_source/configs/s201_large_craters.json": {
+      "sha256": "c2f758490611b11966bad57498a0c87d7756af7cc5a2b7d98a90dad20e139b7e",
+      "bytes": 373
+    },
+    "measured_source/scripts/evaluate_hough.py": {
+      "sha256": "c4ced6b4d79522e38f56d3705dd1fea85eadc775f1fbacbfe26d0b85da502772",
+      "bytes": 10262
+    },
+    "measured_source/src/evaluation.py": {
+      "sha256": "24616fa33590d5b01b4fc04e308293b15799d13d55897aaa90955458ef02a132",
+      "bytes": 3718
+    },
+    "measured_source/src/hough.py": {
+      "sha256": "97afce01313bcca10e18fa966eed25559ba3b55444bdb44f984aa2cf179261ab",
+      "bytes": 11395
+    },
+    "measured_source/src/matching.py": {
+      "sha256": "391f37126f0a321a6775c46fe174cc78616cc2e3fdba34379d513200adc098c9",
+      "bytes": 4161
+    },
+    "measured_source/src/postprocessing.py": {
+      "sha256": "ee89464573326a848c742f8848da1f5336f5d613caf2f70172be72e384dabb69",
+      "bytes": 27313
+    },
+    "measured_source/src/preprocessing.py": {
+      "sha256": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+      "bytes": 20817
+    },
+    "new_tests.log": {
+      "sha256": "8d10c31d439ff6ff2d333c5988eb5abb710e99de35bd5a000a5c5fe554c2a27b",
+      "bytes": 1224
+    },
+    "regression_summary.json": {
+      "sha256": "93762c9223428b4cbdd79bea4d4187f74a3d01fabcfa224fa06fc795e852f6b9",
+      "bytes": 250
+    },
+    "review_confirmation.json": {
+      "sha256": "36cf490d97033e59c46092581bb52a0e330d801e10b9d83615bed94151f09141",
+      "bytes": 407
+    },
+    "synthetic.json": {
+      "sha256": "20fe20934adc601aaf1a720c863b9a8637744ab0f0ad30b2fe596f28cae16311",
+      "bytes": 9226
+    },
+    "tuning/report.json": {
+      "sha256": "2666b0404ba795a97c086a7507aca4ab075196867c941cad63401f4efef083ad",
+      "bytes": 26921
+    },
+    "tuning_v2/report.json": {
+      "sha256": "3b998491d792f13e0fd9c6732c30421c2332f8a845c677eefd63e334d47bc7f0",
+      "bytes": 768165
+    },
+    "tuning_v2/results.csv": {
+      "sha256": "e3659cdda62cfed0015a1af370ca6853dff2d78c68c3a5e0fb47216647393763",
+      "bytes": 704
+    }
+  },
+  "zip_entries_sha256": {
+    "tuning_v2/report_full.json": "353f6fb9fd0a4d7834ec55c30bc764e772448fbb2becbb29802466e13d7b94c1",
+    "tuning_v2/moon_ap15_hia_c01.json": "da1f89a6448f2b72f7fa7eb6a25fefe33016185d233166a7ea1102233e87274c",
+    "tuning_v2/moon_ap16_m109134835l_c01.json": "379695067e6b5b404bffde0aff198b70c426cc9be7f66b0019da1e145786a28b",
+    "tuning_v2/moon_ap16_m132732855l_c01.json": "eba4f49e8b8f9b63d77db911a4c3755c04cb6b3d3a70ca658b835b585d9504d7",
+    "holdout/report_full.json": "9542e6436ca42785f23f08e12f69be80fd39be7814c5be89c1ca89af9e60b0dd",
+    "holdout/moon_ap15_loc_c01.json": "d022052743da546ec5ada5c7d9dfaa013d8bbdf6413641abd2f5a375c8800548",
+    "holdout/moon_ap15_loc_c02.json": "bd8eb1c6045e3721214f0be80243a5fea0064d04fe7e2fe59e9d2d106d705bb3",
+    "holdout/moon_ap15_loc_c03.json": "669798a303483f8857a1e02a7c8a897bc3132240d34d0ba69aa15c6af7e4acfb",
+    "holdout/moon_lunokhod2_loc_c01.json": "3bbd3c9222052f5f6e023d151b0d953957d6f2324a70a80efa0b8fc6f6bbe48a",
+    "holdout/moon_lunokhod2_loc_c02.json": "3ea425fcba2b49a31125465140f77b36467bed41ebf31e13083f173c3a833ce6",
+    "holdout/moon_marefrig_loc_c01.json": "e85859de0fed6e7f50037a8e520a35514ea37b82aa76563a6f6fa24f8e445848",
+    "holdout/moon_marefrig_loc_c02.json": "788c5d6fc2af17190e87e7030c8944ea6d4f9d1c1edcab67d1e91d335291e636",
+    "holdout/moon_marefrig_loc_c03.json": "3f4fcfe2de1bf5c07c55980fbdce7560d2da27f92a02b07d9ffb46ccaacec7d1"
+  }
+}

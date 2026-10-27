@@ -1,0 +1,65 @@
+[
+  {
+    "reference": 4,
+    "url": "https://docs.opencv.org/4.x/d4/d70/tutorial_hough_circle.html",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 5,
+    "url": "https://github.com/opencv/opencv/blob/4.14.0/modules/imgproc/src/hough.cpp",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "Historical source tag, not installed OpenCV 5.0.0 internals"
+  },
+  {
+    "reference": 6,
+    "url": "https://scikit-image.org/docs/stable/api/skimage.transform.html#skimage.transform.hough_circle",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 7,
+    "url": "https://scikit-image.org/docs/stable/auto_examples/edges/plot_circular_elliptical_hough_transform.html",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 8,
+    "url": "https://numpy.org/doc/stable/reference/generated/numpy.rint.html",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 9,
+    "url": "https://numpy.org/doc/stable/reference/generated/numpy.bincount.html",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 10,
+    "url": "https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 11,
+    "url": "https://data.lroc.im-ldi.com/lroc/view_rdr/WAC_GLOBAL",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  },
+  {
+    "reference": 12,
+    "url": "https://science.nasa.gov/moon/",
+    "checked_on": "2026-10-27",
+    "method": "Opened through web tool; official page accessible",
+    "scope": "API/documentation or data context; not evidence of experimental accuracy"
+  }
+]
