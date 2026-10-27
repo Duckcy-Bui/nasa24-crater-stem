@@ -13,7 +13,7 @@ Phụ trách: Bùi Hải Đức; phối hợp: Hoàng Quốc Anh. Mã: `app.py` 
 
 | Phần | Nội dung |
 |---|---|
-| Ảnh đối chiếu | Ảnh 512×512 phóng 2 lần: vòng người chơi (xanh, cùng màu canvas), ứng viên máy (tím, nét mảnh), nhãn tham chiếu (cam) |
+| Ảnh đối chiếu | Ảnh 512×512 phóng 3 lần (từ S3-04, để vòng nằm đúng tâm pixel): vòng người chơi (xanh, cùng màu canvas), ứng viên máy (tím, nét mảnh), nhãn tham chiếu (cam) |
 | Điểm | Chỉ khi ảnh có nhãn đã kiểm chéo: điểm, số hố tìm đúng, bỏ sót (và khoanh sai nếu nhãn đầy đủ). Không có thì ghi rõ lý do, không hiện số giả |
 | So với máy | Trùng máy, chỉ bạn khoanh, chỉ máy có; ghi rõ máy không phải đáp án |
 | Phạm vi chấm | Dải bán kính máy thật sự tìm (metadata kẹp trong giới hạn Hough), đổi ra đường kính mét, bước lưới và số bán kính; cảnh báo khi bước > 2 px; báo khi máy chạm trần `max_circles` |

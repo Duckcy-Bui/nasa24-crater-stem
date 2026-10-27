@@ -265,6 +265,10 @@ check("rings are painted around pixel centres at fit and when zoomed", () => {
   ui.pinch(4); assertView(ui, {z: 4, x: 192, y: 192});
   arc = ui.calls.slice(before).filter(call => call.name === "arc").at(-1);
   near(arc.args[0], (256.5 - 192) * 4, "4x x"); near(arc.args[1], (200.5 - 192) * 4, "4x y"); near(arc.args[2], 40, "4x radius");
+  // The selected ring's resize handle sits on the ring's right edge, in the same centre convention.
+  ui.elements.editMode.click(); ui.pointer("pointerdown", (256.5 - 192) * 4, (200.5 - 192) * 4); ui.pointer("pointerup", (256.5 - 192) * 4, (200.5 - 192) * 4);
+  const handle = ui.calls.filter(call => call.name === "fillRect").at(-1);
+  near(handle.args[0] + 4, (256 + 10 + 0.5 - 192) * 4, "4x handle x"); near(handle.args[1] + 4, (200.5 - 192) * 4, "4x handle y");
   const small = boot([{crater_id: "U1", x: 0, y: 511, r: 4}], {width: 358});
   arc = small.calls.filter(call => call.name === "arc").at(-1);
   near(arc.args[0], 0.5 * 358 / 512, "first pixel centre at 358 px"); near(arc.args[1], 511.5 * 358 / 512, "last pixel centre at 358 px");

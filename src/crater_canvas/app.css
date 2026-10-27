@@ -22,10 +22,12 @@
 [data-testid="stButton"] button:focus-visible { outline: 2px solid #f3b23c; outline-offset: 3px; }
 [data-testid="stMarkdownContainer"] p { color: #c9cdd3; font-size: 12px; }
 [data-testid="stCaptionContainer"] p { color: #a7adb6; font-size: 12px; }
-/* Source links (science cards, captions): Streamlit's default dark blue is unreadable on #0a0c0f; #8cc8ff gives 9.7–11:1 on the dark surfaces. */
-.stApp a, .stApp a:visited { color: #8cc8ff; text-decoration: underline; text-underline-offset: 2px; }
-.stApp a:hover { color: #b8dcff; }
-.stApp a:focus-visible { outline: 2px solid #f3b23c; outline-offset: 2px; border-radius: 2px; }
+/* Text links (science-card sources, captions): Streamlit's default dark blue is unreadable on #0a0c0f; #8cc8ff gives 9.7–11:1.
+   Scoped to text containers so future link buttons keep their own style. */
+[data-testid="stMarkdownContainer"] a, [data-testid="stMarkdownContainer"] a:visited,
+[data-testid="stCaptionContainer"] a, [data-testid="stCaptionContainer"] a:visited { color: #8cc8ff; text-decoration: underline; text-underline-offset: 2px; }
+[data-testid="stMarkdownContainer"] a:hover, [data-testid="stCaptionContainer"] a:hover { color: #b8dcff; }
+[data-testid="stMarkdownContainer"] a:focus-visible, [data-testid="stCaptionContainer"] a:focus-visible { outline: 2px solid #f3b23c; outline-offset: 2px; border-radius: 2px; }
 [data-testid="stExpander"] { background: #111419; border-color: #262c35; color: #eceae4; }
 [data-testid="stAlert"] p { color: inherit; }
 .nasa-results-head h2 { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Noto Serif", "DejaVu Serif", Georgia, serif; font-weight: 600; color: #eceae4; font-size: 19px; margin: 0; padding: 0; }

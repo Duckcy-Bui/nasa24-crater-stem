@@ -6,7 +6,7 @@ Dán nguyên tệp này cho Codex. Làm trên nhánh `s1-09-interface`. Không p
 Dựng lại giao diện khoanh hố theo `docs/ui-design/SPEC.md`. Bản chuẩn để so là `docs/ui-design/mockup.html`: mở `#empty`, `#one`, `#many`, ở chiều rộng 1440 px và 390 px. Màu và kích thước lấy từ `docs/ui-design/tokens.css`. Nút **Lưu trên máy** nằm trong component và dùng **cách A** (`save_nonce`).
 
 ## Bất biến (không được đổi)
-- Hệ tọa độ ảnh gốc 512 × 512, gốc (0, 0) ở góc trên-trái. `CraterGeometry` giữ nguyên. x và y kẹp trong 0–511, bán kính lớn hơn 0.
+- Hệ tọa độ ảnh gốc 512 × 512, gốc (0, 0) ở góc trên-trái. `CraterGeometry` giữ nguyên. x và y kẹp trong 0–511, bán kính lớn hơn 0. *(Cập nhật S3-04, 27/10/2026: tọa độ vòng theo tâm pixel nguyên, xem `docs/S2-13_TICH_HOP.md` mục 3.1.)*
 - ID vòng `U{n}`, lịch sử hoàn tác 50 bước, tối đa 500 vòng mỗi ảnh. Schema JSON tải về và tên tệp `{image_id}_player.json` giữ nguyên.
 - `apply_canvas_event`, `build_player_crater_set`, `save_player_answers` không đổi chữ ký và không đổi hành vi.
 - Chạy offline hoàn toàn: không CDN, không font tải qua mạng. Chữ giao diện bằng tiếng Việt, dùng đúng bảng chữ ở SPEC §7.

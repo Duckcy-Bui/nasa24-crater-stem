@@ -62,4 +62,4 @@ def save_player_answers(output_root: str | Path, metadata: dict[str, Any],
     ident = run_id if run_id is not None else "player_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S") + "_" + uuid4().hex[:12]
     return save_run(output_root, ident, metadata=metadata, crater_set=answer,
                     params={"interface": "s1-09", "coordinate_space": "processed_image_pixels"},
-                    code_version="s1-09-player-ui-v1")
+                    code_version="s3-04-player-ui-v2")

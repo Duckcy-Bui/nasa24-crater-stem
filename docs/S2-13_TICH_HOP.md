@@ -54,7 +54,8 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 | 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Thẻ đã merge (PR #25) và hiện trên VPS. Thống kê S2-09 còn mở. Pin: nhóm chốt cắt crop mới hay ghi hạn chế |
 | 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Chưa sửa, có chủ đích. Mỗi ảnh là một component riêng (`key=player_canvas_<image_id>`), nên iframe của ảnh cũ bị hủy khi đổi ảnh. Muốn giữ lịch sử phải lưu ra ngoài iframe (sessionStorage hoặc Python), thêm rủi ro ngay trước khảo sát cho một lỗi mức thấp |
 | 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đã đo trên VPS (26/10): 9,4 s cho lượt chấm đầu trên `moon_ap15_hia_c01`. Ứng viên máy được cache trong tiến trình (`machine_for_image`, tối đa 8 ảnh) đến khi khởi động lại service. Cách xử lý khi khảo sát: sau khi deploy, người điều phối bấm Chấm bài một lần trên mỗi ảnh dùng khảo sát (≤ 8 ảnh) để làm nóng cache |
-| 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link `#8cc8ff`, tương phản 9,7–11:1 |
+| 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link trong khối văn bản thành `#8cc8ff`, tương phản 9,7–11:1 |
+| 8 | Nút đổi bán kính của vòng đang chọn vẽ tại `min(511, x + r)`: khi vành vượt mép phải, nút không nằm trên vành, bấm vào đó sẽ dời vòng thay vì đổi bán kính | Thấp | Đức | Chưa sửa; đổi bán kính bằng ô nhập số hoặc kéo vành ở phía khác |
 
 ### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
 
@@ -64,12 +65,12 @@ Cách sửa:
 
 - `geometry.js` thêm `PIXEL_CENTER = 0.5` và hai hàm `screenToPixel` / `pixelToScreen`: đổi giữa tọa độ màn hình và tọa độ tâm pixel bằng cách lệch đúng nửa pixel. `canvasToImage` cũng trừ 0,5 rồi mới kẹp vào 0–511.
 - `canvas.js` đọc con trỏ bằng `screenToPixel` và vẽ vòng tại `x + 0,5`. Thu phóng và kéo ảnh (`view`) vẫn tính theo mép pixel, vì đó là đơn vị của `drawImage`.
-- `render_overlay` (`src/game_results.py`) vẽ vòng tại `(x + 0,5) × upscale`. Trước đây vòng máy và nhãn trên ảnh đối chiếu lệch nửa pixel lên trên–sang trái so với ảnh.
+- `render_overlay` (`src/game_results.py`) phóng ảnh đối chiếu 3 lần và vẽ vòng tại $3x + 1$, tức tâm của khối 3 × 3 pixel ứng với pixel $x$ (công thức đổi tỷ lệ $k x + (k-1)/2$ của hợp đồng). PIL vẽ theo chỉ số pixel nguyên và bỏ phần lẻ, nên ảnh phóng 2 lần không thể đặt đúng tâm: trước đây vòng lệch −0,25 px ảnh gốc, và cách cộng 0,5 trước khi nhân 2 chỉ đổi thành +0,25 px. Phóng 3 lần thì tâm nguyên rơi đúng một pixel; ảnh lớn hơn (khoảng 1,4 MB thay vì 0,8 MB, thêm khoảng 0,15 s).
 - Nhãn hiển thị dưới bản đồ đổi thành "(0, 0) là tâm điểm ảnh góc trên-trái".
 
-Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, bấm mép trái của nó ghi 199,5, và vòng (256, 200) được vẽ quanh 256,5 / 200,5 ở mức 1× cũng như 4×. Test Python khóa vòng (100, 100, r 20) trên ảnh phóng to 2× cắt hàng 201 tại 161 và 241, đối xứng quanh tâm pixel 201. Thao tác dời và đổi bán kính không đổi vì độ lệch triệt tiêu.
+Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, bấm mép trái của nó ghi 199,5, và vòng (256, 200) được vẽ quanh 256,5 / 200,5 ở mức 1× cũng như 4×. Test Python khóa vòng (100, 100, r 20) trên ảnh phóng 3 lần cắt hàng 301 tại 241 và 361, đối xứng đúng quanh pixel 301. Test JS còn kiểm vị trí nút đổi bán kính của vòng đang chọn ở mức 4×. Khi đặt lại mã cũ, 5/6 bộ test JS và 2 test Python thất bại, nên các test khóa được quy ước. Thao tác dời và đổi bán kính không đổi vì độ lệch triệt tiêu.
 
-Ảnh hưởng: câu trả lời đã lưu trước ngày sửa lệch +0,5 px so với hợp đồng. Mức lệch nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nên không làm đổi kết quả chấm của các lượt cũ. Nhãn tham chiếu không bị ảnh hưởng vì được tạo bằng công cụ gán nhãn đã dùng đúng quy ước từ 14/10 (commit `c967623`).
+Ảnh hưởng: câu trả lời lưu trước ngày sửa lệch +0,5 px mỗi trục so với hợp đồng. Các lượt chấm cũ giữ nguyên kết quả vì file đã lưu không bị đổi. Không nên trộn câu trả lời cũ và mới khi phân tích sai số tâm: hai bản lệch nhau khoảng 0,71 px, và cặp nằm sát ngưỡng ghép có thể đổi kết quả. Từ bản này, câu trả lời lưu ghi `code_version = "s3-04-player-ui-v2"` (trước là `s1-09-player-ui-v1`) để phân biệt. Nhãn tham chiếu không bị ảnh hưởng vì được tạo bằng công cụ gán nhãn đã dùng đúng quy ước từ 14/10 (commit `c967623`).
 
 ## 4. Việc còn lại để đóng S2-13
 
