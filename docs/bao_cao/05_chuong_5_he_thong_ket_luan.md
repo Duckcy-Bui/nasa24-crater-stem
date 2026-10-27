@@ -12,9 +12,9 @@ Chương này mô tả phần hệ thống nối các khối xử lý của Chư
 
 ## 5.1. Kiến trúc và định dạng dữ liệu chung
 
-Mã nguồn chia thành các module độc lập, trao đổi qua JSON và mảng NumPy theo một định dạng chung (Bảng 5.1). Nhờ vậy bốn thành viên làm song song: mỗi người sở hữu một module và chỉ cần giữ đúng đầu vào, đầu ra đã thống nhất.
+Mã nguồn chia thành các mô-đun độc lập, trao đổi qua JSON và mảng NumPy theo một định dạng chung (Bảng 5.1). Nhờ vậy bốn thành viên làm song song: mỗi người sở hữu một mô-đun và chỉ cần giữ đúng đầu vào, đầu ra đã thống nhất.
 
-| Module | Vai trò | Mục |
+| Mô-đun | Vai trò | Mục |
 |---|---|---|
 | `src/contracts.py` | Kiểm tra định dạng, quy đổi tọa độ, lưu lần chạy | 4.2, 5.1 |
 | `src/preprocessing.py`, `src/hough.py`, `src/postprocessing.py`, `src/pipeline.py` | Chuỗi phát hiện: tiền xử lý, Hough NumPy, sáng–tối, phân lớp, lọc trùng | 3 |
@@ -23,7 +23,7 @@ Mã nguồn chia thành các module độc lập, trao đổi qua JSON và mản
 | `src/statistics.py`, `src/science_cards.py`, `src/integration.py` | Thống kê, thẻ khoa học và lớp ghép vào giao diện | 3.6, 5.5, 5.6 |
 | `app.py`, `src/crater_canvas/` | Ứng dụng Streamlit và bản đồ vẽ chạy trong trình duyệt | 5.2–5.4 |
 
-: Bảng 5.1. Các module chính của hệ thống.
+: Bảng 5.1. Các mô-đun chính của hệ thống.
 
 Mỗi ảnh chuẩn gồm mảng 512 × 512, ảnh PNG để hiển thị, mặt nạ pixel hợp lệ và metadata: nguồn ảnh, góc cắt, tỷ lệ m/px, tọa độ địa lý của tâm, hướng nắng kèm mức tin cậy (`measured`, `side_only`, `none`) và dải bán kính tìm kiếm. Trường không có căn cứ để `null`, không điền giá trị đoán. Tọa độ theo quy ước ở mục 4.2: `x` là cột, `y` là hàng, gốc ở góc trên-trái, tâm pixel có tọa độ nguyên; đường kính $D = 2rs$.
 
@@ -48,10 +48,10 @@ Người chơi nhấn vào tâm hố và kéo ra tới vành để vẽ; kéo ph
 **Quy đổi tọa độ.** Bản đồ hiển thị ở nhiều cỡ (khoảng 420–900 px trên máy tính, nhỏ hơn trên điện thoại) và nhiều mức phóng to, nên tọa độ được quy về hệ 512 × 512 ngay khi đọc con trỏ. Với $(u, v)$ là vị trí con trỏ, $(L, T)$ là góc trên-trái của bản đồ, $W$ là bề rộng hiển thị, $z$ là mức phóng to và $(v_x, v_y)$ là góc trên-trái vùng đang xem tính theo mép pixel:
 
 $$
-x = v_x + \frac{(u - L)\cdot 512}{W\,z} - 0{,}5, \qquad y = v_y + \frac{(v - T)\cdot 512}{W\,z} - 0{,}5. \qquad (5.1)
+x = v_x + \frac{(u - L)\cdot 512}{W\,z} - \text{0,5}, \qquad y = v_y + \frac{(v - T)\cdot 512}{W\,z} - \text{0,5}. \qquad (5.1)
 $$
 
-Số hạng $-0{,}5$ đổi từ mép pixel sang tâm pixel: bấm vào giữa pixel 200 cho đúng $x = 200$, khớp quy ước của Hough và công cụ gán nhãn; khi vẽ thì cộng lại $0{,}5$. Test JavaScript khóa các trường hợp này ở nhiều cỡ hiển thị và mức phóng to; trên trình duyệt thật, vòng khoanh đúng tâm một ứng viên máy cho khoảng cách tâm 0,0 px.
+Số hạng $-\text{0,5}$ đổi từ mép pixel sang tâm pixel: bấm vào giữa pixel 200 cho đúng $x = 200$, khớp quy ước của Hough và công cụ gán nhãn; khi vẽ thì cộng lại $\text{0,5}$. Test JavaScript khóa các trường hợp này ở nhiều cỡ hiển thị và mức phóng to; trên trình duyệt thật, vòng khoanh đúng tâm một ứng viên máy cho khoảng cách tâm 0,0 px. [CHỜ PR #27 được merge: quy đổi tâm pixel và Hình 5.1, 5.2 chụp trên bản sửa này]
 
 ## 5.3. Chấm điểm người chơi
 
@@ -65,7 +65,7 @@ $$
 \text{Điểm}_{\text{thưa}} = 100 \cdot \frac{\mathrm{TP}}{N_{\mathrm{nhãn}}}, \qquad \text{Điểm}_{\text{đầy đủ}} = 100 \cdot \frac{2\,\mathrm{TP}}{N_{\mathrm{dự\,đoán}} + N_{\mathrm{nhãn}}}. \qquad (5.2)
 $$
 
-Nhãn hiện có là nhãn thưa (mục 4.3), nên điểm là tỉ lệ hố đã gán nhãn được tìm thấy (Recall trên nhãn đã biết), và vòng ngoài nhãn **không** bị tính là khoanh sai. Công thức F1 chỉ dùng cho ảnh được xác nhận đã gán nhãn đầy đủ.
+Nhãn hiện có là nhãn thưa (mục 4.3), nên điểm là tỷ lệ hố đã gán nhãn được tìm thấy (Recall trên nhãn đã biết), và vòng ngoài nhãn **không** bị tính là khoanh sai. Công thức F1 chỉ dùng cho ảnh được xác nhận đã gán nhãn đầy đủ.
 
 ## 5.4. Màn hình kết quả và lưu lượt chơi
 
@@ -73,9 +73,9 @@ Người chơi bấm "Chấm bài" dưới bản đồ; máy chạy chuỗi phá
 
 ![Hình 5.2. Màn hình kết quả trên ảnh `moon_ap16_m109134835l_c01`: vòng người chơi (xanh), ứng viên máy (tím) và nhãn tham chiếu (cam); điểm 60/100 do tìm đúng 6 trong 10 hố đã gán nhãn.](../evidence/s3-08/ket_qua_cham_bai.jpg){width=85%}
 
-Ảnh đối chiếu phóng to 2 lần, vẽ ba lớp vòng quanh tâm pixel. Bên cạnh là điểm theo nhãn đã kiểm chéo, số hố tìm đúng và bỏ sót, kèm giải thích luật nhãn thưa; ảnh chưa có nhãn kiểm chéo thì hiện "Chưa có điểm" và lý do. Phần so với máy ghi rõ "chỉ để tham khảo, máy không phải đáp án". Màn hình nêu phạm vi tìm của máy (dải bán kính, đường kính theo mét, bước lưới, số bán kính đã thử), cảnh báo khi bước lưới lớn hơn 2 px hoặc máy dừng ở trần 100 ứng viên, và cảnh báo kết quả cũ khi người chơi sửa vòng sau lần chấm.
+Ảnh đối chiếu phóng to 3 lần để vòng nằm đúng tâm pixel, vẽ ba lớp vòng: người chơi, ứng viên máy và nhãn tham chiếu. Bên cạnh là điểm theo nhãn đã kiểm chéo, số hố tìm đúng và bỏ sót, kèm giải thích luật nhãn thưa; ảnh chưa có nhãn kiểm chéo thì hiện "Chưa có điểm" và lý do. Phần so với máy ghi rõ "chỉ để tham khảo, máy không phải đáp án". Màn hình nêu phạm vi tìm của máy (dải bán kính, đường kính theo mét, bước lưới, số bán kính đã thử), cảnh báo khi bước lưới lớn hơn 2 px hoặc máy dừng ở trần 100 ứng viên, và cảnh báo kết quả cũ khi người chơi sửa vòng sau lần chấm.
 
-Trong Hình 5.2, người chơi tìm đúng 6/10 hố đã gán nhãn nên được 60 điểm, trong khi máy không trùng vòng nào của người chơi vì 100 ứng viên đều có bán kính nhỏ. Đây là minh họa trực quan cho hạn chế ở mục 3.7 và là lý do không chấm người chơi theo máy.
+Trong Hình 5.2, người chơi tìm đúng 6/10 hố đã gán nhãn nên được 60 điểm, trong khi máy không trùng vòng nào của người chơi vì 100 ứng viên đều có bán kính nhỏ [CHỜ PR #26 được merge: chế độ chọn cân bằng đổi danh sách ứng viên, chụp lại Hình 5.2]. Đây là minh họa trực quan cho hạn chế ở mục 3.7 và là lý do không chấm người chơi theo máy.
 
 Mỗi lần chấm được lưu thành một thư mục mới gồm metadata, tham số (cấu hình Hough, quy tắc chấm, phạm vi bán kính), vòng người chơi, ứng viên máy, nhãn tham chiếu nếu có, kết quả chấm, thời điểm và mã phiên bản. Dữ liệu lượt chơi của buổi khảo sát vì vậy phân tích lại được.
 
@@ -89,7 +89,7 @@ Thẻ khoa học gắn với vùng chụp của ảnh đang mở (Hình 5.3), g�
 
 ## 5.6. Tích hợp, kiểm thử và triển khai
 
-**Tích hợp.** Giao diện không tự tính thống kê hay tự tạo thẻ. Lớp `src/integration.py` gọi hàm của module thống kê và module thẻ rồi trả một trong ba trạng thái: `pending` (module chưa cài, giao diện ghi "chưa có" kèm mã việc), `ok` (dữ liệu đúng định dạng) hoặc `error` (sai định dạng hay lỗi khi chạy, giao diện báo lỗi và không hiện số). Thẻ thiếu nguồn, link không phải `http(s)` hoặc vị trí ngoài ảnh bị ẩn kèm lý do. Nhờ vậy mỗi chức năng được ghép vào ngay khi module tương ứng xong, không phải sửa `app.py`.
+**Tích hợp.** Giao diện không tự tính thống kê hay tự tạo thẻ. Lớp `src/integration.py` gọi hàm của mô-đun thống kê và mô-đun thẻ rồi trả một trong ba trạng thái: `pending` (module chưa cài, giao diện ghi "chưa có" kèm mã việc), `ok` (dữ liệu đúng định dạng) hoặc `error` (sai định dạng hay lỗi khi chạy, giao diện báo lỗi và không hiện số). Thẻ thiếu nguồn, link không phải `http(s)` hoặc vị trí ngoài ảnh bị ẩn kèm lý do. Nhờ vậy mỗi chức năng được ghép vào ngay khi mô-đun tương ứng xong, không phải sửa `app.py`.
 
 **Kiểm thử.** Kho mã có [CHỜ: số test Python và JavaScript ở phiên bản cuối] test tự động, chạy trên GitHub Actions cho mọi pull request: test hợp đồng dữ liệu; test thuật toán (ví dụ Hough tính tay, ghép một–một so với lời giải vét cạn trên 150 cảnh ngẫu nhiên, luật chấm điểm); test giao diện (chạy ứng dụng Streamlit trong môi trường thử và 6 bộ test JavaScript cho tọa độ, thao tác chuột và cảm ứng, phóng to, lưu). Test đạt chỉ cho biết mã làm đúng thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
 
@@ -97,16 +97,16 @@ Thẻ khoa học gắn với vùng chụp của ảnh đang mở (Hình 5.3), g�
 
 ## 5.7. Kết luận
 
-Nhóm đã xây dựng một chuỗi hoàn chỉnh từ ảnh LROC thật đến trò chơi khoanh hố có chấm điểm:
+Nhóm đã xây dựng một chuỗi chạy được từ đầu đến cuối, từ ảnh LROC thật đến trò chơi khoanh hố có chấm điểm; phần thống kê còn chờ và độ chính xác phát hiện còn thấp:
 
 - **Phát hiện hố:** tiền xử lý tám bước và Hough tròn tự cài đặt bằng NumPy chạy trên cả 26 ảnh, có ví dụ tính tay khớp mã và đối chiếu OpenCV; kiểm tra sáng–tối, phân lớp ứng viên và lọc trùng đã có, kèm thử nghiệm đối chiếu nhãn.
 - **Thống kê và so sánh mật độ:** [CHỜ S2-09: kết quả thống kê và so sánh mật độ hai vùng].
-- **Trò chơi:** giao diện tiếng Việt khoanh, sửa, phóng to và lưu trên máy tính lẫn điện thoại; câu trả lời được chấm riêng so với máy và so với 241 nhãn tham chiếu trên 26 ảnh, bằng ghép một–một đúng quy tắc tâm lệch ≤ 0,5 r của đề.
+- **Trò chơi:** giao diện tiếng Việt khoanh, sửa, phóng to và lưu trên máy tính lẫn điện thoại; câu trả lời được chấm riêng so với máy và so với 240 nhãn tham chiếu chắc chắn trên 26 ảnh, bằng ghép một–một đúng quy tắc tâm lệch ≤ 0,5 r của đề.
 - **Thẻ khoa học:** thẻ có nguồn cho bốn vùng Apollo và Lunokhod, không gắn sai địa điểm.
 - **Đánh giá:** trên tập kiểm tra 8 ảnh, Hough tự cài đặt tìm lại 4/66 hố đã gán nhãn (6,06 %), và 5/66 (7,58 %) khi chọn ứng viên cân bằng theo bán kính. OpenCV tìm lại 65/66 nhưng sinh hơn 8.000 vòng mỗi ảnh, nên con số này không chứng minh độ chính xác (mục 4.7) [CHỜ PR #26 được merge].
 - **Thí nghiệm và khảo sát:** [CHỜ S3-05, S3-01: kết quả ba thí nghiệm và khảo sát người chơi].
 
-Nhóm giữ hai nguyên tắc xuyên suốt. Thứ nhất, chỉ báo độ đo khi có dữ liệu tham chiếu phù hợp: điểm chỉ tính trên nhãn đã kiểm chéo, nhãn thưa chỉ cho Recall, và ứng viên máy không bao giờ được coi là đáp án. Thứ hai, mọi kết quả tái tạo được: mỗi lần chạy lưu tham số và mã phiên bản, tham số chỉ chọn trên tập điều chỉnh.
+Nhóm giữ hai nguyên tắc xuyên suốt. Thứ nhất, chỉ báo độ đo khi có dữ liệu tham chiếu phù hợp: điểm chỉ tính trên nhãn đã kiểm chéo, nhãn thưa chỉ cho Recall, và ứng viên máy không bao giờ được coi là đáp án. Thứ hai, kết quả chính tái tạo được: mỗi lần chạy lưu tham số và mã phiên bản, và tham số được chọn trên tập điều chỉnh. Một số số đo phụ (đối chiếu OpenCV và lượng tử 8 bit trên STT 13) mới đo một lần và chưa có script, đã ghi rõ ở từng chương.
 
 ## 5.8. Hạn chế
 

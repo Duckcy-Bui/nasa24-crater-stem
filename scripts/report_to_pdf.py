@@ -37,7 +37,8 @@ def _soffice() -> str:
 
 def convert(source: Path, target: Path) -> None:
     pipe = f"nasa24_report_{int(time.time() * 1000)}"
-    with tempfile.TemporaryDirectory() as profile:
+    profile = tempfile.mkdtemp(prefix="nasa24_lo_")
+    try:
         # Hồ sơ riêng để không đụng LibreOffice đang mở của người dùng.
         office = subprocess.Popen([_soffice(), "--headless", "--invisible", "--norestore", "--nologo",
                                    f"-env:UserInstallation={Path(profile).as_uri()}",
@@ -56,6 +57,8 @@ def convert(source: Path, target: Path) -> None:
                 raise SystemExit("LibreOffice không khởi động được.")
             desktop = context.ServiceManager.createInstanceWithContext("com.sun.star.frame.Desktop", context)
             document = desktop.loadComponentFromURL(source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),))
+            if document is None:
+                raise SystemExit(f"LibreOffice không mở được {source}.")
             try:
                 # Hai lượt: lượt đầu điền mục lục làm dời trang, lượt sau ghi lại số trang đúng.
                 for _ in range(2):
@@ -76,6 +79,9 @@ def convert(source: Path, target: Path) -> None:
                 office.wait(timeout=20)
             except subprocess.TimeoutExpired:
                 office.kill()
+    finally:
+        # Trên Windows, LibreOffice có thể còn giữ file vài giây sau khi thoát; bỏ qua lỗi dọn thư mục tạm.
+        shutil.rmtree(profile, ignore_errors=True)
 
 
 if __name__ == "__main__":

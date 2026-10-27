@@ -25,7 +25,7 @@ Bản ghép đầu tiên chỉ chuyển nội dung đã có trong repo sang dạ
 
 **Chỉ ghi điều có bằng chứng.** Mọi con số phải có trong repo (`docs/`, `docs/evidence/`, `outputs/` được dẫn lại, test). Phần chưa có kết quả ghi đúng một dấu chờ, ví dụ `[CHỜ S3-02: bảng Precision/Recall trên tập kiểm tra]`. Script dựng báo cáo đếm và in các dấu này. Không thay kết quả thật bằng số ước lượng.
 
-**Số và đơn vị.** Dấu thập phân là dấu phẩy trong văn bản (0,5 r; 2 m/px). Trong công thức viết `0{,}5`. Đơn vị cách số một khoảng trắng.
+**Số và đơn vị.** Dấu thập phân là dấu phẩy trong văn bản (0,5 r; 2 m/px). Trong công thức viết `\text{0,5}` (cách viết `0{,}5` bị LibreOffice tách thành "0 , 5"). Đơn vị cách số một khoảng trắng.
 
 **Công thức.** Công thức trong dòng dùng `$...$`. Công thức riêng dòng dùng `$$ ... \qquad (2.1) $$`, đánh số theo chương và nhắc trong văn bản là "công thức (2.1)".
 
@@ -60,7 +60,9 @@ python scripts/build_report.py --no-pdf       # chỉ DOCX
 python scripts/build_report.py --only 03 --no-pdf --out /tmp/ch3   # thử riêng một chương
 ```
 
-Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice: script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
+Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice và Python có module `uno` (trên Ubuntu: gói `python3-uno`; nơi khác đặt biến `REPORT_UNO_PYTHON` trỏ tới python của LibreOffice). Script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
+
+Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoảng trắng không ngắt, vì LibreOffice bỏ khoảng trắng TeX và làm số công thức dính vào công thức. Trang bìa hiện vẫn mang số trang 1.
 
 Định dạng do script đặt: A4, Times New Roman 13, giãn dòng 1,3; lề trái 3 cm, các lề còn lại 2 cm; số trang ở giữa chân trang; mỗi chương bắt đầu trang mới.
 
@@ -87,12 +89,15 @@ Bản dựng ngày 27/10/2026 dài 55 trang: bìa và mục lục 4 trang, nội
 
 Các dấu `[CHỜ]` còn lại:
 
-- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Sau khi merge, người chốt kiểm lại số liệu rồi xóa dấu.
+- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. PR này còn đổi mặc định chọn ứng viên của game sang `radius_balanced`, nên sau khi merge phải kiểm lại các câu tả danh sách máy ở 1.6, 3.7, 5.4 và chụp lại Hình 5.2. Sau đó người chốt xóa dấu.
+- PR #27 (Đức) chưa được merge: quy đổi tâm pixel, ảnh đối chiếu phóng 3 lần và các ảnh Hình 5.1, 5.2 ở mục 5.2–5.4 dựa trên bản sửa này.
 - S2-09 (Hưng): mục 3.6, Bảng 1.1 và mục 5.7.
 - S2-15 (Tiến): mục 3.7.
 - S3-05 (Quốc Anh): mục 4.6.
 - S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.
 - Số test cuối: mục 5.6.
 - Phụ lục A, D: cả nhóm điền.
+
+Còn để người chốt quyết định: Hình 3.4, 3.5 có mã việc nội bộ trong tiêu đề ảnh; sơ đồ dạng chữ ở mục 3.1 chưa có số hình; một số nội dung lặp giữa Chương 2 và 3 (công thức (4.4) = (2.14), (3.3) = (2.24), ví dụ bước bán kính, NMS) có thể bỏ để giảm trang.
 
 Mỗi chương có ghi chú đầu file (`<!-- ... -->`), liệt kê việc người chốt cần kiểm tra và các chỗ tài liệu nguồn lệch với mã hoặc dữ liệu. Ví dụ: bảng trong `S2-03_TAP_DIEU_CHINH.md` vẫn ghi `sparse_unreviewed`; `manifest_split.json` ghi `sun_quality` là `measured` cho 11 ảnh Apollo 16, trong khi metadata ghi `side_only` hoặc `none`.

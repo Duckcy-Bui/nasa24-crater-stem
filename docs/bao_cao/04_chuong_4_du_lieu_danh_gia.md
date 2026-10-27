@@ -60,7 +60,7 @@ $$ x_{\mathrm{src}} = x_0 + k\,x + \frac{k-1}{2}, \qquad y_{\mathrm{src}} = y_0 
 
 Số hạng $(k-1)/2$ là độ lệch tâm khi thu nhỏ bằng trung bình khối; với $k = 1$ nó bằng 0. Ma trận affine $(a, b, c, d, e, f)$ của rasterio tính theo góc pixel, nên phải cộng 0,5 trước khi đổi sang tọa độ phẳng $(X, Y)$ tính bằng mét:
 
-$$ \mathrm{col} = x_{\mathrm{src}} + 0{,}5, \quad \mathrm{row} = y_{\mathrm{src}} + 0{,}5, \quad X = a\,\mathrm{col} + b\,\mathrm{row} + c, \quad Y = d\,\mathrm{col} + e\,\mathrm{row} + f \qquad (4.2) $$
+$$ \mathrm{col} = x_{\mathrm{src}} + \text{0,5}, \quad \mathrm{row} = y_{\mathrm{src}} + \text{0,5}, \quad X = a\,\mathrm{col} + b\,\mathrm{row} + c, \quad Y = d\,\mathrm{col} + e\,\mathrm{row} + f \qquad (4.2) $$
 
 Với dữ liệu này $b = d = 0$, $a = s$, $e = -s$. Vĩ độ và kinh độ theo phép chiếu Equirectangular là
 
@@ -93,7 +93,7 @@ Cả 26 ảnh cắt có file nhãn, tổng cộng 241 nhãn, mỗi ảnh từ 4 
 
 : Bảng 4.2. Nhãn tham chiếu theo vùng mặt đất. Các vùng ngoài Apollo 16 có tỷ lệ 20 m/px.
 
-Cả 26 file ghi nguồn `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`, tức là nhãn đã được Nguyễn Mạnh Tiến kiểm chéo bằng cách đối chiếu từng vòng trên ảnh overlay. Ngày 27/10/2026, Nguyễn Mạnh Tiến xác nhận đã kiểm bằng mắt đủ 26 ảnh overlay. Kiểm tra tự động cho thấy 26/26 file khớp với manifest, chỉ mục nhãn và ảnh overlay, nhưng kiểm tra này chỉ xác nhận định dạng, không xác nhận vị trí hố. [CHỜ PR #26 được merge]
+Cả 26 file ghi nguồn `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`. Theo xác nhận của người kiểm ngày 27/10/2026, Nguyễn Mạnh Tiến đã đối chiếu bằng mắt từng vòng trên đủ 26 ảnh overlay. Kiểm tra tự động cho thấy 26/26 file khớp với manifest, chỉ mục nhãn và ảnh overlay, nhưng kiểm tra này chỉ xác nhận định dạng, không xác nhận vị trí hố. [CHỜ PR #26 được merge]
 
 ### 4.3.2. Danh mục Robbins và nhãn mù
 
@@ -103,7 +103,7 @@ Bước rà biên ở Chương 3 dùng thêm nhãn mù gán trực tiếp cho �
 
 ## 4.4. Tập điều chỉnh và tập kiểm tra
 
-Tập điều chỉnh dùng để chọn tham số; tập kiểm tra chỉ dùng để báo cáo kết quả cuối. Cách chia hiện hành (phiên bản 3, `data/s203_split/manifest_split.json`) theo quy tắc: các ảnh cắt chồng lấp nhau, hoặc cùng mặt đất chụp dưới điều kiện nắng khác nhau, phải nằm cùng một tập. Vì vậy cả 11 ảnh Apollo 16 thuộc tập điều chỉnh. Các ảnh này có tâm cách nhau dưới 1,5 km trong khi mỗi ảnh cắt rộng 1.024 m; khoảng cách tâm 340–680 m tương ứng mức chồng lấp mặt đất 33–67 %. Bốn ảnh STT 9, 11, 17 và 18 còn dùng chung cửa sổ (1190, 2750), và STT 13 đã được dùng để chọn cách lọc ở bước rà biên. Tập kiểm tra gồm ba vùng độc lập: Apollo 15 khi Mặt Trời thấp (cách tập điều chỉnh 50,1–62,8 km), Lunokhod 2 (721,4–726,9 km) và Mare Frigoris (1.095–1.106 km).
+Tập điều chỉnh dùng để chọn tham số; tập kiểm tra chỉ dùng để báo cáo kết quả cuối. Cách chia hiện hành (phiên bản 3, `data/s203_split/manifest_split.json`) theo quy tắc: các ảnh cắt chồng lấp nhau, hoặc cùng mặt đất chụp dưới điều kiện nắng khác nhau, phải nằm cùng một tập. Vì vậy cả 11 ảnh Apollo 16 thuộc tập điều chỉnh. Các ảnh này thuộc cùng chuỗi ảnh quanh bãi đáp Apollo 16, tâm cách nhau từ 0 đến 8,06 km, trong khi mỗi ảnh cắt rộng 1.024 m: 24 trong 55 cặp chồng lấp mặt đất, với khoảng cách tâm 340–680 m tương ứng mức chồng lấp 33–67 %. Bốn ảnh STT 9, 11, 17 và 18 còn dùng chung cửa sổ (1190, 2750), và STT 13 đã được dùng để chọn cách lọc ở bước rà biên. Tập kiểm tra gồm ba vùng độc lập: Apollo 15 khi Mặt Trời thấp (cách tập điều chỉnh 50,1–62,8 km), Lunokhod 2 (721,4–726,9 km) và Mare Frigoris (1.095–1.106 km).
 
 Tập điều chỉnh gồm 18 ảnh cắt từ bốn vùng: 11 ảnh Apollo 16 ở 2 m/px, cùng Apollo 15 khi Mặt Trời cao, Van de Graaff và Lunokhod 1 ở 20 m/px; có 174 nhãn được tính. Tập kiểm tra gồm 8 ảnh cắt 20 m/px từ ba vùng, với 66 nhãn được tính (Bảng 4.2). Chỉ 8 ảnh Apollo 16 của tập điều chỉnh thỏa điều kiện của bước sáng–tối (Chương 3): có phía nắng đã biết và góc tới từ 30° trở lên. STT 10 (28,38°) và hai ảnh cắt của STT 17 (7,64°) bị loại vì nắng gần đứng.
 
@@ -117,7 +117,7 @@ Cách chia có hai giới hạn. Thứ nhất, cả 8 ảnh kiểm tra đều l�
 
 **Nhãn thưa.** Một ứng viên không khớp nhãn nào vẫn có thể là hố thật chưa được gán, nên nhóm không đếm dương tính giả và không tính Precision hay F1. Độ đo chính là Recall trên nhãn đã biết (Recall_known, mục 2.4). Nhãn chưa chắc chắn thuộc tập bỏ qua. Precision và F1 chỉ được tính khi file nhãn được đánh dấu đầy đủ (`catalogue_coverage = "complete"`); hiện chưa file nào như vậy. Mỗi giá trị Recall_known đi kèm số nhãn, số ứng viên và trạng thái chạm trần 100 vòng.
 
-**Chạy tập kiểm tra.** Tham số chỉ được chọn trên tập điều chỉnh; tập kiểm tra chạy một lần với cấu hình đã đóng băng. Script `scripts/s207_experiments.py` từ chối ảnh kiểm tra nếu thiếu cờ `--holdout`, cờ này bắt buộc kèm `--chosen-config` (file tham số đã chốt), và ở chế độ đó script chỉ chạy đúng cấu hình đã chốt, không quét biến thể.
+**Chạy tập kiểm tra.** Tham số chỉ được chọn trên tập điều chỉnh; tập kiểm tra chạy một lần với cấu hình đã đóng băng. Lần đánh giá ở mục 4.7 đã dùng tập kiểm tra một lần cho hai chế độ chọn ứng viên được cố định từ trước, khi bộ tham số chính thức chưa được chốt [CHỜ S2-15]; mọi lần chạy lại trên tập kiểm tra sau đó phải được ghi rõ trong báo cáo. Script `scripts/s207_experiments.py` từ chối ảnh kiểm tra nếu thiếu cờ `--holdout`, cờ này bắt buộc kèm `--chosen-config` (file tham số đã chốt), và ở chế độ đó script chỉ chạy đúng cấu hình đã chốt, không quét biến thể.
 
 ## 4.6. Thiết kế ba thí nghiệm
 

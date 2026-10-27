@@ -88,11 +88,11 @@ Chuỗi B0–B8 nằm trong `src/preprocessing.py`; nguyên lý ở mục 2.1. B
 
 ### 3.2.2. Kết quả và kiểm chứng
 
-Hình 3.2 cho thấy từng bước trên STT 13. Ngưỡng Canny tự co theo độ tương phản: STT 13 có $T_{low}$ ; $T_{high}$ = 63,6 ; 159,0, còn STT 17 có 46,3 ; 115,8, thấp hơn khoảng 27 %. Số pixel biên sau B8 là 24.291 ở STT 13 và 26.642 ở STT 17, khoảng 9–10 % diện tích ảnh. Trên 26 ảnh, số này từ 20.949 đến 35.590. Phần lớn là biên kết cấu, không phải vành hố.
+Hình 3.2 cho thấy từng bước trên STT 13. Ngưỡng Canny tự co theo độ tương phản: STT 13 có $T_{low}$ = 63,6 và $T_{high}$ = 159,0, còn STT 17 có 46,3 và 115,8, thấp hơn khoảng 27 %. Số pixel biên sau B8 là 24.291 ở STT 13 và 26.642 ở STT 17, khoảng 9–10 % diện tích ảnh. Trên 26 ảnh, số này từ 20.949 đến 35.590. Phần lớn là biên kết cấu, không phải vành hố.
 
 ![Hình 3.2. Các bước tiền xử lý trên ảnh STT 13 (nắng Tây, góc tới 87,7°). Tiêu đề xanh: bước tự viết; đỏ: bước dùng thư viện. Canny giữ 25.203 pixel biên, còn 24.291 pixel sau B8.](../images/s114/truoc_sau_stt13.png){width=75%}
 
-Bộ kiểm thử `tests/test_preprocessing.py` (33 bài) so phần tự viết với `cv2.resize(INTER_AREA)`, `cv2.GaussianBlur` và `cv2.Sobel`, theo tiêu chí sai khác nhỏ hơn $10^{-5}$. Đo một lần trên STT 13, sai khác lớn nhất là $6{,}0 \cdot 10^{-8}$ (thu nhỏ khối), $1{,}8 \cdot 10^{-7}$ (Gauss) và $3{,}6 \cdot 10^{-7}$ (Sobel).
+Bộ kiểm thử `tests/test_preprocessing.py` (33 bài) so phần tự viết với `cv2.resize(INTER_AREA)`, `cv2.GaussianBlur` và `cv2.Sobel`, theo tiêu chí sai khác nhỏ hơn $10^{-5}$. Đo một lần trên STT 13, sai khác lớn nhất là $\text{6,0} \cdot 10^{-8}$ (thu nhỏ khối), $\text{1,8} \cdot 10^{-7}$ (Gauss) và $\text{3,6} \cdot 10^{-7}$ (Sobel).
 
 Khác đặc tả ban đầu, CLAHE chạy trên ảnh 8 bit thay vì 16 bit. Với 16 bit, ô 64 × 64 px và các `clipLimit` thường dùng, ngưỡng cắt mỗi bin của OpenCV luôn bằng 1 nên `clipLimit` mất tác dụng (mục 2.1): trên vùng phẳng có nhiễu, độ lệch chuẩn 0,020 tăng lên 0,188 với mọi `clipLimit` 1, 2, 4, còn bản 8 bit cho 0,038; 0,056 và 0,090. Riêng phép lượng tử về 8 bit ảnh hưởng không đáng kể: hướng gradient lệch trung vị 0,05–0,08°, biên Canny trùng 93–96 %.
 
@@ -129,9 +129,9 @@ Dải quét là giao giữa dải của ảnh và giới hạn cấu hình: $r_{
 
 Ở mỗi bán kính, ngưỡng phiếu và tỷ lệ phiếu là
 
-$$ T_r = \max\left(n_{\min},\ \lceil \rho\, S_r \rceil\right), \qquad s = \frac{A(x, y, r)}{S_r} \qquad (3.1) $$
+$$ \tau_r = \max\left(v_{\min},\ \lceil \kappa\, S_r \rceil\right), \qquad q = \frac{A(x, y, r)}{S_r} \qquad (3.1) $$
 
-với $n_{\min}$ = `min_votes`, $\rho$ = `min_vote_ratio`. Ví dụ r = 10 cho $T_r = \max(12, \lceil 0{,}35 \cdot 80 \rceil) = 28$ phiếu. Hàm `_local_peaks` giữ các ô đạt ngưỡng và là cực đại 3 × 3. Ứng viên được sắp theo (−s, −phiếu, y, x, r). NMS duyệt tham lam, bỏ ứng viên có tâm cách một vòng đã giữ không quá 4 px **và** bán kính lệch không quá 2 px, và dừng khi đủ `max_circles`. Tỷ lệ phiếu chỉ dùng xếp hạng, không phải xác suất. Bảng 3.2 liệt kê tham số.
+với $v_{\min}$ = `min_votes`, $\kappa$ = `min_vote_ratio` (ký hiệu như công thức (2.12)). Ví dụ r = 10 cho $\tau_r = \max(12, \lceil \text{0,35} \cdot 80 \rceil) = 28$ phiếu. Hàm `_local_peaks` giữ các ô đạt ngưỡng và là cực đại 3 × 3. Ứng viên được sắp theo (−q, −phiếu, y, x, r). NMS duyệt tham lam, bỏ ứng viên có tâm cách một vòng đã giữ không quá 4 px **và** bán kính lệch không quá 2 px, và dừng khi đủ `max_circles`. Tỷ lệ phiếu chỉ dùng xếp hạng, không phải xác suất. Bảng 3.2 liệt kê tham số.
 
 | Tham số | Giá trị | Vai trò |
 |---|---|---|
@@ -139,7 +139,7 @@ với $n_{\min}$ = `min_votes`, $\rho$ = `min_vote_ratio`. Ví dụ r = 10 cho $
 | `radius_step_px` | 1 | Bước bán kính (px) |
 | `r_min_limit_px` ; `r_max_limit_px` | 5 ; 128 | Giới hạn bán kính (px) |
 | `angle_step_deg` | 1,0 | Bước góc của bảng độ lệch |
-| `min_votes` ; `min_vote_ratio` | 12 ; 0,35 | $n_{\min}$ và $\rho$ trong công thức (3.1) |
+| `min_votes` ; `min_vote_ratio` | 12 ; 0,35 | $v_{\min}$ và $\kappa$ trong công thức (3.1) |
 | `nms_center_px` ; `nms_radius_px` | 4,0 ; 2 | Ngưỡng tâm và bán kính của NMS (px) |
 | `max_circles` | 100 | Số vòng tối đa mỗi ảnh |
 | `edge_batch_size` | 256 | Số điểm biên mỗi lô |
@@ -184,9 +184,9 @@ So với 500 vòng đặt ngẫu nhiên mỗi ảnh trên STT 8, 13, 16 và 18, 
 
 ### 3.4.3. Phân lớp ứng viên và thử lọc
 
-Hàm `review_candidates` xếp mỗi vòng vào lớp `rim` (vành hố), `shadow_edge` (ranh giới bóng), `texture` (kết cấu) hoặc `unclear`. Vùng bóng lớn là vùng liền khối có độ sáng B3 dưới 0,06 và diện tích từ 1500 px, tìm bằng hàm `connectedComponentsWithStats` của OpenCV [@opencv_components]; điểm biên cách vùng này không quá 2 px là ranh giới bóng. Trên dải ±1,5 px quanh vòng, mã tính độ phủ xuyên tâm (phần trong 36 cung 10° có biên với gradient gần hướng xuyên tâm), độ nổi của vành (\|G\| trên vành so với vành ngoài) và tỷ lệ biên là ranh giới bóng. Luật: tỷ lệ biên bóng ≥ 0,5 là `shadow_edge`; độ phủ < 0,5 hoặc độ nổi < 1,5 là `texture`; còn lại là `rim`. Luật không dùng điểm sáng–tối. Hàm riêng `apply_filter` mới loại vòng thật và ghi lý do.
+Hàm `review_candidates` xếp mỗi vòng vào lớp `rim` (vành hố), `shadow_edge` (ranh giới bóng), `texture` (kết cấu) hoặc `unclear`. Vùng bóng lớn là vùng liền khối có độ sáng B3 dưới 0,06 và diện tích từ 1.500 px, tìm bằng hàm `connectedComponentsWithStats` của OpenCV [@opencv_components]; điểm biên cách vùng này không quá 2 px là ranh giới bóng. Trên dải ±1,5 px quanh vòng, mã tính độ phủ xuyên tâm (phần trong 36 cung 10° có biên với gradient gần hướng xuyên tâm), độ nổi của vành (\|G\| trên vành so với vành ngoài) và tỷ lệ biên là ranh giới bóng. Luật: tỷ lệ biên bóng ≥ 0,5 là `shadow_edge`; độ phủ < 0,5 hoặc độ nổi < 1,5 là `texture`; còn lại là `rim`. Luật không dùng điểm sáng–tối. Hàm riêng `apply_filter` mới thực sự loại vòng và ghi lý do.
 
-Để đo tác dụng, một thành viên gán nhãn mù (không thấy kết quả máy) cho 100 ứng viên của STT 13, một thành viên khác kiểm chéo: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. STT 13 thuộc tập điều chỉnh. Trên 94 vòng có nhãn rõ, lớp `texture` của máy chứa 47/48 vòng kết cấu và không hố thật nào, còn lớp `rim` lẫn 24/33 vòng kết cấu. STT 17 được gán nhãn theo cùng cách (17 `rim`, 66 `texture`, 17 `unclear`). Bảng 3.4 so các cách lọc.
+Để đo tác dụng, một thành viên gán nhãn mù (không thấy lớp do máy xếp) cho 100 ứng viên của STT 13, một thành viên khác kiểm chéo: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. STT 13 thuộc tập điều chỉnh. Trên 94 vòng có nhãn rõ, lớp `texture` của máy chứa 47/48 vòng kết cấu và không hố thật nào, còn lớp `rim` lẫn 24/33 vòng kết cấu. STT 17 được gán nhãn theo cùng cách (17 `rim`, 66 `texture`, 17 `unclear`). Bảng 3.4 so các cách lọc.
 
 | Cách lọc | STT 13: loại / mất hố thật | STT 13: tỷ lệ hố thật | STT 17: loại / mất hố thật | STT 17: tỷ lệ hố thật |
 |---|---:|---:|---:|---:|
@@ -205,7 +205,7 @@ Bỏ lớp `texture` không mất hố thật nào và tăng gần gấp đôi t
 
 NMS của Hough chỉ gộp hai đỉnh khi tâm lệch ≤ 4 px **và** bán kính lệch ≤ 2 px. Hai dạng trùng lọt qua: vòng nhỏ lồng trong vành thật (STT 13: M8, r = 6, trong M32, r = 9; M19, r = 6, trong M15, r = 10) và hai vòng cùng cỡ lệch tâm (STT 17: M66 và M67, r = 7, tâm cách 5 px). Vòng trùng làm một hố bị đếm hai lần và gây nhãn sáng–tối "ngược" giả. Hàm tự viết `dedupe_circles` coi hai vòng là một hố khi thỏa công thức (3.2):
 
-$$ \frac{d}{R} \le 0{,}75 \quad \text{và} \quad \frac{r}{R} \ge 0{,}5 \qquad (3.2) $$
+$$ \frac{d}{R} \le \text{0,75} \quad \text{và} \quad \frac{r}{R} \ge \text{0,5} \qquad (3.2) $$
 
 với R, r là bán kính vòng lớn, vòng nhỏ và d là khoảng cách tâm. Ba cặp trùng thật có d/R = 0,33; 0,45; 0,71, nên ngưỡng 0,5 sẽ bỏ sót M66/M67. Vòng được duyệt tham lam theo thứ tự: vòng đủ tin (tỷ lệ phiếu ≥ 0,35, không thuộc lớp `texture`), vòng lớn hơn, tỷ lệ phiếu, số phiếu, `crater_id`. Vòng bị loại ghi `duplicate_of`. Không chọn theo tỷ lệ phiếu vì vòng nhỏ dễ đạt tỷ lệ cao: cặp M32/M8 có tỷ lệ 0,542 và 0,583, nên chọn theo tỷ lệ sẽ giữ nhầm M8. Bảng 3.5 liệt kê bộ ví dụ kiểm tra.
 
@@ -250,7 +250,7 @@ Sai hợp đồng thì giao diện báo lỗi và không hiện số. Vì ứng 
 
 ## 3.7. Hạn chế của chuỗi phát hiện
 
-**Danh sách máy luôn chạm trần.** Cả 26 ảnh đều trả đúng 100 ứng viên. Trên 4 ảnh đã đo, 80–94 vòng có r = 5–6 px và không vòng nào có r > 12 px, dù dải tìm lên tới 100–125 px (Hình 3.1). Không thể đọc số 100 thành số hố.
+**Danh sách máy luôn chạm trần.** Cả 26 ảnh đều trả đúng 100 ứng viên. Trên 4 ảnh đo ở bước rà biên (mục 3.4.3), 80–94 vòng có r = 5–6 px và không vòng nào có r > 12 px, dù dải tìm lên tới 100–125 px. Không thể đọc số 100 thành số hố.
 
 **Hố lớn bị bỏ sót dù nằm trong dải tìm.** STT 17 có 10 nhãn tham chiếu thưa, bán kính 8–22 px, đều nằm trong dải tìm 5–125 px. Hough dừng ở 100 vòng bán kính 5–10 px, nên Recall_known = 0/10. Đổi `min_vote_ratio` (0,30; 0,40) hay `radius_step_px` (2) vẫn cho 0/10, và đổi từng tham số tiền xử lý chỉ đưa bán kính lớn nhất lên 8–16 px. Nút thắt vì vậy nằm ở cách xếp hạng theo tỷ lệ phiếu và cắt ở 100 đỉnh. Bản sửa ở mục 3.3.5 đưa được vòng lớn hơn vào danh sách, nhưng Recall_known vẫn thấp.
 

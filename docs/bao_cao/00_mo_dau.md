@@ -69,11 +69,15 @@ Hà Nội, tháng 10 năm 2026
 | $k$ | Hệ số thu nhỏ bằng trung bình khối |
 | $r_{\min},\ r_{\max}$ | Dải bán kính tìm kiếm sau khi kẹp theo metadata |
 | $\theta$ | Hướng gradient tại pixel biên |
+| $S_r$ | Số độ lệch (điểm hỗ trợ) của vòng bán kính r trong bảng bỏ phiếu |
+| $v_{\min},\ \kappa,\ \tau_r$ | Số phiếu tối thiểu, tỷ lệ hỗ trợ tối thiểu, ngưỡng phiếu ở bán kính r |
+| $q$ | Điểm hỗ trợ của một đỉnh Hough, chỉ dùng để xếp hạng |
+| $\rho$ | Mật độ hố (số hố trên km²) |
 | $\mathrm{TP},\ \mathrm{FP},\ \mathrm{FN}$ | Số cặp khớp, số vòng dự đoán không khớp, số nhãn bị bỏ sót |
 | $N_{\mathrm{nhãn}},\ N_{\mathrm{dự\,đoán}}$ | Số nhãn tham chiếu, số vòng dự đoán (của máy hoặc người chơi) |
 | $\mathrm{Recall}_{\mathrm{known}}$ | Recall trên nhãn đã biết (nhãn thưa), $\mathrm{TP}_{\mathrm{known}}/N_{\mathrm{known}}$ |
 
-: Bảng ký hiệu.
+: Bảng ký hiệu. Một số chữ (φ, R, A, S) mang nghĩa khác nhau ở từng mục và được định nghĩa ngay tại chỗ dùng.
 
 | Chữ viết tắt | Nghĩa |
 |---|---|

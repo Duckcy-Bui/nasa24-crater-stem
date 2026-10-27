@@ -40,7 +40,7 @@ Nhóm thực hiện Đề 24, "Phát hiện hố va chạm và trò chơi STEM c
 
 **Kích thước hố.** Dải đường kính đặt theo tỷ lệ ảnh: ảnh 2 m/px xét hố đường kính 20–500 m (bán kính 5–125 px), ảnh 20 m/px xét hố 200 m–4 km (bán kính 5–100 px). Bán kính tìm kiếm được kẹp trong [5, 128] px để Hough chạy được trên máy cá nhân.
 
-**Nhãn tham chiếu.** Danh mục toàn cầu của Robbins chỉ đầy đủ cho hố từ khoảng 1–2 km trở lên [@robbins2019], nên không dùng được cho phần lớn hố trong ảnh 2 m/px. Nhóm tự gán nhãn thủ công **thưa**: mỗi ảnh có 4–13 hố được khoanh (tổng cộng 241 hố trên 26 ảnh), không phải toàn bộ hố trong ảnh. Vì vậy chỉ đo được tỉ lệ hố đã gán nhãn mà máy hoặc người chơi tìm thấy (Recall trên nhãn đã biết). Không đo được Precision và F1 trên toàn ảnh (mục 2.4).
+**Nhãn tham chiếu.** Danh mục toàn cầu của Robbins chỉ đầy đủ cho hố từ khoảng 1–2 km trở lên [@robbins2019], nên không dùng được cho phần lớn hố trong ảnh 2 m/px. Nhóm tự gán nhãn thủ công **thưa**: mỗi ảnh có 4–13 hố được khoanh (tổng cộng 241 hố trên 26 ảnh), không phải toàn bộ hố trong ảnh. Vì vậy chỉ đo được tỷ lệ hố đã gán nhãn mà máy hoặc người chơi tìm thấy (Recall trên nhãn đã biết). Không đo được Precision và F1 trên toàn ảnh (mục 2.4).
 
 **Dữ liệu ảnh.** Ảnh dùng là bản *browse* 8 bit của LROC, phù hợp để xem và minh họa, không phải dữ liệu để đo đạc khoa học định lượng [@lroc_rdrsis]. So sánh mật độ hố chỉ gợi ý tuổi tương đối giữa hai vùng có điều kiện phù hợp. Kết luận bị ảnh hưởng nếu máy bỏ sót hoặc khoanh nhầm.
 
@@ -48,7 +48,7 @@ Nhóm thực hiện Đề 24, "Phát hiện hố va chạm và trò chơi STEM c
 
 ## 1.5. Cách tiếp cận tổng quát
 
-Hình dưới đây tóm tắt luồng xử lý của sản phẩm. Mỗi khối ứng với một module trong mã nguồn và một phần của báo cáo.
+Hình 1.1 tóm tắt luồng xử lý của sản phẩm. Mỗi khối ứng với một mô-đun trong mã nguồn và một phần của báo cáo.
 
 ```text
 Ảnh LROC thật ─► cắt 512 × 512 + metadata + mặt nạ hợp lệ        (Chương 4)
@@ -69,6 +69,10 @@ Hình dưới đây tóm tắt luồng xử lý của sản phẩm. Mỗi khối
   mật độ (3.6)  chấm với máy và nhãn (5.2–5.4) theo vùng ảnh (5.5)
 ```
 
+::: {custom-style="Image Caption"}
+Hình 1.1. Luồng xử lý của sản phẩm; số trong ngoặc là mục trình bày trong báo cáo.
+:::
+
 Mọi bước trao đổi dữ liệu qua cùng một định dạng (mục 5.1). Ảnh xử lý luôn là 512 × 512 px. Tâm và bán kính hố tính theo pixel của ảnh xử lý, với quy ước tâm pixel có tọa độ nguyên, và đổi được về ảnh nguồn và tọa độ địa lý qua metadata (mục 4.2). Danh sách hố của máy, của nhãn tham chiếu và của người chơi dùng chung cấu trúc nhưng lưu riêng. Mỗi lần chạy được lưu vào một thư mục riêng kèm tham số và mã phiên bản để tái tạo được.
 
 ## 1.6. Kết quả chính
@@ -77,7 +81,7 @@ Bảng 1.1 tóm tắt mức độ hoàn thành bốn chức năng bắt buộc v
 
 | Yêu cầu | Kết quả | Mục |
 |---|---|---|
-| Tiền xử lý và Hough tự cài đặt | Chạy trên cả 26 ảnh; Hough NumPy có ví dụ tính tay và đối chiếu OpenCV; kiểm tra sáng–tối, phân lớp và lọc trùng có thể bật thêm | 3.2–3.5 |
+| Tiền xử lý và Hough tự cài đặt | Chạy trên cả 26 ảnh; Hough NumPy có ví dụ tính tay và đối chiếu OpenCV; kiểm tra sáng–tối chạy mặc định nhưng chỉ gắn nhãn; phân lớp ứng viên và lọc trùng có thể bật thêm | 3.2–3.5 |
 | Thống kê và so sánh mật độ | [CHỜ S2-09: cài đặt thống kê và so sánh hai vùng] | 3.6 |
 | Trò chơi khoanh hố và chấm điểm | Giao diện tiếng Việt chạy trên trình duyệt; chấm riêng so với máy và so với nhãn đã kiểm chéo, ghép hố một–một | 5.2–5.4 |
 | Thẻ khoa học | Thẻ có nguồn cho các vùng Apollo 15, Apollo 16, Lunokhod 1 và Lunokhod 2; chưa gắn vị trí trên ảnh | 5.5 |

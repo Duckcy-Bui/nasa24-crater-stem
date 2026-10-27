@@ -16,7 +16,6 @@ from __future__ import annotations
 import argparse
 import os
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -34,10 +33,26 @@ PENDING = re.compile(r"\[CHỜ[^\]]*\]")
 def chapters(only: list[str] | None = None) -> list[Path]:
     files = sorted(p for p in SOURCE.glob("[0-9][0-9]_*.md"))
     if only:
+        unknown = sorted(set(only) - {p.name[:2] for p in files})
+        if unknown:
+            raise SystemExit(f"Không có file chương số {', '.join(unknown)} (ghi hai chữ số, ví dụ --only 03).")
         files = [p for p in files if p.name[:2] == "00" or p.name[:2] in only]
     if not files:
         raise SystemExit(f"Không có chương nào trong {SOURCE.relative_to(ROOT)}.")
     return files
+
+
+# LibreOffice bỏ khoảng trắng TeX (\qquad) và thu hẹp em-space khi đọc công thức Word, nên số công thức
+# dính vào công thức. Khi ghép, đổi "\qquad (2.1)" ở cuối công thức thành 8 khoảng trắng không ngắt (U+00A0);
+# Word cũng hiển thị đúng.
+EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\(\d+\.\d+\))\s*(?=\$\$)")
+
+
+def combined_markdown(files: list[Path]) -> str:
+    """Nối các chương thành một văn bản để pandoc đọc một lần, kèm phép đổi số công thức ở trên."""
+    parts = [EQUATION_NUMBER.sub(lambda m: "\\text{" + "\u00a0" * 8 + "}" + m.group(1) + " ", f.read_text(encoding="utf-8"))
+             for f in files]
+    return "\n\n".join(parts)
 
 
 def report_status(files: list[Path]) -> None:
@@ -97,7 +112,7 @@ def _page_number_footer(section) -> None:
 def reference_docx(pandoc: str, target: Path) -> Path:
     """Mẫu kiểu chữ cho pandoc: lấy mẫu mặc định rồi chỉnh theo quy định trình bày."""
     from docx import Document
-    from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK  # noqa: F401
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.shared import Cm, Pt
 
     raw = subprocess.run([pandoc, "--print-default-data-file", "reference.docx"], check=True, capture_output=True).stdout
@@ -167,13 +182,15 @@ def reference_docx(pandoc: str, target: Path) -> Path:
 
 def build_docx(pandoc: str, output: Path, files: list[Path]) -> Path:
     reference = reference_docx(pandoc, output.parent / "reference.docx")
+    source = output.parent / "_ghep.md"
+    source.write_text(combined_markdown(files), encoding="utf-8")
     command = [
-        pandoc, *[str(p) for p in files],
+        pandoc, str(source),
         "--from", "markdown+pipe_tables+grid_tables+tex_math_dollars+implicit_figures+fenced_divs+raw_attribute",
         "--to", "docx",
         "--reference-doc", str(reference),
         "--resource-path", os.pathsep.join(str(p) for p in (SOURCE, ROOT / "docs", ROOT)),
-        "--syntax-highlighting=none",  # mã in đen trắng, hợp với bản in
+        "--no-highlight",  # mã in đen trắng; tùy chọn này có cả ở pandoc 2.x lẫn 3.x
         "--citeproc", "--bibliography", str(SOURCE / "tai_lieu.bib"), "--csl", str(SOURCE / "ieee.csl"),
         # Danh mục tài liệu theo IEEE bằng tiếng Anh (vol., no., pp.); ngôn ngữ văn bản đặt lại vi-VN bên dưới.
         "--metadata", "lang=en-US", "--metadata", "link-citations=true",
@@ -223,7 +240,8 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
     columns = len(table.columns)
     if not rows or not columns:
         return
-    texts = [[cell.text.strip() for cell in row.cells[:columns]] for row in rows]
+    # itertext() lấy cả chữ trong công thức (OMML), cell.text thì bỏ qua công thức.
+    texts = [["".join(cell._tc.itertext()).strip() for cell in row.cells[:columns]] for row in rows]
     weight, longest = [], []
     for i in range(columns):
         column = [row[i] for row in texts if i < len(row)]
@@ -231,6 +249,8 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
         longest.append(max((len(word) for t in column for word in t.split()), default=1))
     widths = [text_width_cm * w / sum(weight) for w in weight]
     floor = [min(5.0, 0.22 * n + 0.4) for n in longest]  # khoảng 0,22 cm mỗi ký tự ở cỡ 12
+    if sum(floor) > text_width_cm:  # quá nhiều cột hẹp: thu các mức sàn theo tỷ lệ để tổng vừa dòng
+        floor = [f * text_width_cm / sum(floor) for f in floor]
     for _ in range(3):
         short = [max(f - w, 0.0) for w, f in zip(widths, floor)]
         if not any(short):
@@ -261,7 +281,8 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
             cell.width = Cm(widths[i])
             for paragraph in cell.paragraphs:
                 fmt = paragraph.paragraph_format
-                fmt.alignment = WD_ALIGN_PARAGRAPH.LEFT
+                if fmt.alignment is None:  # giữ căn phải/giữa do Markdown (---: / :---:) đặt
+                    fmt.alignment = WD_ALIGN_PARAGRAPH.LEFT
                 fmt.first_line_indent = Cm(0)
                 fmt.line_spacing = 1.15
                 fmt.space_before, fmt.space_after = Pt(2), Pt(2)
@@ -289,6 +310,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--only", nargs="+", metavar="NN", help="chỉ ghép trang đầu và các chương có số này, ví dụ --only 02 03")
     parser.add_argument("--out", type=Path, default=OUTPUT, help="thư mục đầu ra (mặc định outputs/report)")
     args = parser.parse_args(argv)
+    args.out = args.out.resolve()  # pandoc chạy trong docs/bao_cao, nên đường dẫn tương đối phải đổi trước
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     files = chapters(args.only)
     report_status(files)
     try:
@@ -302,8 +326,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.no_pdf:
         return 0
     python = uno_python()
-    if python is None or shutil.which("soffice") is None and os.name != "nt":
-        print("Không tìm thấy LibreOffice (soffice + uno); mở DOCX bằng Word, F9 cập nhật mục lục rồi lưu PDF.")
+    if python is None:
+        print("Không tìm thấy Python có module uno của LibreOffice (cài python3-uno, hoặc đặt REPORT_UNO_PYTHON);"
+              " mở DOCX bằng Word, Ctrl+A rồi F9 cập nhật mục lục, sau đó lưu PDF.")
         return 0
     pdf = args.out / f"{NAME}.pdf"
     subprocess.run([python, str(ROOT / "scripts" / "report_to_pdf.py"), str(docx), str(pdf)], check=True)
