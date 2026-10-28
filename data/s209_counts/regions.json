@@ -1,0 +1,71 @@
+{
+  "schema": "s209_regions/1",
+  "d_range_m": [
+    300.0,
+    2000.0
+  ],
+  "note": "Vùng đếm theo hình chữ nhật [x0, y0, x1, y1) trên ô 512×512. Các ô trong cùng vùng được cắt sao cho KHÔNG chồng nhau trên ảnh nguồn (Lunokhod c02 bỏ 122 hàng đầu trùng c01; Mare Frigoris c02 chỉ lấy phần không trùng c03). Mare Frigoris chỉ lấy mặt biển: bỏ hố lớn ~6–8 km, vùng bóng, dải ghép sáng khác ở c02 và cụm hố lớn góc trên trái c03.",
+  "regions": {
+    "lunokhod1": {
+      "name": "Lunokhod 1 (Mare Imbrium)",
+      "crops": {
+        "moon_lunokhod1_loc_c01": {
+          "keep": [
+            [
+              0,
+              0,
+              512,
+              512
+            ]
+          ],
+          "exclude": []
+        },
+        "moon_lunokhod1_loc_c02": {
+          "keep": [
+            [
+              0,
+              122,
+              512,
+              512
+            ]
+          ],
+          "exclude": []
+        }
+      }
+    },
+    "marefrig": {
+      "name": "Mare Frigoris",
+      "crops": {
+        "moon_marefrig_loc_c02": {
+          "keep": [
+            [
+              336,
+              294,
+              512,
+              512
+            ]
+          ],
+          "exclude": []
+        },
+        "moon_marefrig_loc_c03": {
+          "keep": [
+            [
+              28,
+              0,
+              512,
+              512
+            ]
+          ],
+          "exclude": [
+            [
+              28,
+              0,
+              184,
+              244
+            ]
+          ]
+        }
+      }
+    }
+  }
+}

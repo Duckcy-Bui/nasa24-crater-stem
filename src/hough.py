@@ -6,6 +6,7 @@ import numpy as np
 
 DEFAULT_PARAMS = {
     "voting_method": "full_circle",
+    "candidate_selection": "score",
     "radius_step_px": 1,
     "r_min_limit_px": 5,
     "r_max_limit_px": 128,
@@ -39,6 +40,9 @@ def resolve_hough_params(params: dict) -> dict:
         or config["voting_method"] not in ("full_circle", "gradient")
     ):
         raise ValueError("voting_method phai la full_circle hoac gradient.")
+
+    if config["candidate_selection"] not in ("score", "radius_balanced"):
+        raise ValueError("candidate_selection phải là score hoặc radius_balanced.")
 
     for name in (
         "radius_step_px", "r_min_limit_px", "r_max_limit_px",
@@ -287,6 +291,20 @@ def detect_circles(
     candidates.sort(
         key=lambda c: (-c[0], -c[1], c[2], c[3], c[4])
     )
+
+    if config["candidate_selection"] == "radius_balanced":
+        # Equal turns across octave bands prevent small-radius texture peaks
+        # from consuming the entire output budget. Within a band keep score order.
+        from collections import deque
+        bands = {}
+        for candidate in candidates:
+            band = int(np.floor(np.log2(candidate[4] / 5)))
+            bands.setdefault(band, deque()).append(candidate)
+        queues = [bands[k] for k in sorted(bands)]
+        candidates = []
+        while queues:
+            candidates.extend(queue.popleft() for queue in queues)
+            queues = [queue for queue in queues if queue]
 
     selected = []
     # Any two centres in this image are closer than height + width.

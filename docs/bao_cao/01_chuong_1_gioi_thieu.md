@@ -1,6 +1,6 @@
 <!--
 Người chốt: Bùi Hải Đức (S3-08). Nguồn: docs/CHUONG_1_NHAP.md (S1-13), bảng giao việc, README.
-Việc còn lại: cập nhật mục 1.5 khi có kết quả S2-09, S3-01, S3-02, S3-05; điền tên chính thức của tài liệu đề bài.
+Việc còn lại: cập nhật mục 1.5 khi có kết quả S3-01, S3-02, S3-05 (kết quả S2-09 điền ngày 28/10 theo docs/S2-09_MAT_DO_HO.md); điền tên chính thức của tài liệu đề bài.
 -->
 
 # Chương 1. Giới thiệu
@@ -73,7 +73,7 @@ Bảng 1.1 tóm tắt mức độ hoàn thành bốn chức năng bắt buộc v
 | Yêu cầu | Kết quả | Mục |
 |---|---|---|
 | Tiền xử lý và Hough tự cài đặt | Chạy trên 26 ảnh; Hough NumPy có ví dụ tính tay và đối chiếu OpenCV; sáng–tối chỉ gắn nhãn; phân lớp và lọc trùng chưa bật mặc định | 3.2–3.5 |
-| Thống kê và so sánh mật độ | [CHỜ S2-09: cài đặt thống kê và so sánh hai vùng] | 3.6 |
+| Thống kê và so sánh mật độ | Đếm tay: Lunokhod 1 có 0,254, Mare Frigoris 0,322 hố/km²; chưa khác biệt có ý nghĩa (p = 0,35) | 3.6 |
 | Trò chơi khoanh hố và chấm điểm | Giao diện tiếng Việt trên trình duyệt; chấm riêng so với máy và với nhãn đã kiểm chéo, ghép một–một | 5.2–5.4 |
 | Thẻ khoa học | Thẻ có nguồn cho các vùng Apollo 15, Apollo 16, Lunokhod 1 và Lunokhod 2 (21/26 ảnh); chưa gắn vị trí trên ảnh | 5.5 |
 | Độ đo phát hiện | Recall trên nhãn đã biết, tập kiểm tra 8 ảnh, 66 nhãn: Hough NumPy 6,06 % (chọn theo điểm) và 7,58 % (cân bằng theo bán kính); OpenCV 98,48 % nhưng hơn 8.000 vòng mỗi ảnh [CHỜ PR #26 được merge] | 4.7 |
@@ -91,4 +91,4 @@ Kế hoạch chia ba sprint bảy ngày: sprint 1 (09–15/10) có bộ dữ li�
 
 ## 1.7. Cấu trúc báo cáo
 
-Chương 2 trình bày cơ sở lý thuyết; Chương 3 trình bày cách cài đặt chuỗi phát hiện, lọc trùng và thống kê; Chương 4 trình bày dữ liệu, đánh giá và khảo sát; Chương 5 mô tả hệ thống, trò chơi và kết luận.
+Chương 2 đến 5 lần lượt trình bày lý thuyết, cài đặt, dữ liệu và đánh giá, hệ thống và kết luận.

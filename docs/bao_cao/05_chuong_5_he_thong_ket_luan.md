@@ -4,7 +4,7 @@ docs/S2-04_CHAM_DIEM.md, docs/S2-08_MAN_HINH_KET_QUA.md, docs/S2-10_THE_KHOA_HOC
 src/contracts.py, src/matching.py, src/scoring.py, src/game_results.py, src/integration.py, app.py, src/crater_canvas/.
 Ảnh: docs/evidence/s3-08/ chụp ngày 27/10/2026. Đã chụp lại trên main 3cff367 (có S3-04: tọa độ tâm pixel, màu link):
 Hình 5.1 và 5.3 trùng từng byte, Hình 5.2 chỉ khác dòng thời điểm lưu lượt chấm, điểm vẫn 60/100.
-Việc còn lại: cập nhật 5.6 (số test, thời gian chạy) và 5.7 khi có S2-09, S3-01, S3-02, S3-05; cập nhật ảnh nếu giao diện đổi.
+Việc còn lại: cập nhật 5.6 (số test, thời gian chạy) và 5.7 khi có S3-01, S3-02, S3-05 (S2-09 điền ngày 28/10); cập nhật ảnh nếu giao diện đổi.
 -->
 
 # Chương 5. Hệ thống, trò chơi và kết luận
@@ -98,10 +98,10 @@ Thẻ khoa học gắn với vùng chụp của ảnh đang mở (Hình 5.3), g�
 
 ## 5.7. Kết luận
 
-Nhóm đã xây dựng một chuỗi chạy được từ đầu đến cuối, từ ảnh LROC thật đến trò chơi khoanh hố có chấm điểm; phần thống kê còn chờ và độ chính xác phát hiện còn thấp:
+Nhóm đã xây dựng một chuỗi chạy được từ đầu đến cuối, từ ảnh LROC thật đến trò chơi khoanh hố có chấm điểm, nhưng độ chính xác phát hiện còn thấp:
 
 - **Phát hiện hố:** tiền xử lý tám bước và Hough tròn tự cài đặt bằng NumPy chạy trên cả 26 ảnh, có ví dụ tính tay khớp mã và đối chiếu OpenCV; kiểm tra sáng–tối, phân lớp ứng viên và lọc trùng đã có, kèm thử nghiệm đối chiếu nhãn.
-- **Thống kê và so sánh mật độ:** [CHỜ S2-09: kết quả thống kê và so sánh mật độ hai vùng].
+- **Thống kê và so sánh mật độ:** nhóm đếm tay đủ hố 300–2.000 m trên hai vùng mặt biển cùng 20 m/px và cùng nắng xiên. Lunokhod 1 có 0,254 hố/km² trên 184,7 km², Mare Frigoris có 0,322 hố/km² trên 99,2 km². Khác biệt không có ý nghĩa thống kê (p = 0,35), nên chưa kết luận được vùng nào già hơn (mục 3.6). Mật độ tính từ ứng viên máy chưa dùng được, vì Hough luôn trả đủ 100 vòng nhỏ.
 - **Trò chơi:** giao diện tiếng Việt khoanh, sửa, phóng to và lưu trên máy tính lẫn điện thoại; câu trả lời được chấm riêng so với máy và so với 240 nhãn tham chiếu chắc chắn trên 26 ảnh, bằng ghép một–một đúng quy tắc tâm lệch ≤ 0,5 r của đề.
 - **Thẻ khoa học:** thẻ có nguồn cho bốn vùng Apollo và Lunokhod, không gắn sai địa điểm.
 - **Đánh giá:** trên tập kiểm tra 8 ảnh, Hough tự cài đặt tìm lại 4/66 hố đã gán nhãn (6,06 %), và 5/66 (7,58 %) khi chọn ứng viên cân bằng theo bán kính. OpenCV tìm lại 65/66 nhưng sinh hơn 8.000 vòng mỗi ảnh, nên con số này không chứng minh độ chính xác (mục 4.7) [CHỜ PR #26 được merge].

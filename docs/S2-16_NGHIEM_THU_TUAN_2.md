@@ -1,6 +1,6 @@
 # S2-16 — Biên bản nghiệm thu mốc tuần 2
 
-Người lập: Bùi Hải Đức (trưởng nhóm). Mốc theo kế hoạch: ngày 14 (22/10/2026). Biên bản lập muộn, ngày 27/10/2026, trên main `3cff367`; mọi trạng thái dưới đây tính tới ngày lập.
+Người lập: Bùi Hải Đức (trưởng nhóm). Mốc theo kế hoạch: ngày 14 (22/10/2026). Biên bản lập muộn, ngày 27/10/2026, trên main `3cff367`; mục 1–5 tính tới ngày lập. Mục 6 cập nhật ngày 28/10/2026, sau khi merge PR #26 và #30.
 
 Biên bản chỉ ghi điều kiểm được trong repo, trên bảng giao việc và trên bản chạy thử. Mỗi thành viên đọc dòng của mình ở mục 2 và xác nhận ở mục 5; người lập không xác nhận thay.
 
@@ -79,3 +79,34 @@ Mỗi người ghi "Đồng ý" hoặc nêu điểm sai trong bình luận PR #2
 | Nguyễn Mạnh Tiến | | |
 | Đinh Quang Hưng | | |
 | Hoàng Quốc Anh | | |
+
+## 6. Cập nhật ngày 28/10/2026
+
+PR #26 và #30 đã merge. Main `958b589` đã deploy lên VPS. Trên main có 296 test Python và 6 bộ test JavaScript, đều qua, CI xanh.
+
+| Tiêu chí | 27/10 | 28/10 | Căn cứ |
+|---|---|---|---|
+| Đủ bốn chức năng | Không đạt (3/4) | **Đạt**, còn hai lỗi cao | Thống kê S2-09 chạy trên main và VPS. Lỗi #10: mật độ một ảnh tính trên ứng viên máy nên giống nhau trên mọi ảnh cùng tỷ lệ. Lỗi #11: so sánh hai vùng chưa có trong app ([S2-13 mục 3](S2-13_TICH_HOP.md)) |
+| Tham số đã chốt | Không đạt | Không đạt | PR #26 giữ `score` cho game, `radius_balanced` chỉ là cấu hình thử. S2-15 vẫn chưa chốt |
+| Mỗi người có phần báo cáo của mình | Đạt ở mức nháp | Đạt ở mức nháp | Bảng 1.1 và mục 5.7 đã có kết quả S2-09; mục 3.6 còn chờ Hưng |
+| Có danh sách lỗi | Đạt | Đạt | 11 lỗi, 3 đã sửa |
+| Không còn chức năng bắt buộc chưa bắt đầu | Không đạt | **Đạt** | S2-09 đã merge |
+
+Thay đổi trạng thái đầu việc:
+
+- **S2-03 (Quốc Anh):** Tiến đã xác nhận trên PR #20 là đã kiểm đủ 26 overlay. Đầu việc này đủ điều kiện hoàn thành.
+- **S2-06, S2-11 (Tiến):** PR #26 đã merge.
+  - Trưởng nhóm chạy lại toàn bộ tập kiểm tra và ra đúng 24/24 dòng `results.csv`: NumPy `score` 4/66, `radius_balanced` 5/66, OpenCV 65/66.
+  - Còn lại phần điền số vào báo cáo (S3-06).
+- **S2-09 (Hưng):** PR #30 đã merge. Kết quả đếm tay hố D = 300–2.000 m:
+  - Lunokhod 1: 0,254 hố/km².
+  - Mare Frigoris: 0,322 hố/km².
+  - Khác biệt không có ý nghĩa (p = 0,35).
+  - Quốc Anh được ghi là người kiểm chéo bản đếm. PR được merge trước khi Quốc Anh tự xác nhận, nên vẫn cần Quốc Anh xác nhận trên PR #30.
+- **S2-13 (Đức):** đã ghép đủ bốn chức năng. Chưa đóng: còn lỗi #10, #11 và việc kiểm lại mục 2.1 với thống kê.
+
+Thêm một quyết định cần nhóm chốt:
+
+| Quyết định | Đề xuất | Lý do |
+|---|---|---|
+| Đổi cặp so mật độ từ Van de Graaff – Mare Frigoris (S1-06) sang Lunokhod 1 – Mare Frigoris | Đồng ý (trưởng nhóm); chờ Tiến và Quốc Anh | Van de Graaff chụp lúc nắng gần đứng (27–45°). So với Mare Frigoris (61–84°) thì chênh lệch số hố chủ yếu do ánh sáng. Nếu đồng ý thì sửa mục 4.1 của báo cáo |

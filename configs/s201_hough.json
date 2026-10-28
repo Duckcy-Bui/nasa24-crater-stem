@@ -10,6 +10,7 @@
     "nms_center_px": 4.0,
     "nms_radius_px": 2,
     "max_circles": 100,
-    "edge_batch_size": 256
+    "edge_batch_size": 256,
+    "candidate_selection": "score"
   }
 }

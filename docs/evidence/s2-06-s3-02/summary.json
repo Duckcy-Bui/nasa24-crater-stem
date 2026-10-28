@@ -1,0 +1,2314 @@
+{
+  "schema_version": "1.0",
+  "provenance_note": "Số đo gốc ngày 27/10/2026; giữ nguyên code_version và hash của mã lúc đo, không thay bằng mã sau review. +working-tree trong hồ sơ cũ do script cũ luôn thêm hậu tố, không đủ kết luận cây làm việc lúc đo. Cấu hình thử nghiệm bật radius_balanced tường minh; game tiếp tục dùng score.",
+  "input_hashes_file": "input_hashes.json",
+  "method_overrides": {
+    "numpy_score": {
+      "candidate_selection": "score"
+    },
+    "numpy_balanced": {
+      "candidate_selection": "radius_balanced"
+    },
+    "opencv": "HOUGH_GRADIENT; tham s? t?ng ?nh ? opencv_params"
+  },
+  "runs": {
+    "tuning": {
+      "status": "complete",
+      "created_at_utc": "2026-10-27T02:01:44.465215+00:00",
+      "split": "tuning",
+      "params": {
+        "voting_method": "full_circle",
+        "candidate_selection": "radius_balanced",
+        "radius_step_px": 1,
+        "r_min_limit_px": 5,
+        "r_max_limit_px": 128,
+        "angle_step_deg": 1.0,
+        "min_votes": 12,
+        "min_vote_ratio": 0.35,
+        "nms_center_px": 4.0,
+        "nms_radius_px": 2,
+        "max_circles": 100,
+        "edge_batch_size": 256
+      },
+      "config_sha256": "c2f758490611b11966bad57498a0c87d7756af7cc5a2b7d98a90dad20e139b7e",
+      "manifest_sha256": "c6448649bda9835b464152b626804be499a07c01a2af4ef8a0313255f3f15199",
+      "environment": {
+        "python": "3.12.10",
+        "numpy": "2.5.4",
+        "opencv": "5.0.0",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+        "opencv_threads": 1
+      },
+      "code_version": "59bc494dc6a328241ca42c13c6aabe30e73e1656+working-tree",
+      "source_sha256": {
+        "src/hough.py": "97afce01313bcca10e18fa966eed25559ba3b55444bdb44f984aa2cf179261ab",
+        "src/evaluation.py": "24616fa33590d5b01b4fc04e308293b15799d13d55897aaa90955458ef02a132",
+        "src/matching.py": "391f37126f0a321a6775c46fe174cc78616cc2e3fdba34379d513200adc098c9",
+        "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+        "src/postprocessing.py": "ee89464573326a848c742f8848da1f5336f5d613caf2f70172be72e384dabb69",
+        "scripts/evaluate_hough.py": "c4ced6b4d79522e38f56d3705dd1fea85eadc775f1fbacbfe26d0b85da502772"
+      },
+      "repeats": 3,
+      "warmups": 1,
+      "limitations": [
+        "Sparse labels: FP/Precision/F1 unknown; only recall on known labels.",
+        "Provisional metrics until review confirmation on PR #20.",
+        "NumPy timing excludes preprocessing; OpenCV includes internal edge detection.",
+        "Common smoothed gray and radius bounds; edges/thresholds/NMS differ.",
+        "OpenCV centers outside [0,511] are excluded to match the public NumPy contract.",
+        "Both selection policies fixed before holdout; no parameter search.",
+        "Dedupe measured separately; production pipeline is unchanged."
+      ],
+      "aggregate": {
+        "numpy_score": {
+          "tp": 0,
+          "fn": 28,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.0,
+          "recall_known_macro_mean": 0.0,
+          "recall_known_macro_std": 0.0
+        },
+        "numpy_balanced": {
+          "tp": 2,
+          "fn": 26,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.07142857142857142,
+          "recall_known_macro_mean": 0.07407407407407407,
+          "recall_known_macro_std": 0.06415002990995841
+        },
+        "opencv": {
+          "tp": 27,
+          "fn": 1,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.9642857142857143,
+          "recall_known_macro_mean": 0.9666666666666667,
+          "recall_known_macro_std": 0.05773502691896256
+        }
+      },
+      "candidate_selection_by_method": {
+        "numpy_score": "score",
+        "numpy_balanced": "radius_balanced"
+      },
+      "label_audit_status": "pass",
+      "images": [
+        {
+          "image_id": "moon_ap16_m132732855l_c01",
+          "radius_px": [
+            5,
+            125
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 158.99831101298335,
+            "canny_low": 63.59932440519334,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 25203,
+            "edge_px_final": 24291,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.2926179000060074,
+          "input_sha256": {
+            ".json": "8cf0cc2924825f4f41d884297adab2122edbbee14815fe51418711aa1645beae",
+            ".npy": "324a2b579228e1316873586e498e602afe8634748488d8cfcf99809d036b5b89"
+          },
+          "label_sha256": "4d6877243dc39f668ac29cab592c84f588abc2de27564f8dc0b12c43982ca92a",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 125
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 29.09534989995882,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 1,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.1111111111111111,
+              "f1": null,
+              "median_seconds": 22.53912390000187,
+              "candidate_count": 100,
+              "radii_gt16": 29,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 4.59541090001585,
+              "candidate_count": 7112,
+              "radii_gt16": 4390,
+              "after_dedupe": {
+                "tp": 3,
+                "fn": 6,
+                "recall": 0.3333333333333333
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_ap16_m109134835l_c01",
+          "radius_px": [
+            5,
+            125
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 115.78955505788326,
+            "canny_low": 46.31582202315331,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 27517,
+            "edge_px_final": 26642,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.07772170001408085,
+          "input_sha256": {
+            ".json": "d22765c9b583eb86d401935427e512f594063181f0586fb1ad0b5c6487f4433b",
+            ".npy": "04e8040f6256f0243a0edb9143714359b7e5946b52507134366acb3824fb4cb3"
+          },
+          "label_sha256": "b3ac97131d3f2036d69a46d449674b2f9a05e3567bc15f4b8ff00ae687300f70",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 125
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 10,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 8.999863600009121,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 10,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 0,
+              "fp": null,
+              "fn": 10,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 9.06964479997987,
+              "candidate_count": 100,
+              "radii_gt16": 4,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 10,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 1,
+              "precision": null,
+              "recall": 0.9,
+              "f1": null,
+              "median_seconds": 5.905886700027622,
+              "candidate_count": 8984,
+              "radii_gt16": 5311,
+              "after_dedupe": {
+                "tp": 4,
+                "fn": 6,
+                "recall": 0.4
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_ap15_hia_c01",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 82.97686569392683,
+            "canny_low": 33.19074627757073,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 28739,
+            "edge_px_final": 27996,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.08256909996271133,
+          "input_sha256": {
+            ".json": "702a497fd98907f37f5e80927c1f59b7a52c7b6aac634edd824d005235bd5170",
+            ".npy": "9f5878d262c369ee1cafd099e03bf18a3f5fe905afeb675e1c8ba4ddd57772c6"
+          },
+          "label_sha256": "18ea77be695beb607342864d687c1df861197c5390cd2907630ac6d054b4b8ac",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 7.306037400034256,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 1,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.1111111111111111,
+              "f1": null,
+              "median_seconds": 7.455219900002703,
+              "candidate_count": 100,
+              "radii_gt16": 34,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 8,
+                "recall": 0.1111111111111111
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 2.9200547999935225,
+              "candidate_count": 8030,
+              "radii_gt16": 5259,
+              "after_dedupe": {
+                "tp": 3,
+                "fn": 6,
+                "recall": 0.3333333333333333
+              }
+            }
+          }
+        }
+      ]
+    },
+    "holdout": {
+      "status": "complete",
+      "created_at_utc": "2026-10-27T02:08:29.755115+00:00",
+      "split": "holdout",
+      "params": {
+        "voting_method": "full_circle",
+        "candidate_selection": "radius_balanced",
+        "radius_step_px": 1,
+        "r_min_limit_px": 5,
+        "r_max_limit_px": 128,
+        "angle_step_deg": 1.0,
+        "min_votes": 12,
+        "min_vote_ratio": 0.35,
+        "nms_center_px": 4.0,
+        "nms_radius_px": 2,
+        "max_circles": 100,
+        "edge_batch_size": 256
+      },
+      "config_sha256": "c2f758490611b11966bad57498a0c87d7756af7cc5a2b7d98a90dad20e139b7e",
+      "manifest_sha256": "c6448649bda9835b464152b626804be499a07c01a2af4ef8a0313255f3f15199",
+      "environment": {
+        "python": "3.12.10",
+        "numpy": "2.5.4",
+        "opencv": "5.0.0",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+        "opencv_threads": 1
+      },
+      "code_version": "59bc494dc6a328241ca42c13c6aabe30e73e1656+working-tree",
+      "source_sha256": {
+        "src/hough.py": "97afce01313bcca10e18fa966eed25559ba3b55444bdb44f984aa2cf179261ab",
+        "src/evaluation.py": "24616fa33590d5b01b4fc04e308293b15799d13d55897aaa90955458ef02a132",
+        "src/matching.py": "391f37126f0a321a6775c46fe174cc78616cc2e3fdba34379d513200adc098c9",
+        "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+        "src/postprocessing.py": "ee89464573326a848c742f8848da1f5336f5d613caf2f70172be72e384dabb69",
+        "scripts/evaluate_hough.py": "c4ced6b4d79522e38f56d3705dd1fea85eadc775f1fbacbfe26d0b85da502772"
+      },
+      "repeats": 3,
+      "warmups": 1,
+      "limitations": [
+        "Sparse labels: FP/Precision/F1 unknown; only recall on known labels.",
+        "Provisional metrics until review confirmation on PR #20.",
+        "NumPy timing excludes preprocessing; OpenCV includes internal edge detection.",
+        "Common smoothed gray and radius bounds; edges/thresholds/NMS differ.",
+        "OpenCV centers outside [0,511] are excluded to match the public NumPy contract.",
+        "Both selection policies fixed before holdout; no parameter search.",
+        "Dedupe measured separately; production pipeline is unchanged."
+      ],
+      "aggregate": {
+        "numpy_score": {
+          "tp": 4,
+          "fn": 62,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.06060606060606061,
+          "recall_known_macro_mean": 0.05952380952380952,
+          "recall_known_macro_std": 0.08766159537450206
+        },
+        "numpy_balanced": {
+          "tp": 5,
+          "fn": 61,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.07575757575757576,
+          "recall_known_macro_mean": 0.0763888888888889,
+          "recall_known_macro_std": 0.08877721159205196
+        },
+        "opencv": {
+          "tp": 65,
+          "fn": 1,
+          "fp": null,
+          "precision": null,
+          "f1": null,
+          "recall_known_micro": 0.9848484848484849,
+          "recall_known_macro_mean": 0.9821428571428572,
+          "recall_known_macro_std": 0.050507627227610555
+        }
+      },
+      "candidate_selection_by_method": {
+        "numpy_score": "score",
+        "numpy_balanced": "radius_balanced"
+      },
+      "label_audit_status": "pass",
+      "images": [
+        {
+          "image_id": "moon_ap15_loc_c01",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 86.97637300193311,
+            "canny_low": 34.79054920077325,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 26499,
+            "edge_px_final": 25427,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.08011040004203096,
+          "input_sha256": {
+            ".json": "0ff4cf87d51828c35ee1c57d02356f696121e05fcf172e76a7b94993b0f190f4",
+            ".npy": "a7241c89a94a7080d61f1008b26366717de4937a0e80abbc6d782b8acf1a1c87"
+          },
+          "label_sha256": "ba3abb79839f4e03dcf237260067077508b2dbc227c63161d7144c1acd06f8c3",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 20.403007900051307,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 8,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 0,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 21.02407139999559,
+              "candidate_count": 100,
+              "radii_gt16": 10,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 8,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 8,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 6.2177966000163,
+              "candidate_count": 8195,
+              "radii_gt16": 5379,
+              "after_dedupe": {
+                "tp": 5,
+                "fn": 3,
+                "recall": 0.625
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_ap15_loc_c02",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 78.93530452251434,
+            "canny_low": 31.57412180900574,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 33269,
+            "edge_px_final": 32200,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.07476310001220554,
+          "input_sha256": {
+            ".json": "0983913cee5a46981c14f10e841d1dbb6b42e59a264d3efaf7cfe1aca1d01e2f",
+            ".npy": "a8940e7e10b07f7f624b6193a0185f7a9c647e179e244719428d95f4eea8f84b"
+          },
+          "label_sha256": "b33e799053eb88333f320ee9e196c78dab37d25d9cbe60b83da02634338fcb68",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 7.746854500030167,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 7.666908000013791,
+              "candidate_count": 100,
+              "radii_gt16": 29,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 3.152893499995116,
+              "candidate_count": 8323,
+              "radii_gt16": 5293,
+              "after_dedupe": {
+                "tp": 3,
+                "fn": 6,
+                "recall": 0.3333333333333333
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_ap15_loc_c03",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 77.98847588896751,
+            "canny_low": 31.19539035558701,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 36795,
+            "edge_px_final": 35590,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.07783190003829077,
+          "input_sha256": {
+            ".json": "edc1c5963a7780429505061a62c9a72eb9a0c8d4bade5bf6699850a7e56c2572",
+            ".npy": "611cc230c0d7ca3d18329496b202d58395cf2b734f5ff5c30b67570c6c5df743"
+          },
+          "label_sha256": "a0f1652238269b6ddfdcb6f454b0d6fecc0c9f6cb75d3f23a7cc014a6f7f2070",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 8.452787899994291,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 8.418690199963748,
+              "candidate_count": 100,
+              "radii_gt16": 32,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 3.442835499998182,
+              "candidate_count": 8438,
+              "radii_gt16": 5317,
+              "after_dedupe": {
+                "tp": 4,
+                "fn": 5,
+                "recall": 0.4444444444444444
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_lunokhod2_loc_c01",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 108.73750814795494,
+            "canny_low": 43.49500325918198,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 29119,
+            "edge_px_final": 28053,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.09630689996993169,
+          "input_sha256": {
+            ".json": "8371000764a9091c5502a43ac9b2b52b40753784d37a1d5240845017f5a2adba",
+            ".npy": "8b9c3bb5335af58cdf5948c9bf15ffbb9cdd57a7d3f93cf878a941980724fca8"
+          },
+          "label_sha256": "b862518d48fc8208c202e5b31ebf27bc71cb69b851d37132530025ebbde790e7",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 1,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.1111111111111111,
+              "f1": null,
+              "median_seconds": 6.5611781000043266,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 8,
+                "recall": 0.1111111111111111
+              }
+            },
+            "numpy_balanced": {
+              "tp": 1,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.1111111111111111,
+              "f1": null,
+              "median_seconds": 6.33191569999326,
+              "candidate_count": 100,
+              "radii_gt16": 28,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 8,
+                "recall": 0.1111111111111111
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 4.07714260002831,
+              "candidate_count": 9040,
+              "radii_gt16": 5495,
+              "after_dedupe": {
+                "tp": 5,
+                "fn": 4,
+                "recall": 0.5555555555555556
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_lunokhod2_loc_c02",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 113.23075944185257,
+            "canny_low": 45.29230377674103,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 27281,
+            "edge_px_final": 26372,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.08589809999102727,
+          "input_sha256": {
+            ".json": "c7c79aca27b68b239a423c7d38f675f8473479b43f3a1c602cb9c18bd414c3e3",
+            ".npy": "a34f1d613b346cc501807f56699c12e06ecb94aecf73597103670cf813d4a643"
+          },
+          "label_sha256": "5c5e92dcf84bff320bbcec58bda50bb7aec6a99e0cf396bab28dd710c20a54b1",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 9,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 6.260267300007399,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 9,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 1,
+              "fp": null,
+              "fn": 8,
+              "precision": null,
+              "recall": 0.1111111111111111,
+              "f1": null,
+              "median_seconds": 6.365661300020292,
+              "candidate_count": 100,
+              "radii_gt16": 16,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 8,
+                "recall": 0.1111111111111111
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 4.178273099998478,
+              "candidate_count": 9086,
+              "radii_gt16": 5399,
+              "after_dedupe": {
+                "tp": 4,
+                "fn": 5,
+                "recall": 0.4444444444444444
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_marefrig_loc_c01",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 90.94043353199962,
+            "canny_low": 36.37617341279985,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 27101,
+            "edge_px_final": 26046,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.10117420001188293,
+          "input_sha256": {
+            ".json": "482f6ce95be83f4ba65856f21dcc32a3a1f575a783c0f41284d007bf9b553628",
+            ".npy": "f5482edc2ec2d1dc8a50cb0f8dc274989eb1a98824ab9f6878d968f0caffd964"
+          },
+          "label_sha256": "fc6e6e690378d043c70718a4d7a7d96f16c905f3a78255364dc192cab335480a",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 0,
+              "fp": null,
+              "fn": 6,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 6.055578199971933,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 6,
+                "recall": 0.0
+              }
+            },
+            "numpy_balanced": {
+              "tp": 1,
+              "fp": null,
+              "fn": 5,
+              "precision": null,
+              "recall": 0.16666666666666666,
+              "f1": null,
+              "median_seconds": 19.365005500032566,
+              "candidate_count": 100,
+              "radii_gt16": 29,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 5,
+                "recall": 0.16666666666666666
+              }
+            },
+            "opencv": {
+              "tp": 6,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 6.300403200031724,
+              "candidate_count": 8259,
+              "radii_gt16": 5390,
+              "after_dedupe": {
+                "tp": 4,
+                "fn": 2,
+                "recall": 0.6666666666666666
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_marefrig_loc_c02",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 86.94853569567205,
+            "canny_low": 34.779414278268824,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 32179,
+            "edge_px_final": 31074,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.21100909996312112,
+          "input_sha256": {
+            ".json": "95770cda6d2e49a902b8be518c67a5bc65c6aa6fae42786efbecb04dabdbd9b3",
+            ".npy": "5c4f6965a8d327500153fcc133b92a24d5e2f1ea268753699b8e15a87d370629"
+          },
+          "label_sha256": "7aa0267168759557270d0292db92e31bf2708d5bae0f42e2e651234e9f4d7742",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 1,
+              "fp": null,
+              "fn": 6,
+              "precision": null,
+              "recall": 0.14285714285714285,
+              "f1": null,
+              "median_seconds": 22.25037100003101,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 6,
+                "recall": 0.14285714285714285
+              }
+            },
+            "numpy_balanced": {
+              "tp": 0,
+              "fp": null,
+              "fn": 7,
+              "precision": null,
+              "recall": 0.0,
+              "f1": null,
+              "median_seconds": 24.682947500026785,
+              "candidate_count": 100,
+              "radii_gt16": 32,
+              "after_dedupe": {
+                "tp": 0,
+                "fn": 7,
+                "recall": 0.0
+              }
+            },
+            "opencv": {
+              "tp": 6,
+              "fp": null,
+              "fn": 1,
+              "precision": null,
+              "recall": 0.8571428571428571,
+              "f1": null,
+              "median_seconds": 6.969716100022197,
+              "candidate_count": 8521,
+              "radii_gt16": 5417,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 6,
+                "recall": 0.14285714285714285
+              }
+            }
+          }
+        },
+        {
+          "image_id": "moon_marefrig_loc_c03",
+          "radius_px": [
+            5,
+            100
+          ],
+          "preprocess_params": {
+            "version": "s108-2",
+            "module_version": "s108-2",
+            "p_lo": 0.5,
+            "p_hi": 99.5,
+            "clahe_clip": 2.0,
+            "clahe_grid": 8,
+            "clahe_bits": 8,
+            "gauss_sigma": 1.5,
+            "gauss_kernel_size": 11,
+            "border_mode": "reflect_101",
+            "canny_high_pct": 90.0,
+            "canny_low_ratio": 0.4,
+            "edge_margin_px": 6,
+            "edge_margin_requested_px": 6,
+            "downsample_k": 1,
+            "b1_applied": false,
+            "input_shape": [
+              512,
+              512
+            ],
+            "p_lo_value": 0.0,
+            "p_hi_value": 1.0,
+            "normalization_strategy": "valid_percentile",
+            "canny_high": 98.53594855964184,
+            "canny_low": 39.41437942385674,
+            "canny_threshold_strategy": "valid_percentile",
+            "canny_threshold_valid_px": 250000,
+            "canny_aperture": 3,
+            "canny_l2gradient": true,
+            "valid_ratio": 1.0,
+            "edge_px_canny": 30240,
+            "edge_px_final": 29226,
+            "steps": [
+              {
+                "id": "B0",
+                "name": "Đọc file và cắt cửa sổ",
+                "impl": "THƯ VIỆN: rasterio (GDAL)"
+              },
+              {
+                "id": "B1",
+                "name": "Thu nhỏ trung bình khối k×k",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B2",
+                "name": "Ảnh xám BT.601",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B3",
+                "name": "Chuẩn hóa theo phân vị",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B4",
+                "name": "Tăng tương phản CLAHE",
+                "impl": "THƯ VIỆN: OpenCV createCLAHE"
+              },
+              {
+                "id": "B5",
+                "name": "Làm trơn Gaussian tách hai chiều",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B6",
+                "name": "Gradient Sobel 3×3",
+                "impl": "TỰ VIẾT: NumPy"
+              },
+              {
+                "id": "B7",
+                "name": "Biên Canny",
+                "impl": "THƯ VIỆN: OpenCV Canny"
+              },
+              {
+                "id": "B8",
+                "name": "Mặt nạ biên",
+                "impl": "TỰ VIẾT: NumPy"
+              }
+            ]
+          },
+          "seconds_preprocess": 0.19175930001074448,
+          "input_sha256": {
+            ".json": "890c97b98c9d816227a394f7f7c43beb0e7d0d892c2f04bdb5058797551ee60d",
+            ".npy": "d68a84c5266896f7f4b5a8a8604106fd50f5a79f500f01280e459c5b96c4206e"
+          },
+          "label_sha256": "c72029e3847d279e842380fce4941f677b08b597b20da3a291760f647cfcc3cf",
+          "opencv_params": {
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 5,
+            "maxRadius": 100
+          },
+          "methods": {
+            "numpy_score": {
+              "tp": 2,
+              "fp": null,
+              "fn": 7,
+              "precision": null,
+              "recall": 0.2222222222222222,
+              "f1": null,
+              "median_seconds": 20.32236000004923,
+              "candidate_count": 100,
+              "radii_gt16": 0,
+              "after_dedupe": {
+                "tp": 2,
+                "fn": 7,
+                "recall": 0.2222222222222222
+              }
+            },
+            "numpy_balanced": {
+              "tp": 2,
+              "fp": null,
+              "fn": 7,
+              "precision": null,
+              "recall": 0.2222222222222222,
+              "f1": null,
+              "median_seconds": 25.496965099999215,
+              "candidate_count": 100,
+              "radii_gt16": 30,
+              "after_dedupe": {
+                "tp": 1,
+                "fn": 8,
+                "recall": 0.1111111111111111
+              }
+            },
+            "opencv": {
+              "tp": 9,
+              "fp": null,
+              "fn": 0,
+              "precision": null,
+              "recall": 1.0,
+              "f1": null,
+              "median_seconds": 3.77155840001069,
+              "candidate_count": 8866,
+              "radii_gt16": 5440,
+              "after_dedupe": {
+                "tp": 3,
+                "fn": 6,
+                "recall": 0.3333333333333333
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "previous_validation": {
+    "regression": {
+      "command": "python -X utf8 -B -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "discovered_tests": 277,
+      "note": "Full suite completed successfully in tool session 85251; console output was truncated, this is a summary, not a full log."
+    },
+    "synthetic": {
+      "data_kind": "synthetic",
+      "truth": [
+        {
+          "crater_id": "T1",
+          "x": 160.0,
+          "y": 180.0,
+          "r": 32.0,
+          "confidence": null,
+          "votes": null
+        },
+        {
+          "crater_id": "T2",
+          "x": 350.0,
+          "y": 310.0,
+          "r": 20.0,
+          "confidence": null,
+          "votes": null
+        },
+        {
+          "crater_id": "T3",
+          "x": 8.0,
+          "y": 420.0,
+          "r": 24.0,
+          "confidence": null,
+          "votes": null
+        }
+      ],
+      "radius_range_px": [
+        18,
+        36
+      ],
+      "edge_count": 489,
+      "common_preprocessing": {
+        "gaussian_sigma": 1.5,
+        "gaussian_size": 11,
+        "gaussian_border": "reflect_101",
+        "quantization": "rint(255*smooth)",
+        "sobel_size": 3,
+        "sobel_border": "replicate",
+        "canny_low": 50,
+        "canny_high": 100,
+        "canny_L2gradient": false
+      },
+      "results": {
+        "full_circle": {
+          "params": {
+            "voting_method": "full_circle",
+            "candidate_selection": "radius_balanced",
+            "radius_step_px": 1,
+            "r_min_limit_px": 5,
+            "r_max_limit_px": 128,
+            "angle_step_deg": 1.0,
+            "min_votes": 12,
+            "min_vote_ratio": 0.35,
+            "nms_center_px": 4.0,
+            "nms_radius_px": 2,
+            "max_circles": 100,
+            "edge_batch_size": 256
+          },
+          "seconds": 0.21339510002871975,
+          "detections": [
+            {
+              "crater_id": "M1",
+              "x": 349.0,
+              "y": 311.0,
+              "r": 19.0,
+              "confidence": null,
+              "votes": 51,
+              "nearest_truth_id": "T2",
+              "dx_px": -1.0,
+              "dy_px": 1.0,
+              "center_distance_px": 1.4142135623730951,
+              "dr_px": -1.0
+            },
+            {
+              "crater_id": "M2",
+              "x": 160.0,
+              "y": 180.0,
+              "r": 32.0,
+              "confidence": null,
+              "votes": 188,
+              "nearest_truth_id": "T1",
+              "dx_px": 0.0,
+              "dy_px": 0.0,
+              "center_distance_px": 0.0,
+              "dr_px": 0.0
+            },
+            {
+              "crater_id": "M3",
+              "x": 8.0,
+              "y": 420.0,
+              "r": 24.0,
+              "confidence": null,
+              "votes": 83,
+              "nearest_truth_id": "T3",
+              "dx_px": 0.0,
+              "dy_px": 0.0,
+              "center_distance_px": 0.0,
+              "dr_px": 0.0
+            }
+          ],
+          "metrics": {
+            "image_id": "s105_synthetic_512",
+            "status": "evaluated",
+            "coverage": "complete",
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "pairs": [
+              {
+                "prediction_id": "M1",
+                "reference_id": "T2",
+                "center_distance_px": 1.414,
+                "normalized_center_distance": 0.0707,
+                "radius_error_px": -1.0
+              },
+              {
+                "prediction_id": "M2",
+                "reference_id": "T1",
+                "center_distance_px": 0.0,
+                "normalized_center_distance": 0.0,
+                "radius_error_px": 0.0
+              },
+              {
+                "prediction_id": "M3",
+                "reference_id": "T3",
+                "center_distance_px": 0.0,
+                "normalized_center_distance": 0.0,
+                "radius_error_px": 0.0
+              }
+            ],
+            "ignored_prediction_ids": [],
+            "missed_reference_ids": [],
+            "unmatched_prediction_ids": [],
+            "reference_source": "synthetic construction; reviewed by construction",
+            "rule": {
+              "matching": "one_to_one",
+              "center_tolerance_fraction": 0.5
+            },
+            "known_references": 3,
+            "reason": "Complete annotated region."
+          }
+        },
+        "gradient": {
+          "params": {
+            "voting_method": "gradient",
+            "candidate_selection": "radius_balanced",
+            "radius_step_px": 1,
+            "r_min_limit_px": 5,
+            "r_max_limit_px": 128,
+            "angle_step_deg": 1.0,
+            "min_votes": 12,
+            "min_vote_ratio": 0.35,
+            "nms_center_px": 4.0,
+            "nms_radius_px": 2,
+            "max_circles": 100,
+            "edge_batch_size": 256
+          },
+          "seconds": 0.11773769999854267,
+          "detections": [
+            {
+              "crater_id": "M1",
+              "x": 350.0,
+              "y": 310.0,
+              "r": 20.0,
+              "confidence": null,
+              "votes": 48,
+              "nearest_truth_id": "T2",
+              "dx_px": 0.0,
+              "dy_px": 0.0,
+              "center_distance_px": 0.0,
+              "dr_px": 0.0
+            }
+          ],
+          "metrics": {
+            "image_id": "s105_synthetic_512",
+            "status": "evaluated",
+            "coverage": "complete",
+            "tp": 1,
+            "fp": 0,
+            "fn": 2,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "pairs": [
+              {
+                "prediction_id": "M1",
+                "reference_id": "T2",
+                "center_distance_px": 0.0,
+                "normalized_center_distance": 0.0,
+                "radius_error_px": 0.0
+              }
+            ],
+            "ignored_prediction_ids": [],
+            "missed_reference_ids": [
+              "T1",
+              "T3"
+            ],
+            "unmatched_prediction_ids": [],
+            "reference_source": "synthetic construction; reviewed by construction",
+            "rule": {
+              "matching": "one_to_one",
+              "center_tolerance_fraction": 0.5
+            },
+            "known_references": 3,
+            "reason": "Complete annotated region."
+          }
+        },
+        "opencv": {
+          "params": {
+            "method": "HOUGH_GRADIENT",
+            "dp": 1.0,
+            "minDist": 4.0,
+            "param1": 100.0,
+            "param2": 12.0,
+            "minRadius": 18,
+            "maxRadius": 36
+          },
+          "seconds": 0.011217399965971708,
+          "detections": [
+            {
+              "crater_id": "CV1",
+              "x": 160.5,
+              "y": 180.5,
+              "r": 31.700000762939453,
+              "confidence": null,
+              "votes": null,
+              "nearest_truth_id": "T1",
+              "dx_px": 0.5,
+              "dy_px": 0.5,
+              "center_distance_px": 0.7071067811865476,
+              "dr_px": -0.2999992370605469
+            },
+            {
+              "crater_id": "CV2",
+              "x": 350.5,
+              "y": 310.5,
+              "r": 19.600000381469727,
+              "confidence": null,
+              "votes": null,
+              "nearest_truth_id": "T2",
+              "dx_px": 0.5,
+              "dy_px": 0.5,
+              "center_distance_px": 0.7071067811865476,
+              "dr_px": -0.39999961853027344
+            },
+            {
+              "crater_id": "CV3",
+              "x": 8.5,
+              "y": 420.5,
+              "r": 23.399999618530273,
+              "confidence": null,
+              "votes": null,
+              "nearest_truth_id": "T3",
+              "dx_px": 0.5,
+              "dy_px": 0.5,
+              "center_distance_px": 0.7071067811865476,
+              "dr_px": -0.6000003814697266
+            },
+            {
+              "crater_id": "CV4",
+              "x": 6.5,
+              "y": 415.5,
+              "r": 28.5,
+              "confidence": null,
+              "votes": null,
+              "nearest_truth_id": "T3",
+              "dx_px": -1.5,
+              "dy_px": -4.5,
+              "center_distance_px": 4.743416490252569,
+              "dr_px": 4.5
+            }
+          ],
+          "metrics": {
+            "image_id": "s105_synthetic_512",
+            "status": "evaluated",
+            "coverage": "complete",
+            "tp": 3,
+            "fp": 1,
+            "fn": 0,
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "pairs": [
+              {
+                "prediction_id": "CV1",
+                "reference_id": "T1",
+                "center_distance_px": 0.707,
+                "normalized_center_distance": 0.0221,
+                "radius_error_px": -0.3
+              },
+              {
+                "prediction_id": "CV2",
+                "reference_id": "T2",
+                "center_distance_px": 0.707,
+                "normalized_center_distance": 0.0354,
+                "radius_error_px": -0.4
+              },
+              {
+                "prediction_id": "CV3",
+                "reference_id": "T3",
+                "center_distance_px": 0.707,
+                "normalized_center_distance": 0.0295,
+                "radius_error_px": -0.6
+              }
+            ],
+            "ignored_prediction_ids": [],
+            "missed_reference_ids": [],
+            "unmatched_prediction_ids": [
+              "CV4"
+            ],
+            "reference_source": "synthetic construction; reviewed by construction",
+            "rule": {
+              "matching": "one_to_one",
+              "center_tolerance_fraction": 0.5
+            },
+            "known_references": 3,
+            "reason": "Complete annotated region."
+          }
+        }
+      },
+      "blank_control": "all three methods returned no circles",
+      "comparison_limits": [
+        "Same gray_u8 and radius range; NumPy receives reconstructed Canny edges.",
+        "Internal Canny reconstruction verified against OpenCV 4.14.0 source; other versions must be checked separately.",
+        "NumPy per-radius NMS/ratio and OpenCV center/radius stages differ.",
+        "Nearest-truth differences are descriptive, not TP/FP or Precision/Recall.",
+        "NumPy timings exclude Sobel/Canny; OpenCV timing includes them.",
+        "Parameters illustrate differences; no accuracy acceptance threshold."
+      ],
+      "source_sha256": {
+        "src/hough.py": "97afce01313bcca10e18fa966eed25559ba3b55444bdb44f984aa2cf179261ab",
+        "scripts/verify_hough_examples.py": "aa2cf80911a4a014d2944290ea7f1228f642a4410d774620c4ddb6e919c04a71"
+      }
+    },
+    "historical_adapter": {
+      "baseline_commit": "eb8278cc82901cc28dbbc6509b0ff0b6bfefa0cc",
+      "case": "synthetic r=8, search 7..9, three repeats and one warmup",
+      "result": {
+        "results": {
+          "baseline": {
+            "seconds": [
+              0.020187799993436784,
+              0.02575309999519959,
+              0.019445599988102913
+            ],
+            "stable": true,
+            "circles": [
+              {
+                "crater_id": "M1",
+                "x": 160.0,
+                "y": 180.0,
+                "r": 8.0,
+                "confidence": null,
+                "votes": 48
+              }
+            ],
+            "median_seconds": 0.020187799993436784,
+            "min_seconds": 0.019445599988102913,
+            "max_seconds": 0.02575309999519959,
+            "circle_count": 1,
+            "hit_max_circles": false
+          },
+          "optimized": {
+            "seconds": [
+              0.025487100007012486,
+              0.02334989997325465,
+              0.019805199990514666
+            ],
+            "stable": true,
+            "circles": [
+              {
+                "crater_id": "M1",
+                "x": 160.0,
+                "y": 180.0,
+                "r": 8.0,
+                "confidence": null,
+                "votes": 48
+              }
+            ],
+            "median_seconds": 0.02334989997325465,
+            "min_seconds": 0.019805199990514666,
+            "max_seconds": 0.025487100007012486,
+            "circle_count": 1,
+            "hit_max_circles": false
+          }
+        },
+        "identical_outputs": true,
+        "speedup": 0.8645775791999201
+      }
+    }
+  },
+  "review_confirmation_file": "../../../data/reference_labels/review_confirmation.json",
+  "original_pr_commit": "939254b91cd45f3bf4d4d14e9562acb37d5b4917",
+  "measured_text_newlines": {
+    "src/hough.py": "CRLF",
+    "src/evaluation.py": "CRLF",
+    "src/matching.py": "LF",
+    "src/preprocessing.py": "LF",
+    "src/postprocessing.py": "LF",
+    "scripts/evaluate_hough.py": "CRLF",
+    "configs/s201_large_craters.json": "CRLF",
+    "configs/s201_hough.json": "CRLF"
+  },
+  "git_blob_sha256_at_original_pr": {
+    "src/hough.py": "17faf0384d8eced51f81686f6b92952a8536670e670d3ff92fa7a15ef35ad95d",
+    "src/evaluation.py": "54fb224f7066442aadb55273e1e0f3a38292b21a3b52594a53c4ff63ce868ad1",
+    "src/matching.py": "391f37126f0a321a6775c46fe174cc78616cc2e3fdba34379d513200adc098c9",
+    "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+    "src/postprocessing.py": "ee89464573326a848c742f8848da1f5336f5d613caf2f70172be72e384dabb69",
+    "scripts/evaluate_hough.py": "6e114457c0662b5fdce07fc24ae8f9a8dff2632d50e010d363c8f581c6ca87e8",
+    "configs/s201_large_craters.json": "952e761f174aec065e4eb73cc12940b7245177321d15a94c30727cd34d61db23",
+    "configs/s201_hough.json": "997db2b7dcd420933feef26ea75a995214d429b082a8d5e7b5a83b5d5ef606f2"
+  },
+  "review_validation": {
+    "date": "2026-10-28",
+    "python_tests_passed": 282,
+    "contracts": "pass",
+    "canvas_suites_passed": 6,
+    "log_root": "outputs/pr26-review",
+    "checks": [
+      "Game config resolves score; balanced is explicit.",
+      "Clean, changed and untracked Git trees report code_version correctly.",
+      "Original metrics, timings and archive bytes are preserved."
+    ],
+    "cli_smoke": {
+      "image_id": "moon_ap15_hia_c01",
+      "split": "tuning",
+      "repeats": 1,
+      "status": "pass",
+      "output": "outputs/pr26-review/smoke_tuning",
+      "used_for_quality_conclusions": false
+    },
+    "source_sha256": {
+      "src/hough.py": "daee71c1553584c8e64d0844290d28a80292928ba09fb7a45c086c4d5dc2a2f9",
+      "src/evaluation.py": "c945ff4cd4745ad71119a08466f4388f2450abcb425a13a2ee972b2f4918aec6",
+      "scripts/evaluate_hough.py": "cf234832ddc18c8847e80ac34309cffd8ea5865e73e8b7fd4672e22a1f14cabb"
+    }
+  }
+}
