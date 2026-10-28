@@ -2,7 +2,7 @@
 
 Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration.py`, `app.py` (`show_statistics`, `show_cards`). Test: `tests/test_integration.py`.
 
-Trạng thái 27/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã cài (`statistics.summarize`, nhánh s2-09-mat-do): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1.
+Trạng thái 28/10/2026: **đã ghép đủ bốn chức năng** trên main `958b589` và trên VPS. Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 chạy từ 27/10. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã merge (PR #30): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1. Chưa đóng S2-13: còn lỗi #10, #11 và chưa kiểm lại mục 2.1 với thống kê (mục 4).
 
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
@@ -42,6 +42,26 @@ Có thể thêm khóa khác (ví dụ so hai vùng); app bỏ qua khóa lạ. Sa
 | Thống kê, thẻ khoa học | Hiện "chưa có" kèm mã việc S2-09, S2-10 |
 | Lỗi trang / lỗi Streamlit | 0 / 0 |
 
+### 2.1. Kiểm lại sau khi merge S2-10 và S3-04 (Chromium, 27/10/2026)
+
+Chạy trên main `3cff367` (đã có PR #25 thẻ khoa học và PR #27 tọa độ tâm pixel), cùng mã đang chạy trên VPS. Mỗi ảnh: mở ảnh, bấm Chấm bài, đọc mục Thống kê và Thẻ khoa học.
+
+| Ảnh | Vùng | Chấm bài lần đầu | Thẻ khoa học | Thống kê |
+|---|---|---|---|---|
+| `moon_ap15_hia_c01` | Apollo 15 | 6,8 s | Apollo 15 — vùng Hadley–Apennine, có link nguồn | "Chưa có thống kê" kèm mã S2-09 |
+| `moon_ap16_m109134835l_c01` | Apollo 16 | (lượt chụp Hình 5.2) | Apollo 16 — vùng cao nguyên Descartes | như trên |
+| `moon_ap16_m132732855l_c01` | Apollo 16 | 7,3 s | Apollo 16 — vùng cao nguyên Descartes | như trên |
+| `moon_lunokhod1_loc_c01` | Lunokhod 1 | 6,8 s | Lunokhod 1 — vùng Mare Imbrium | như trên |
+| `moon_lunokhod2_loc_c02` | Lunokhod 2 | 6,3 s | Lunokhod 2 — vùng Le Monnier | như trên |
+| `moon_marefrig_loc_c02` | Mare Frigoris | 6,8 s | "Ảnh này chưa có thẻ khoa học." | như trên |
+| `moon_vandegraff_hia_c01` | Van de Graaff | 6,8 s | "Ảnh này chưa có thẻ khoa học." | như trên |
+
+Lỗi trang và lỗi Streamlit: 0 / 0. Gọi `cards_view` trên cả 26 ảnh: 21 ảnh có đúng một thẻ hợp lệ (Apollo 15: 6, Apollo 16: 11, Lunokhod 1: 2, Lunokhod 2: 2), 5 ảnh không có thẻ (Mare Frigoris: 3, Van de Graaff: 2), không thẻ nào bị loại vì sai hợp đồng. Không thẻ nào có `position`, nên app không vẽ ghim, đúng với S2-10.
+
+Trên `moon_ap16_m109134835l_c01`, khoanh lại đúng bảy vòng của Hình 5.1 cho điểm 60/100 như trước; bảng vòng tròn ghi tâm nguyên (370, 360…), đúng quy ước sau S3-04. Ảnh chụp lại của Hình 5.1 và 5.3 trùng từng byte với ảnh trong `docs/evidence/s3-08/`.
+
+Lỗi mới phát hiện: ở bề rộng 1440 px, nhãn "Điểm theo nhãn đã kiểm chéo" của ô điểm bị cắt chữ cuối (lỗi #9).
+
 Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_for_image` giả đúng hợp đồng: số liệu, biểu đồ và thẻ có nguồn hiện đúng.
 
 ## 3. Danh sách lỗi cần sửa
@@ -49,13 +69,16 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 | # | Lỗi | Mức | Người | Đề xuất |
 |---|---|---|---|---|
 | 1 | Canvas đặt mép trái pixel ở tọa độ 0, nên bấm vào giữa pixel 200 ghi x = 200,5. Hợp đồng S1-05 (`DINH_DANG_DU_LIEU.md`: "tâm pixel có tọa độ nguyên") và Hough dùng tâm pixel = 200. Vòng người chơi lệch +0,5 px so với máy và nhãn. | Thấp: nhỏ hơn nhiều ngưỡng ghép 0,5 r ≥ 2,5 px, nhưng sai hợp đồng | Đức | **Đã sửa (S3-04, 27/10).** Xem mục 3.1 |
-| 2 | Máy chạm trần 100 ứng viên trên cả 26 ảnh, nên "Chỉ máy có" luôn khoảng 100 và thống kê sẽ đếm ứng viên thô | Cao cho thống kê và thí nghiệm | Tiến, Hưng | Còn mở. S2-07 đã đo: trên `moon_ap16_m109134835l_c01` cả 10 nhãn nằm trong dải tìm 5–125 px nhưng máy dừng ở 100 vòng r 5–10 px, Recall_known 0/10. Nếu không sửa kịp thì ghi là hạn chế trong báo cáo |
-| 3 | Chưa ảnh nào có nhãn đã kiểm chéo, nên trò chơi chưa ra điểm | Cao cho khảo sát | Tiến (S1-10), Quốc Anh (S2-03) | **Đã có nhãn (PR #20, 26/10):** 26/26 file ghi `reviewed by Nguyen Manh Tien`, game ra điểm thật trên VPS. Còn chờ Tiến tự xác nhận trên PR #20 |
-| 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Thẻ đã merge (PR #25) và hiện trên VPS. Thống kê S2-09 còn mở. Pin: nhóm chốt cắt crop mới hay ghi hạn chế |
+| 2 | Máy chạm trần 100 ứng viên trên cả 26 ảnh, nên "Chỉ máy có" luôn khoảng 100 và thống kê sẽ đếm ứng viên thô | Cao cho thống kê và thí nghiệm | Tiến, Hưng | Còn mở. S2-07 đã đo: trên `moon_ap16_m109134835l_c01` cả 10 nhãn nằm trong dải tìm 5–125 px nhưng máy dừng ở 100 vòng r 5–10 px, Recall_known 0/10. Nếu không sửa kịp thì ghi là hạn chế trong báo cáo. PR #26 (28/10) thêm chế độ `radius_balanced` để thử, nhưng game vẫn dùng `score` (tập kiểm tra 4/66 so với 5/66); chọn cấu hình game thuộc S2-15 |
+| 3 | Chưa ảnh nào có nhãn đã kiểm chéo, nên trò chơi chưa ra điểm | Cao cho khảo sát | Tiến (S1-10), Quốc Anh (S2-03) | **Đã có nhãn (PR #20, 26/10):** 26/26 file ghi `reviewed by Nguyen Manh Tien`, game ra điểm thật trên VPS. **Đã xác nhận (28/10):** Tiến ghi trên PR #20 là đã kiểm đủ 26 overlay |
+| 4 | Thống kê chưa có; thẻ S2-10 không có pin vì thiết bị ngoài crop | Cao cho thống kê; giới hạn minh bạch cho thẻ | Hưng (S2-09), Quốc Anh (S2-10) | Thẻ đã merge (PR #25) và hiện trên VPS. **Thống kê đã merge (PR #30, 28/10)** và chạy trên VPS; xem lỗi #10, #11. Pin: nhóm chốt cắt crop mới hay ghi hạn chế |
 | 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Chưa sửa, có chủ đích. Mỗi ảnh là một component riêng (`key=player_canvas_<image_id>`), nên iframe của ảnh cũ bị hủy khi đổi ảnh. Muốn giữ lịch sử phải lưu ra ngoài iframe (sessionStorage hoặc Python), thêm rủi ro ngay trước khảo sát cho một lỗi mức thấp |
 | 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đã đo trên VPS (26/10): 9,4 s cho lượt chấm đầu trên `moon_ap15_hia_c01`. Ứng viên máy được cache trong tiến trình (`machine_for_image`, tối đa 8 ảnh) đến khi khởi động lại service. Cách xử lý khi khảo sát: sau khi deploy, người điều phối bấm Chấm bài một lần trên mỗi ảnh dùng khảo sát (≤ 8 ảnh) để làm nóng cache |
 | 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link trong khối văn bản thành `#8cc8ff`, tương phản 9,7–11:1 |
 | 8 | Nút đổi bán kính của vòng đang chọn vẽ tại `min(511, x + r)`: khi vành vượt mép phải, nút không nằm trên vành, bấm vào đó sẽ dời vòng thay vì đổi bán kính | Thấp | Đức | Chưa sửa; đổi bán kính bằng ô nhập số hoặc kéo vành ở phía khác |
+| 9 | Nhãn ô điểm "Điểm theo nhãn đã kiểm chéo" bị cắt chữ cuối ở bề rộng 1440 px (cột hẹp của `st.metric`) | Thấp | Đức | Chưa sửa; số điểm vẫn hiện đủ |
+| 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | Chưa sửa. Khi số ứng viên bằng `max_circles`, app cảnh báo rằng mật độ này không dùng để so vùng và chỉ sang so sánh đếm tay (lỗi #11). `summarize` không cần sửa |
+| 11 | So sánh mật độ hai vùng (yêu cầu 2 của đề) mới có trong `scripts/s209_density.py` và `docs/S2-09_MAT_DO_HO.md`, chưa có trong app | Cao cho đủ chức năng | Đức | Chưa sửa. Khi mở ảnh Lunokhod 1 hoặc Mare Frigoris, app hiện bảng so sánh và hình tích lũy từ `docs/evidence/s2-09/so_sanh.json` (đếm tay đủ hố 300–2.000 m) |
 
 ### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
 
@@ -74,5 +97,7 @@ Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, 
 
 ## 4. Việc còn lại để đóng S2-13
 
-- Merge S2-09, chạy lại bảng mục 2 với số liệu; muốn kiểm pin S2-10 thì cần crop mới bao phủ thiết bị.
+- S2-09 đã merge (PR #30) và chạy trên VPS. Còn lại để đóng S2-13: sửa lỗi #10 và #11, rồi chạy lại bảng mục 2.1 với số liệu thống kê.
+- Thẻ S2-10 đã kiểm xong (mục 2.1). Muốn kiểm ghim vị trí thì cần crop mới bao phủ thiết bị; nếu nhóm không cắt thêm thì giữ hạn chế đã ghi trong báo cáo (mục 5.5, 5.8).
+- PR #26 đã merge mà không đổi game: trên hai ảnh thử, danh sách ứng viên giống hệt main trước đó. Nếu S2-15 chốt đổi cấu hình game thì chụp lại Hình 5.2 và chạy lại mục 2.1.
 - Trước buổi khảo sát: deploy bản cuối, làm nóng cache cho các ảnh khảo sát (lỗi #6).
