@@ -5,13 +5,13 @@ Số nhãn ở mục 4.3 và 4.4 đếm trực tiếp từ 26 file data/referenc
 Hình phiếu nhãn mù (docs/evidence/s2-02/moon_ap16_m132732855l_c01/phieu_nhan.png) chưa đưa vào để giữ số trang; có thể thêm ở mục 4.3.2 nếu còn chỗ.
 
 Cập nhật từ PR #26 (chưa merge, CI xanh; đọc qua git ref pr26 theo chỉ dẫn của người ghép, ngày 27/10/2026):
-– Mục 4.7 lấy số liệu từ pr26:docs/S2-06_S3-02_KIEM_CHUNG.md, pr26:docs/evidence/s2-06-s3-02/holdout/results.csv và tuning_v2/results.csv. Bảng 4.5 chép nguyên bảng tóm tắt của tài liệu (chỉ đổi dấu thập phân sang dấu phẩy, đưa ký hiệu % lên tiêu đề cột và ghi TP_known/FN_known thành TP/FN có chú thích, để bảng không vỡ cột khi build_report.py tự chia độ rộng); Bảng 4.6 lấy TP/FN và số vòng OpenCV từ bảng từng ảnh; khoảng thời gian trung vị trong đoạn văn tính từ cột median_seconds của holdout/results.csv. Các số khớp hai file CSV.
-– Mục 4.3.1 dựa trên pr26:docs/evidence/s2-06-s3-02/review_confirmation.json: reviewer Nguyen Manh Tien, date 2026-10-27, scope 26 overlay, status confirmed_by_user. File ghi rằng đây là lời xác nhận của người kiểm, không phải kiểm tra độc lập; bình luận trên PR #20 còn "pending". pr26:docs/S2-03_TAP_DIEU_CHINH.md chỉ thêm mục "Xác nhận của Tiến ngày 27/10/2026".
+– Mục 4.7 lấy số liệu từ pr26:docs/S2-06_S3-02_KIEM_CHUNG.md, pr26:docs/evidence/s2-06-s3-02/results.csv (cột split phân biệt tuning/holdout). Bảng 4.5 chép nguyên bảng tóm tắt của tài liệu (chỉ đổi dấu thập phân sang dấu phẩy, đưa ký hiệu % lên tiêu đề cột và ghi TP_known/FN_known thành TP/FN có chú thích, để bảng không vỡ cột khi build_report.py tự chia độ rộng); Bảng 4.6 lấy TP/FN và số vòng OpenCV từ bảng từng ảnh; khoảng thời gian trung vị trong đoạn văn tính từ cột median_seconds với split=holdout. Các số khớp CSV gộp sau review.
+– Mục 4.3.1 dựa trên pr26:data/reference_labels/review_confirmation.json: reviewer Nguyen Manh Tien, date 2026-10-27, scope 26 overlay, status confirmed_on_github. File ghi rằng đây là lời xác nhận của người kiểm, không phải kiểm tra độc lập; Tiến đã xác nhận công khai ngày 28/10/2026: https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/20#issuecomment-6462992167. pr26:docs/S2-03_TAP_DIEU_CHINH.md chỉ thêm mục "Xác nhận của Tiến ngày 27/10/2026".
 – Cấu hình đánh giá ở PR #26 là configs/s201_large_craters.json với hai chế độ score/balanced, cố định trước khi đánh giá; nó không phải cấu hình chọn qua E2 ở mục 4.6. Người chốt cần làm khớp mô tả E2 với cách chọn này.
 – Sau khi PR #26 được merge: kiểm lại mọi số ở mục 4.7, rồi xóa hai dấu [CHỜ PR #26 ...].
 
 Việc còn mở cho người chốt:
-1. Đăng xác nhận kiểm chéo lên PR #20 (S2-07 mục 1 yêu cầu xác nhận này trước khi đưa Recall_known vào báo cáo chính thức).
+1. Xác nhận kiểm chéo trên PR #20 đã có ngày 28/10/2026; sau khi #26 merge, đối chiếu hồ sơ rồi cập nhật phần kết quả theo S3-06.
 2. S3-05 chạy ba thí nghiệm (mục 4.6); src/evaluation.py ở nhánh main hiện còn NotImplementedError, bản cài nằm trong PR #26.
 3. Chốt mục tiêu định lượng của E2 ("giảm vòng/thời gian theo mục tiêu nêu trước", S2-07) trước khi chạy.
 4. Nhóm chốt phương án tập kiểm tra (giữ split v3 hay thêm cụm Apollo 16 mới, S2-03 mục 2.4). Văn bản hiện mô tả split v3 và giới hạn của nó.

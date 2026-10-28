@@ -59,3 +59,21 @@ Ba ảnh thật, mỗi bản đo 5 lần sau warm-up: tăng tốc 2,10–2,40 l�
 Trên Windows, bật UTF-8 cho cả tiến trình con trước khi chạy bộ test cũ: `$env:PYTHONUTF8 = "1"`. Venv cần đủ dependency trong `requirements-test.txt`. Lần kiểm tra ban đầu thiếu thư viện và đọc dữ liệu bằng cp1252; log đó đã bỏ vì không phải minh chứng. Không sửa test hoặc module của task khác để xử lý điều kiện môi trường này.
 
 Kết quả kiểm tra cuối: **209/209 test Python đạt**, gồm **5 test S2-01** và **18 test Hough/ví dụ hiện có**. Log: [regression.log](evidence/s2-01/regression.log).
+
+
+## Sửa lỗi ứng viên hố lớn ngày 27/10/2026
+
+Bản tối ưu 24/10 ở trên chỉ giữ nguyên đầu ra lịch sử. Trên STT 13, chế độ `score`
+trả 100 vòng có r≤10 px; tăng trần lên 1.000 mới có 8 vòng r>16 px.
+Chế độ thử nghiệm `candidate_selection=radius_balanced` chia nhóm bán kính theo octave từ 5 px,
+lấy luân phiên đầu mỗi nhóm trước NMS và giới hạn đầu ra; giữ ngưỡng và phiếu NumPy.
+Trên cùng ảnh, 100 vòng mới có 29 vòng r>16 px, r tối đa 31 px.
+Đây là sửa tình trạng vòng nhỏ chiếm hết ngân sách đầu ra; chưa chứng minh mọi vòng lớn là hố thật.
+Các vành vượt giới hạn 128 px vẫn nằm ngoài hợp đồng tìm kiếm.
+
+`configs/s201_large_craters.json` bật thử nghiệm balanced; mặc định mã/game vẫn là `score`
+và lựa chọn game thuộc S2-15, chưa chốt; `configs/s201_hough.json` ghi rõ
+`candidate_selection=score` để benchmark tương đương lịch sử vẫn tái tạo được.
+Xem [đối chiếu thực chạy](S2-06_S3-02_KIEM_CHUNG.md),
+[test hố lớn](../tests/test_hough_large.py) và
+[lý thuyết/cài đặt cập nhật](S2-11_S3-06_HOUGH_HOAN_THIEN.md).

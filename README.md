@@ -141,3 +141,28 @@ Bundle là ảnh browse cho demo môn học; chưa có danh mục hố đã xác
 ## S2-01: Hough NumPy — nhật ký thời gian
 
 Xem [hướng dẫn S2-01](docs/S2-01_HOUGH_CAI_THIEN.md) để nạp cấu hình Hough, kiểm tra dải bán kính thực quét và đo trước/sau trên cùng máy.
+
+
+## Hough và đánh giá S2-06 / S3-02 (27/10/2026)
+
+Hough mặc định dùng `candidate_selection=score`, kể cả game đọc `configs/default.json`.
+Chế độ luân phiên nhóm bán kính chỉ bật tường minh trong `configs/s201_large_craters.json`
+để thử nghiệm; lựa chọn tham số game thuộc S2-15 và chưa chốt.
+`src/evaluation.py` đã cài ghép một–một, bỏ qua uncertain và hỗ trợ nhãn thưa/đầy đủ.
+Bộ 26 ảnh có nhãn thưa đã kiểm chéo: chỉ báo Recall_known; Precision/F1 chưa xác định.
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -B scripts/evaluate_hough.py --config configs/s201_large_craters.json --images moon_ap16_m132732855l_c01 moon_ap16_m109134835l_c01 moon_ap15_hia_c01 --output outputs/evaluation_tuning --repeats 3
+.\.venv\Scripts\python.exe -X utf8 -B scripts/evaluate_hough.py --config configs/s201_large_craters.json --holdout --output outputs/evaluation_holdout --repeats 3
+```
+
+Trên Linux/CI hoặc sau khi kích hoạt môi trường Python:
+
+```bash
+python scripts/evaluate_hough.py --config configs/s201_large_craters.json --images moon_ap16_m132732855l_c01 moon_ap16_m109134835l_c01 moon_ap15_hia_c01 --output outputs/evaluation_tuning --repeats 3
+python scripts/evaluate_hough.py --config configs/s201_large_craters.json --holdout --output outputs/evaluation_holdout --repeats 3
+```
+
+Đường dẫn đầu ra phải mới. Holdout chỉ chạy sau khi cố định cấu hình trên tuning;
+không chỉnh tham số theo kết quả holdout. Xem [báo cáo](docs/S2-06_S3-02_KIEM_CHUNG.md) và
+[phần lý thuyết/cài đặt](docs/S2-11_S3-06_HOUGH_HOAN_THIEN.md).
