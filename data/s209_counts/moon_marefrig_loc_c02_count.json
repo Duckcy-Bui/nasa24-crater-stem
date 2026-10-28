@@ -1,0 +1,45 @@
+{
+ "schema_version": "1.0",
+ "data_kind": "real",
+ "image_id": "moon_marefrig_loc_c02",
+ "source": "catalogue",
+ "reference_source": "manual_count_s209; exhaustive count D 300–2000 m inside count mask; reviewed by Hoàng Quốc Anh",
+ "counted_by": "Đinh Quang Hưng",
+ "counted_on": "2026-10-28",
+ "reviewed_by": "Hoàng Quốc Anh",
+ "circles": [
+  {
+   "crater_id": "K01",
+   "x": 447.0,
+   "y": 350.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K02",
+   "x": 502.0,
+   "y": 388.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K03",
+   "x": 412.0,
+   "y": 421.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K04",
+   "x": 430.0,
+   "y": 494.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  }
+ ],
+ "reviewed_on": "2026-10-28"
+}

@@ -2,7 +2,7 @@
 
 Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration.py`, `app.py` (`show_statistics`, `show_cards`). Test: `tests/test_integration.py`.
 
-Trạng thái 27/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 vẫn báo `NotImplementedError` và app ghi "chưa có" thay vì tự tạo số liệu.
+Trạng thái 27/10/2026: **khung đã ghép một phần.** Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 đã chạy. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã cài (`statistics.summarize`, nhánh s2-09-mat-do): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1.
 
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
