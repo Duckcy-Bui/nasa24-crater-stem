@@ -51,3 +51,15 @@ kế thừa S1-03, nhất là DOI [3]. Dẫn xuất trong S1-15 là phần giả
 toán học và mã của dự án, không gán tùy ý thành một đoạn trích của bài báo.
 Nếu bổ sung ảnh thật hoặc scikit-image, cần lưu cấu hình/kết quả riêng;
 không nâng trạng thái “tham khảo” thành “đã thực nghiệm” khi chưa chạy.
+
+
+## 5. Cập nhật xác minh nguồn ngày 27/10/2026 (S3-06)
+
+Đã truy vấn độc lập Crossref cho ba DOI [1]–[3], khớp tiêu đề, tác giả, tập/số và trang.
+Mục [3] là PAMI-8(6), 679–698, DOI 10.1109/TPAMI.1986.4767851.
+Xem [metadata gốc và URL truy vấn](evidence/s3-06/doi_verification.json).
+Các giới hạn “chưa xác minh DOI [3]” phía trên là tình trạng ngày 14/10; đã giải quyết ở mức thư mục.
+Không tuyên bố đã đọc toàn văn cả ba bài. Đã mở lại các trang chính thức [4]–[12];
+[5] chỉ là mã lịch sử tag 4.14.0, không xác minh nội bộ OpenCV 5.0.0 hiện cài.
+Xem [danh sách lần kiểm tra](evidence/s3-06/source_checks.json) và
+[bản hoàn thiện lý thuyết/cài đặt](S2-11_S3-06_HOUGH_HOAN_THIEN.md).

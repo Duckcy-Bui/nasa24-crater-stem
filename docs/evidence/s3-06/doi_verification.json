@@ -1,0 +1,139 @@
+[
+  {
+    "doi": "10.1145/361237.361242",
+    "registry_url": "https://api.crossref.org/works/10.1145/361237.361242",
+    "title": [
+      "Use of the Hough transformation to detect lines and curves in pictures"
+    ],
+    "author": [
+      {
+        "given": "Richard O.",
+        "family": "Duda",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Stanford Research Institute, Menlo Park, CA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Peter E.",
+        "family": "Hart",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Stanford Research Institute, Menlo Park, CA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "publisher": "Association for Computing Machinery (ACM)",
+    "volume": "15",
+    "issue": "1",
+    "page": "11-15",
+    "retrieved_at_utc": "2026-10-27T01:56:31.279200+00:00",
+    "verification": "DOI metadata verified with registration agency; not proof of full-text reading"
+  },
+  {
+    "doi": "10.1016/0262-8856(90)90059-E",
+    "registry_url": "https://api.crossref.org/works/10.1016/0262-8856(90)90059-E",
+    "title": [
+      "Comparative study of Hough Transform methods for circle finding"
+    ],
+    "author": [
+      {
+        "given": "HK",
+        "family": "Yuen",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "J",
+        "family": "Princen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "J",
+        "family": "Illingworth",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "J",
+        "family": "Kittler",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "publisher": "Elsevier BV",
+    "volume": "8",
+    "issue": "1",
+    "page": "71-77",
+    "retrieved_at_utc": "2026-10-27T01:56:32.180076+00:00",
+    "verification": "DOI metadata verified with registration agency; not proof of full-text reading"
+  },
+  {
+    "doi": "10.1109/TPAMI.1986.4767851",
+    "registry_url": "https://api.crossref.org/works/10.1109/TPAMI.1986.4767851",
+    "title": [
+      "A Computational Approach to Edge Detection"
+    ],
+    "author": [
+      {
+        "given": "John",
+        "family": "Canny",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "volume": "PAMI-8",
+    "issue": "6",
+    "page": "679-698",
+    "retrieved_at_utc": "2026-10-27T01:56:33.123005+00:00",
+    "verification": "DOI metadata verified with registration agency; not proof of full-text reading"
+  }
+]

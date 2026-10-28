@@ -100,3 +100,9 @@ phiên bản mã; không gán tọa độ hố giả lập thành danh mục tha
 Bản ghép S1-06/S1-07/S1-08 đã đọc đúng ảnh, mặt nạ, metadata và chạy tiền xử lý + Hough gradient trên cả 26 ảnh trong bundle. Chạy thêm full-circle mặc định trên cặp Apollo 16 STT 9/17 và một ảnh Mare Frigoris; kết quả máy qua bộ kiểm tra định dạng. Bốn đĩa sáng/nền phẳng bán kính 24/32/64/100 px cũng đi qua tiền xử lý và được Hough tìm lại.
 
 Đây là kiểm tra ghép module, **không phải xác nhận độ chính xác**: chưa có nhãn hố thật. Với tham số mặc định hiện tại, gradient chỉ giữ 0–2 ứng viên mỗi ảnh; full-circle trên ba ảnh thử đạt giới hạn 100 ứng viên. Cần điều chỉnh ngưỡng, lọc ứng viên và đánh giá ở các đầu việc tiếp theo; chưa dùng các danh sách máy này làm đáp án khoa học. Giữ full-circle làm mặc định, gradient là lựa chọn thử nghiệm có thể bỏ sót khi hướng biên không đúng pháp tuyến vành hố.
+
+## Cập nhật S2-01 / S2-06 / S3-02 ngày 27/10/2026
+
+Mặc định mã và game vẫn dùng `score`. Chế độ `radius_balanced` trước NMS/giới hạn đầu ra
+chỉ bật tường minh trong `configs/s201_large_craters.json` để thử nghiệm; S2-15 chưa chốt cấu hình game.
+Xem [báo cáo thực chạy](S2-06_S3-02_KIEM_CHUNG.md) và [lý thuyết cập nhật](S2-11_S3-06_HOUGH_HOAN_THIEN.md).

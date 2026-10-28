@@ -47,7 +47,12 @@ def baseline_source(ref):
 
 def measure(edges, theta, lo, hi, params, baseline, repeats, warmups):
     """Alternate order; compare every complete output, including integer votes."""
-    functions = {'baseline': baseline, 'optimized': detect_circles}
+    if params['candidate_selection'] != 'score':
+        raise ValueError('Historical equivalence benchmark requires candidate_selection=score.')
+    old_params = {k: v for k, v in params.items() if k != 'candidate_selection'}
+    def historical(edges, lo, hi, params, theta=None):
+        return baseline(edges, lo, hi, old_params, theta=theta)
+    functions = {'baseline': historical, 'optimized': detect_circles}
     results = {}
     for name, function in functions.items():
         for _ in range(warmups):

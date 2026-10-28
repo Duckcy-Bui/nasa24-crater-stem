@@ -89,7 +89,7 @@ Bản dựng ngày 27/10/2026 dài 55 trang: bìa và mục lục 4 trang, nội
 
 Các dấu `[CHỜ]` còn lại:
 
-- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. PR này còn đổi mặc định chọn ứng viên của game sang `radius_balanced`, nên sau khi merge phải kiểm lại các câu tả danh sách máy ở 1.6, 3.7, 5.4 và chụp lại Hình 5.2. Sau đó người chốt xóa dấu.
+- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Sau review, PR giữ mặc định game là `score`; `radius_balanced` chỉ bật ở cấu hình thử nghiệm. Nếu S2-15 chốt đổi game, Tiến phải báo trước để sửa Bảng 1.1, mục 3.7, 5.4 và chụp lại Hình 5.2. Sau khi #26 merge, Tiến điền số cuối và xóa dấu ở phần Hough (S3-06).
 - PR #27 (Đức) chưa được merge: quy đổi tâm pixel, ảnh đối chiếu phóng 3 lần và các ảnh Hình 5.1, 5.2 ở mục 5.2–5.4 dựa trên bản sửa này.
 - S2-09 (Hưng): mục 3.6, Bảng 1.1 và mục 5.7.
 - S2-15 (Tiến): mục 3.7.
