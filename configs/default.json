@@ -1,7 +1,15 @@
 {
   "schema_version": "1.0",
-  "status": "initial_parameters_to_tune",
-  "image": {"width": 512, "height": 512, "dtype": "float32", "value_range": [0, 1]},
+  "status": "frozen_s215_week3",
+  "image": {
+    "width": 512,
+    "height": 512,
+    "dtype": "float32",
+    "value_range": [
+      0,
+      1
+    ]
+  },
   "preprocess": {
     "p_lo": 0.5,
     "p_hi": 99.5,
@@ -15,6 +23,22 @@
     "canny_low_ratio": 0.4,
     "edge_margin_px": 6
   },
-  "hough": {"radius_step_px": 1, "r_min_limit_px": 5, "r_max_limit_px": 128},
-  "evaluation": {"center_tolerance_fraction": 0.5, "matching": "one_to_one"}
+  "hough": {
+    "voting_method": "full_circle",
+    "candidate_selection": "score",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  },
+  "evaluation": {
+    "center_tolerance_fraction": 0.5,
+    "matching": "one_to_one"
+  }
 }

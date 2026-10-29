@@ -14,4 +14,4 @@ Chi tiết đã chuyển sang `outputs/s2-06-s3-02/` (bị Git bỏ qua): ZIP đ
 Ảnh đã thu nhỏ: [so sánh ứng viên JPEG](../../images/s206/large_craters.jpg).
 Hồ sơ kiểm nhãn: [review_confirmation.json](../../../data/reference_labels/review_confirmation.json).
 
-Game vẫn dùng `score`. `radius_balanced` chỉ bật trong cấu hình thử nghiệm; S2-15 chưa chốt cấu hình game. Nhãn thưa không chứng minh Precision toàn ảnh. OpenCV có ngân sách đầu ra khác NumPy.
+Game vẫn dùng `score`. `radius_balanced` chỉ bật trong cấu hình thử nghiệm; Tại mốc đo S2-06, S2-15 chưa chốt cấu hình game; ngày 29/10/2026, [S2-15](../../S2-15_CHOT_THAM_SO.md) đã chốt giữ score. Số đo lịch sử giữ nguyên. Nhãn thưa không chứng minh Precision toàn ảnh. OpenCV có ngân sách đầu ra khác NumPy.

@@ -147,7 +147,7 @@ Xem [hướng dẫn S2-01](docs/S2-01_HOUGH_CAI_THIEN.md) để nạp cấu hìn
 
 Hough mặc định dùng `candidate_selection=score`, kể cả game đọc `configs/default.json`.
 Chế độ luân phiên nhóm bán kính chỉ bật tường minh trong `configs/s201_large_craters.json`
-để thử nghiệm; lựa chọn tham số game thuộc S2-15 và chưa chốt.
+để thử nghiệm; S2-15 đã chốt giữ score cho game/tuần 3.
 `src/evaluation.py` đã cài ghép một–một, bỏ qua uncertain và hỗ trợ nhãn thưa/đầy đủ.
 Bộ 26 ảnh có nhãn thưa đã kiểm chéo: chỉ báo Recall_known; Precision/F1 chưa xác định.
 
@@ -166,3 +166,7 @@ python scripts/evaluate_hough.py --config configs/s201_large_craters.json --hold
 Đường dẫn đầu ra phải mới. Holdout chỉ chạy sau khi cố định cấu hình trên tuning;
 không chỉnh tham số theo kết quả holdout. Xem [báo cáo](docs/S2-06_S3-02_KIEM_CHUNG.md) và
 [phần lý thuyết/cài đặt](docs/S2-11_S3-06_HOUGH_HOAN_THIEN.md).
+
+## S2-15 — Cấu hình tuần 3
+
+Chốt `configs/s215_frozen.json`, đồng bộ với game. Tuning 18 ảnh: Recall_known 10/174 = 5,75%; chất lượng phát hiện còn thấp. Xem [biên bản và điều kiện đánh giá lại](docs/S2-15_CHOT_THAM_SO.md).

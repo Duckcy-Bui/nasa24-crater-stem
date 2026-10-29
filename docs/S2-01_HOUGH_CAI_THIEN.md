@@ -72,7 +72,7 @@ Trên cùng ảnh, 100 vòng mới có 29 vòng r>16 px, r tối đa 31 px.
 Các vành vượt giới hạn 128 px vẫn nằm ngoài hợp đồng tìm kiếm.
 
 `configs/s201_large_craters.json` bật thử nghiệm balanced; mặc định mã/game vẫn là `score`
-và lựa chọn game thuộc S2-15, chưa chốt; `configs/s201_hough.json` ghi rõ
+và [S2-15](S2-15_CHOT_THAM_SO.md) đã chốt giữ score cho game/tuần 3 ngày 29/10/2026; `configs/s201_hough.json` ghi rõ
 `candidate_selection=score` để benchmark tương đương lịch sử vẫn tái tạo được.
 Xem [đối chiếu thực chạy](S2-06_S3-02_KIEM_CHUNG.md),
 [test hố lớn](../tests/test_hough_large.py) và

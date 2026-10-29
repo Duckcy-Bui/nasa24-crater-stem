@@ -21,7 +21,7 @@ trong `Nhom_2_NASA24_Phan_cong_3_tuan.xlsx`.
 ## Quy trình và điều kiện chạy
 
 Game giữ mặc định `candidate_selection=score`; `configs/default.json` không đổi.
-`radius_balanced` chỉ bật tường minh trong cấu hình thử nghiệm; S2-15 chưa chốt dùng cho game.
+`radius_balanced` chỉ bật tường minh trong cấu hình thử nghiệm. Cập nhật 29/10/2026: [S2-15](S2-15_CHOT_THAM_SO.md) đã chốt giữ `score` cho game/tuần 3; số liệu dưới đây vẫn là phép đo lịch sử ngày 27/10.
 Nếu S2-15 đổi cấu hình game, phải báo trước người viết báo cáo để sửa Bảng 1.1, mục 3.7, 5.4
 và chụp lại Hình 5.2. Số liệu 0/28→2/28 và 4/66→5/66 chưa đủ để đổi mặc định.
 

@@ -1,0 +1,1569 @@
+{
+  "image_id": "moon_vandegraff_hia_c01",
+  "split": "tuning",
+  "input_sha256": {
+    "data/processed/moon_vandegraff_hia_c01.json": "527ebb101a035102b5a9804a34fa009c563b63f5b0f21ff6157f0203a8546a8c",
+    "data/processed/moon_vandegraff_hia_c01.npy": "5865d7127483a6c15b46fdaf18ea46cd859a3b4d15c5ee5107d176a9d7c4f873",
+    "data/processed/moon_vandegraff_hia_c01_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_vandegraff_hia_c01_craters_catalogue.json": "6bfb1842475c374d7b6c1ac171ea239989ae931cb7399d20cac85b8dcf55b51a"
+  },
+  "radius_bounds_px": [
+    5,
+    100
+  ],
+  "candidates": 100,
+  "hit_max_circles": true,
+  "seconds_preprocess": 0.08750329993199557,
+  "seconds_hough": 8.914447699906304,
+  "postprocess": {
+    "status": "applied",
+    "circles_in": 100,
+    "circles_out": 100,
+    "shading_counts": {
+      "not_checked": 100
+    }
+  },
+  "metrics": {
+    "image_id": "moon_vandegraff_hia_c01",
+    "status": "evaluated",
+    "coverage": "sparse",
+    "tp": 0,
+    "fp": null,
+    "fn": 10,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "pairs": [],
+    "ignored_prediction_ids": [],
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C10"
+    ],
+    "unmatched_prediction_ids": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "M14",
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19",
+      "M20",
+      "M21",
+      "M22",
+      "M23",
+      "M24",
+      "M25",
+      "M26",
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34",
+      "M35",
+      "M36",
+      "M37",
+      "M38",
+      "M39",
+      "M40",
+      "M41",
+      "M42",
+      "M43",
+      "M44",
+      "M45",
+      "M46",
+      "M47",
+      "M48",
+      "M49",
+      "M50",
+      "M51",
+      "M52",
+      "M53",
+      "M54",
+      "M55",
+      "M56",
+      "M57",
+      "M58",
+      "M59",
+      "M60",
+      "M61",
+      "M62",
+      "M63",
+      "M64",
+      "M65",
+      "M66",
+      "M67",
+      "M68",
+      "M69",
+      "M70",
+      "M71",
+      "M72",
+      "M73",
+      "M74",
+      "M75",
+      "M76",
+      "M77",
+      "M78",
+      "M79",
+      "M80",
+      "M81",
+      "M82",
+      "M83",
+      "M84",
+      "M85",
+      "M86",
+      "M87",
+      "M88",
+      "M89",
+      "M90",
+      "M91",
+      "M92",
+      "M93",
+      "M94",
+      "M95",
+      "M96",
+      "M97",
+      "M98",
+      "M99",
+      "M100"
+    ],
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "rule": {
+      "matching": "one_to_one",
+      "center_tolerance_fraction": 0.5
+    },
+    "known_references": 10,
+    "reason": "Chỉ tính Recall trên nhãn đã biết."
+  },
+  "machine": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_vandegraff_hia_c01",
+    "source": "machine",
+    "reference_source": null,
+    "circles": [
+      {
+        "crater_id": "M1",
+        "x": 232.0,
+        "y": 281.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 35,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M2",
+        "x": 206.0,
+        "y": 35.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M3",
+        "x": 346.0,
+        "y": 117.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M4",
+        "x": 469.0,
+        "y": 324.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M5",
+        "x": 298.0,
+        "y": 463.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M6",
+        "x": 223.0,
+        "y": 203.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M7",
+        "x": 246.0,
+        "y": 258.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M8",
+        "x": 135.0,
+        "y": 87.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M9",
+        "x": 339.0,
+        "y": 186.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M10",
+        "x": 282.0,
+        "y": 129.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 37,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M11",
+        "x": 151.0,
+        "y": 35.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M12",
+        "x": 375.0,
+        "y": 224.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M13",
+        "x": 387.0,
+        "y": 369.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M14",
+        "x": 499.0,
+        "y": 475.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M15",
+        "x": 368.0,
+        "y": 64.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M16",
+        "x": 244.0,
+        "y": 439.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M17",
+        "x": 361.0,
+        "y": 78.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 36,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M18",
+        "x": 157.0,
+        "y": 103.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M19",
+        "x": 377.0,
+        "y": 250.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M20",
+        "x": 316.0,
+        "y": 354.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M21",
+        "x": 256.0,
+        "y": 442.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M22",
+        "x": 209.0,
+        "y": 42.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M23",
+        "x": 494.0,
+        "y": 76.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M24",
+        "x": 415.0,
+        "y": 108.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M25",
+        "x": 20.0,
+        "y": 163.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M26",
+        "x": 302.0,
+        "y": 244.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M27",
+        "x": 174.0,
+        "y": 248.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M28",
+        "x": 432.0,
+        "y": 260.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M29",
+        "x": 121.0,
+        "y": 320.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M30",
+        "x": 425.0,
+        "y": 328.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M31",
+        "x": 448.0,
+        "y": 336.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M32",
+        "x": 114.0,
+        "y": 354.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M33",
+        "x": 395.0,
+        "y": 405.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M34",
+        "x": 342.0,
+        "y": 411.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M35",
+        "x": 353.0,
+        "y": 411.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M36",
+        "x": 149.0,
+        "y": 447.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M37",
+        "x": 238.0,
+        "y": 487.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M38",
+        "x": 492.0,
+        "y": 499.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M39",
+        "x": 246.0,
+        "y": 128.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M40",
+        "x": 497.0,
+        "y": 138.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M41",
+        "x": 265.0,
+        "y": 143.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M42",
+        "x": 374.0,
+        "y": 267.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M43",
+        "x": 237.0,
+        "y": 333.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M44",
+        "x": 193.0,
+        "y": 453.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M45",
+        "x": 269.0,
+        "y": 456.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M46",
+        "x": 262.0,
+        "y": 173.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 30,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M47",
+        "x": 418.0,
+        "y": 428.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 30,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M48",
+        "x": 247.0,
+        "y": 133.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 34,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M49",
+        "x": 59.0,
+        "y": 356.0,
+        "r": 11.0,
+        "confidence": null,
+        "votes": 45,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M50",
+        "x": 157.0,
+        "y": 13.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M51",
+        "x": 362.0,
+        "y": 24.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M52",
+        "x": 188.0,
+        "y": 48.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M53",
+        "x": 430.0,
+        "y": 65.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M54",
+        "x": 280.0,
+        "y": 126.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M55",
+        "x": 236.0,
+        "y": 129.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M56",
+        "x": 402.0,
+        "y": 150.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M57",
+        "x": 193.0,
+        "y": 153.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M58",
+        "x": 215.0,
+        "y": 161.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M59",
+        "x": 111.0,
+        "y": 182.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M60",
+        "x": 346.0,
+        "y": 188.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M61",
+        "x": 496.0,
+        "y": 201.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M62",
+        "x": 242.0,
+        "y": 209.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M63",
+        "x": 425.0,
+        "y": 216.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M64",
+        "x": 416.0,
+        "y": 218.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M65",
+        "x": 273.0,
+        "y": 305.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M66",
+        "x": 173.0,
+        "y": 309.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M67",
+        "x": 344.0,
+        "y": 310.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M68",
+        "x": 500.0,
+        "y": 312.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M69",
+        "x": 112.0,
+        "y": 330.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M70",
+        "x": 228.0,
+        "y": 349.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M71",
+        "x": 320.0,
+        "y": 404.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M72",
+        "x": 190.0,
+        "y": 414.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M73",
+        "x": 32.0,
+        "y": 422.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M74",
+        "x": 128.0,
+        "y": 426.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M75",
+        "x": 313.0,
+        "y": 430.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M76",
+        "x": 198.0,
+        "y": 432.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M77",
+        "x": 60.0,
+        "y": 463.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M78",
+        "x": 113.0,
+        "y": 464.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M79",
+        "x": 202.0,
+        "y": 480.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M80",
+        "x": 39.0,
+        "y": 483.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M81",
+        "x": 170.0,
+        "y": 151.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M82",
+        "x": 326.0,
+        "y": 227.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M83",
+        "x": 309.0,
+        "y": 245.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M84",
+        "x": 180.0,
+        "y": 302.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M85",
+        "x": 323.0,
+        "y": 354.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M86",
+        "x": 431.0,
+        "y": 379.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M87",
+        "x": 460.0,
+        "y": 397.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M88",
+        "x": 347.0,
+        "y": 419.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M89",
+        "x": 464.0,
+        "y": 420.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M90",
+        "x": 400.0,
+        "y": 439.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M91",
+        "x": 34.0,
+        "y": 467.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M92",
+        "x": 330.0,
+        "y": 469.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M93",
+        "x": 20.0,
+        "y": 155.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M94",
+        "x": 20.0,
+        "y": 158.0,
+        "r": 10.0,
+        "confidence": null,
+        "votes": 41,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M95",
+        "x": 344.0,
+        "y": 215.0,
+        "r": 12.0,
+        "confidence": null,
+        "votes": 45,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M96",
+        "x": 394.0,
+        "y": 198.0,
+        "r": 11.0,
+        "confidence": null,
+        "votes": 43,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M97",
+        "x": 428.0,
+        "y": 75.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M98",
+        "x": 447.0,
+        "y": 153.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M99",
+        "x": 217.0,
+        "y": 163.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 32,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      },
+      {
+        "crater_id": "M100",
+        "x": 284.0,
+        "y": 83.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "metadata không có hướng nắng (sun.quality=none)"
+        }
+      }
+    ]
+  }
+}

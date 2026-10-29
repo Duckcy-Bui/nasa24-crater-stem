@@ -1,0 +1,1570 @@
+{
+  "image_id": "moon_ap16_m109134835l_c02",
+  "split": "tuning",
+  "input_sha256": {
+    "data/processed/moon_ap16_m109134835l_c02.json": "073ab2a64cded11d390ba5e07b88e469c85ea60047b2850c88fb16e5d9cf1c51",
+    "data/processed/moon_ap16_m109134835l_c02.npy": "883228bc224144169a44fe7db2dd748c52dd50a8853de5bb14bc4a25e412fd36",
+    "data/processed/moon_ap16_m109134835l_c02_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_ap16_m109134835l_c02_craters_catalogue.json": "5c730b655d81111899f64aa172737f5bd8aec1851f6fe3885b8a8ec60ed7d555"
+  },
+  "radius_bounds_px": [
+    5,
+    125
+  ],
+  "candidates": 100,
+  "hit_max_circles": true,
+  "seconds_preprocess": 0.16597099998034537,
+  "seconds_hough": 11.597256499924697,
+  "postprocess": {
+    "status": "applied",
+    "circles_in": 100,
+    "circles_out": 100,
+    "shading_counts": {
+      "not_checked": 100
+    }
+  },
+  "metrics": {
+    "image_id": "moon_ap16_m109134835l_c02",
+    "status": "evaluated",
+    "coverage": "sparse",
+    "tp": 0,
+    "fp": null,
+    "fn": 11,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "pairs": [],
+    "ignored_prediction_ids": [],
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C10",
+      "C11"
+    ],
+    "unmatched_prediction_ids": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "M14",
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19",
+      "M20",
+      "M21",
+      "M22",
+      "M23",
+      "M24",
+      "M25",
+      "M26",
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34",
+      "M35",
+      "M36",
+      "M37",
+      "M38",
+      "M39",
+      "M40",
+      "M41",
+      "M42",
+      "M43",
+      "M44",
+      "M45",
+      "M46",
+      "M47",
+      "M48",
+      "M49",
+      "M50",
+      "M51",
+      "M52",
+      "M53",
+      "M54",
+      "M55",
+      "M56",
+      "M57",
+      "M58",
+      "M59",
+      "M60",
+      "M61",
+      "M62",
+      "M63",
+      "M64",
+      "M65",
+      "M66",
+      "M67",
+      "M68",
+      "M69",
+      "M70",
+      "M71",
+      "M72",
+      "M73",
+      "M74",
+      "M75",
+      "M76",
+      "M77",
+      "M78",
+      "M79",
+      "M80",
+      "M81",
+      "M82",
+      "M83",
+      "M84",
+      "M85",
+      "M86",
+      "M87",
+      "M88",
+      "M89",
+      "M90",
+      "M91",
+      "M92",
+      "M93",
+      "M94",
+      "M95",
+      "M96",
+      "M97",
+      "M98",
+      "M99",
+      "M100"
+    ],
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "rule": {
+      "matching": "one_to_one",
+      "center_tolerance_fraction": 0.5
+    },
+    "known_references": 11,
+    "reason": "Chỉ tính Recall trên nhãn đã biết."
+  },
+  "machine": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_ap16_m109134835l_c02",
+    "source": "machine",
+    "reference_source": null,
+    "circles": [
+      {
+        "crater_id": "M1",
+        "x": 22.0,
+        "y": 339.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 33,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M2",
+        "x": 432.0,
+        "y": 196.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M3",
+        "x": 44.0,
+        "y": 186.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M4",
+        "x": 434.0,
+        "y": 20.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M5",
+        "x": 119.0,
+        "y": 25.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M6",
+        "x": 427.0,
+        "y": 66.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M7",
+        "x": 95.0,
+        "y": 488.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M8",
+        "x": 72.0,
+        "y": 194.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M9",
+        "x": 320.0,
+        "y": 299.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M10",
+        "x": 91.0,
+        "y": 36.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M11",
+        "x": 94.0,
+        "y": 104.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M12",
+        "x": 37.0,
+        "y": 106.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M13",
+        "x": 491.0,
+        "y": 124.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M14",
+        "x": 397.0,
+        "y": 207.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M15",
+        "x": 398.0,
+        "y": 262.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M16",
+        "x": 184.0,
+        "y": 300.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M17",
+        "x": 227.0,
+        "y": 382.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M18",
+        "x": 278.0,
+        "y": 141.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M19",
+        "x": 33.0,
+        "y": 13.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M20",
+        "x": 190.0,
+        "y": 216.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M21",
+        "x": 12.0,
+        "y": 69.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M22",
+        "x": 407.0,
+        "y": 156.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M23",
+        "x": 40.0,
+        "y": 290.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M24",
+        "x": 78.0,
+        "y": 405.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M25",
+        "x": 255.0,
+        "y": 494.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M26",
+        "x": 486.0,
+        "y": 284.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M27",
+        "x": 222.0,
+        "y": 294.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M28",
+        "x": 181.0,
+        "y": 472.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M29",
+        "x": 119.0,
+        "y": 499.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M30",
+        "x": 410.0,
+        "y": 155.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 34,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M31",
+        "x": 399.0,
+        "y": 184.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M32",
+        "x": 32.0,
+        "y": 293.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M33",
+        "x": 26.0,
+        "y": 297.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M34",
+        "x": 104.0,
+        "y": 321.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M35",
+        "x": 209.0,
+        "y": 50.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M36",
+        "x": 396.0,
+        "y": 91.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M37",
+        "x": 172.0,
+        "y": 439.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M38",
+        "x": 207.0,
+        "y": 127.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M39",
+        "x": 105.0,
+        "y": 302.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M40",
+        "x": 452.0,
+        "y": 234.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M41",
+        "x": 105.0,
+        "y": 256.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M42",
+        "x": 233.0,
+        "y": 412.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M43",
+        "x": 484.0,
+        "y": 32.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M44",
+        "x": 91.0,
+        "y": 484.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M45",
+        "x": 293.0,
+        "y": 16.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M46",
+        "x": 417.0,
+        "y": 64.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M47",
+        "x": 412.0,
+        "y": 127.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M48",
+        "x": 72.0,
+        "y": 280.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M49",
+        "x": 277.0,
+        "y": 294.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M50",
+        "x": 150.0,
+        "y": 345.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M51",
+        "x": 474.0,
+        "y": 347.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M52",
+        "x": 361.0,
+        "y": 359.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M53",
+        "x": 211.0,
+        "y": 389.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M54",
+        "x": 144.0,
+        "y": 393.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M55",
+        "x": 90.0,
+        "y": 490.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M56",
+        "x": 110.0,
+        "y": 113.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M57",
+        "x": 266.0,
+        "y": 210.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M58",
+        "x": 53.0,
+        "y": 281.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M59",
+        "x": 281.0,
+        "y": 41.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M60",
+        "x": 498.0,
+        "y": 204.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M61",
+        "x": 402.0,
+        "y": 212.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M62",
+        "x": 188.0,
+        "y": 243.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M63",
+        "x": 384.0,
+        "y": 244.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M64",
+        "x": 145.0,
+        "y": 403.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M65",
+        "x": 118.0,
+        "y": 415.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M66",
+        "x": 258.0,
+        "y": 424.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M67",
+        "x": 131.0,
+        "y": 449.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M68",
+        "x": 60.0,
+        "y": 485.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M69",
+        "x": 365.0,
+        "y": 486.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M70",
+        "x": 146.0,
+        "y": 487.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M71",
+        "x": 24.0,
+        "y": 457.0,
+        "r": 10.0,
+        "confidence": null,
+        "votes": 38,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M72",
+        "x": 309.0,
+        "y": 15.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M73",
+        "x": 489.0,
+        "y": 22.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M74",
+        "x": 329.0,
+        "y": 39.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M75",
+        "x": 22.0,
+        "y": 49.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M76",
+        "x": 260.0,
+        "y": 62.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M77",
+        "x": 235.0,
+        "y": 75.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M78",
+        "x": 103.0,
+        "y": 102.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M79",
+        "x": 210.0,
+        "y": 117.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M80",
+        "x": 290.0,
+        "y": 120.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M81",
+        "x": 333.0,
+        "y": 120.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M82",
+        "x": 340.0,
+        "y": 127.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M83",
+        "x": 195.0,
+        "y": 136.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M84",
+        "x": 254.0,
+        "y": 151.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M85",
+        "x": 410.0,
+        "y": 152.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M86",
+        "x": 397.0,
+        "y": 193.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M87",
+        "x": 56.0,
+        "y": 208.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M88",
+        "x": 187.0,
+        "y": 221.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M89",
+        "x": 442.0,
+        "y": 230.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M90",
+        "x": 339.0,
+        "y": 234.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M91",
+        "x": 405.0,
+        "y": 309.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M92",
+        "x": 303.0,
+        "y": 336.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M93",
+        "x": 298.0,
+        "y": 339.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M94",
+        "x": 191.0,
+        "y": 345.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M95",
+        "x": 267.0,
+        "y": 353.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M96",
+        "x": 369.0,
+        "y": 353.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M97",
+        "x": 475.0,
+        "y": 375.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M98",
+        "x": 241.0,
+        "y": 435.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M99",
+        "x": 235.0,
+        "y": 444.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      },
+      {
+        "crater_id": "M100",
+        "x": 315.0,
+        "y": 454.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 19,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        }
+      }
+    ]
+  }
+}

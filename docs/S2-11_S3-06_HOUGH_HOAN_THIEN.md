@@ -82,7 +82,7 @@ trả M1..Mn, x/y/r float, votes int, confidence null
 Các nhóm bán kính là [5,10), [10,20), [20,40), [40,80), [80,160), giới hạn thực vẫn 128.
 `radius_balanced` là chế độ thử nghiệm bật trong `configs/s201_large_craters.json`,
 nhằm giảm tình trạng vòng nhỏ chiếm hết ngân sách đầu ra. Mặc định mã và game vẫn là `score`;
-quyết định cấu hình game thuộc S2-15, chưa chốt.
+[S2-15](S2-15_CHOT_THAM_SO.md) đã chốt giữ score cho game/tuần 3 ngày 29/10/2026.
 Nhóm không có đỉnh đủ ngưỡng không được thêm ứng viên để đủ số lượng.
 Nếu ngân sách ít hơn số nhóm, thứ tự nhóm nhỏ trước vẫn có thể bỏ nhóm lớn.
 Chế độ này có thể giảm Recall hố nhỏ; không bảo đảm mọi hố lớn được tìm thấy.
