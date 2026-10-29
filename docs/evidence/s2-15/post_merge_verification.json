@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "code_version": "3159cb4235db5515f9322f9aad0425fa4bb7da04",
+  "main_integrated": "cc31a8f",
+  "baseline_commit": "c1fc0cc",
+  "baseline_report": "report.json",
+  "current_report": "report_post_merge.json",
+  "raw_output_directory": "outputs/s215_post_merge_20261029",
+  "aggregate": {
+    "images": 18,
+    "tp_known": 10,
+    "fn_known": 164,
+    "recall_known_micro": 0.05747126436781609,
+    "fp": null,
+    "precision": null,
+    "f1": null
+  },
+  "checked_fields": [
+    "machine",
+    "metrics",
+    "input_sha256",
+    "radius_bounds_px",
+    "postprocess",
+    "candidates",
+    "hit_max_circles"
+  ],
+  "source_hashes_verified_after_run": true,
+  "images": [
+    {
+      "image_id": "moon_ap16_m102057602r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "dddd1c047ee027c7403cc34c64ffc77d453745e490a5f2918cd5ebd71c780134"
+    },
+    {
+      "image_id": "moon_ap16_m102064759r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "11b11eeb45baa99148050d3959e989ad434339fac2a12fcb489617f80a61422e"
+    },
+    {
+      "image_id": "moon_ap16_m106777343r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "ca23d0554b22eec8999972ee7151c0ca07b698a286f4d6250ceb1d2e6d534239"
+    },
+    {
+      "image_id": "moon_ap16_m113853974r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "da3c3e6353e860cfb2aec340149a4e2f5be830ec17739648e88ad1b1cd1ee89d"
+    },
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "091a5ca896f337969cec0a6ff43dcca94829caee78f3e47b1269671bbf3e3dbd"
+    },
+    {
+      "image_id": "moon_ap16_m132732855r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "68afeb71c58167e133bf8c013428b0ddb518bc69c4295dde929415b2690e7fad"
+    },
+    {
+      "image_id": "moon_ap16_m175179080r_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "4147798e4373c54fbbcd02f99fdd94fe40a85cbb1c69ec615b0adb39e8b51240"
+    },
+    {
+      "image_id": "moon_ap16_m1108182629l_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "906cdf9661e7b65f91855ca855b7abb4ca44a64840f70399440483395e9c3d20"
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "83f79d8e9aa6b6ce1ef204d1bcc39652ce2fe040c4336251e75ad7e566ea53a0"
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c02",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "339503ef4c57dd3751ea1eb7fb0f17c3ac9a82b4122d57f8a321c44296da1871"
+    },
+    {
+      "image_id": "moon_ap16_m117392541l_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "d97416822e206ea5d8d02b96952d8b20a3a67609f8d252003b2121b6aaaca281"
+    },
+    {
+      "image_id": "moon_ap15_hia_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "2e3a22a6f7e099077edb97c2286f0bfab77937692edc80f6c7f86f181de9efd4"
+    },
+    {
+      "image_id": "moon_ap15_hia_c02",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "b6513f44af25a8453df1780828f10b8e4b7b6373dbdfe09126c0b14547591510"
+    },
+    {
+      "image_id": "moon_ap15_hia_c03",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "b578224db923d0ef70d277ac72d83ed65516db190568a9911947636d9ff7111c"
+    },
+    {
+      "image_id": "moon_lunokhod1_loc_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "eaafc5031fecb1502928334c85030c66722a09693c1d492bfc598c9ff7799178"
+    },
+    {
+      "image_id": "moon_lunokhod1_loc_c02",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "15d43da4e16015bf52c4221c6780905d7d3383ed58b373b4ff8b21046ee57f0e"
+    },
+    {
+      "image_id": "moon_vandegraff_hia_c01",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "73d5cc22ef252b2b185da1ff31ff3cb4e978e506b02f8e6e513783d25d373186"
+    },
+    {
+      "image_id": "moon_vandegraff_hia_c02",
+      "machine_and_metrics_equal": true,
+      "current_output_sha256": "84aa16b03bbc4fbeb13c76d28552357f1be2f83033178bee23a405f93bfd7bf0"
+    }
+  ]
+}

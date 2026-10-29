@@ -58,8 +58,17 @@ Script đối chiếu vẫn đo riêng score/balanced/OpenCV; chỉ numpy_score 
 - Đổi thư viện/môi trường: kiểm hồi quy và đối chiếu đầu ra. Muốn so tốc độ phải đo lại cùng điều kiện và lặp sau warm-up.
 - Khi triển khai cấu hình/mã mới: khởi động lại app để xóa cache máy theo ảnh, làm nóng tối đa 8 ảnh khảo sát. Nếu đổi đầu ra, người viết báo cáo cập nhật Bảng 1.1, mục 3.7/5.4 và Hình 5.2.
 
-S2-13 còn thiếu thống kê S2-09 và S2-14 chưa có bằng chứng thử phiếu/người dùng trong repo. Chốt kỹ thuật S2-15 không thay thế nghiệm thu các phụ thuộc hay khảo sát thật. Chưa cập nhật Excel, chưa triển khai dịch vụ và chưa gửi thông báo cho thành viên.
+Sau khi đồng bộ main `cc31a8f` ngày 29/10/2026, S2-09 đã được tích hợp. S2-13 còn lỗi #10 (mật độ tính trên ứng viên chạm trần), #11 (so hai vùng chưa có trong app) và cần kiểm lại luồng với thống kê. S2-14 chưa có bằng chứng thử phiếu/người dùng trong repo. Chốt kỹ thuật S2-15 không thay thế nghiệm thu các phụ thuộc hay khảo sát thật. Chưa cập nhật Excel, chưa triển khai dịch vụ và chưa gửi thông báo cho thành viên.
 
 ## Kiểm chứng kỹ thuật
 
 284/284 test Python đạt với PYTHONUTF8=1 (gồm hai test mới từ chối holdout và cấu hình lệch snapshot); kiểm tra hợp đồng dữ liệu đạt. Log tại [validation.log](evidence/s2-15/validation.log). Đã đối chiếu lại toàn bộ hash mã/config trong report sau chạy, không có thay đổi.
+
+### Kiểm lại sau khi tích hợp main ngày 29/10/2026
+
+Commit `3159cb4` tích hợp main `cc31a8f` vào `NMTien`, giữ commit S2-15 `c1fc0cc`. Xung đột duy nhất ở nhật ký nhóm đã được xử lý bằng cách giữ đủ dòng của cả hai nhánh.
+
+- **298/298 test Python**, **6/6 bộ test JavaScript** và kiểm tra hợp đồng dữ liệu đạt; log tại [validation_post_merge.log](evidence/s2-15/validation_post_merge.log).
+- Chạy lại đủ **18/18 ảnh tuning**, TP_known=10, FN_known=164, Recall_known=5,75%; không chạy holdout. Danh sách vòng máy, kết quả ghép, hash dữ liệu đầu vào, dải bán kính và chính sách hậu xử lý giống hoàn toàn hồ sơ ban đầu trên cả 18 ảnh.
+- [report_post_merge.json](evidence/s2-15/report_post_merge.json) lưu phiên bản mã, hash nguồn và kết quả mới; [post_merge_verification.json](evidence/s2-15/post_merge_verification.json) ghi đối chiếu từng ảnh. JSON vòng máy gốc vẫn đại diện đúng đầu ra; JSON lần chạy mới nằm tại `outputs/s215_post_merge_20261029/` trên máy local. Đã kiểm lại toàn bộ hash nguồn sau lượt chạy.
+- Cấu hình đã chốt và hạn chế Recall thấp được bổ sung vào báo cáo mục 3.7; biên bản S2-16 có cập nhật kỹ thuật riêng ngày 29/10, giữ nguyên lịch sử và phần xác nhận của thành viên.
