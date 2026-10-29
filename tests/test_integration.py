@@ -21,8 +21,16 @@ CARD = {"card_id": "A16-1", "title": "Apollo 16", "body": "Tàu đổ bộ năm 
 
 
 class TestStatisticsView(unittest.TestCase):
-    def test_unimplemented_statistics_are_pending(self):
+    def test_real_statistics_follow_the_contract(self):
+        """S2-09 đã cài: summarize thật phải qua kiểm tra hợp đồng của giao diện."""
         view = statistics_view(MACHINE, METADATA, 512 * 512)
+        self.assertEqual(view["status"], "ok")
+        self.assertEqual(view["data"]["count"], 0)
+        self.assertGreater(view["data"]["valid_area_km2"], 0)
+
+    def test_unimplemented_statistics_are_pending(self):
+        with mock.patch("src.statistics.summarize", side_effect=NotImplementedError("chưa cài")):
+            view = statistics_view(MACHINE, METADATA, 512 * 512)
         self.assertEqual(view["status"], "pending")
         self.assertIn("S2-09", view["reason"])
 
@@ -98,12 +106,21 @@ class TestIntegratedScreen(unittest.TestCase):
         )
         return AppTest.from_string(code, default_timeout=30)
 
-    def test_pending_statistics_and_implemented_cards_are_labelled_correctly(self):
+    def test_real_statistics_and_implemented_cards_are_shown(self):
         at = self.app().run()
         self.assertEqual(len(at.exception), 0)
         text = " ".join(m.value for m in at.markdown) + " ".join(c.value for c in at.caption)
         self.assertIn("Apollo 15", text)
         next(b for b in at.button if b.label == "Chấm bài").click().run()
+        self.assertEqual(len(at.exception), 0)
+        self.assertEqual(len(at.error), 0)
+        metrics = {m.label: m.value for m in at.metric}
+        self.assertEqual(metrics["Số ứng viên"], "0")   # máy giả không trả vòng nào
+
+    def test_pending_statistics_are_labelled(self):
+        with mock.patch("src.statistics.summarize", side_effect=NotImplementedError("chưa cài")):
+            at = self.app().run()
+            next(b for b in at.button if b.label == "Chấm bài").click().run()
         self.assertEqual(len(at.exception), 0)
         self.assertTrue(any("S2-09" in i.value for i in at.info))
 

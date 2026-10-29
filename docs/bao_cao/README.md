@@ -75,23 +75,23 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 - [ ] Bìa đủ tên trường, mã lớp, MSSV, giảng viên.
 - [ ] Phụ lục có bảng đóng góp đã được cả bốn người xác nhận và phần khai báo dùng AI.
 
-## 5. Trạng thái bản ghép đầu tiên (27/10/2026)
+## 5. Trạng thái bản ghép (cập nhật 27/10/2026, PR #29)
 
-Bản dựng ngày 27/10/2026 dài 55 trang: bìa và mục lục 4 trang, nội dung chính 45 trang, tài liệu tham khảo và phụ lục 6 trang. Báo cáo có 28 tài liệu, trong đó 7 bài có DOI. **Nội dung chính đang vượt mức 40 trang**, trong khi các kết quả còn chờ sẽ thêm khoảng 3–4 trang. Bảng dưới đề xuất số trang tối đa cho từng chương.
+Bản dựng sau PR #29 dài 55 trang: bìa và mục lục 4 trang, nội dung chính 45 trang (trang 5–49), tài liệu tham khảo và phụ lục 6 trang. Báo cáo có 28 tài liệu, trong đó 7 bài có DOI. **Nội dung chính đang vượt mức 40 trang**, trong khi các kết quả còn chờ sẽ thêm khoảng 3–4 trang. Bảng dưới đề xuất số trang tối đa cho từng chương.
 
 | Chương | Hiện tại | Tối đa đề xuất | Gợi ý rút gọn (người chốt quyết định) |
 |---|---:|---:|---|
-| 1 | 5 | 4 | Đức: gộp 1.2 và 1.3 |
+| 1 | 4 | 4 | Đã gộp 1.2 và 1.3, thay Bảng 1.2 bằng một đoạn (PR #29) |
 | 2 | 11 | 8 | Bỏ Hình 2.2 hoặc rút 2.2.5; rút ví dụ CLAHE và 2.3.3 |
 | 3 | 12 | 9 | Bảng 3.3 thành một câu; rút 3.4.2 (so với vòng ngẫu nhiên); cân nhắc bỏ Hình 3.1 |
-| 4 | 10 | 10 | Đã gồm chỗ cho kết quả thí nghiệm và khảo sát; rút ví dụ quy đổi ở 4.2 và chi tiết thử nhỏ ở 4.8.3 |
+| 4 | 11 | 10 | Đã gồm chỗ cho kết quả thí nghiệm và khảo sát; rút ví dụ quy đổi ở 4.2 và chi tiết thử nhỏ ở 4.8.3 |
 | 5 | 7 | 7 | — |
 
 Các dấu `[CHỜ]` còn lại:
 
-- PR #26 (Tiến) chưa được merge. Các mục dùng số liệu của PR này là 1.6, 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Sau review, PR giữ mặc định game là `score`; `radius_balanced` chỉ bật ở cấu hình thử nghiệm. Nếu S2-15 chốt đổi game, Tiến phải báo trước để sửa Bảng 1.1, mục 3.7, 5.4 và chụp lại Hình 5.2. Sau khi #26 merge, Tiến điền số cuối và xóa dấu ở phần Hough (S3-06).
-- PR #27 (Đức) chưa được merge: quy đổi tâm pixel, ảnh đối chiếu phóng 3 lần và các ảnh Hình 5.1, 5.2 ở mục 5.2–5.4 dựa trên bản sửa này.
-- S2-09 (Hưng): mục 3.6, Bảng 1.1 và mục 5.7.
+- PR #26 (Tiến) đã merge ngày 28/10 (main `d315169`) và game vẫn dùng `score`, nên các câu tả danh sách máy ở 1.5, 3.7, 5.4 và Hình 5.2 không đổi. Tiến (S3-06) đối chiếu số cuối rồi xóa dấu `[CHỜ PR #26]` ở 1.5 (Bảng 1.1), 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Nếu S2-15 chốt đổi cấu hình game, Tiến báo trước để sửa các mục trên và chụp lại Hình 5.2.
+- PR #27 đã merge và đã chạy trên VPS; dấu chờ ở mục 5.2 đã xóa. Hình 5.1–5.3 chụp lại trên main `3cff367` cho kết quả như cũ (`docs/S2-13_TICH_HOP.md` mục 2.1).
+- S2-09 đã merge ngày 28/10 (PR #30). Bảng 1.1 và mục 5.7 đã điền theo `docs/S2-09_MAT_DO_HO.md`. Còn mục 3.6 (Hưng, S2-12/S3-07) và câu về cặp vùng ở mục 4.1: S2-09 đổi cặp Van de Graaff – Mare Frigoris thành Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Nếu S3-03 sửa quy tắc loại vùng thì cập nhật lại số ở cả ba chỗ.
 - S2-15 (Tiến): mục 3.7.
 - S3-05 (Quốc Anh): mục 4.6.
 - S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.
