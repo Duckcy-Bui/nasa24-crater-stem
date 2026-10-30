@@ -4,9 +4,11 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import sys
+from types import SimpleNamespace
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from scripts import reproduce_s310 as runner
 from scripts import s207_experiments as experiments
@@ -16,9 +18,17 @@ class ReproductionTests(unittest.TestCase):
     def test_failed_stage_is_recorded_and_stops_pipeline(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "run"
+            process = Mock(return_value=subprocess.CompletedProcess([], 9))
+            # Replace only the runner's reference; platform's Linux uname probe
+            # and other standard-library subprocess users must keep working.
+            stage_subprocess = SimpleNamespace(run=process, STDOUT=subprocess.STDOUT)
             with patch.object(runner, "identities", return_value={}), patch.object(
-                runner.subprocess, "run", return_value=subprocess.CompletedProcess([], 9)
-            ) as process, patch.object(runner, "git", return_value="test"), contextlib.redirect_stdout(io.StringIO()):
+                runner, "subprocess", stage_subprocess
+            ), patch.object(runner, "git", return_value="test"), contextlib.redirect_stdout(io.StringIO()):
+                probe = subprocess.check_output(
+                    [sys.executable, "-c", "print('platform-probe')"], text=True
+                )
+                self.assertEqual(probe.strip(), "platform-probe")
                 with self.assertRaisesRegex(RuntimeError, "dataset failed"):
                     runner.main(["--quick", "--output", str(out)])
             report = runner.read(out / "manifest.json")
