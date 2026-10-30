@@ -1,0 +1,964 @@
+{
+  "data_kind": "synthetic",
+  "truth": [
+    {
+      "crater_id": "T1",
+      "x": 160.0,
+      "y": 180.0,
+      "r": 32.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "T2",
+      "x": 350.0,
+      "y": 310.0,
+      "r": 20.0,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "T3",
+      "x": 8.0,
+      "y": 420.0,
+      "r": 24.0,
+      "confidence": null,
+      "votes": null
+    }
+  ],
+  "radius_range_px": [
+    18,
+    36
+  ],
+  "edge_count": 489,
+  "common_preprocessing": {
+    "gaussian_sigma": 1.5,
+    "gaussian_size": 11,
+    "gaussian_border": "reflect_101",
+    "quantization": "rint(255*smooth)",
+    "sobel_size": 3,
+    "sobel_border": "replicate",
+    "canny_low": 50,
+    "canny_high": 100,
+    "canny_L2gradient": false
+  },
+  "results": {
+    "full_circle": {
+      "params": {
+        "voting_method": "full_circle",
+        "candidate_selection": "score",
+        "radius_step_px": 1,
+        "r_min_limit_px": 5,
+        "r_max_limit_px": 128,
+        "angle_step_deg": 1.0,
+        "min_votes": 12,
+        "min_vote_ratio": 0.35,
+        "nms_center_px": 4.0,
+        "nms_radius_px": 2,
+        "max_circles": 100,
+        "edge_batch_size": 256
+      },
+      "seconds": 0.0964877000000115,
+      "detections": [
+        {
+          "crater_id": "M1",
+          "x": 350.0,
+          "y": 310.0,
+          "r": 20.0,
+          "confidence": null,
+          "votes": 136,
+          "nearest_truth_id": "T2",
+          "dx_px": 0.0,
+          "dy_px": 0.0,
+          "center_distance_px": 0.0,
+          "dr_px": 0.0
+        },
+        {
+          "crater_id": "M2",
+          "x": 160.0,
+          "y": 180.0,
+          "r": 32.0,
+          "confidence": null,
+          "votes": 188,
+          "nearest_truth_id": "T1",
+          "dx_px": 0.0,
+          "dy_px": 0.0,
+          "center_distance_px": 0.0,
+          "dr_px": 0.0
+        },
+        {
+          "crater_id": "M3",
+          "x": 8.0,
+          "y": 420.0,
+          "r": 24.0,
+          "confidence": null,
+          "votes": 83,
+          "nearest_truth_id": "T3",
+          "dx_px": 0.0,
+          "dy_px": 0.0,
+          "center_distance_px": 0.0,
+          "dr_px": 0.0
+        }
+      ]
+    },
+    "gradient": {
+      "params": {
+        "voting_method": "gradient",
+        "candidate_selection": "score",
+        "radius_step_px": 1,
+        "r_min_limit_px": 5,
+        "r_max_limit_px": 128,
+        "angle_step_deg": 1.0,
+        "min_votes": 12,
+        "min_vote_ratio": 0.35,
+        "nms_center_px": 4.0,
+        "nms_radius_px": 2,
+        "max_circles": 100,
+        "edge_batch_size": 256
+      },
+      "seconds": 0.09196289999999863,
+      "detections": [
+        {
+          "crater_id": "M1",
+          "x": 350.0,
+          "y": 310.0,
+          "r": 20.0,
+          "confidence": null,
+          "votes": 48,
+          "nearest_truth_id": "T2",
+          "dx_px": 0.0,
+          "dy_px": 0.0,
+          "center_distance_px": 0.0,
+          "dr_px": 0.0
+        }
+      ]
+    },
+    "opencv": {
+      "params": {
+        "method": "HOUGH_GRADIENT",
+        "dp": 1.0,
+        "minDist": 4.0,
+        "param1": 100.0,
+        "param2": 12.0,
+        "minRadius": 18,
+        "maxRadius": 36
+      },
+      "seconds": 0.007532000000082917,
+      "detections": [
+        {
+          "crater_id": "CV1",
+          "x": 160.5,
+          "y": 180.5,
+          "r": 31.700000762939453,
+          "confidence": null,
+          "votes": null,
+          "nearest_truth_id": "T1",
+          "dx_px": 0.5,
+          "dy_px": 0.5,
+          "center_distance_px": 0.7071067811865476,
+          "dr_px": -0.2999992370605469
+        },
+        {
+          "crater_id": "CV2",
+          "x": 350.5,
+          "y": 310.5,
+          "r": 19.600000381469727,
+          "confidence": null,
+          "votes": null,
+          "nearest_truth_id": "T2",
+          "dx_px": 0.5,
+          "dy_px": 0.5,
+          "center_distance_px": 0.7071067811865476,
+          "dr_px": -0.39999961853027344
+        },
+        {
+          "crater_id": "CV3",
+          "x": 8.5,
+          "y": 420.5,
+          "r": 23.399999618530273,
+          "confidence": null,
+          "votes": null,
+          "nearest_truth_id": "T3",
+          "dx_px": 0.5,
+          "dy_px": 0.5,
+          "center_distance_px": 0.7071067811865476,
+          "dr_px": -0.6000003814697266
+        },
+        {
+          "crater_id": "CV4",
+          "x": 6.5,
+          "y": 415.5,
+          "r": 28.5,
+          "confidence": null,
+          "votes": null,
+          "nearest_truth_id": "T3",
+          "dx_px": -1.5,
+          "dy_px": -4.5,
+          "center_distance_px": 4.743416490252569,
+          "dr_px": 4.5
+        }
+      ]
+    }
+  },
+  "blank_control": "all three methods returned no circles",
+  "comparison_limits": [
+    "Same gray_u8 and radius range; NumPy receives reconstructed Canny edges.",
+    "Internal Canny reconstruction verified against OpenCV 4.14.0 source; other versions must be checked separately.",
+    "NumPy per-radius NMS/ratio and OpenCV center/radius stages differ.",
+    "Nearest-truth differences are descriptive, not TP/FP or Precision/Recall.",
+    "NumPy timings exclude Sobel/Canny; OpenCV timing includes them.",
+    "Parameters illustrate differences; no accuracy acceptance threshold."
+  ],
+  "tiny_example": {
+    "shape": [
+      5,
+      5
+    ],
+    "radius": 1,
+    "angle_step_deg": 1.0,
+    "edges": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "offsets": [
+      [
+        -1,
+        -1
+      ],
+      [
+        -1,
+        0
+      ],
+      [
+        -1,
+        1
+      ],
+      [
+        0,
+        -1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        -1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      {
+        "point_xy": [
+          2,
+          1
+        ],
+        "votes": [
+          {
+            "offset": [
+              -1,
+              -1
+            ],
+            "center": [
+              3,
+              2
+            ],
+            "inside": true,
+            "flat_index": 13
+          },
+          {
+            "offset": [
+              -1,
+              0
+            ],
+            "center": [
+              3,
+              1
+            ],
+            "inside": true,
+            "flat_index": 8
+          },
+          {
+            "offset": [
+              -1,
+              1
+            ],
+            "center": [
+              3,
+              0
+            ],
+            "inside": true,
+            "flat_index": 3
+          },
+          {
+            "offset": [
+              0,
+              -1
+            ],
+            "center": [
+              2,
+              2
+            ],
+            "inside": true,
+            "flat_index": 12
+          },
+          {
+            "offset": [
+              0,
+              1
+            ],
+            "center": [
+              2,
+              0
+            ],
+            "inside": true,
+            "flat_index": 2
+          },
+          {
+            "offset": [
+              1,
+              -1
+            ],
+            "center": [
+              1,
+              2
+            ],
+            "inside": true,
+            "flat_index": 11
+          },
+          {
+            "offset": [
+              1,
+              0
+            ],
+            "center": [
+              1,
+              1
+            ],
+            "inside": true,
+            "flat_index": 6
+          },
+          {
+            "offset": [
+              1,
+              1
+            ],
+            "center": [
+              1,
+              0
+            ],
+            "inside": true,
+            "flat_index": 1
+          }
+        ],
+        "cumulative_accumulator": [
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "point_xy": [
+          1,
+          2
+        ],
+        "votes": [
+          {
+            "offset": [
+              -1,
+              -1
+            ],
+            "center": [
+              2,
+              3
+            ],
+            "inside": true,
+            "flat_index": 17
+          },
+          {
+            "offset": [
+              -1,
+              0
+            ],
+            "center": [
+              2,
+              2
+            ],
+            "inside": true,
+            "flat_index": 12
+          },
+          {
+            "offset": [
+              -1,
+              1
+            ],
+            "center": [
+              2,
+              1
+            ],
+            "inside": true,
+            "flat_index": 7
+          },
+          {
+            "offset": [
+              0,
+              -1
+            ],
+            "center": [
+              1,
+              3
+            ],
+            "inside": true,
+            "flat_index": 16
+          },
+          {
+            "offset": [
+              0,
+              1
+            ],
+            "center": [
+              1,
+              1
+            ],
+            "inside": true,
+            "flat_index": 6
+          },
+          {
+            "offset": [
+              1,
+              -1
+            ],
+            "center": [
+              0,
+              3
+            ],
+            "inside": true,
+            "flat_index": 15
+          },
+          {
+            "offset": [
+              1,
+              0
+            ],
+            "center": [
+              0,
+              2
+            ],
+            "inside": true,
+            "flat_index": 10
+          },
+          {
+            "offset": [
+              1,
+              1
+            ],
+            "center": [
+              0,
+              1
+            ],
+            "inside": true,
+            "flat_index": 5
+          }
+        ],
+        "cumulative_accumulator": [
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            2,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "point_xy": [
+          3,
+          2
+        ],
+        "votes": [
+          {
+            "offset": [
+              -1,
+              -1
+            ],
+            "center": [
+              4,
+              3
+            ],
+            "inside": true,
+            "flat_index": 19
+          },
+          {
+            "offset": [
+              -1,
+              0
+            ],
+            "center": [
+              4,
+              2
+            ],
+            "inside": true,
+            "flat_index": 14
+          },
+          {
+            "offset": [
+              -1,
+              1
+            ],
+            "center": [
+              4,
+              1
+            ],
+            "inside": true,
+            "flat_index": 9
+          },
+          {
+            "offset": [
+              0,
+              -1
+            ],
+            "center": [
+              3,
+              3
+            ],
+            "inside": true,
+            "flat_index": 18
+          },
+          {
+            "offset": [
+              0,
+              1
+            ],
+            "center": [
+              3,
+              1
+            ],
+            "inside": true,
+            "flat_index": 8
+          },
+          {
+            "offset": [
+              1,
+              -1
+            ],
+            "center": [
+              2,
+              3
+            ],
+            "inside": true,
+            "flat_index": 17
+          },
+          {
+            "offset": [
+              1,
+              0
+            ],
+            "center": [
+              2,
+              2
+            ],
+            "inside": true,
+            "flat_index": 12
+          },
+          {
+            "offset": [
+              1,
+              1
+            ],
+            "center": [
+              2,
+              1
+            ],
+            "inside": true,
+            "flat_index": 7
+          }
+        ],
+        "cumulative_accumulator": [
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            1,
+            1,
+            3,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            2,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "point_xy": [
+          2,
+          3
+        ],
+        "votes": [
+          {
+            "offset": [
+              -1,
+              -1
+            ],
+            "center": [
+              3,
+              4
+            ],
+            "inside": true,
+            "flat_index": 23
+          },
+          {
+            "offset": [
+              -1,
+              0
+            ],
+            "center": [
+              3,
+              3
+            ],
+            "inside": true,
+            "flat_index": 18
+          },
+          {
+            "offset": [
+              -1,
+              1
+            ],
+            "center": [
+              3,
+              2
+            ],
+            "inside": true,
+            "flat_index": 13
+          },
+          {
+            "offset": [
+              0,
+              -1
+            ],
+            "center": [
+              2,
+              4
+            ],
+            "inside": true,
+            "flat_index": 22
+          },
+          {
+            "offset": [
+              0,
+              1
+            ],
+            "center": [
+              2,
+              2
+            ],
+            "inside": true,
+            "flat_index": 12
+          },
+          {
+            "offset": [
+              1,
+              -1
+            ],
+            "center": [
+              1,
+              4
+            ],
+            "inside": true,
+            "flat_index": 21
+          },
+          {
+            "offset": [
+              1,
+              0
+            ],
+            "center": [
+              1,
+              3
+            ],
+            "inside": true,
+            "flat_index": 16
+          },
+          {
+            "offset": [
+              1,
+              1
+            ],
+            "center": [
+              1,
+              2
+            ],
+            "inside": true,
+            "flat_index": 11
+          }
+        ],
+        "cumulative_accumulator": [
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            1,
+            2,
+            4,
+            2,
+            1
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            1
+          ],
+          [
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        ]
+      }
+    ],
+    "accumulator": [
+      [
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    ],
+    "toy_min_votes": 3,
+    "threshold": 3,
+    "peaks_yx": [
+      [
+        2,
+        2
+      ]
+    ],
+    "score": 0.5,
+    "gradient_accumulator": [
+      [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        4,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    ],
+    "gradient_support_size": 7,
+    "gradient_score": 0.5714285714285714,
+    "note": "Internal helpers only; detect_circles requires 512x512 and r>=5."
+  },
+  "environment": {
+    "python": "3.12.10",
+    "numpy": "2.5.4",
+    "opencv": "5.0.0",
+    "opencv_threads": 1,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "code_version": "210e68d8e4b678a6f464a2f5c29de689a0ef63dc+working-tree",
+  "source_sha256": {
+    "src/hough.py": "daee71c1553584c8e64d0844290d28a80292928ba09fb7a45c086c4d5dc2a2f9",
+    "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+    "scripts/demo_hough.py": "d4a647d7ba82f955a690e5aad3e79225e8acb3b24c84f11b5aac8e15502d2984",
+    "scripts/verify_hough_examples.py": "aa2cf80911a4a014d2944290ea7f1228f642a4410d774620c4ddb6e919c04a71"
+  },
+  "source_sha256_lf": {
+    "src/hough.py": "daee71c1553584c8e64d0844290d28a80292928ba09fb7a45c086c4d5dc2a2f9",
+    "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+    "scripts/demo_hough.py": "d4a647d7ba82f955a690e5aad3e79225e8acb3b24c84f11b5aac8e15502d2984",
+    "scripts/verify_hough_examples.py": "aa2cf80911a4a014d2944290ea7f1228f642a4410d774620c4ddb6e919c04a71"
+  },
+  "created_at_utc": "2026-10-30T10:43:55.549774+00:00"
+}

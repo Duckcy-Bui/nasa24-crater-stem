@@ -8,3 +8,6 @@
 *.zip binary
 *.png binary
 *.npy binary
+
+# Preserve archived evidence bytes so SHA-256 survives checkout.
+docs/evidence/s3-10/** -text whitespace=cr-at-eol

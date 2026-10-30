@@ -52,7 +52,13 @@ for f in tests/test_canvas_*.js; do node "$f"; done   # test giao diện (Node.j
 python scripts/build_report.py                    # dựng báo cáo (cần requirements-report.txt)
 ```
 
-[CHỜ S3-10: lệnh tái tạo bảng kết quả đánh giá và ba thí nghiệm.]
+Một lệnh tái tạo các bảng thuật toán/thống kê đã có mã và dữ liệu:
+
+```bash
+python -X utf8 -B scripts/reproduce_s310.py
+```
+
+Kết quả tại thư mục mới `outputs/s310_<UTC>/`: `frozen_tuning.csv` (S2-15), `evaluation_tuning/results.csv` và `evaluation_holdout/results.csv` (đối chiếu Hough), `E1.csv`–`E3.csv` (ba thí nghiệm), `density/` (đếm và mật độ). `manifest.json` lưu môi trường, seed 0, hash mã/dữ liệu và trạng thái từng bước. Cấu hình game S2-15 và cấu hình đối chiếu được lưu riêng. Nhãn thưa chỉ cho phép báo Recall_known; chạy holdout là đánh giá lặp. `--quick --repeats 1` chỉ kiểm luồng, không tạo đủ bộ bảng. README có hướng dẫn Windows/Linux; dữ liệu khảo sát thật bàn giao riêng.
 
 ## D. Khai báo sử dụng công cụ AI
 

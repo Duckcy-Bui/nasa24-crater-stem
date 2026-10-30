@@ -122,10 +122,14 @@ def e1_status(split: str, sun_usable: bool) -> str:
 
 
 def run_one(image_id: str, processed_dir: Path, split: str, *,
-            parameter_variants: dict[str, dict[str, Any]]) -> dict[str, Any]:
+            parameter_variants: dict[str, dict[str, Any]],
+            config: dict[str, Any] | None = None) -> dict[str, Any]:
     metadata, image, valid = load_image(image_id, processed_dir)
     reference = read_json(ROOT / "data" / "reference_labels" / f"{image_id}_craters_catalogue.json")
-    baseline = detect_machine(metadata, image, valid)
+    config = config or {}
+    base_hough = resolve_hough_params(config.get("hough", {}))
+    baseline = detect_machine(metadata, image, valid, hough_params=base_hough,
+                              preprocess_params=config.get("preprocess"))
     raw = baseline["raw_circles"]
     shaded = baseline["machine"]["circles"]
     reviewed, review_report = review_candidates(shaded, baseline["pre"])
@@ -182,7 +186,8 @@ def run_one(image_id: str, processed_dir: Path, split: str, *,
         },
     }
     for name, override in parameter_variants.items():
-        detected = detect_machine(metadata, image, valid, hough_params=resolve_hough_params(override))
+        detected = detect_machine(metadata, image, valid, hough_params=resolve_hough_params({**base_hough, **override}),
+                                  preprocess_params=config.get("preprocess"))
         result["experiment_2_parameters"].append({
             "variant": name,
             "hough_params_override": override,
@@ -200,6 +205,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="S2-07: ba kịch bản thí nghiệm")
     parser.add_argument("--images", nargs="*", help="mặc định là ba ảnh tuning")
     parser.add_argument("--holdout", action="store_true", help="chỉ báo cáo holdout bằng một cấu hình đã chốt")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/default.json",
+                        help="Cấu hình nền cho cả E1/E2/E3")
     parser.add_argument("--chosen-config", type=Path, help="JSON Hough đã chốt trên tuning; bắt buộc cùng --holdout")
     parser.add_argument("--processed-dir", type=Path, default=ROOT / "data" / "processed")
     parser.add_argument("--output", type=Path, default=ROOT / "docs" / "evidence" / "s2-07" / "results.json")
@@ -214,18 +221,22 @@ def main(argv: list[str] | None = None) -> int:
         validate_run_selection(image_ids, splits, holdout=args.holdout, chosen_config=args.chosen_config)
     except ValueError as error:
         parser.error(str(error))
+    config = read_json(args.config)
     variants = PARAMETER_VARIANTS
     chosen = None
     if args.holdout:
         try:
             supplied = read_json(args.chosen_config)
             chosen = resolve_hough_params(supplied.get("hough", supplied))
+            config = {**config, "hough": chosen,
+                      "preprocess": supplied.get("preprocess", config.get("preprocess"))}
         except (OSError, TypeError, ValueError) as error:
             parser.error(f"Không đọc được --chosen-config: {error}")
         variants = {"chosen_on_tuning": chosen}
-    rows = [run_one(image_id, args.processed_dir, splits[image_id], parameter_variants=variants) for image_id in image_ids]
+    rows = [run_one(image_id, args.processed_dir, splits[image_id], parameter_variants=variants, config=config) for image_id in image_ids]
     report = {
         "task_id": "S2-07",
+        "effective_config": config,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "code_version": code_version(),
         "metric_scope": "reviewed sparse labels; Recall known only",
@@ -237,7 +248,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.write:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"Đã ghi {args.output.relative_to(ROOT)}")
+        print(f"Đã ghi {args.output.resolve()}")
     else:
         print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0

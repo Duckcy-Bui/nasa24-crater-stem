@@ -1,0 +1,49 @@
+{
+  "full_status": "complete",
+  "quick_status": "complete",
+  "full_artifacts_match": true,
+  "quick_artifacts_match": true,
+  "full_source_differences_after_cli_fix": [
+    "scripts/s207_experiments.py",
+    "scripts/s209_density.py"
+  ],
+  "quick_final_sources_match": true,
+  "final_patch_note": "After the full run, only CLI help encoding and printing an absolute output path were corrected in s207/s209. Algorithm/configuration did not change; final quick and all 303 Python tests passed.",
+  "checks": {
+    "python": {
+      "tests": 303,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "contracts_returncode": 0,
+    "canvas": [
+      {
+        "file": "test_canvas_events.js",
+        "returncode": 0
+      },
+      {
+        "file": "test_canvas_geometry.js",
+        "returncode": 0
+      },
+      {
+        "file": "test_canvas_precision.js",
+        "returncode": 0
+      },
+      {
+        "file": "test_canvas_save.js",
+        "returncode": 0
+      },
+      {
+        "file": "test_canvas_view_geometry.js",
+        "returncode": 0
+      },
+      {
+        "file": "test_canvas_zoom.js",
+        "returncode": 0
+      }
+    ]
+  },
+  "preservation": "pass",
+  "holdout_no_parameter_sweep": true
+}
