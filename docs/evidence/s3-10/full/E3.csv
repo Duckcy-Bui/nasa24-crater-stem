@@ -1,0 +1,11 @@
+image_id,split,variant,kept,removed,tp_known,known_labels,recall_known,precision,f1
+moon_ap16_m132732855l_c01,tuning,remove_texture,48,52,0,9,0.0,,
+moon_ap16_m132732855l_c01,tuning,dedupe,96,4,0,9,0.0,,
+moon_ap16_m102064759r_c01,tuning,remove_texture,46,54,1,11,0.0909,,
+moon_ap16_m102064759r_c01,tuning,dedupe,91,9,1,11,0.0909,,
+moon_ap16_m109134835l_c01,tuning,remove_texture,61,39,0,10,0.0,,
+moon_ap16_m109134835l_c01,tuning,dedupe,97,3,0,10,0.0,,
+moon_ap15_loc_c01,holdout,remove_texture,38,62,0,8,0.0,,
+moon_ap15_loc_c01,holdout,dedupe,96,4,0,8,0.0,,
+moon_marefrig_loc_c01,holdout,remove_texture,31,69,0,6,0.0,,
+moon_marefrig_loc_c01,holdout,dedupe,100,0,0,6,0.0,,

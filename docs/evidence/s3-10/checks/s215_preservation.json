@@ -1,0 +1,285 @@
+{
+  "base": "210e68d",
+  "files": [
+    {
+      "path": "app.py",
+      "byte_identical": true,
+      "sha256": "f5e41a6405ccd69ee0e344d3ad704e8ca220d7dccc893e1db98650b45e47567c",
+      "content_identical_lf": true
+    },
+    {
+      "path": "configs/default.json",
+      "byte_identical": true,
+      "sha256": "02c87af9f420412ee7e909f6927ea7ca675b4c2899c306bc2bde1aff9a703370",
+      "content_identical_lf": true
+    },
+    {
+      "path": "configs/s215_frozen.json",
+      "byte_identical": true,
+      "sha256": "02c87af9f420412ee7e909f6927ea7ca675b4c2899c306bc2bde1aff9a703370",
+      "content_identical_lf": true
+    },
+    {
+      "path": "scripts/freeze_s215.py",
+      "byte_identical": true,
+      "sha256": "b392f0002dc3eae587e35c3fce5f2e4a3f9d9853cc1d5e5ea857f72c8cfa2e06",
+      "content_identical_lf": true
+    },
+    {
+      "path": "tests/test_s215.py",
+      "byte_identical": true,
+      "sha256": "acf7040368816d6036560f3da5d94d28d383864f8daa132eebc2ee588eb58cb6",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/S2-15_CHOT_THAM_SO.md",
+      "byte_identical": false,
+      "sha256": "ef488aaf53b27cfd7f8730e87a449c3add67ae3a7d961ad82125dc49379bd704",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/README.md",
+      "byte_identical": false,
+      "sha256": "30fc20ef04c0e1da11d31a785f41a4cdc139634ab1ba406e17226aa1dcbfe0b5",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap15_hia_c01.json",
+      "byte_identical": true,
+      "sha256": "3f99b49746519d27c37edc7a637e58310e445a1fe514f0ae064b523cb878ad3f",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap15_hia_c02.json",
+      "byte_identical": true,
+      "sha256": "4353c3a6fe0b466a39c5b3f452b8bba3f87365e423767ef89b10a5016e83894d",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap15_hia_c03.json",
+      "byte_identical": true,
+      "sha256": "012f3448b7da237f05cd6192734f9cb97bbadd151664ceed2307e042c57644ad",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m102057602r_c01.json",
+      "byte_identical": true,
+      "sha256": "832a5e0284e3788d9b5fb720bda518b2b467a04c30c05b79474f6ea92db9b94a",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m102064759r_c01.json",
+      "byte_identical": true,
+      "sha256": "cfd128006c2a8c7645644e1a4024d0844cec075a40b12527f8551ac96575c4e0",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m106777343r_c01.json",
+      "byte_identical": true,
+      "sha256": "a193edfec9a6b9ff4fca17da4879d6f0920f6358ecc79d8c950171aca7c6251a",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m109134835l_c01.json",
+      "byte_identical": true,
+      "sha256": "2bfb5d77badba7a684b77f6adedca3984b66226eec1a684c55f6600dfb86272a",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m109134835l_c02.json",
+      "byte_identical": true,
+      "sha256": "b59392be56787045b469da337b65a18932cc9ea4f81eef7a1f2d5c69dd4e2c24",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m1108182629l_c01.json",
+      "byte_identical": true,
+      "sha256": "7a4f97428d27e0694cf1cb64e9b88e7f71fa850c864fe2d00588a99b1309af85",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m113853974r_c01.json",
+      "byte_identical": true,
+      "sha256": "5df5baab1781b30c148ba8e90b73a1f6328a5f02ff536328c8b334db86bbb76c",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m117392541l_c01.json",
+      "byte_identical": true,
+      "sha256": "1a64f166b76f9883a03953365353fb3d51433d9362c8ae028728285096cc17fc",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m132732855l_c01.json",
+      "byte_identical": true,
+      "sha256": "fa22068b34d8279e20362a8a62acd24eca2b173db0043a33e7f1108de5b48e9b",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m132732855r_c01.json",
+      "byte_identical": true,
+      "sha256": "6df3564bcb06b8890541899837322f0e568dc446b0e27f52088fe5adc4a776db",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_ap16_m175179080r_c01.json",
+      "byte_identical": true,
+      "sha256": "b2040406c2fd19d027b6eed29042d7333b393b14186d9e2c1474030ec56521dd",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_lunokhod1_loc_c01.json",
+      "byte_identical": true,
+      "sha256": "ea43ec6719e6ac6e1cdfec6a7a790e05f11f17818f2ccfd56ef5c6120d0cca28",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_lunokhod1_loc_c02.json",
+      "byte_identical": true,
+      "sha256": "e643c4bfc363b6b0285f00c15138b598f64a3e4072a25b0180db2870ae4634ab",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_vandegraff_hia_c01.json",
+      "byte_identical": true,
+      "sha256": "a78d116155639d2745773aae120305d7cfab79174e17fcb483203440b56347bd",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/moon_vandegraff_hia_c02.json",
+      "byte_identical": true,
+      "sha256": "bc0aa3e7cd5bd0b90fe2411c426bf4e0e50f5c184ab2d6492bdfae4858a2af9b",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/post_merge_verification.json",
+      "byte_identical": true,
+      "sha256": "0b941fdb5f673fb28107d72debe5899f48ce5c0c6c119da11095959ec7b8e9b9",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/report.json",
+      "byte_identical": true,
+      "sha256": "e2102a67eab43142ae065bb15a5543c5a893a4aca6e4a975a3c40fcef105570e",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/report_post_merge.json",
+      "byte_identical": true,
+      "sha256": "31f8ca22f3e3a87779879a9ee6c329237f4c3ec9bbce159dd925b15c5ebba679",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/results.csv",
+      "byte_identical": true,
+      "sha256": "3bbe7ba594c858c6aac8dcade4988c85df5d559b77f22c2ce6f955654c853705",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/validation.log",
+      "byte_identical": false,
+      "sha256": "b373974086261f941143381443f52e3b9579c987049dc2e89d9f9577324189b0",
+      "content_identical_lf": true
+    },
+    {
+      "path": "docs/evidence/s2-15/validation_post_merge.log",
+      "byte_identical": false,
+      "sha256": "f70cff291ad5ae6caabd10589726e5c2cb850c7179b2097961fa32b37fc35396",
+      "content_identical_lf": true
+    }
+  ],
+  "tuning_images": [
+    {
+      "image_id": "moon_ap15_hia_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap15_hia_c02",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap15_hia_c03",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m102057602r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m102064759r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m106777343r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c02",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m1108182629l_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m113853974r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m117392541l_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m132732855r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_ap16_m175179080r_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_lunokhod1_loc_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_lunokhod1_loc_c02",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_vandegraff_hia_c01",
+      "machine_identical": true,
+      "metrics_identical": true
+    },
+    {
+      "image_id": "moon_vandegraff_hia_c02",
+      "machine_identical": true,
+      "metrics_identical": true
+    }
+  ],
+  "status": "pass",
+  "line_endings_note": "Git checkout may convert un-attributed Markdown/log files to CRLF; compare LF-normalized content as well as exact bytes."
+}

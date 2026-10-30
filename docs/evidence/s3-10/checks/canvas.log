@@ -1,0 +1,45 @@
+Canvas event acceptance checks passed
+Canvas geometry acceptance checks passed
+ok - two-decimal inputs and list are display-only; unchanged Apply preserves full precision
+ok - editing only x preserves untouched full-precision values in download and save
+ok - editing only y preserves untouched full-precision values in download and save
+ok - editing only r preserves untouched full-precision values in download and save
+ok - valid sub-centipixel radius survives displayed 0.00 and editing another field
+ok - a deliberately changed string is parsed even if numerically equal to the displayed value
+ok - invalid x="" rejects atomically without rounding other fields
+ok - invalid x="NaN" rejects atomically without rounding other fields
+ok - invalid x="Infinity" rejects atomically without rounding other fields
+ok - invalid x="-0.01" rejects atomically without rounding other fields
+ok - invalid x="511.01" rejects atomically without rounding other fields
+ok - invalid y="512" rejects atomically without rounding other fields
+ok - invalid r="0" rejects atomically without rounding other fields
+ok - invalid r="-0.004" rejects atomically without rounding other fields
+ok - invalid r="Infinity" rejects atomically without rounding other fields
+ok - invalid r="   " rejects atomically without rounding other fields
+ok - one invalid field rejects all edits; correcting it preserves the other untouched original
+ok - Undo restores original precision and a subsequent unchanged Apply remains a no-op
+Canvas precision acceptance checks passed (18 scenarios)
+ok - empty save submits explicit nonce at revision zero
+ok - save submits latest committed snapshot before any edit ACK without incrementing revision
+ok - pending freezes every mutation while download remains current and available
+ok - equal-revision ACK shows saved path; a committed edit makes success dirty
+ok - failed ACK unfreezes, shows no-overwrite error, and a new click retries with a new nonce
+ok - old render and unrelated ACK preserve pending snapshot and cannot unlock editing
+ok - switching image or session discards pending controls and isolates saved status
+ok - unloaded image and active drag cannot save; rejected numeric input never enters saved snapshot
+ok - a result for another image is hidden even when its revision matches
+Canvas save acceptance checks passed (9 scenarios)
+Canvas view geometry: 496 acceptance assertions passed
+ok - actual DOM has accessible local zoom controls and a focusable canvas
+ok - wheel is non-passive, anchored under the cursor, bounded, and view-only
+ok - pinch to exact 4x and pan yield original-image draw, JSON and nonce save coordinates
+ok - tiny radius-3 ring is picked and moved at 8x with screen-space tolerance
+ok - zoom and pan do not enter undo history or change revision or persisted schema
+ok - ordinary Python ACK preserves the view while the event contract excludes view state
+ok - pan clamps to image bounds, fit returns full image, and image/session switch resets view
+ok - keyboard zoom is local; Space and middle-button pan are temporary without changing draw mode
+ok - two-finger movement pans and pointercancel rolls back an unfinished annotation
+ok - adding a second finger rolls back an unfinished circle edit before entering the view gesture
+ok - DPR backing store, label font, strokes and pixel smoothing use screen dimensions
+ok - rings are painted around pixel centres at fit and when zoomed
+Canvas zoom acceptance checks passed (12 scenarios)

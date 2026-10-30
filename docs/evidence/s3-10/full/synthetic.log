@@ -1,0 +1,6 @@
+5x5 scalar calculation, NumPy batches, peaks and gradient: PASS
+full_circle: 3 circles; 0.096488 s
+gradient: 1 circles; 0.091963 s
+opencv: 4 circles; 0.007532 s
+Saved: D:\Study\HK1-Nam4\ImageP\nasa24-crater-stem\outputs\s310_full_validation\synthetic\s112_20261030T104355599709Z
+Synthetic comparison only; no NASA accuracy or speed ranking.
