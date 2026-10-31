@@ -45,7 +45,7 @@ python -B scripts/install_s106_dataset.py       # bộ ảnh và SHA-256
 python -B -m streamlit run app.py               # trò chơi
 python -B scripts/run_end_to_end.py --all       # toàn bộ ảnh
 python -B -m unittest discover -s tests         # test Python
-for f in tests/test_canvas_*.js; do node "$f"; done
+for f in tests/test_canvas_*.js; do node "$f" || exit 1; done
 python -B scripts/check_contracts.py
 python -m pip install -r requirements-report.txt
 python -B scripts/build_report.py              # DOCX/PDF; cần LibreOffice

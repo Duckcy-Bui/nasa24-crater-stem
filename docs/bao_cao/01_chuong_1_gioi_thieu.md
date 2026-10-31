@@ -33,7 +33,7 @@ Nhóm đặt mục tiêu cài Hough bằng NumPy và đối chiếu OpenCV; th�
 
 **Kích thước hố.** Ảnh 2 m/px xét đường kính 20–500 m, ảnh 20 m/px xét 200 m–4 km. Bán kính tương ứng là 5–125 và 5–100 px, trong giới hạn tìm kiếm [5, 128] px.
 
-**Nhãn tham chiếu.** Danh mục Robbins chỉ đầy đủ cho hố từ khoảng 1–2 km [@robbins2019]. Nhóm gán nhãn tay **thưa**: 4–13 hố mỗi ảnh, tổng 241 nhãn. Nhãn chỉ cho phép đo Recall trên nhãn đã biết, chưa đủ để đo Precision/F1 toàn ảnh (mục 2.4).
+**Nhãn tham chiếu.** Danh mục Robbins chỉ đầy đủ cho hố từ khoảng 1–2 km [@robbins2019]. Nhóm gán nhãn tay **thưa**: 4–13 hố mỗi ảnh, tổng 241 nhãn, gồm 240 nhãn chắc chắn và 1 nhãn chưa chắc chắn (mục 4.3). Nhãn chỉ cho phép đo Recall trên nhãn đã biết, chưa đủ để đo Precision/F1 toàn ảnh (mục 2.4).
 
 **Dữ liệu ảnh.** Bản *browse* 8 bit dùng để minh họa, không phải dữ liệu đo đạc khoa học định lượng [@lroc_rdrsis]. Bỏ sót hoặc khoanh nhầm hố làm lệch so sánh mật độ.
 

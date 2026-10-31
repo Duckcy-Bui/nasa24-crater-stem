@@ -47,7 +47,7 @@ $$
 x = v_x + \frac{(u - L)\cdot 512}{W\,z} - \text{0,5}, \qquad y = v_y + \frac{(v - T)\cdot 512}{W\,z} - \text{0,5}. \qquad (5.1)
 $$
 
-Số hạng $-\text{0,5}$ đổi mép pixel sang tâm pixel, khớp Hough và công cụ gán nhãn; khi vẽ thì cộng lại $\text{0,5}$. Test JavaScript kiểm quy ước ở nhiều cỡ và mức phóng; kiểm trên trình duyệt cho khoảng cách tâm 0,0 px khi khoanh đúng tâm ứng viên.
+Số hạng $-\text{0,5}$ đổi mép pixel sang tâm pixel, khớp Hough và công cụ gán nhãn; khi vẽ thì cộng lại $\text{0,5}$. Test JavaScript kiểm quy ước ở nhiều cỡ và mức phóng.
 
 ## 5.3. Chấm điểm người chơi
 
@@ -89,7 +89,7 @@ Mọi bãi đáp và rover đã đối chiếu đều nằm ngoài ảnh cắt, 
 
 **Kiểm thử.** Kho mã có [CHỜ: số test Python và JavaScript ở phiên bản cuối] test tự động trên GitHub Actions: hợp đồng dữ liệu, Hough tính tay, ghép một–một so với vét cạn, luật chấm, luồng Streamlit và thao tác canvas. Test đạt xác nhận hành vi theo thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
 
-**Triển khai.** Ứng dụng chạy trên máy chủ Linux, có HTTPS và mật khẩu. Lượt đo trên máy chủ thử nghiệm mất 9,4 s cho lần chấm đầu; ứng viên được giữ trong bộ nhớ đệm tối đa 8 ảnh. Có thể chấm trước các ảnh dùng trình diễn để làm nóng bộ nhớ đệm.
+**Triển khai.** Ứng dụng chạy trên máy chủ, có HTTPS và mật khẩu. Lượt đo trên máy chủ thử nghiệm mất 9,4 s cho lần chấm đầu; ứng viên được giữ trong bộ nhớ đệm tối đa 8 ảnh. Có thể chấm trước các ảnh dùng trình diễn để làm nóng bộ nhớ đệm.
 
 ## 5.7. Kết luận
 
@@ -102,7 +102,7 @@ Sản phẩm chạy từ ảnh LROC đến trò chơi có chấm điểm, nhưng
 - **Thí nghiệm:** [CHỜ S3-05: kết quả ba thí nghiệm].
 - **Khảo sát:** chưa thực hiện theo quyết định của trưởng nhóm ngày 31/10/2026. Tiêu chí khảo sát ít nhất 10 học sinh của đề chưa đạt; chưa có bằng chứng về mức hứng thú hay hiểu bài.
 
-Tham số game đã chốt theo tập điều chỉnh; lệnh tái tạo và giới hạn từng phép đo ở Phụ lục C. Điểm dùng nhãn đã kiểm chéo; ứng viên máy không thay đáp án.
+Tham số game đã chốt theo tập điều chỉnh. Lệnh tái tạo các bảng đã có mã ở Phụ lục C; giới hạn các phép đo nêu tại từng chương. Các phép đo phụ đối chiếu tiền xử lý với OpenCV và lượng tử 8 bit ở mục 3.2.2 chưa có script trong repo. Điểm dùng nhãn đã kiểm chéo; ứng viên máy không thay đáp án.
 
 ## 5.8. Hạn chế
 
