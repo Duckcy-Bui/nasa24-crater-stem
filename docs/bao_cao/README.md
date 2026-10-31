@@ -77,7 +77,7 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 
 ## 5. Trạng thái bản ghép (cập nhật 31/10/2026)
 
-Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sau vòng n24-report-r1: 53 trang, phần chính 43 trang (trang 5–47); bìa, mục lục và ký hiệu 4 trang, tài liệu tham khảo 3 trang, phụ lục 3 trang. **Phần chính còn vượt mức 40 trang.** Mức 25–40 trang phần chính và 30–60 trang toàn báo cáo được ghi ở mục 4; chưa tìm thấy bản quy định học phần gốc trong repo để đối chiếu.
+Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sau bản sửa ngày 31/10 (nhánh `s3-08-report-final`): 53 trang, phần chính 43 trang (trang 5–47); bìa, mục lục và ký hiệu 4 trang, tài liệu tham khảo 3 trang, phụ lục 3 trang. **Phần chính còn vượt mức 40 trang.** Mức 25–40 trang phần chính và 30–60 trang toàn báo cáo được ghi ở mục 4; chưa tìm thấy bản quy định học phần gốc trong repo để đối chiếu.
 
 | Chương | Trước | Sau | Ngân sách đề xuất | Việc tiếp theo (người chốt quyết định) |
 |---|---:|---:|---:|---|
@@ -87,7 +87,7 @@ Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sa
 | 4 | 11 | 11 | 9 | Quốc Anh thay 4.8 bằng trạng thái chưa khảo sát và thiết kế tương lai; rút 4.2, 4.6 |
 | 5 | 7 | 6 | 6 | Đã rút mô tả thao tác, dữ liệu và kết luận lặp; giữ ba hình |
 
-Ngân sách đề xuất tổng 37 trang, chừa 3 trang trong mức 40 cho kết quả và hình còn phải cập nhật. Đây là ước lượng biên tập, chưa phải số trang sau sửa Chương 2–4. Số trang đo bằng pypdf; bản dựng trước/sau và đề xuất chi tiết ở `n24-team/runs/report/n24-report-r1-before/`, `n24-report-r1-ready/` và `n24-team/reports/page-budget.md` trong hồ sơ bàn giao ngoài repo. Chưa sửa Chương 2–4 trong vòng này.
+Ngân sách đề xuất tổng 37 trang, chừa 3 trang trong mức 40 cho kết quả và hình còn phải cập nhật. Đây là ước lượng biên tập, chưa phải số trang sau sửa Chương 2–4. Số trang đo bằng pypdf trên bản dựng trước và sau sửa; đề xuất cắt chi tiết cho từng chương đã gửi riêng cho người chốt. Chưa sửa Chương 2–4 trong vòng này.
 
 Các dấu chờ và việc còn lại:
 
