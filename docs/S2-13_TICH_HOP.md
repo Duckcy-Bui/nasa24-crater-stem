@@ -135,6 +135,7 @@ Test hồi quy: `tests/test_integration.py`, `tests/test_integration_density.py`
 python3.12 -B -m venv .venv
 .venv/bin/python -B -m pip install -r requirements-browser.txt
 .venv/bin/python -B -m playwright install chromium
+.venv/bin/python -X utf8 -B scripts/install_s106_dataset.py
 .venv/bin/python -B -m streamlit run app.py --server.port 8621 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false
 ```
 

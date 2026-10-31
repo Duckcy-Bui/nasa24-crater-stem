@@ -15,9 +15,31 @@ ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = read_json(ROOT / "docs/evidence/s2-09/so_sanh.json")
 REGIONS = read_json(ROOT / "data/s209_counts/regions.json")
 META = read_json(ROOT / "data/processed/moon_lunokhod1_loc_c01.json")
+EXPECTED_LEGACY_HOUGH_LIMITATION = "Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu."
 
 
 class TestDensityLimit(unittest.TestCase):
+    def test_real_summarize_pins_expected_legacy_caption(self):
+        data = statistics.summarize({"circles": []}, META, 512 * 512)
+        self.assertEqual(data["limitations"].count(EXPECTED_LEGACY_HOUGH_LIMITATION), 1,
+                         "summarize đã đổi caption legacy; cần xem lại bộ lọc integration.")
+        self.assertEqual(integration.LEGACY_HOUGH_LIMITATION, EXPECTED_LEGACY_HOUGH_LIMITATION)
+
+    def test_reworded_legacy_caption_is_not_broadly_filtered(self):
+        original = statistics.summarize({"circles": []}, META, 512 * 512)
+        variants = (EXPECTED_LEGACY_HOUGH_LIMITATION[:-1] + "!",
+                    EXPECTED_LEGACY_HOUGH_LIMITATION.replace("chạm trần 100 ứng viên", "đã đạt giới hạn 100 ứng viên"))
+        for caption in variants:
+            with self.subTest(caption=caption):
+                data = copy.deepcopy(original)
+                data["limitations"] = [caption if note == EXPECTED_LEGACY_HOUGH_LIMITATION else note
+                                       for note in data["limitations"]]
+                before = copy.deepcopy(data)
+                for raw_count in (0, 99, 100, 101):
+                    view = integration.statistics_presentation_view(data, raw_count, 100)
+                    self.assertIn(caption, view["captions"], "Câu khác legacy phải được giữ để xem lại, không lọc rộng.")
+                    self.assertEqual(data, before)
+
     def test_presentation_preserves_source_and_unrelated_limitations(self):
         data = {"limitations": ["Ghi chú khác.", integration.LEGACY_HOUGH_LIMITATION,
                                 "Hố ngoài dải đường kính chưa được xét."]}
@@ -140,7 +162,7 @@ class TestDensityScreen(unittest.TestCase):
                 captions = [c.value for c in at.caption]
                 warnings = [w.value for w in at.warning]
                 claims = [text for text in captions + warnings
-                          if any(term in text for term in ("chạm trần", "chạm giới hạn", "max_circles"))]
+                          if any(term in text for term in ("chạm trần", "chạm giới hạn", "đã đạt giới hạn", "max_circles"))]
                 limited = raw_count >= 100
                 self.assertEqual(len(claims), int(limited), captions + warnings)
                 self.assertEqual(len(warnings), int(limited))
