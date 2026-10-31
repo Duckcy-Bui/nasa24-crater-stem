@@ -7,7 +7,7 @@ Nguyên tắc (tiêu chí S2-09):
     trên hệ tọa độ ảnh nguồn; hố ở phần chồng chỉ đếm một lần.
   - Hố được đếm khi TÂM nằm trong vùng đếm.
   - Mật độ = N / A (hố/km²), khoảng tin cậy Poisson chính xác (Garwood).
-  - So hai vùng: kiểm định nhị thức có điều kiện (Przyborski & Wilenski 1940): với tổng
+  - So hai vùng: kiểm định nhị thức có điều kiện (Przyborowski & Wilenski 1940): với tổng
     N₁ + N₂ cố định, N₁ ~ Nhị thức(N₁ + N₂, A₁/(A₁ + A₂)) nếu hai mật độ bằng nhau.
 Toàn bộ tự viết bằng Python/NumPy, không dùng scipy.
 """
