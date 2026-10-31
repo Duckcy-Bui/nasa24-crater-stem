@@ -4,7 +4,7 @@ Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration
 
 Trạng thái 28/10/2026: **đã ghép đủ bốn chức năng** trên main `958b589` và trên VPS. Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 chạy từ 27/10. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã merge (PR #30): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1.
 
-Cập nhật 31/10/2026 trên worktree `n24-app`, gốc `13394de`: **đã sửa lỗi #8, #9, #10, #11** (mục 3.2). Khi máy chạm giới hạn ứng viên thô, app ẩn giá trị mật độ và giải thích giới hạn. Ảnh thuộc Lunokhod 1 hoặc Mare Frigoris hiện so sánh đếm tay từ bằng chứng S2-09 ngay khi mở ảnh. Đây là kết quả sửa và kiểm cục bộ; chưa phải nghiệm thu độc lập, merge hay deploy.
+Cập nhật 31/10/2026 trên nhánh `s2-13-app-fixes`, gốc `13394de`: **đã sửa lỗi #8, #9, #10, #11** (mục 3.2). Khi máy chạm giới hạn ứng viên thô, app ẩn giá trị mật độ và giải thích giới hạn. Ảnh thuộc Lunokhod 1 hoặc Mare Frigoris hiện so sánh đếm tay từ bằng chứng S2-09 ngay khi mở ảnh. Đây là kết quả sửa và kiểm cục bộ; chưa phải nghiệm thu độc lập, merge hay deploy.
 
 Vòng r1 đã commit thành `4ee5a86`; kiểm độc lập trả **FAIL A-01** do caption cũ từ `summarize` vẫn báo chạm trần vô điều kiện. Vòng r2 sửa tiếp trên commit đó: thống nhất lời giới hạn ở lớp integration/hiển thị, xử lý số cực hạn và bổ sung kiểm biên. Kết quả r2 cần người kiểm đánh giá lại, không thay verdict r1 thành PASS.
 
@@ -70,7 +70,7 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 
 ### 2.2. Kiểm lại với thống kê thật (Chromium cục bộ, 31/10/2026)
 
-Chạy `scripts/check_s213_app.py` trên worktree `n24-app`, gốc `13394de`. Mỗi ảnh dùng một lượt mở trang mới, chọn ảnh rồi chấm câu trả lời trống; đây là kiểm kỹ thuật, không phải thử người chơi. Đổi ảnh trong cùng phiên được kiểm thêm bằng AppTest ở `tests/test_integration.py`.
+Chạy `scripts/check_s213_app.py` trên nhánh `s2-13-app-fixes`, gốc `13394de`. Mỗi ảnh dùng một lượt mở trang mới, chọn ảnh rồi chấm câu trả lời trống; đây là kiểm kỹ thuật, không phải thử người chơi. Đổi ảnh trong cùng phiên được kiểm thêm bằng AppTest ở `tests/test_integration.py`.
 
 | Ảnh | Số ứng viên | Diện tích hợp lệ (km²) | Mật độ máy | So sánh đếm tay | Thẻ khoa học |
 |---|---|---|---|---|---|
@@ -82,7 +82,7 @@ Chạy `scripts/check_s213_app.py` trên worktree `n24-app`, gốc `13394de`. M�
 | `moon_marefrig_loc_c02` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Có | Chưa có thẻ |
 | `moon_vandegraff_hia_c01` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Không hiện | Chưa có thẻ |
 
-Số trên bảng là số hiển thị của `statistics.summarize` thật, không phải số hố đếm tay. Tất cả lượt chấm có điểm theo nhãn và không có lỗi trang. Log và ảnh của vòng này nằm trong `n24-team/runs/app/`; `browser_results.json` lưu số hiển thị và nội dung trang của từng ảnh. Chưa kiểm trên VPS.
+Số trên bảng là số hiển thị của `statistics.summarize` thật, không phải số hố đếm tay. Tất cả lượt chấm có điểm theo nhãn và không có lỗi trang. Script ghi log, ảnh chụp và `browser_results.json` (số hiển thị và nội dung trang của từng ảnh) vào thư mục `--out`; kết quả lượt này không đưa vào repo. Chưa kiểm trên VPS.
 
 ## 3. Danh sách lỗi cần sửa
 
@@ -142,7 +142,7 @@ python3.12 -B -m venv .venv
 Trong terminal thứ hai:
 
 ```sh
-.venv/bin/python -B scripts/check_s213_app.py --url http://127.0.0.1:8621 --out /tmp/n24-s213-r2-01
+.venv/bin/python -B scripts/check_s213_app.py --url http://127.0.0.1:8621 --out /tmp/s213-browser-check
 ```
 
 `--out` phải chưa tồn tại, kể cả khi chạy lại sau một lượt lỗi; script từ chối ghi đè. Dừng Streamlit bằng Ctrl+C sau khi chụp. `--help` không cần mở browser; `--layout-only` chỉ kiểm nhãn điểm. Đường dẫn Python trên Windows là `.venv\Scripts\python.exe`.
@@ -151,7 +151,7 @@ Trong terminal thứ hai:
 
 ### 3.4. A-06 — vấn đề đồng bộ trạng thái cần theo dõi
 
-Người kiểm có lần thấy picker về ảnh đầu khi thao tác nhanh sau xóa/hoàn tác/lưu, và có lượt chậm hơn đi qua được. Bằng chứng giữ tại `n24-team/runs/verify/app_r1/ui_run2/`, `ui_run4/` và `picker_race_review.md`. Chưa có đối chứng cùng nhịp thao tác để quy hiện tượng này cho commit `4ee5a86`. R2 chỉ ghi nhận để theo dõi, không sửa hoặc tuyên bố hết lỗi. Lượt kiểm tiếp nên đợi revision được Python phản hồi và nonce lưu khớp, không chỉ dựa vào số vòng cục bộ hay `notRunning`; một khoảng đợi cố định chưa chứng minh an toàn ở mọi nhịp thao tác.
+Người kiểm có lần thấy picker về ảnh đầu khi thao tác nhanh sau xóa/hoàn tác/lưu, và có lượt chậm hơn đi qua được. Bằng chứng nằm trong hồ sơ của người kiểm độc lập, chưa đưa vào repo. Chưa có đối chứng cùng nhịp thao tác để quy hiện tượng này cho commit `4ee5a86`. R2 chỉ ghi nhận để theo dõi, không sửa hoặc tuyên bố hết lỗi. Lượt kiểm tiếp nên đợi revision được Python phản hồi và nonce lưu khớp, không chỉ dựa vào số vòng cục bộ hay `notRunning`; một khoảng đợi cố định chưa chứng minh an toàn ở mọi nhịp thao tác.
 
 ## 4. Việc còn lại để đóng S2-13
 
