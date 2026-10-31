@@ -89,9 +89,9 @@ Bản dựng sau PR #29 dài 55 trang: bìa và mục lục 4 trang, nội dung 
 
 Các dấu `[CHỜ]` còn lại:
 
-- PR #26 (Tiến) đã merge ngày 28/10 (main `d315169`) và game vẫn dùng `score`, nên các câu tả danh sách máy ở 1.5, 3.7, 5.4 và Hình 5.2 không đổi. Tiến (S3-06) đối chiếu số cuối rồi xóa dấu `[CHỜ PR #26]` ở 1.5 (Bảng 1.1), 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Nếu S2-15 chốt đổi cấu hình game, Tiến báo trước để sửa các mục trên và chụp lại Hình 5.2.
+- PR #26 (Tiến) đã merge ngày 28/10 (main `d315169`) và game vẫn dùng `score`, nên các câu tả danh sách máy ở 1.5, 3.7, 5.4 và Hình 5.2 không đổi. Tiến (S3-06) đối chiếu số cuối rồi xóa dấu `[CHỜ PR #26]` ở 1.5 (Bảng 1.1), 2.2.3, 4.3.1, 4.7 và 5.7 (riêng 3.3.5 đã đối chiếu và xóa trong S2-12). Nếu S2-15 chốt đổi cấu hình game, Tiến báo trước để sửa các mục trên và chụp lại Hình 5.2.
 - PR #27 đã merge và đã chạy trên VPS; dấu chờ ở mục 5.2 đã xóa. Hình 5.1–5.3 chụp lại trên main `3cff367` cho kết quả như cũ (`docs/S2-13_TICH_HOP.md` mục 2.1).
-- S2-09 đã merge ngày 28/10 (PR #30). Bảng 1.1 và mục 5.7 đã điền theo `docs/S2-09_MAT_DO_HO.md`. Còn mục 3.6 (Hưng, S2-12/S3-07) và câu về cặp vùng ở mục 4.1: S2-09 đổi cặp Van de Graaff – Mare Frigoris thành Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Nếu S3-03 sửa quy tắc loại vùng thì cập nhật lại số ở cả ba chỗ.
+- S2-09 đã merge ngày 28/10 (PR #30). Bảng 1.1 và mục 5.7 đã điền theo `docs/S2-09_MAT_DO_HO.md`. Mục 3.6 (Hưng, S2-12) và câu về cặp vùng ở mục 4.1 đã cập nhật: S2-09 đổi cặp Van de Graaff – Mare Frigoris thành Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Nếu S3-03 sửa quy tắc loại vùng thì cập nhật lại số ở cả ba chỗ.
 - S2-15 (Tiến): đã cập nhật mục 3.7 ngày 29/10; giữ `score`, cấu hình `configs/s215_frozen.json`, tuning 10/174. Bằng chứng tại `docs/evidence/s2-15/`.
 - S3-05 (Quốc Anh): mục 4.6.
 - S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.

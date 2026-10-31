@@ -50,7 +50,7 @@ Script `scripts/generate_s106_crops.py` cắt mỗi cửa sổ theo góc trên-t
 
 Toàn bộ ảnh được đóng thành một gói ngoại tuyến 12.861.130 byte, có kiểm tra SHA-256 khi cài. File `sources.json` lưu URL, kích thước và SHA-256 của 16 TIFF nguồn (503.640.706 byte), nên có thể tải lại và tái tạo ảnh cắt.
 
-Dữ liệu phục vụ ba kiểu so sánh. Vùng 1 gồm Apollo 15 khi Mặt Trời cao (1A) và thấp (1B), ở hai tọa độ khác nhau, nên chỉ là hai nhóm điều kiện chụp. Vùng 2 gồm Van de Graaff (2A, cao nguyên) và Mare Frigoris (2B, biển bazan), cùng 20 m/px và dải đường kính 200–4.000 m, để minh họa so sánh mật độ hố; mật độ hố chỉ gợi ý tuổi tương đối [@neukum2001]. Cặp STT 9 (góc tới 81,08°) và STT 17 (7,64°) có cùng cửa sổ (1190, 2750), dùng để minh họa ảnh hưởng của chiếu sáng. Các ảnh cắt cùng mosaic có thể chồng lấp, nên không phải mẫu độc lập.
+Dữ liệu phục vụ ba kiểu so sánh. Vùng 1 gồm Apollo 15 khi Mặt Trời cao (1A) và thấp (1B), ở hai tọa độ khác nhau, nên chỉ là hai nhóm điều kiện chụp. Cặp so mật độ gồm Lunokhod 1 và Mare Frigoris, cùng là biển bazan, cùng 20 m/px, cùng Mặt Trời thấp và cùng dải đường kính 300–2.000 m (mục 3.6). Cặp dự kiến ban đầu Van de Graaff – Mare Frigoris không dùng vì hai ảnh chụp ở góc nắng rất khác nhau; mật độ hố chỉ gợi ý tuổi tương đối [@neukum2001]. Cặp STT 9 (góc tới 81,08°) và STT 17 (7,64°) có cùng cửa sổ (1190, 2750), dùng để minh họa ảnh hưởng của chiếu sáng. Các ảnh cắt cùng mosaic có thể chồng lấp, nên không phải mẫu độc lập.
 
 ## 4.2. Quy đổi tọa độ ảnh cắt và ảnh nguồn
 
