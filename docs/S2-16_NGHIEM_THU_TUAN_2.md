@@ -110,3 +110,9 @@ Thêm một quyết định cần nhóm chốt:
 | Quyết định | Đề xuất | Lý do |
 |---|---|---|
 | Đổi cặp so mật độ từ Van de Graaff – Mare Frigoris (S1-06) sang Lunokhod 1 – Mare Frigoris | Đồng ý (trưởng nhóm); chờ Tiến và Quốc Anh | Van de Graaff chụp lúc nắng gần đứng (27–45°). So với Mare Frigoris (61–84°) thì chênh lệch số hố chủ yếu do ánh sáng. Nếu đồng ý thì sửa mục 4.1 của báo cáo |
+
+## 7. Cập nhật kỹ thuật S2-15 ngày 29/10/2026
+
+Nhánh `NMTien` đã có S2-15 tại `c1fc0cc` và tích hợp main `cc31a8f` bằng merge `3159cb4`. [Biên bản S2-15](S2-15_CHOT_THAM_SO.md) chốt giữ `score`, khóa toàn bộ tham số tiền xử lý/Hough trong `configs/s215_frozen.json`, đồng bộ với cấu hình game. Lọc phân lớp và lọc trùng tiếp tục tắt. Trên 18 ảnh tuning, Recall_known = 10/174 (5,75%); quyết định không dựa trên holdout.
+
+Phần kỹ thuật “tham số đã chốt” có cấu hình và bằng chứng để kiểm tra trên nhánh này. Các mốc 27–28/10 ở trên là lịch sử; cập nhật này không thay xác nhận của thành viên, nghiệm thu toàn bộ S2-16 hay triển khai VPS. S2-13 vẫn cần xử lý lỗi #10, #11 và kiểm lại luồng thống kê; khảo sát người chơi và xác nhận đổi cặp vùng còn theo mục 4–6.

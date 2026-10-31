@@ -123,10 +123,13 @@ def figures(regions: dict, sfd: dict, R: dict, processed: Path) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    global OUT
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))
+    ap.add_argument("--output", type=Path, default=OUT, help="Thư mục kết quả")
     ap.add_argument("--no-machine", action="store_true")
     args = ap.parse_args(argv)
+    OUT = args.output
     processed = Path(args.processed_dir)
     R = read_json(COUNTS / "regions.json")
     d0, d1 = R["d_range_m"]

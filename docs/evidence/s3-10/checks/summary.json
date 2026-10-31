@@ -1,0 +1,35 @@
+{
+  "python": {
+    "tests": 303,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "contracts_returncode": 0,
+  "canvas": [
+    {
+      "file": "test_canvas_events.js",
+      "returncode": 0
+    },
+    {
+      "file": "test_canvas_geometry.js",
+      "returncode": 0
+    },
+    {
+      "file": "test_canvas_precision.js",
+      "returncode": 0
+    },
+    {
+      "file": "test_canvas_save.js",
+      "returncode": 0
+    },
+    {
+      "file": "test_canvas_view_geometry.js",
+      "returncode": 0
+    },
+    {
+      "file": "test_canvas_zoom.js",
+      "returncode": 0
+    }
+  ]
+}

@@ -256,8 +256,8 @@ Sai hợp đồng thì giao diện báo lỗi và không hiện số. Vì ứng 
 
 **Bộ lọc chưa bật, sáng–tối phạm vi hẹp.** Đầu ra mặc định chưa qua phân lớp và lọc trùng. Chỉ 8/26 ảnh được chấm sáng–tối, phiếu hướng nắng do một người kiểm, và STT 16 là ảnh duy nhất có nhãn ngược (27) nhiều hơn hợp (17), chưa đủ căn cứ để kết luận hướng nắng sai.
 
-**Tham số chưa chốt.** `configs/default.json` ghi trạng thái `initial_parameters_to_tune`. Trên STT 13, đổi σ của Gauss theo cả hai chiều đều làm mất hố thật (còn 4–6/8). Tham số cần được chọn trên tập điều chỉnh và khóa trước khi đánh giá trên tập kiểm tra.
+**Tham số đã chốt, độ nhạy còn thấp.** Ngày 29/10/2026, S2-15 khóa `configs/s215_frozen.json`, đồng bộ với `configs/default.json` cho tuần 3. Giữ tiền xử lý ở phân vị 0,5–99,5; CLAHE clip 2, grid 8, 8 bit; Gauss σ = 1,5, kernel 11; Canny phân vị cao 90, tỷ lệ thấp 0,4, bỏ mép 6 px. Hough dùng `full_circle`, `candidate_selection=score`, r = 5–128 px kẹp theo metadata, bước r = 1 px, bước góc 1°, tối thiểu 12 phiếu và tỷ lệ 0,35; NMS tâm 4 px/bán kính 2 px, tối đa 100 vòng. Sáng–tối chỉ gắn nhãn; phân lớp và lọc trùng giữ tắt.
 
-[CHỜ S2-15: bộ tham số tiền xử lý và Hough chốt trên tập điều chỉnh]
+Trên đủ 18 ảnh điều chỉnh, cấu hình này tìm lại 10/174 hố đã biết (Recall_known = 5,75%). Nhãn thưa nên không tính Precision/F1 toàn ảnh. Đây là mốc so sánh cố định, chưa phải cấu hình tối ưu. Quyết định giữ `score` dựa trên tuning; không dùng kết quả tập kiểm tra để chọn tham số. Tập kiểm tra đã được xem ở S2-06, nên những lần đánh giá lại phải ghi rõ là đánh giá lặp. Cấu hình, bằng chứng và điều kiện đánh giá lại nằm trong `docs/S2-15_CHOT_THAM_SO.md` và `docs/evidence/s2-15/`.
 
 **Thời gian.** Hough chiếm gần hết thời gian, từ vài giây tới vài chục giây mỗi ảnh tùy máy; tiền xử lý dưới 0,1 s.

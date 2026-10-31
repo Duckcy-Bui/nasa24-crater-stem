@@ -1,0 +1,132 @@
+PYTHONUTF8=1
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã lưu ảnh overlay minh chứng: test_crop_01_overlay.png
+
+────────────────────────────────────────────────────────────
+LƯU THÀNH CÔNG: 1 nhãn hố
+  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmp0h8ytwe_\reference_labels\test_crop_01_craters_catalogue.json
+  → Nguồn reference:       manual_label_s110; sparse manual labels, unreviewed
+Danh sách hố đã ghi nhãn:
+  C1                        | Tâm=( 150.0,  150.0) | r= 10.0px | D≈    40m
+────────────────────────────────────────────────────────────
+
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+LỖI NGUỒN NHÃN: File đang là nhãn Robbins; nhãn tay mới phải lưu vào file khác hoặc truyền đúng --source Robbins.
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã lưu ảnh overlay minh chứng: test_crop_01_overlay.png
+
+────────────────────────────────────────────────────────────
+LƯU THÀNH CÔNG: 5 nhãn hố
+  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmpzxxxwcr2\reference_labels\test_crop_01_craters_catalogue.json
+  → Nguồn reference:       manual_label_s110; fixture
+Danh sách hố đã ghi nhãn:
+  C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
+  C2                        | Tâm=( 200.0,  200.0) | r= 15.0px | D≈    60m
+  C3                        | Tâm=( 300.0,  300.0) | r=  8.0px | D≈    32m
+  C4_uncertain              | Tâm=( 400.0,  400.0) | r= 12.0px | D≈    48m [uncertain]
+  C5                        | Tâm=( 150.0,  150.0) | r= 10.0px | D≈    40m
+────────────────────────────────────────────────────────────
+
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+LỖI NGUỒN NHÃN: Nguồn phiên này (Robbins 2019 crater_id=1) khác nguồn nhãn cũ (manual_label_s110; fixture); không trộn hai nguồn trong một file.
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+
+============================================================
+LỖI HỢP ĐỒNG DỮ LIỆU (validate_crater_set): Tâm hố nằm ngoài ảnh 512×512.
+Dữ liệu KHÔNG được ghi vào đĩa. Cửa sổ KHÔNG đóng.
+Hãy bấm 'Z' để hủy nhãn vi phạm hoặc kiểm tra lại tọa độ.
+============================================================
+
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã lưu ảnh overlay minh chứng: test_crop_01_overlay.png
+
+────────────────────────────────────────────────────────────
+LƯU THÀNH CÔNG: 4 nhãn hố
+  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmprgwop27p\reference_labels\test_crop_01_craters_catalogue.json
+  → Nguồn reference:       manual_label_s110; fixture
+Danh sách hố đã ghi nhãn:
+  C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
+  C2                        | Tâm=( 200.0,  200.0) | r= 15.0px | D≈    60m
+  C3                        | Tâm=( 300.0,  300.0) | r=  8.0px | D≈    32m
+  C4_uncertain              | Tâm=( 400.0,  400.0) | r= 12.0px | D≈    48m [uncertain]
+────────────────────────────────────────────────────────────
+
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+[Đổi trạng thái] Đã chuyển C5_uncertain sang UNCERTAIN (màu cam).
+[Đổi trạng thái] Đã chuyển C5 thành CHẮC CHẮN.
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+Đã nạp 4 nhãn từ test_crop_01_craters_catalogue.json
+
+2026-10-29 08:25:49.860 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:50.681 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:50.719 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:50.848 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:50.929 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:50.940 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:50.980 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:50.995 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.107 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.137 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:51.167 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.292 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.326 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:51.341 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.462 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.512 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:51.543 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.657 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:51.667 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.790 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:51.850 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:51.981 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:52.013 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:52.031 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:52.042 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:52.054 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:52.079 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:52.967 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:53.510 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:53.654 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:53.689 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:53.791 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:53.800 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:53.917 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+..........................................................2026-10-29 08:25:59.046 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:25:59.639 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:25:59.762 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:26:00.107 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-29 08:26:00.226 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+...............................2026-10-29 08:26:01.831 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+.2026-10-29 08:26:02.701 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+...................S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+..S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+..S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+.S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+..S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+.S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+.S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+........................................................................................................S1-11 bỏ qua kiểm tra sáng–tối cho s105_synthetic_512: metadata không có hướng nắng (sun.quality=none)
+................................................
+----------------------------------------------------------------------
+Ran 284 tests in 24.954s
+
+OK
+
+exit_code=0
+
+check_contracts.py
+Hợp lệ: craters_machine.json
+Hợp lệ: craters_catalogue.json
+Hợp lệ: craters_player.json
+Đã lưu bản chạy mẫu: outputs\s105_check_20261029T012653953815Z
+Chỉ kiểm tra hợp đồng dữ liệu giả lập; chưa chạy Hough hoặc tiền xử lý.
+
+exit_code=0

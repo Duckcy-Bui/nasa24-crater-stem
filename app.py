@@ -45,7 +45,9 @@ def load_image(image_id: str, metadata_bytes: bytes, png_bytes: bytes) -> tuple[
 def machine_for_image(image_id: str, data_dir: str, stamp: float) -> dict:
     """Ứng viên máy của một ảnh; cache theo thời điểm sửa file ảnh (stamp)."""
     metadata, image, valid = load_processed_image(image_id, data_dir)
-    detected = detect_machine(metadata, image, valid, hough_params=read_json(CONFIG_PATH)["hough"])
+    config = read_json(CONFIG_PATH)
+    detected = detect_machine(metadata, image, valid, hough_params=config["hough"],
+                              preprocess_params=config["preprocess"])
     return {"machine": detected["machine"], "hough": detected["hough"], "postprocess": detected["postprocess"],
             "raw_count": len(detected["raw_circles"]), "valid_pixels": int(detected["pre"]["valid_mask"].sum()),
             "seconds": round(detected["seconds_preprocess"] + detected["seconds_hough"], 1)}

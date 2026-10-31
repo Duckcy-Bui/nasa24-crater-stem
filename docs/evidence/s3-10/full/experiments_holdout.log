@@ -1,0 +1,5 @@
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap15_loc_c01: metadata không có hướng nắng (sun.quality=none)
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap15_loc_c01: metadata không có hướng nắng (sun.quality=none)
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_marefrig_loc_c01: metadata không có hướng nắng (sun.quality=none)
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_marefrig_loc_c01: metadata không có hướng nắng (sun.quality=none)
+Đã ghi outputs\s310_full_validation\experiments_holdout.json

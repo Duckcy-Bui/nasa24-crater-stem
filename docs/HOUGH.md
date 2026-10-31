@@ -104,5 +104,5 @@ Bản ghép S1-06/S1-07/S1-08 đã đọc đúng ảnh, mặt nạ, metadata và
 ## Cập nhật S2-01 / S2-06 / S3-02 ngày 27/10/2026
 
 Mặc định mã và game vẫn dùng `score`. Chế độ `radius_balanced` trước NMS/giới hạn đầu ra
-chỉ bật tường minh trong `configs/s201_large_craters.json` để thử nghiệm; S2-15 chưa chốt cấu hình game.
+chỉ bật tường minh trong `configs/s201_large_craters.json` để thử nghiệm; [S2-15](S2-15_CHOT_THAM_SO.md) đã chốt giữ score cho game/tuần 3 ngày 29/10/2026.
 Xem [báo cáo thực chạy](S2-06_S3-02_KIEM_CHUNG.md) và [lý thuyết cập nhật](S2-11_S3-06_HOUGH_HOAN_THIEN.md).

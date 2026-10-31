@@ -1,0 +1,35 @@
+moon_ap16_m132732855l_c01 {'numpy_score': (0, 9, 0), 'numpy_balanced': (1, 8, 29), 'opencv': (9, 0, 4390)}
+moon_ap16_m109134835l_c01 {'numpy_score': (0, 10, 0), 'numpy_balanced': (0, 10, 4), 'opencv': (9, 1, 5311)}
+moon_ap15_hia_c01 {'numpy_score': (0, 9, 0), 'numpy_balanced': (1, 8, 34), 'opencv': (9, 0, 5259)}
+{
+  "numpy_score": {
+    "tp": 0,
+    "fn": 28,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.0,
+    "recall_known_macro_mean": 0.0,
+    "recall_known_macro_std": 0.0
+  },
+  "numpy_balanced": {
+    "tp": 2,
+    "fn": 26,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.07142857142857142,
+    "recall_known_macro_mean": 0.07407407407407407,
+    "recall_known_macro_std": 0.06415002990995841
+  },
+  "opencv": {
+    "tp": 27,
+    "fn": 1,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.9642857142857143,
+    "recall_known_macro_mean": 0.9666666666666667,
+    "recall_known_macro_std": 0.05773502691896256
+  }
+}
