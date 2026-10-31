@@ -2,7 +2,9 @@
 
 Phụ trách: Bùi Hải Đức; phối hợp: cả nhóm. Mã: `src/integration.py`, `app.py` (`show_statistics`, `show_cards`). Test: `tests/test_integration.py`.
 
-Trạng thái 28/10/2026: **đã ghép đủ bốn chức năng** trên main `958b589` và trên VPS. Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 chạy từ 27/10. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã merge (PR #30): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1. Chưa đóng S2-13: còn lỗi #10, #11 và chưa kiểm lại mục 2.1 với thống kê (mục 4).
+Trạng thái 28/10/2026: **đã ghép đủ bốn chức năng** trên main `958b589` và trên VPS. Phát hiện (S1-07/08/11), trò chơi (S1-09, S2-04, S2-08) và thẻ khoa học S2-10 chạy từ 27/10. S2-10 trả thẻ vùng có nguồn cho Apollo 15/16 và Lunokhod 1/2, với `position=null` khi thiết bị nằm ngoài crop; app tự hiện thẻ mà không vẽ pin giả. Thống kê S2-09 đã merge (PR #30): app hiện số ứng viên máy, diện tích, mật độ và histogram đúng hợp đồng mục 1.
+
+Cập nhật 31/10/2026 trên worktree `n24-app`, gốc `13394de`: **đã sửa lỗi #8, #9, #10, #11** (mục 3.2). Khi máy chạm giới hạn ứng viên thô, app ẩn giá trị mật độ và giải thích giới hạn. Ảnh thuộc Lunokhod 1 hoặc Mare Frigoris hiện so sánh đếm tay từ bằng chứng S2-09 ngay khi mở ảnh. Đây là kết quả sửa và kiểm cục bộ; chưa phải nghiệm thu độc lập, merge hay deploy.
 
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
@@ -60,9 +62,25 @@ Lỗi trang và lỗi Streamlit: 0 / 0. Gọi `cards_view` trên cả 26 ảnh: 
 
 Trên `moon_ap16_m109134835l_c01`, khoanh lại đúng bảy vòng của Hình 5.1 cho điểm 60/100 như trước; bảng vòng tròn ghi tâm nguyên (370, 360…), đúng quy ước sau S3-04. Ảnh chụp lại của Hình 5.1 và 5.3 trùng từng byte với ảnh trong `docs/evidence/s3-08/`.
 
-Lỗi mới phát hiện: ở bề rộng 1440 px, nhãn "Điểm theo nhãn đã kiểm chéo" của ô điểm bị cắt chữ cuối (lỗi #9).
+Lỗi phát hiện trong lượt kiểm ngày 27/10: ở bề rộng 1440 px, nhãn "Điểm theo nhãn đã kiểm chéo" của ô điểm bị cắt chữ cuối (lỗi #9). Đã sửa ngày 31/10, xem mục 3.2.
 
 Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_for_image` giả đúng hợp đồng: số liệu, biểu đồ và thẻ có nguồn hiện đúng.
+
+### 2.2. Kiểm lại với thống kê thật (Chromium cục bộ, 31/10/2026)
+
+Chạy `scripts/check_s213_app.py` trên worktree `n24-app`, gốc `13394de`. Mỗi ảnh dùng một lượt mở trang mới, chọn ảnh rồi chấm câu trả lời trống; đây là kiểm kỹ thuật, không phải thử người chơi. Đổi ảnh trong cùng phiên được kiểm thêm bằng AppTest ở `tests/test_integration.py`.
+
+| Ảnh | Số ứng viên | Diện tích hợp lệ (km²) | Mật độ máy | So sánh đếm tay | Thẻ khoa học |
+|---|---|---|---|---|---|
+| `moon_ap15_hia_c01` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Không hiện | Apollo 15 |
+| `moon_ap16_m109134835l_c01` | 100 | 1,05 | Ẩn, có cảnh báo giới hạn | Không hiện | Apollo 16 |
+| `moon_ap16_m132732855l_c01` | 100 | 1,05 | Ẩn, có cảnh báo giới hạn | Không hiện | Apollo 16 |
+| `moon_lunokhod1_loc_c01` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Có | Lunokhod 1 |
+| `moon_lunokhod2_loc_c02` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Không hiện | Lunokhod 2 |
+| `moon_marefrig_loc_c02` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Có | Chưa có thẻ |
+| `moon_vandegraff_hia_c01` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Không hiện | Chưa có thẻ |
+
+Số trên bảng là số hiển thị của `statistics.summarize` thật, không phải số hố đếm tay. Tất cả lượt chấm có điểm theo nhãn và không có lỗi trang. Log và ảnh của vòng này nằm trong `n24-team/runs/app/`; `browser_results.json` lưu số hiển thị và nội dung trang của từng ảnh. Chưa kiểm trên VPS.
 
 ## 3. Danh sách lỗi cần sửa
 
@@ -75,10 +93,10 @@ Ngoài ra `tests/test_integration.py` chạy app với `summarize` và `cards_fo
 | 5 | Đổi ảnh rồi quay lại thì mất lịch sử hoàn tác (vòng vẫn còn) | Thấp | Đức | Chưa sửa, có chủ đích. Mỗi ảnh là một component riêng (`key=player_canvas_<image_id>`), nên iframe của ảnh cũ bị hủy khi đổi ảnh. Muốn giữ lịch sử phải lưu ra ngoài iframe (sessionStorage hoặc Python), thêm rủi ro ngay trước khảo sát cho một lỗi mức thấp |
 | 6 | Chấm bài lần đầu mỗi ảnh mất 6–8 s trên máy dev; VPS giới hạn 1 CPU có thể chậm hơn | Trung bình khi khảo sát nhiều người cùng lúc | Đức | Đã đo trên VPS (26/10): 9,4 s cho lượt chấm đầu trên `moon_ap15_hia_c01`. Ứng viên máy được cache trong tiến trình (`machine_for_image`, tối đa 8 ảnh) đến khi khởi động lại service. Cách xử lý khi khảo sát: sau khi deploy, người điều phối bấm Chấm bài một lần trên mỗi ảnh dùng khảo sát (≤ 8 ảnh) để làm nóng cache |
 | 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link trong khối văn bản thành `#8cc8ff`, tương phản 9,7–11:1 |
-| 8 | Nút đổi bán kính của vòng đang chọn vẽ tại `min(511, x + r)`: khi vành vượt mép phải, nút không nằm trên vành, bấm vào đó sẽ dời vòng thay vì đổi bán kính | Thấp | Đức | Chưa sửa; đổi bán kính bằng ô nhập số hoặc kéo vành ở phía khác |
-| 9 | Nhãn ô điểm "Điểm theo nhãn đã kiểm chéo" bị cắt chữ cuối ở bề rộng 1440 px (cột hẹp của `st.metric`) | Thấp | Đức | Chưa sửa; số điểm vẫn hiện đủ |
-| 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | Chưa sửa. Khi số ứng viên bằng `max_circles`, app cảnh báo rằng mật độ này không dùng để so vùng và chỉ sang so sánh đếm tay (lỗi #11). `summarize` không cần sửa |
-| 11 | So sánh mật độ hai vùng (yêu cầu 2 của đề) mới có trong `scripts/s209_density.py` và `docs/S2-09_MAT_DO_HO.md`, chưa có trong app | Cao cho đủ chức năng | Đức | Chưa sửa. Khi mở ảnh Lunokhod 1 hoặc Mare Frigoris, app hiện bảng so sánh và hình tích lũy từ `docs/evidence/s2-09/so_sanh.json` (đếm tay đủ hố 300–2.000 m) |
+| 8 | Nút đổi bán kính của vòng đang chọn vẽ tại `min(511, x + r)`: khi vành vượt mép phải, nút không nằm trên vành, bấm vào đó sẽ dời vòng thay vì đổi bán kính | Thấp | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Nút chọn điểm trên vành trong ảnh. Test Node kiểm vị trí và kéo nút; Chromium kiểm tâm giữ nguyên, bán kính bằng khoảng cách tới con trỏ |
+| 9 | Nhãn ô điểm "Điểm theo nhãn đã kiểm chéo" bị cắt chữ cuối ở bề rộng 1440 px (cột hẹp của `st.metric`) | Thấp | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. CSS cho nhãn xuống dòng. Chromium kiểm đủ chữ ở 1440 px, 390 px và cột thử hẹp; ca cột hẹp thất bại khi trả CSS cũ |
+| 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Hàm thuần trong `integration.py` kiểm số thô ≥ `max_circles`; app ẩn mật độ, cảnh báo không so tuổi hay so vùng và chỉ sang đếm tay. Test Python kiểm cả sau lọc; Chromium kiểm cảnh báo. Không sửa `summarize` |
+| 11 | So sánh mật độ hai vùng (yêu cầu 2 của đề) mới có trong `scripts/s209_density.py` và `docs/S2-09_MAT_DO_HO.md`, chưa có trong app | Cao cho đủ chức năng | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Đọc, kiểm JSON lúc chạy; nhận vùng bằng vùng đếm và metadata. Test Python kiểm dữ liệu, file lỗi và đổi ảnh; Chromium kiểm bảng trên cả hai vùng, ô cùng nguồn không được đếm và ảnh ngoài vùng |
 
 ### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
 
@@ -95,9 +113,19 @@ Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, 
 
 Ảnh hưởng: câu trả lời lưu trước ngày sửa lệch +0,5 px mỗi trục so với hợp đồng. Các lượt chấm cũ giữ nguyên kết quả vì file đã lưu không bị đổi. Không nên trộn câu trả lời cũ và mới khi phân tích sai số tâm: hai bản lệch nhau khoảng 0,71 px, và cặp nằm sát ngưỡng ghép có thể đổi kết quả. Từ bản này, câu trả lời lưu ghi `code_version = "s3-04-player-ui-v2"` (trước là `s1-09-player-ui-v1`) để phân biệt. Nhãn tham chiếu không bị ảnh hưởng vì được tạo bằng công cụ gán nhãn đã dùng đúng quy ước từ 14/10 (commit `c967623`).
 
+### 3.2. Sửa lỗi #8–#11 và cách kiểm lại (31/10/2026)
+
+- `density_limit_view` dùng `raw_count`, không dùng số còn lại sau lọc. Khi chạm trần, ô Mật độ hiện `—`; số ứng viên, diện tích và histogram vẫn hiện theo hợp đồng mục 1. Chỉ có một cảnh báo ở phần Thống kê, thay caption cũ ở phần Chấm bài.
+- `density_comparison_view` đọc `so_sanh.json` và `regions.json` mỗi lần hiển thị. App kiểm kiểu, số hữu hạn, diện tích dương, mật độ khớp số đếm, khoảng tin cậy, tỷ lệ, p-value, dải D, tỷ lệ ảnh, các ô cắt và ảnh nguồn. File thiếu, JSON hỏng hoặc số liệu không nhất quán chỉ tạo thông báo nhẹ. Mọi số trên bảng đều lấy từ JSON.
+- Bảng đếm tay hiện độc lập với lượt chấm, chỉ trên ảnh thuộc hai ảnh nguồn đã đối chiếu bằng metadata. Mare Frigoris `c01` có cùng ảnh nguồn nhưng không thuộc các ô đếm: app nói rõ bảng dùng các ô khác. Ảnh ngoài hai vùng không hiện bảng để tránh gắn kết quả đếm tay với một vùng khác. Dùng bảng, không thêm hình tích lũy để giữ phần so sánh ngắn.
+- `radiusHandle` thử phải, trái, dưới, trên; nếu chỉ vành gần góc lọt vào ảnh thì tìm giao với mép ảnh. Khi cả vành nằm ngoài ảnh, không vẽ nút giả. Node kiểm vị trí thật trên vành và kéo theo khoảng cách tới tâm; Chromium kiểm vòng thử chạm mép phải.
+- CSS giữ nguyên nhãn điểm và cho xuống dòng, gồm cả khối Markdown chứa nhãn. Kiểm chữ nằm trong vùng hiển thị bằng hình học DOM, kèm ảnh ở 1440 px và 390 px. Bộ font hiện tại không tái hiện lỗi ở chiều rộng mặc định; ca cột thử 128 px ở viewport 1440 px tái hiện cắt chữ với CSS cũ và qua với CSS mới. Kích thước này chỉ là dữ liệu thử bố cục.
+
+Test hồi quy: `tests/test_integration.py`, `tests/test_integration_density.py`, `tests/test_canvas_zoom.js` và `scripts/check_s213_app.py`. Mỗi lỗi có test mới thất bại khi tạm trả phần sửa tương ứng về mã gốc `13394de`, rồi phục hồi mã mới từng byte. Lệnh kiểm trình duyệt: dùng Python của `venv-verify` chạy `-B scripts/check_s213_app.py --out /tmp/n24-s213`, với Streamlit chạy sẵn ở cổng 8621. Kiểm độc lập và quyết định tích hợp thuộc người điều phối.
+
 ## 4. Việc còn lại để đóng S2-13
 
-- S2-09 đã merge (PR #30) và chạy trên VPS. Còn lại để đóng S2-13: sửa lỗi #10 và #11, rồi chạy lại bảng mục 2.1 với số liệu thống kê.
+- S2-09 đã merge (PR #30) và chạy trên VPS. Lỗi #8–#11 đã sửa và kiểm cục bộ ngày 31/10; còn người kiểm độc lập đánh giá trước khi người điều phối tích hợp và Đức đồng ý deploy. Không coi kiểm cục bộ là bản đã chạy trên VPS.
 - Thẻ S2-10 đã kiểm xong (mục 2.1). Muốn kiểm ghim vị trí thì cần crop mới bao phủ thiết bị; nếu nhóm không cắt thêm thì giữ hạn chế đã ghi trong báo cáo (mục 5.5, 5.8).
 - PR #26 đã merge mà không đổi game: trên hai ảnh thử, danh sách ứng viên giống hệt main trước đó. Nếu S2-15 chốt đổi cấu hình game thì chụp lại Hình 5.2 và chạy lại mục 2.1.
-- Trước buổi khảo sát: deploy bản cuối, làm nóng cache cho các ảnh khảo sát (lỗi #6).
+- Theo quyết định của trưởng nhóm ngày 31/10, không thử người chơi thật hoặc khảo sát. Yêu cầu khảo sát ít nhất 10 học sinh chưa đạt và phải ghi là hạn chế; không có số liệu khảo sát mới trong vòng sửa này.

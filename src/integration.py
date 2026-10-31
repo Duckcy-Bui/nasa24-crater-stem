@@ -1,21 +1,27 @@
 """Đức — S2-13: ghép thống kê (S2-09) và thẻ khoa học (S2-10) vào giao diện.
 
-Hai hàm dưới đây gọi đúng API đã thống nhất (statistics.summarize,
+Các hàm dưới đây gọi đúng API đã thống nhất (statistics.summarize,
 science_cards.cards_for_image) và luôn trả một trạng thái hiển thị được:
 - "pending": phần của bạn khác chưa cài (NotImplementedError);
 - "ok": dữ liệu đúng hợp đồng trong docs/S2-13_TICH_HOP.md;
 - "error": có dữ liệu nhưng sai hợp đồng hoặc lỗi khi chạy; ghi lý do, không đoán.
 Giao diện không tự tính thống kê hay tự tạo thẻ thay cho S2-09/S2-10.
+So sánh hai vùng đọc bằng chứng đếm tay S2-09, tách khỏi ứng viên máy.
 """
 from __future__ import annotations
 
 import math
+import json
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
 from src import science_cards, statistics
 
 CARD_FIELDS = ("card_id", "title", "body", "source_title", "source_url")
+ROOT = Path(__file__).resolve().parents[1]
+COMPARISON_PATH = ROOT / "docs" / "evidence" / "s2-09" / "so_sanh.json"
+REGIONS_PATH = ROOT / "data" / "s209_counts" / "regions.json"
 
 
 def _finite(value: Any) -> bool:
@@ -53,6 +59,81 @@ def statistics_view(machine: dict[str, Any], metadata: dict[str, Any], valid_pix
     if problem:
         return {"status": "error", "reason": f"Kết quả thống kê sai hợp đồng: {problem}"}
     return {"status": "ok", "data": data}
+
+
+def density_limit_view(raw_count: int, max_circles: int) -> dict[str, Any]:
+    """Dùng số ứng viên thô, kể cả khi lọc sau Hough đã bỏ bớt vòng."""
+    limited = raw_count >= max_circles
+    reason = (f"Máy đã chạm giới hạn max_circles = {max_circles} ứng viên thô. "
+              "Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. "
+              "Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.") if limited else None
+    return {"limited": limited, "reason": reason}
+
+
+def _check_comparison(data: Any, definitions: Any) -> None:
+    """Kiểm các số sẽ hiện và sự thống nhất giữa bằng chứng với vùng đếm."""
+    d_range = data["d_range_m"]
+    if (not isinstance(d_range, list) or len(d_range) != 2 or not all(_finite(d) for d in d_range)
+            or not 0 < d_range[0] < d_range[1] or d_range != definitions["d_range_m"]):
+        raise ValueError("Dải đường kính không hợp lệ hoặc không khớp vùng đếm.")
+    regions = data["regions"]
+    scales = []
+    for key in ("lunokhod1", "marefrig"):
+        region = regions[key]
+        if not isinstance(region["name"], str) or not region["name"].strip():
+            raise ValueError("Thiếu tên vùng.")
+        if isinstance(region["n"], bool) or not isinstance(region["n"], int) or region["n"] < 0:
+            raise ValueError("Số hố phải là số nguyên không âm.")
+        for field in ("area_km2", "scale_m_per_px", "density_per_km2"):
+            if not _finite(region[field]) or region[field] < 0:
+                raise ValueError(f"{field} không hợp lệ.")
+        if region["area_km2"] <= 0 or region["scale_m_per_px"] <= 0:
+            raise ValueError("Diện tích và tỷ lệ ảnh phải dương.")
+        if not math.isclose(region["density_per_km2"], region["n"] / region["area_km2"], rel_tol=1e-9):
+            raise ValueError("Mật độ không khớp số hố và diện tích.")
+        ci = region["density_ci95_per_km2"]
+        if (not isinstance(ci, list) or len(ci) != 2 or not all(_finite(v) for v in ci)
+                or not 0 <= ci[0] <= region["density_per_km2"] <= ci[1]):
+            raise ValueError("Khoảng tin cậy không hợp lệ.")
+        crops = region["crops"]
+        if (not isinstance(crops, list) or not crops or not all(isinstance(c, str) for c in crops)
+                or len(set(crops)) != len(crops) or set(crops) != set(definitions["regions"][key]["crops"])
+                or region["d_range_m"] != d_range
+                or not isinstance(region["product_id"], str) or not region["product_id"]):
+            raise ValueError("Ảnh nguồn, ô cắt hoặc dải đường kính không khớp vùng đếm.")
+        scales.append(region["scale_m_per_px"])
+    if scales[0] != scales[1] or regions["lunokhod1"]["product_id"] == regions["marefrig"]["product_id"]:
+        raise ValueError("Hai vùng phải cùng tỷ lệ và khác ảnh nguồn.")
+    comparison = data["comparison_lunokhod1_over_marefrig"]
+    a, b = (regions[key]["density_per_km2"] for key in ("lunokhod1", "marefrig"))
+    ratio, p = comparison["ratio_a_over_b"], comparison["binomial_p_two_sided"]
+    if (not _finite(ratio) or b <= 0 or not math.isclose(ratio, a / b, rel_tol=1e-9)
+            or not _finite(p) or not 0 <= p <= 1):
+        raise ValueError("Tỷ lệ mật độ hoặc p-value không hợp lệ.")
+
+
+def density_comparison_view(metadata: dict[str, Any], *, comparison_path: Path = COMPARISON_PATH,
+                            regions_path: Path = REGIONS_PATH) -> dict[str, Any]:
+    """Đọc đếm tay lúc chạy; nhận vùng bằng ô cắt và product_id, không đoán tên file."""
+    try:
+        data = json.loads(comparison_path.read_text(encoding="utf-8"))
+        definitions = json.loads(regions_path.read_text(encoding="utf-8"))
+        _check_comparison(data, definitions)
+        matches = [key for key in ("lunokhod1", "marefrig")
+                   if metadata.get("product_id") == data["regions"][key]["product_id"]]
+        counted_in = [key for key in ("lunokhod1", "marefrig")
+                      if metadata.get("image_id") in definitions["regions"][key]["crops"]]
+        if counted_in and counted_in != matches:
+            raise ValueError("Metadata ảnh không khớp ảnh nguồn của vùng đếm.")
+        if not matches:
+            return {"status": "hidden"}
+        key = matches[0]
+        region = data["regions"][key]
+        if metadata.get("body") != "moon" or metadata.get("scale_m_per_px") != region["scale_m_per_px"]:
+            raise ValueError("Thiên thể hoặc tỷ lệ metadata không khớp vùng đếm.")
+        return {"status": "ok", "data": data, "region": key, "counted_crop": bool(counted_in)}
+    except (OSError, ValueError, TypeError, KeyError, UnicodeError) as error:
+        return {"status": "error", "reason": f"Chưa đọc được so sánh đếm tay hai vùng: {error}"}
 
 
 def _check_card(card: Any) -> str | None:

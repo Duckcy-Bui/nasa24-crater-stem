@@ -118,8 +118,11 @@
       ctx.fillStyle = sketch ? "#ECEAE4" : active ? "#FFD84D" : "#8DEFFB"; ctx.fillText(label, lx, ly);
       if (active) {
         ctx.fillStyle = "#FFD84D"; ctx.strokeStyle = "#0A0C0F"; ctx.lineWidth = 1.5;
-        const hx = (Math.min(511, c.x + c.r) + HALF - view.x) * k;
-        ctx.fillRect(hx - 4, s.y - 4, 8, 8); ctx.strokeRect(hx - 4, s.y - 4, 8, 8);
+        const handle = CraterGeometry.radiusHandle(c);
+        if (handle) {
+          const hx = (handle.x + HALF - view.x) * k, hy = (handle.y + HALF - view.y) * k;
+          ctx.fillRect(hx - 4, hy - 4, 8, 8); ctx.strokeRect(hx - 4, hy - 4, 8, 8);
+        }
       }
     }
   }

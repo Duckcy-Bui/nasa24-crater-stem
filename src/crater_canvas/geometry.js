@@ -75,6 +75,20 @@
       y: anchor.y - (clientY - rect.top) * height / (rect.height * z),
     }, width, height);
   }
+  function radiusHandle(circle, width = 512, height = 512) {
+    const { x, y, r } = circle, right = width - 1, bottom = height - 1;
+    const points = [{x: x + r, y}, {x: x - r, y}, {x, y: y + r}, {x, y: y - r}];
+    // A large ring can cross a corner while all four cardinal points lie outside.
+    for (const edge of [0, right]) {
+      const dy = Math.sqrt(r * r - (edge - x) ** 2);
+      points.push({x: edge, y: y + dy}, {x: edge, y: y - dy});
+    }
+    for (const edge of [0, bottom]) {
+      const dx = Math.sqrt(r * r - (edge - y) ** 2);
+      points.push({x: x + dx, y: edge}, {x: x - dx, y: edge});
+    }
+    return points.find(p => p.x >= 0 && p.x <= right && p.y >= 0 && p.y <= bottom) || null;
+  }
   root.CraterGeometry = Object.freeze({ PIXEL_CENTER, canvasToImage, imageRadius, clampView, screenToImage, imageToScreen,
-    screenToPixel, pixelToScreen, zoomViewAt });
+    screenToPixel, pixelToScreen, zoomViewAt, radiusHandle });
 })(typeof window !== "undefined" ? window : globalThis);

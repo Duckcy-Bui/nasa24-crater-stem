@@ -14,7 +14,7 @@ from PIL import Image
 
 from src.contracts import ContractError, read_json, validate_metadata
 from src.game_results import COLORS, render_overlay, save_round, score_round
-from src.integration import cards_view, statistics_view
+from src.integration import cards_view, density_comparison_view, density_limit_view, statistics_view
 from src.pipeline import detect_machine, load_image as load_processed_image, load_overlay_set
 from src.player_annotations import apply_canvas_event
 from src.player_ui import handle_save_request
@@ -107,9 +107,6 @@ def show_result(result: dict, draft: dict) -> None:
                    f"Vòng trùng khi tâm lệch ≤ {score['rule']['center_tolerance_fraction']:g} × bán kính.")
         if scope["sparse"]:
             st.warning(f"Lưới bán kính thưa (bước {scope['step_px']} px): máy có thể bỏ sót hố có bán kính nằm giữa hai bước.")
-        if detected["raw_count"] >= detected["hough"]["max_circles"]:
-            st.caption(f"Máy dừng ở {detected['hough']['max_circles']} ứng viên (giới hạn max_circles), "
-                       "nên có thể còn hố máy chưa xét.")
         st.caption(f"Đã lưu lượt chấm lúc {result['time']}: {result['path']}")
         st.download_button("Tải kết quả chấm (JSON)", data=json.dumps(score, ensure_ascii=False, indent=2),
                            file_name=f"{result['run_id']}_score.json", mime="application/json",
@@ -133,10 +130,16 @@ def show_statistics(result: dict, metadata: dict) -> None:
         st.error(view["reason"])
         return
     data = view["data"]
+    detected = result["detected"]
+    limit = density_limit_view(detected["raw_count"], detected["hough"]["max_circles"])
+    if limit["limited"]:
+        st.warning(limit["reason"])
     count, area, density = st.columns(3)
     count.metric("Số ứng viên", data["count"])
     area.metric("Diện tích hợp lệ", "—" if data.get("valid_area_km2") is None else f"{data['valid_area_km2']:.2f} km²")
-    density.metric("Mật độ", "—" if data.get("density_per_km2") is None else f"{data['density_per_km2']:.2f} /km²")
+    density.metric("Mật độ", "—" if limit["limited"] or data.get("density_per_km2") is None else f"{data['density_per_km2']:.2f} /km²")
+    if limit["limited"]:
+        density.caption("Không hiện mật độ khi chạm giới hạn ứng viên.")
     histogram = data.get("histogram")
     if histogram and histogram["counts"]:
         edges = histogram["bin_edges_m"]
@@ -146,6 +149,43 @@ def show_statistics(result: dict, metadata: dict) -> None:
                      y="Số ứng viên", color=COLORS["machine"], height=220)
     for note in data.get("limitations") or []:
         st.caption(str(note))
+
+
+def show_density_comparison(metadata: dict) -> None:
+    """S2-13: so sánh đếm tay đã có bằng chứng, độc lập với lượt chấm game."""
+    view = density_comparison_view(metadata)
+    if view["status"] == "hidden":
+        return
+    if view["status"] == "error":
+        st.info(view["reason"])
+        return
+    data = view["data"]
+    lo, hi = data["d_range_m"]
+    st.html('<div class="nasa-rule"></div>')
+    section_head("So sánh mật độ hai vùng · đếm tay", f"Đếm tay đủ hố trong dải D = {lo:g}–{hi:g} m "
+                 "trên các phần vùng đếm đã chọn; không phải kết quả máy hay riêng ảnh đang mở.")
+    if not view["counted_crop"]:
+        st.caption("Ảnh đang mở cùng ảnh nguồn với vùng so sánh nhưng không thuộc các ô đếm tay. "
+                   "Bảng dưới dùng các ô cắt ghi trong vùng đếm.")
+    rows = []
+    for key in ("lunokhod1", "marefrig"):
+        region = data["regions"][key]
+        ci = region["density_ci95_per_km2"]
+        rows.append({"Vùng": region["name"], "Số hố": region["n"],
+                     "Diện tích (km²)": f"{region['area_km2']:.1f}",
+                     "Mật độ (hố/km²)": f"{region['density_per_km2']:.3f}",
+                     "Khoảng tin cậy 95 %": f"{ci[0]:.3f}–{ci[1]:.3f}"})
+    st.table(rows)
+    comparison = data["comparison_lunokhod1_over_marefrig"]
+    st.markdown(f"Tỷ lệ mật độ Lunokhod 1 / Mare Frigoris: **{comparison['ratio_a_over_b']:.2f}** · "
+                f"p-value hai phía: **{comparison['binomial_p_two_sided']:.2f}**.")
+    if comparison["binomial_p_two_sided"] >= 0.05:
+        st.info("Chưa có khác biệt có ý nghĩa thống kê về tổng mật độ. Không kết luận được vùng nào cổ hơn.")
+    else:
+        st.info("Tổng mật độ khác nhau ở ngưỡng p < 0,05; riêng kết quả này chưa đủ để kết luận tuổi bề mặt.")
+    st.caption("Vùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. "
+               "Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; "
+               "phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.")
 
 
 def show_cards(image_id: str) -> None:
@@ -193,6 +233,7 @@ def render_results(image_id: str, metadata: dict, draft: dict, png_bytes: bytes)
     else:
         st.caption("Khoanh xong rồi bấm Chấm bài. Mỗi lần chấm được lưu thành một lượt riêng trong outputs/player_scores/. "
                    "Thống kê hố hiện sau khi máy chạy.")
+    show_density_comparison(metadata)
     show_cards(image_id)
 
 
