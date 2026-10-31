@@ -75,29 +75,31 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 - [ ] Bìa đủ tên trường, mã lớp, MSSV, giảng viên.
 - [ ] Phụ lục có bảng đóng góp đã được cả bốn người xác nhận và phần khai báo dùng AI.
 
-## 5. Trạng thái bản ghép (cập nhật 27/10/2026, PR #29)
+## 5. Trạng thái bản ghép (cập nhật 31/10/2026)
 
-Bản dựng sau PR #29 dài 55 trang: bìa và mục lục 4 trang, nội dung chính 45 trang (trang 5–49), tài liệu tham khảo và phụ lục 6 trang. Báo cáo có 28 tài liệu, trong đó 7 bài có DOI. **Nội dung chính đang vượt mức 40 trang**, trong khi các kết quả còn chờ sẽ thêm khoảng 3–4 trang. Bảng dưới đề xuất số trang tối đa cho từng chương.
+Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sau vòng n24-report-r1: 53 trang, phần chính 43 trang (trang 5–47); bìa, mục lục và ký hiệu 4 trang, tài liệu tham khảo 3 trang, phụ lục 3 trang. **Phần chính còn vượt mức 40 trang.** Mức 25–40 trang phần chính và 30–60 trang toàn báo cáo được ghi ở mục 4; chưa tìm thấy bản quy định học phần gốc trong repo để đối chiếu.
 
-| Chương | Hiện tại | Tối đa đề xuất | Gợi ý rút gọn (người chốt quyết định) |
-|---|---:|---:|---|
-| 1 | 4 | 4 | Đã gộp 1.2 và 1.3, thay Bảng 1.2 bằng một đoạn (PR #29) |
-| 2 | 11 | 8 | Bỏ Hình 2.2 hoặc rút 2.2.5; rút ví dụ CLAHE và 2.3.3 |
-| 3 | 12 | 9 | Bảng 3.3 thành một câu; rút 3.4.2 (so với vòng ngẫu nhiên); cân nhắc bỏ Hình 3.1 |
-| 4 | 11 | 10 | Đã gồm chỗ cho kết quả thí nghiệm và khảo sát; rút ví dụ quy đổi ở 4.2 và chi tiết thử nhỏ ở 4.8.3 |
-| 5 | 7 | 7 | — |
+| Chương | Trước | Sau | Ngân sách đề xuất | Việc tiếp theo (người chốt quyết định) |
+|---|---:|---:|---:|---|
+| 1 | 4 | 3 | 3 | Đã bỏ lặp mục tiêu, rút Bảng 1.1 và phần tổ chức |
+| 2 | 11 | 11 | 9 | Tiến rút 2.2.5–2.2.6; Hưng rút ví dụ CLAHE và 2.3.3 |
+| 3 | 12 | 12 | 10 | Hưng xem bỏ overlay cũ 3.1, rút 3.4–3.5; Tiến rút phần lặp và bảng thời gian 3.3 |
+| 4 | 11 | 11 | 9 | Quốc Anh thay 4.8 bằng trạng thái chưa khảo sát và thiết kế tương lai; rút 4.2, 4.6 |
+| 5 | 7 | 6 | 6 | Đã rút mô tả thao tác, dữ liệu và kết luận lặp; giữ ba hình |
 
-Các dấu `[CHỜ]` còn lại:
+Ngân sách đề xuất tổng 37 trang, chừa 3 trang trong mức 40 cho kết quả và hình còn phải cập nhật. Đây là ước lượng biên tập, chưa phải số trang sau sửa Chương 2–4. Số trang đo bằng pypdf; bản dựng trước/sau và đề xuất chi tiết ở `n24-team/runs/report/n24-report-r1-before/`, `n24-report-r1-ready/` và `n24-team/reports/page-budget.md` trong hồ sơ bàn giao ngoài repo. Chưa sửa Chương 2–4 trong vòng này.
 
-- PR #26 (Tiến) đã merge ngày 28/10 (main `d315169`) và game vẫn dùng `score`, nên các câu tả danh sách máy ở 1.5, 3.7, 5.4 và Hình 5.2 không đổi. Tiến (S3-06) đối chiếu số cuối rồi xóa dấu `[CHỜ PR #26]` ở 1.5 (Bảng 1.1), 2.2.3, 3.3.5, 4.3.1, 4.7 và 5.7. Nếu S2-15 chốt đổi cấu hình game, Tiến báo trước để sửa các mục trên và chụp lại Hình 5.2.
-- PR #27 đã merge và đã chạy trên VPS; dấu chờ ở mục 5.2 đã xóa. Hình 5.1–5.3 chụp lại trên main `3cff367` cho kết quả như cũ (`docs/S2-13_TICH_HOP.md` mục 2.1).
-- S2-09 đã merge ngày 28/10 (PR #30). Bảng 1.1 và mục 5.7 đã điền theo `docs/S2-09_MAT_DO_HO.md`. Còn mục 3.6 (Hưng, S2-12/S3-07) và câu về cặp vùng ở mục 4.1: S2-09 đổi cặp Van de Graaff – Mare Frigoris thành Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Nếu S3-03 sửa quy tắc loại vùng thì cập nhật lại số ở cả ba chỗ.
-- S2-15 (Tiến): đã cập nhật mục 3.7 ngày 29/10; giữ `score`, cấu hình `configs/s215_frozen.json`, tuning 10/174. Bằng chứng tại `docs/evidence/s2-15/`.
-- S3-05 (Quốc Anh): mục 4.6.
-- S2-07 thử nhỏ và S3-01 khảo sát (Quốc Anh, Đức): mục 4.8.
-- Số test cuối: mục 5.6.
-- Phụ lục A, D: cả nhóm điền.
+Các dấu chờ và việc còn lại:
 
-Còn để người chốt quyết định: Hình 3.4, 3.5 có mã việc nội bộ trong tiêu đề ảnh; sơ đồ dạng chữ ở mục 3.1 chưa có số hình; một số nội dung lặp giữa Chương 2 và 3 (công thức (4.4) = (2.14), (3.3) = (2.24), ví dụ bước bán kính, NMS) có thể bỏ để giảm trang.
+- **PR #26:** đã merge tại `d315169`, có trong main `13394de`; S2-16 mục 6 ghi lượt đối chiếu của trưởng nhóm. Đã bỏ dấu chờ ở Bảng 1.1, mục 5.4 và 5.7. Tiến đối chiếu rồi xử lý các dấu còn ở 2.2.3, 3.3.5, 4.3.1 và 4.7 cùng người chốt chương.
+- **S2-15:** đã chốt `configs/s215_frozen.json`, đồng bộ `configs/default.json`, giữ `score`, tập điều chỉnh 10/174. Mục 3.7 đã cập nhật; Quốc Anh và Tiến cần bỏ dấu chờ cũ ở 4.5, mô tả các lượt holdout sau là đánh giá lặp.
+- **Hình 5.1–5.3:** giữ ảnh hiện có. Chính sách game không đổi, nên bỏ lý do chụp lại Hình 5.2 do chuyển sang cân bằng. Chụp lại giao diện ở vòng sau, khi lỗi #10 và #11 đã merge; ảnh hiện tại chưa chứng minh giao diện cuối.
+- **S2-09/S3-03:** Bảng 1.1 và 5.7 đã ghi kết quả đếm tay. Hưng cập nhật 3.6 (vẫn còn dấu chờ cài đặt dù S2-09 đã merge) và 4.1 theo cặp Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Quốc Anh còn xác nhận S2-09. Nếu quy tắc loại vùng đổi thì đối chiếu lại các số liên quan.
+- **S3-05 (Quốc Anh):** giữ dấu chờ kết quả ba thí nghiệm ở 4.6 và 5.7.
+- **Thử người chơi và khảo sát:** trưởng nhóm quyết định bỏ ngày 31/10/2026 (phần thử của S2-07, S2-14, S3-01). Bảng 1.1, mục 5.7–5.9 đã ghi yêu cầu khảo sát ít nhất 10 học sinh chưa đạt, không có dữ liệu hứng thú/hiểu bài. Dấu chờ khảo sát đã bỏ trong phần của Đức. Quốc Anh cập nhật 4.8, 4.9 và ghi chú đầu Chương 4 theo quyết định này; đề xuất câu chữ ở `page-budget.md`. Khung phiếu chỉ còn là thiết kế cho hướng tiếp theo.
+- **Số test cuối:** giữ nguyên dấu chờ ở 5.6, điền sau khi merge các PR cuối.
+- **Phụ lục A, D:** giữ các ô chờ đóng góp, đánh giá và khai báo của từng người. Chỉ bổ sung Codex vào dòng của Đức ở Bảng D.1; các thành viên tự xác nhận phần mình.
 
-Mỗi chương có ghi chú đầu file (`<!-- ... -->`), liệt kê việc người chốt cần kiểm tra và các chỗ tài liệu nguồn lệch với mã hoặc dữ liệu. Ví dụ: bảng trong `S2-03_TAP_DIEU_CHINH.md` vẫn ghi `sparse_unreviewed`; `manifest_split.json` ghi `sun_quality` là `measured` cho 11 ảnh Apollo 16, trong khi metadata ghi `side_only` hoặc `none`.
+Số dấu chờ trong phần được ghép (không tính ghi chú HTML): Chương 1 từ 2 xuống 0; Chương 5 từ 4 xuống 2; Chương 2, 3, 4 và Phụ lục lần lượt giữ 1, 2, 6 và 26. Tổng từ 41 xuống 37. Đây vẫn là bản làm việc, chưa phải bản nộp.
+
+Còn để người chốt xem lại: tiêu đề ảnh có mã việc ở Hình 3.4–3.5, sơ đồ chữ ở 3.1 chưa có số hình, các công thức hoặc ví dụ lặp giữa Chương 2–4. Ghi chú đầu Chương 2–4 còn nhiều trạng thái cũ về PR #26, nhãn và thống kê; cần đối chiếu nguồn trước khi xóa. Bảng trong `S2-03_TAP_DIEU_CHINH.md` còn ghi `sparse_unreviewed`; `manifest_split.json` ghi `sun_quality=measured` cho ảnh Apollo 16 trong khi metadata ghi `side_only` hoặc `none`.

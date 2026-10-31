@@ -8,7 +8,7 @@ Phụ lục C: Tiến (S3-10) đối chiếu với README cuối và lệnh tái
 
 ## A. Phân công và đóng góp
 
-Bảng A.1 liệt kê các đầu việc chính và sản phẩm đã đưa vào kho mã của từng thành viên. Mã việc theo bảng giao việc của nhóm (S1 là sprint 1, S2 là sprint 2, S3 là sprint 3). Số pull request (PR) là số trong kho mã GitHub của nhóm.
+Bảng A.1 ghi đầu việc và sản phẩm trong kho mã. S1–S3 là ba sprint; PR là pull request trên GitHub.
 
 | Thành viên | Đầu việc chính | Sản phẩm trong kho mã |
 |---|---|---|
@@ -32,10 +32,7 @@ Bảng A.1 liệt kê các đầu việc chính và sản phẩm đã đưa vào
 
 ## B. Quy trình làm việc
 
-- **Bảng giao việc:** 48 đầu việc, mỗi người phụ trách 12, mỗi việc có người phụ trách, người phối hợp, đầu ra, tiêu chí hoàn thành, link kết quả và ghi chú. Một việc chỉ được đánh dấu hoàn thành sau khi đầu ra đã được kiểm tra.
-- **Kho mã:** mỗi đầu việc làm trên một nhánh riêng và đưa vào nhánh chính qua pull request. Người phối hợp hoặc nhóm trưởng duyệt nội dung. GitHub Actions chạy kiểm tra hợp đồng dữ liệu, toàn bộ test Python và test JavaScript cho mọi pull request. Pull request chỉ được merge khi kiểm tra đạt.
-- **Bằng chứng:** ảnh kết quả, bảng số liệu và file JSON của từng đầu việc lưu trong `docs/evidence/`. Mỗi lần chạy lưu tham số và mã phiên bản.
-- **Nhật ký:** mỗi thành viên ghi việc đã làm, đầu ra, vướng mắc và việc tiếp theo vào `docs/NHAT_KY_NHOM.csv`.
+Mỗi đầu việc có người phụ trách, người phối hợp, đầu ra và tiêu chí hoàn thành. Thay đổi vào nhánh chính qua PR sau khi người phối hợp hoặc trưởng nhóm duyệt và GitHub Actions kiểm hợp đồng, test Python, JavaScript đạt. Bằng chứng lưu ở `docs/evidence/`, kèm tham số và mã phiên bản; nhật ký ở `docs/NHAT_KY_NHOM.csv`.
 
 ## C. Cách chạy lại
 
@@ -44,12 +41,14 @@ Các lệnh sau chạy từ thư mục gốc của kho mã, với Python 3.12. T
 ```bash
 python -m venv .venv && source .venv/bin/activate
 python -m pip install -r requirements-test.txt
-python scripts/install_s106_dataset.py            # giải nén bộ 26 ảnh và kiểm tra SHA-256
-python -m streamlit run app.py                    # giao diện trò chơi tại http://127.0.0.1:8501
-python scripts/run_end_to_end.py --all            # chạy chuỗi phát hiện trên cả bộ ảnh
-python -m unittest discover -s tests              # test Python
-for f in tests/test_canvas_*.js; do node "$f"; done   # test giao diện (Node.js)
-python scripts/build_report.py                    # dựng báo cáo (cần requirements-report.txt)
+python -B scripts/install_s106_dataset.py       # bộ ảnh và SHA-256
+python -B -m streamlit run app.py               # trò chơi
+python -B scripts/run_end_to_end.py --all       # toàn bộ ảnh
+python -B -m unittest discover -s tests         # test Python
+for f in tests/test_canvas_*.js; do node "$f"; done
+python -B scripts/check_contracts.py
+python -m pip install -r requirements-report.txt
+python -B scripts/build_report.py              # DOCX/PDF; cần LibreOffice
 ```
 
 Một lệnh tái tạo các bảng thuật toán/thống kê đã có mã và dữ liệu:
@@ -58,13 +57,13 @@ Một lệnh tái tạo các bảng thuật toán/thống kê đã có mã và d
 python -X utf8 -B scripts/reproduce_s310.py
 ```
 
-Kết quả tại thư mục mới `outputs/s310_<UTC>/`: `frozen_tuning.csv` (S2-15), `evaluation_tuning/results.csv` và `evaluation_holdout/results.csv` (đối chiếu Hough), `E1.csv`–`E3.csv` (ba thí nghiệm), `density/` (đếm và mật độ). `manifest.json` lưu môi trường, seed 0, hash mã/dữ liệu và trạng thái từng bước. Cấu hình game S2-15 và cấu hình đối chiếu được lưu riêng. Nhãn thưa chỉ cho phép báo Recall_known; chạy holdout là đánh giá lặp. `--quick --repeats 1` chỉ kiểm luồng, không tạo đủ bộ bảng. README có hướng dẫn Windows/Linux; dữ liệu khảo sát thật bàn giao riêng.
+Thư mục mới `outputs/s310_<UTC>/` chứa `frozen_tuning.csv`, hai bảng `evaluation_*/results.csv`, `E1.csv`–`E3.csv` và `density/`. `manifest.json` ghi môi trường, seed 0, hash và trạng thái từng bước; chỉ nhận bộ bảng có `status=complete, mode=full`. Cấu hình game và đối chiếu lưu riêng. Nhãn thưa chỉ cho Recall_known; chạy holdout là đánh giá lặp. `--quick --repeats 1` chỉ kiểm luồng. Hướng dẫn Windows/Linux ở README; chưa có dữ liệu khảo sát thật.
 
 ## D. Khai báo sử dụng công cụ AI
 
 | Thành viên | Công cụ | Dùng cho việc gì | Cách kiểm soát |
 |---|---|---|---|
-| Bùi Hải Đức | Claude Code (Anthropic) | Viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát pull request; soạn tài liệu và ghép báo cáo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi merge; số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã |
+| Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát pull request; soạn tài liệu và ghép báo cáo. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi merge; số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
 | Nguyễn Mạnh Tiến | [CHỜ] | [CHỜ] | [CHỜ] |
 | Đinh Quang Hưng | [CHỜ] | [CHỜ] | [CHỜ] |
 | Hoàng Quốc Anh | [CHỜ] | [CHỜ] | [CHỜ] |

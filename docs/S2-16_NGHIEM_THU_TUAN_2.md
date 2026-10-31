@@ -116,3 +116,23 @@ Thêm một quyết định cần nhóm chốt:
 Nhánh `NMTien` đã có S2-15 tại `c1fc0cc` và tích hợp main `cc31a8f` bằng merge `3159cb4`. [Biên bản S2-15](S2-15_CHOT_THAM_SO.md) chốt giữ `score`, khóa toàn bộ tham số tiền xử lý/Hough trong `configs/s215_frozen.json`, đồng bộ với cấu hình game. Lọc phân lớp và lọc trùng tiếp tục tắt. Trên 18 ảnh tuning, Recall_known = 10/174 (5,75%); quyết định không dựa trên holdout.
 
 Phần kỹ thuật “tham số đã chốt” có cấu hình và bằng chứng để kiểm tra trên nhánh này. Các mốc 27–28/10 ở trên là lịch sử; cập nhật này không thay xác nhận của thành viên, nghiệm thu toàn bộ S2-16 hay triển khai VPS. S2-13 vẫn cần xử lý lỗi #10, #11 và kiểm lại luồng thống kê; khảo sát người chơi và xác nhận đổi cặp vùng còn theo mục 4–6.
+
+## 8. Cập nhật ngày 31/10/2026
+
+PR #31 đã merge, main `13394de` đã deploy lên VPS theo cập nhật của trưởng nhóm. S2-15 hoàn thành: giữ `score`, khóa cấu hình trong `configs/s215_frozen.json`, đồng bộ với `configs/default.json`. Tập điều chỉnh đạt Recall_known 10/174; đây là kết quả trên nhãn thưa, không phải Precision/F1 ([S2-15](S2-15_CHOT_THAM_SO.md)). S3-10 đã có lệnh và bằng chứng tái tạo, còn chờ trưởng nhóm chạy kiểm độc lập ([S3-10](S3-10_TAI_TAO_KET_QUA.md)).
+
+| Tiêu chí | 28/10 | 31/10 | Căn cứ |
+|---|---|---|---|
+| Tham số đã chốt | Không đạt | **Đạt** | `configs/s215_frozen.json` đã vào main, giữ chính sách `score`; bằng chứng tại `docs/evidence/s2-15/` |
+| Khảo sát ít nhất 10 học sinh (yêu cầu của đề) | Chưa thực hiện | **Không đạt** | Quyết định bỏ thử người chơi thật và khảo sát; chưa có dữ liệu hứng thú, hiểu bài |
+
+**Quyết định của trưởng nhóm ngày 31/10/2026:** bỏ thử người chơi thật và khảo sát (phần thử của S2-07, S2-14, S3-01) để ưu tiên hoàn thành dự án. Hệ quả là tiêu chí khảo sát của đề không đạt; báo cáo ghi rõ hạn chế, không thay bằng kiểm thử kỹ thuật hoặc số liệu giả. Khung phiếu giữ làm thiết kế cho hướng tiếp theo.
+
+Các tiêu chí khác giữ trạng thái gần nhất ở mục 6. S2-13 còn lỗi #10, #11 và lượt kiểm thống kê; việc chốt tham số không thay nghiệm thu toàn bộ. Bảng dưới ghi việc còn lại theo người, không phải xác nhận hoàn thành hay đồng ý thay thành viên.
+
+| Người | Việc |
+|---|---|
+| Đức | S2-13, S3-04, S3-08, S3-10 (chạy kiểm độc lập), S3-12, S3-16 |
+| Tiến | S2-01, S3-06, S3-14, Phụ lục D |
+| Hưng | S2-12, S3-03, S3-07, S3-11, S3-15, Phụ lục D |
+| Quốc Anh | S2-09 (xác nhận), S2-10, S3-05, S3-09, S3-13, Phụ lục D |
