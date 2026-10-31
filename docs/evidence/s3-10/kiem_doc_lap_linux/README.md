@@ -11,4 +11,6 @@ Hash nguồn: 117/127 file trùng byte. Tám file chỉ khác LF/CRLF; hai scrip
 
 NPZ giả lập có hash cũ `9e6fdea9190bcae45bb59efa0b41a74f18c0ff7ed1e7a7dce8f1dd420dc0c119`, mới `f1a39a3c281c27890b7699baad5a9b3a1d1f72b4a89b432670470e2a181523e7`. Bản NPZ cũ không có trong Git; chưa so được từng mảng hoặc kết luận nguyên nhân khác byte. CSV/JSON giả lập đã so khớp; PNG giả lập trùng byte. Ba PNG density trùng pixel và dữ liệu IDAT sau giải nén, chỉ khác luồng nén.
 
-Nhãn thưa chỉ cho Recall_known; holdout là đánh giá lặp, không dùng chọn tham số. **Chờ `n24-verify` kiểm**, chưa thay xác nhận nghiệm thu. `.gitattributes` áp dụng `docs/evidence/s3-10/** -text` để giữ byte qua checkout Linux/Windows.
+Ngày 31/10/2026, người kiểm độc lập đối chiếu bằng script riêng: **25/25 nhóm, 9 bảng CSV/102 dòng riêng, 0 giá trị lệch**; xác nhận lượt gốc có đủ **62 artifact**, tất cả đúng hash manifest. Kết quả PASS trong phạm vi S3-10 và nháp S3-16. **Đức quyết định nghiệm thu S3-10; Sheet J49 do Đức cập nhật.**
+
+Nhãn thưa chỉ cho Recall_known; holdout là đánh giá lặp, không dùng chọn tham số. `.gitattributes` áp dụng `docs/evidence/s3-10/** -text` để giữ byte qua checkout Linux/Windows.
