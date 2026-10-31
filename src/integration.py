@@ -10,8 +10,8 @@ So sánh hai vùng đọc bằng chứng đếm tay S2-09, tách khỏi ứng vi
 """
 from __future__ import annotations
 
-import math
 import json
+import math
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -22,10 +22,14 @@ CARD_FIELDS = ("card_id", "title", "body", "source_title", "source_url")
 ROOT = Path(__file__).resolve().parents[1]
 COMPARISON_PATH = ROOT / "docs" / "evidence" / "s2-09" / "so_sanh.json"
 REGIONS_PATH = ROOT / "data" / "s209_counts" / "regions.json"
+LEGACY_HOUGH_LIMITATION = "Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu."
 
 
 def _finite(value: Any) -> bool:
-    return not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+    try:
+        return not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+    except OverflowError:
+        return False
 
 
 def _check_statistics(data: Any) -> str | None:
@@ -53,7 +57,7 @@ def statistics_view(machine: dict[str, Any], metadata: dict[str, Any], valid_pix
         data = statistics.summarize(machine, metadata, valid_pixel_count)
     except NotImplementedError:
         return {"status": "pending", "reason": "Thống kê (S2-09, Hưng) chưa được cài trên main."}
-    except (ValueError, TypeError, KeyError) as error:
+    except (ValueError, TypeError, KeyError, OverflowError) as error:
         return {"status": "error", "reason": f"summarize báo lỗi: {error}"}
     problem = _check_statistics(data)
     if problem:
@@ -68,6 +72,17 @@ def density_limit_view(raw_count: int, max_circles: int) -> dict[str, Any]:
               "Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. "
               "Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.") if limited else None
     return {"limited": limited, "reason": reason}
+
+
+def statistics_presentation_view(data: dict[str, Any], raw_count: int, max_circles: int) -> dict[str, Any]:
+    """Thay đúng caption chạm trần vô điều kiện cũ bằng một warning theo số thô.
+
+    Các limitation khác giữ nguyên. Không sửa dict/list trả về từ summarize.
+    """
+    limit = density_limit_view(raw_count, max_circles)
+    captions = [str(note) for note in data.get("limitations") or []
+                if str(note).strip() != LEGACY_HOUGH_LIMITATION]
+    return {**limit, "captions": captions}
 
 
 def _check_comparison(data: Any, definitions: Any) -> None:
@@ -132,7 +147,7 @@ def density_comparison_view(metadata: dict[str, Any], *, comparison_path: Path =
         if metadata.get("body") != "moon" or metadata.get("scale_m_per_px") != region["scale_m_per_px"]:
             raise ValueError("Thiên thể hoặc tỷ lệ metadata không khớp vùng đếm.")
         return {"status": "ok", "data": data, "region": key, "counted_crop": bool(counted_in)}
-    except (OSError, ValueError, TypeError, KeyError, UnicodeError) as error:
+    except (OSError, ValueError, TypeError, KeyError, UnicodeError, OverflowError) as error:
         return {"status": "error", "reason": f"Chưa đọc được so sánh đếm tay hai vùng: {error}"}
 
 

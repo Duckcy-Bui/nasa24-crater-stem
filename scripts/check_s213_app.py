@@ -1,24 +1,39 @@
 """Kiểm S2-13/S3-04 bằng Chromium thật; Streamlit phải chạy sẵn ở cổng 8621.
 
-Chạy bằng venv-verify của team, với --out là thư mục minh chứng mới.
+Môi trường: requirements-browser.txt và Chromium; --out phải chưa tồn tại.
 --layout-only kiểm riêng lỗi #9, dùng cả khi đối chứng CSS trước sửa.
 Các vòng ở đây chỉ là dữ liệu thử tương tác, không phải nhãn hố thật.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
-
-from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SCORE_LABEL = "Điểm theo nhãn đã kiểm chéo"
 
 
+def run_identity(url):
+    paths = ("app.py", "src/integration.py", "src/statistics.py", "src/hough.py", "src/pipeline.py",
+             "src/crater_canvas/geometry.js", "src/crater_canvas/canvas.js", "src/crater_canvas/app.css",
+             "configs/default.json", "docs/evidence/s2-09/so_sanh.json", "data/s209_counts/regions.json",
+             "scripts/check_s213_app.py", "requirements-browser.txt", "requirements-test.txt")
+    return {"head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+            "url": url, "source_root": str(ROOT), "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "source_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True),
+            "source_sha256": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in paths},
+            "server_source_verified": False}
+
+
 def check_score_label(page, width, out, narrow=False):
+    from playwright.sync_api import expect
+
     page.set_viewport_size({"width": width, "height": 1100})
     label = page.locator('[data-testid="stMetricLabel"] p').filter(has_text=SCORE_LABEL)
     expect(label).to_have_text(SCORE_LABEL)
@@ -60,9 +75,22 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--layout-only", action="store_true")
     args = parser.parse_args()
-    args.out.mkdir(parents=True, exist_ok=True)
+    try:
+        args.out.mkdir(parents=True, exist_ok=False)
+    except FileExistsError:
+        parser.error("--out phải là thư mục chưa tồn tại; không ghi đè minh chứng.")
+    identity = run_identity(args.url)
+    (args.out / "run_identity.json").write_text(json.dumps(identity, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    from playwright.sync_api import expect, sync_playwright
+
     evidence = json.loads((ROOT / "docs/evidence/s2-09/so_sanh.json").read_text(encoding="utf-8"))
-    results, errors = {}, []
+    results = {**identity, "navigation": "reload before each image",
+               "scope": {"score_label": "text bounds at 1440/390px and a synthetic 128px metric",
+                         "manual_table": "names, counts, areas, densities and displayed conclusion",
+                         "flow": "candidate count, hidden density, one cap message and no Streamlit exception",
+                         "recorded_only": "flow table counts and page text; CI, ratio and p are not asserted",
+                         "radius": "displayed centre and radius after dragging the left rim"}}
+    errors = []
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1440, "height": 1100})
@@ -99,6 +127,14 @@ def main():
             page.locator('[data-testid="stMetricLabel"] p').filter(has_text=SCORE_LABEL).wait_for(timeout=90000)
             expect(page.locator('[data-testid="stApp"]')).to_have_attribute("data-test-script-state", "notRunning", timeout=90000)
 
+        def check_cap_messages():
+            captions = page.locator('[data-testid="stCaptionContainer"]').all_inner_texts()
+            warnings = page.locator('[data-testid="stAlertContentWarning"]').all_inner_texts()
+            claims = [text for text in captions + warnings
+                      if any(term in text for term in ("chạm trần", "chạm giới hạn", "max_circles"))]
+            assert len(claims) == 1 and claims[0] in warnings, captions + warnings
+            return {"captions": captions, "warnings": warnings, "cap_claims": claims}
+
         try:
             page.goto(args.url)
             page.get_by_role("combobox").wait_for()
@@ -120,8 +156,9 @@ def main():
                 expect(density.locator('[data-testid="stMetricValue"]')).to_have_text("—")
                 capture("density_cap_20m.png", warning)
                 results["density_cap"] = {"image_id": "moon_ap15_hia_c01", "scale_m_per_px": 20,
-                                          "warning": warning.inner_text(), "density": "—"}
-                print("PASS #10: ẩn mật độ khi chạm giới hạn trên ảnh 20 m/px", flush=True)
+                                          "warning": warning.inner_text(), "density": "—",
+                                          **check_cap_messages()}
+                print("PASS #10: ẩn mật độ và chỉ một thông báo chạm giới hạn trên ảnh 20 m/px", flush=True)
 
                 heading = page.get_by_text("So sánh mật độ hai vùng · đếm tay", exact=True)
                 for key in ("lunokhod1", "marefrig"):
@@ -138,7 +175,7 @@ def main():
                                             "Không kết luận được vùng nào cổ hơn.", exact=True)).to_be_visible()
                     capture(f"manual_{key}.png", heading)
                     results[key] = {"image_id": image_id, "table": text}
-                    print(f"PASS #11: so sánh đếm tay trên {image_id}", flush=True)
+                    print(f"PASS #11: tên, số hố, diện tích, mật độ và câu kết luận trên {image_id}", flush=True)
                 choose("moon_marefrig_loc_c01")
                 expect(page.get_by_text(re.compile("Ảnh đang mở cùng ảnh nguồn"))).to_be_visible()
                 capture("manual_marefrig_uncounted.png", heading)
@@ -157,12 +194,14 @@ def main():
                       value:e.querySelector('[data-testid="stMetricValue"]').textContent}))""")
                     assert next(m["value"] for m in metrics if m["label"] == "Mật độ") == "—"
                     assert next(m["value"] for m in metrics if m["label"] == "Số ứng viên") == "100"
+                    cap_messages = check_cap_messages()
                     expect(page.locator('[data-testid="stException"]')).to_have_count(0)
                     capture(f"flow_{image_id}.png", warning)
                     results["flow"].append({"image_id": image_id, "metrics": metrics,
                                             "manual_tables": page.locator('[data-testid="stTable"]').count(),
+                                            **cap_messages,
                                             "page_text": page.locator("body").inner_text()})
-                    print(f"PASS mục 2.1: chấm, thống kê và thẻ trên {image_id}", flush=True)
+                    print(f"PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên {image_id}", flush=True)
 
                 frame = choose("moon_ap15_hia_c01")
                 expect(heading).to_have_count(0)
@@ -208,9 +247,10 @@ def main():
             results["status"] = "FAIL"
             raise
         finally:
+            results["observed_url"] = page.url
             (args.out / "browser_results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             browser.close()
-    print("PASS: kiểm trình duyệt S2-13/S3-04", flush=True)
+    print("PASS: các assertion đã chạy, phạm vi ghi tại browser_results.json; mỗi ảnh mở trang mới", flush=True)
 
 
 if __name__ == "__main__":

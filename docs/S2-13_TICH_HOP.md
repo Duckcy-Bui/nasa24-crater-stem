@@ -6,6 +6,8 @@ Trạng thái 28/10/2026: **đã ghép đủ bốn chức năng** trên main `95
 
 Cập nhật 31/10/2026 trên worktree `n24-app`, gốc `13394de`: **đã sửa lỗi #8, #9, #10, #11** (mục 3.2). Khi máy chạm giới hạn ứng viên thô, app ẩn giá trị mật độ và giải thích giới hạn. Ảnh thuộc Lunokhod 1 hoặc Mare Frigoris hiện so sánh đếm tay từ bằng chứng S2-09 ngay khi mở ảnh. Đây là kết quả sửa và kiểm cục bộ; chưa phải nghiệm thu độc lập, merge hay deploy.
 
+Vòng r1 đã commit thành `4ee5a86`; kiểm độc lập trả **FAIL A-01** do caption cũ từ `summarize` vẫn báo chạm trần vô điều kiện. Vòng r2 sửa tiếp trên commit đó: thống nhất lời giới hạn ở lớp integration/hiển thị, xử lý số cực hạn và bổ sung kiểm biên. Kết quả r2 cần người kiểm đánh giá lại, không thay verdict r1 thành PASS.
+
 ## 1. Hợp đồng cho S2-09 và S2-10 (đề xuất, Hưng và Quốc Anh xác nhận)
 
 ### `statistics.summarize(crater_set, metadata, valid_pixel_count) -> dict` (S2-09)
@@ -18,7 +20,7 @@ App gọi với ứng viên máy của lượt chấm gần nhất và số pixe
 | `valid_area_km2` | số ≥ 0 hoặc null | không | `valid_pixel_count × scale² / 1e6` |
 | `density_per_km2` | số ≥ 0 hoặc null | không | null khi diện tích bằng 0 |
 | `histogram` | `{bin_edges_m: [n+1 số tăng dần], counts: [n số nguyên ≥ 0]}` | không | đường kính `2 × r × scale` (m) |
-| `limitations` | list chuỗi | không | app hiện nguyên văn dưới biểu đồ |
+| `limitations` | list chuỗi | không | app giữ nguyên lời các ghi chú; riêng câu chạm trần vô điều kiện cũ được thay ở lớp integration bằng warning theo số thô (mục 3.2), không sửa dữ liệu `summarize` |
 
 Có thể thêm khóa khác (ví dụ so hai vùng); app bỏ qua khóa lạ. Sai hợp đồng thì app báo lỗi đỏ, không hiện số.
 
@@ -95,7 +97,7 @@ Số trên bảng là số hiển thị của `statistics.summarize` thật, kh�
 | 7 | Link nguồn trong thẻ khoa học màu xanh đậm mặc định của Streamlit, gần như không đọc được trên nền tối | Thấp | Đức | **Đã sửa (S3-04, 27/10):** `app.css` đặt link trong khối văn bản thành `#8cc8ff`, tương phản 9,7–11:1 |
 | 8 | Nút đổi bán kính của vòng đang chọn vẽ tại `min(511, x + r)`: khi vành vượt mép phải, nút không nằm trên vành, bấm vào đó sẽ dời vòng thay vì đổi bán kính | Thấp | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Nút chọn điểm trên vành trong ảnh. Test Node kiểm vị trí và kéo nút; Chromium kiểm tâm giữ nguyên, bán kính bằng khoảng cách tới con trỏ |
 | 9 | Nhãn ô điểm "Điểm theo nhãn đã kiểm chéo" bị cắt chữ cuối ở bề rộng 1440 px (cột hẹp của `st.metric`) | Thấp | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. CSS cho nhãn xuống dòng. Chromium kiểm đủ chữ ở 1440 px, 390 px và cột thử hẹp; ca cột hẹp thất bại khi trả CSS cũ |
-| 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Hàm thuần trong `integration.py` kiểm số thô ≥ `max_circles`; app ẩn mật độ, cảnh báo không so tuổi hay so vùng và chỉ sang đếm tay. Test Python kiểm cả sau lọc; Chromium kiểm cảnh báo. Không sửa `summarize` |
+| 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | **Đã sửa (S2-13/S3-04, 31/10)**, bổ sung r2 theo A-01. Integration bỏ đúng caption chạm trần vô điều kiện cũ; chưa chạm trần không có lời chạm trần, chạm trần chỉ có một warning và ẩn mật độ. Test dùng `summarize` thật ở số thô 0/99/100/101, kiểm toàn bộ caption/warning. Không sửa API hoặc dữ liệu `summarize`; chờ kiểm độc lập r2 |
 | 11 | So sánh mật độ hai vùng (yêu cầu 2 của đề) mới có trong `scripts/s209_density.py` và `docs/S2-09_MAT_DO_HO.md`, chưa có trong app | Cao cho đủ chức năng | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Đọc, kiểm JSON lúc chạy; nhận vùng bằng vùng đếm và metadata. Test Python kiểm dữ liệu, file lỗi và đổi ảnh; Chromium kiểm bảng trên cả hai vùng, ô cùng nguồn không được đếm và ảnh ngoài vùng |
 
 ### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
@@ -115,13 +117,40 @@ Kiểm chứng: test JS mới khóa ba điểm. Bấm giữa pixel 200 ghi 200, 
 
 ### 3.2. Sửa lỗi #8–#11 và cách kiểm lại (31/10/2026)
 
-- `density_limit_view` dùng `raw_count`, không dùng số còn lại sau lọc. Khi chạm trần, ô Mật độ hiện `—`; số ứng viên, diện tích và histogram vẫn hiện theo hợp đồng mục 1. Chỉ có một cảnh báo ở phần Thống kê, thay caption cũ ở phần Chấm bài.
-- `density_comparison_view` đọc `so_sanh.json` và `regions.json` mỗi lần hiển thị. App kiểm kiểu, số hữu hạn, diện tích dương, mật độ khớp số đếm, khoảng tin cậy, tỷ lệ, p-value, dải D, tỷ lệ ảnh, các ô cắt và ảnh nguồn. File thiếu, JSON hỏng hoặc số liệu không nhất quán chỉ tạo thông báo nhẹ. Mọi số trên bảng đều lấy từ JSON.
+- `density_limit_view` dùng `raw_count`, không dùng số còn lại sau lọc. `statistics_presentation_view` bỏ đúng câu cũ `Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu.` trong danh sách caption để hiển thị; các ghi chú khác giữ nguyên và dict/list gốc không bị sửa. Nếu số thô < `max_circles`, không có thông báo chạm trần. Nếu số thô ≥ `max_circles`, chỉ có một warning ở Thống kê, ô Mật độ hiện `—`. Bỏ caption phụ dưới ô mật độ và caption cũ ở Chấm bài để không lặp. Số ứng viên, diện tích và histogram vẫn theo hợp đồng mục 1.
+- **Đề xuất cho Hưng, chưa phải thay đổi đã thực hiện:** câu chạm trần trong `statistics.summarize` nên có điều kiện dựa trên số ứng viên thô và ngưỡng thực tế do lớp gọi cung cấp; số sau lọc không đủ để suy ra đã chạm trần. Nếu chưa có thông tin này thì không khẳng định chạm trần. Cần thống nhất cách truyền ngữ cảnh trong phần của Hưng trước khi đổi API. R2 giữ nguyên API và toàn bộ dữ liệu gốc của `summarize`; integration tạm xử lý đúng chuỗi cũ nêu trên, không lọc rộng mọi câu có từ "giới hạn".
+- `density_comparison_view` đọc `so_sanh.json` và `regions.json` mỗi lần hiển thị. Validator kiểm tên vùng không rỗng; số đếm nguyên không âm; diện tích và tỷ lệ ảnh hữu hạn, dương; mật độ hữu hạn, không âm và khớp `n / area_km2` với sai số tương đối `1e-9`. CI cần hai số hữu hạn thỏa `0 ≤ thấp ≤ mật độ ≤ cao`; tỷ lệ phải khớp thương hai mật độ với sai số tương đối `1e-9`; p-value chỉ được kiểm là số hữu hạn trong [0, 1]. Dải D gồm hai số hữu hạn tăng dần, dương và trùng giữa bằng chứng/vùng đếm; hai vùng cùng tỷ lệ và khác `product_id`. Danh sách tên ô cắt phải không trùng và khớp các khóa trong vùng đếm. Nếu `image_id` là khóa ô đếm thì `product_id` phải khớp vùng đó; các ảnh khác được nhận vùng bằng `product_id`. Chỉ hiện bảng khi metadata có `body=moon` và tỷ lệ trùng vùng đã nhận.
+- Validator **không tính lại** CI Garwood hoặc p-value, không kiểm nội dung hình chữ nhật `keep/exclude`, diện tích hợp pixel hoặc đếm lại hố. Vì vậy p = 0,01, CI [0, 999] hay một crop definition bằng `null` vẫn có thể qua nếu các điều kiện miền giá trị/tên khóa nói trên đạt. Đây là giới hạn của kiểm đầu vào, không phải kết quả thẩm định số học. File thiếu, JSON không đọc được, vi phạm điều kiện đang kiểm hoặc gây `OverflowError` được đổi thành thông báo lỗi nhẹ. Mọi số trên bảng vẫn lấy từ JSON.
 - Bảng đếm tay hiện độc lập với lượt chấm, chỉ trên ảnh thuộc hai ảnh nguồn đã đối chiếu bằng metadata. Mare Frigoris `c01` có cùng ảnh nguồn nhưng không thuộc các ô đếm: app nói rõ bảng dùng các ô khác. Ảnh ngoài hai vùng không hiện bảng để tránh gắn kết quả đếm tay với một vùng khác. Dùng bảng, không thêm hình tích lũy để giữ phần so sánh ngắn.
-- `radiusHandle` thử phải, trái, dưới, trên; nếu chỉ vành gần góc lọt vào ảnh thì tìm giao với mép ảnh. Khi cả vành nằm ngoài ảnh, không vẽ nút giả. Node kiểm vị trí thật trên vành và kéo theo khoảng cách tới tâm; Chromium kiểm vòng thử chạm mép phải.
+- `radiusHandle` thử phải, trái, dưới, trên; nếu chỉ vành gần góc lọt vào ảnh thì tìm giao với mép ảnh. Kiểm biên cho phép sai số `1e-9` px để giữ điểm tiếp xúc đúng góc do dấu phẩy động; giữ nguyên điểm tính trên vành, không kẹp lại tọa độ. Khi cả vành nằm ngoài ảnh vượt sai số này, không vẽ nút giả. Node kiểm cả tiếp xúc góc và kéo theo khoảng cách tới tâm; Chromium kiểm vòng thử chạm mép phải.
 - CSS giữ nguyên nhãn điểm và cho xuống dòng, gồm cả khối Markdown chứa nhãn. Kiểm chữ nằm trong vùng hiển thị bằng hình học DOM, kèm ảnh ở 1440 px và 390 px. Bộ font hiện tại không tái hiện lỗi ở chiều rộng mặc định; ca cột thử 128 px ở viewport 1440 px tái hiện cắt chữ với CSS cũ và qua với CSS mới. Kích thước này chỉ là dữ liệu thử bố cục.
 
-Test hồi quy: `tests/test_integration.py`, `tests/test_integration_density.py`, `tests/test_canvas_zoom.js` và `scripts/check_s213_app.py`. Mỗi lỗi có test mới thất bại khi tạm trả phần sửa tương ứng về mã gốc `13394de`, rồi phục hồi mã mới từng byte. Lệnh kiểm trình duyệt: dùng Python của `venv-verify` chạy `-B scripts/check_s213_app.py --out /tmp/n24-s213`, với Streamlit chạy sẵn ở cổng 8621. Kiểm độc lập và quyết định tích hợp thuộc người điều phối.
+Test hồi quy: `tests/test_integration.py`, `tests/test_integration_density.py`, `tests/test_canvas_geometry.js`, `tests/test_canvas_zoom.js`, `tests/test_browser_tool.py` và `scripts/check_s213_app.py`. R2 bổ sung kiểm lời giới hạn với `summarize` thật ở 0/99/100/101, JSON có số cực hạn và điểm tiếp xúc góc. Các ca này đã tái hiện lỗi trên `4ee5a86` trước khi sửa; đối chứng r1 với mã gốc `13394de` vẫn được giữ trong hồ sơ vòng trước. Kiểm độc lập và quyết định tích hợp thuộc người điều phối.
+
+### 3.3. Môi trường và phạm vi công cụ browser tùy chọn
+
+`requirements-browser.txt` dùng bộ phụ thuộc kiểm thử đã ghim trong `requirements-test.txt` và `playwright==1.64.1`. Không thêm Playwright vào phụ thuộc runtime. Ví dụ tạo môi trường trên Linux/macOS, chạy từ gốc repo:
+
+```sh
+python3.12 -B -m venv .venv
+.venv/bin/python -B -m pip install -r requirements-browser.txt
+.venv/bin/python -B -m playwright install chromium
+.venv/bin/python -B -m streamlit run app.py --server.port 8621 --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false
+```
+
+Trong terminal thứ hai:
+
+```sh
+.venv/bin/python -B scripts/check_s213_app.py --url http://127.0.0.1:8621 --out /tmp/n24-s213-r2-01
+```
+
+`--out` phải chưa tồn tại, kể cả khi chạy lại sau một lượt lỗi; script từ chối ghi đè. Dừng Streamlit bằng Ctrl+C sau khi chụp. `--help` không cần mở browser; `--layout-only` chỉ kiểm nhãn điểm. Đường dẫn Python trên Windows là `.venv\Scripts\python.exe`.
+
+`run_identity.json` và `browser_results.json` ghi HEAD, URL yêu cầu, hash source/cấu hình/bằng chứng từ checkout; file kết quả còn ghi URL đã mở. HEAD là danh tính checkout cung cấp kỳ vọng, **không chứng minh** server tại `--url` chạy đúng source đó (`server_source_verified=false`); khi kiểm cục bộ phải tự khởi động server từ checkout cần kiểm. PASS chỉ nói các assertion đã chạy: biên chữ; chuỗi tên/số đếm/diện tích/mật độ và câu kết luận trong bảng; số ứng viên, ô mật độ, một lời chạm trần và không có exception ở từng ảnh; tâm và bán kính hiển thị sau kéo nút. Script chỉ lưu, không assert CI, tỷ lệ, p-value hoặc thẻ khoa học trong vòng bảy ảnh. Mỗi ảnh được mở lại trên trang mới, nên lượt này không chứng minh giữ draft/score khi đổi ảnh trong cùng phiên.
+
+### 3.4. A-06 — vấn đề đồng bộ trạng thái cần theo dõi
+
+Người kiểm có lần thấy picker về ảnh đầu khi thao tác nhanh sau xóa/hoàn tác/lưu, và có lượt chậm hơn đi qua được. Bằng chứng giữ tại `n24-team/runs/verify/app_r1/ui_run2/`, `ui_run4/` và `picker_race_review.md`. Chưa có đối chứng cùng nhịp thao tác để quy hiện tượng này cho commit `4ee5a86`. R2 chỉ ghi nhận để theo dõi, không sửa hoặc tuyên bố hết lỗi. Lượt kiểm tiếp nên đợi revision được Python phản hồi và nonce lưu khớp, không chỉ dựa vào số vòng cục bộ hay `notRunning`; một khoảng đợi cố định chưa chứng minh an toàn ở mọi nhịp thao tác.
 
 ## 4. Việc còn lại để đóng S2-13
 

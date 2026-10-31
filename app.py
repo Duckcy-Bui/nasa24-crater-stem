@@ -14,7 +14,7 @@ from PIL import Image
 
 from src.contracts import ContractError, read_json, validate_metadata
 from src.game_results import COLORS, render_overlay, save_round, score_round
-from src.integration import cards_view, density_comparison_view, density_limit_view, statistics_view
+from src.integration import cards_view, density_comparison_view, statistics_presentation_view, statistics_view
 from src.pipeline import detect_machine, load_image as load_processed_image, load_overlay_set
 from src.player_annotations import apply_canvas_event
 from src.player_ui import handle_save_request
@@ -131,15 +131,13 @@ def show_statistics(result: dict, metadata: dict) -> None:
         return
     data = view["data"]
     detected = result["detected"]
-    limit = density_limit_view(detected["raw_count"], detected["hough"]["max_circles"])
+    limit = statistics_presentation_view(data, detected["raw_count"], detected["hough"]["max_circles"])
     if limit["limited"]:
         st.warning(limit["reason"])
     count, area, density = st.columns(3)
     count.metric("Số ứng viên", data["count"])
     area.metric("Diện tích hợp lệ", "—" if data.get("valid_area_km2") is None else f"{data['valid_area_km2']:.2f} km²")
     density.metric("Mật độ", "—" if limit["limited"] or data.get("density_per_km2") is None else f"{data['density_per_km2']:.2f} /km²")
-    if limit["limited"]:
-        density.caption("Không hiện mật độ khi chạm giới hạn ứng viên.")
     histogram = data.get("histogram")
     if histogram and histogram["counts"]:
         edges = histogram["bin_edges_m"]
@@ -147,8 +145,8 @@ def show_statistics(result: dict, metadata: dict) -> None:
         st.caption("Phân bố đường kính (m), số ứng viên mỗi khoảng")
         st.bar_chart({"Đường kính (m)": labels, "Số ứng viên": histogram["counts"]}, x="Đường kính (m)",
                      y="Số ứng viên", color=COLORS["machine"], height=220)
-    for note in data.get("limitations") or []:
-        st.caption(str(note))
+    for note in limit["captions"]:
+        st.caption(note)
 
 
 def show_density_comparison(metadata: dict) -> None:

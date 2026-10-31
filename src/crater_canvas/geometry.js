@@ -87,7 +87,10 @@
       const dx = Math.sqrt(r * r - (edge - y) ** 2);
       points.push({x: x + dx, y: edge}, {x: x - dx, y: edge});
     }
-    return points.find(p => p.x >= 0 && p.x <= right && p.y >= 0 && p.y <= bottom) || null;
+    // Keep the computed rim point; tolerate only rounding at an image boundary.
+    const epsilon = 1e-9;
+    return points.find(p => p.x >= -epsilon && p.x <= right + epsilon
+      && p.y >= -epsilon && p.y <= bottom + epsilon) || null;
   }
   root.CraterGeometry = Object.freeze({ PIXEL_CENTER, canvasToImage, imageRadius, clampView, screenToImage, imageToScreen,
     screenToPixel, pixelToScreen, zoomViewAt, radiusHandle });

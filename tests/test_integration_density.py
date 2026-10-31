@@ -8,7 +8,7 @@ from unittest import mock
 
 from streamlit.testing.v1 import AppTest
 
-from src import integration
+from src import integration, statistics
 from src.contracts import read_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +18,15 @@ META = read_json(ROOT / "data/processed/moon_lunokhod1_loc_c01.json")
 
 
 class TestDensityLimit(unittest.TestCase):
+    def test_presentation_preserves_source_and_unrelated_limitations(self):
+        data = {"limitations": ["Ghi chú khác.", integration.LEGACY_HOUGH_LIMITATION,
+                                "Hố ngoài dải đường kính chưa được xét."]}
+        original = copy.deepcopy(data)
+        for raw_count in (0, 99, 100, 101):
+            view = integration.statistics_presentation_view(data, raw_count, 100)
+            self.assertEqual(view["captions"], [data["limitations"][0], data["limitations"][2]])
+            self.assertEqual(data, original)
+
     def test_raw_count_at_or_above_cap_is_limited(self):
         for count in (100, 101):
             view = integration.density_limit_view(count, 100)
@@ -30,6 +39,19 @@ class TestDensityLimit(unittest.TestCase):
 
 
 class TestDensityComparison(unittest.TestCase):
+    def test_extreme_numbers_are_errors(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "comparison.json"
+            for field, value in (("area_km2", 10 ** 400), ("scale_m_per_px", 10 ** 400),
+                                 ("density_per_km2", 10 ** 400), ("n", 10 ** 400),
+                                 ("area_km2", 5e-324), ("density_ci95_per_km2", [0, 10 ** 400])):
+                with self.subTest(field=field, value=value):
+                    bad = copy.deepcopy(EVIDENCE)
+                    bad["regions"]["lunokhod1"][field] = value
+                    path.write_text(json.dumps(bad), encoding="utf-8")
+                    view = integration.density_comparison_view(META, comparison_path=path)
+                    self.assertEqual(view["status"], "error")
+
     def test_counted_crops_and_uncounted_same_source_crop(self):
         for key, region in EVIDENCE["regions"].items():
             for image_id in region["crops"]:
@@ -102,6 +124,53 @@ class TestDensityComparison(unittest.TestCase):
 
 
 class TestDensityScreen(unittest.TestCase):
+    def test_real_summarize_limit_messages_at_all_boundaries(self):
+        for raw_count, remaining in ((0, 0), (99, 3), (100, 3), (101, 3)):
+            with self.subTest(raw_count=raw_count):
+                machine = {"schema_version": "1.0", "data_kind": META["data_kind"],
+                           "image_id": META["image_id"], "source": "machine", "reference_source": None,
+                           "circles": [{"crater_id": f"M{i + 1}", "x": 20 + i, "y": 20, "r": 10,
+                                        "confidence": None, "votes": 4} for i in range(remaining)]}
+                original = statistics.summarize(machine, META, 512 * 512)
+                result = {"scored": {"machine": machine}, "detected": {"valid_pixels": 512 * 512,
+                          "raw_count": raw_count, "hough": {"max_circles": 100}}}
+                at = AppTest.from_string(f"import app\napp.show_statistics({result!r}, {META!r})\n").run()
+                self.assertEqual(len(at.exception), 0)
+                self.assertEqual(len(at.error), 0)
+                captions = [c.value for c in at.caption]
+                warnings = [w.value for w in at.warning]
+                claims = [text for text in captions + warnings
+                          if any(term in text for term in ("chạm trần", "chạm giới hạn", "max_circles"))]
+                limited = raw_count >= 100
+                self.assertEqual(len(claims), int(limited), captions + warnings)
+                self.assertEqual(len(warnings), int(limited))
+                if limited:
+                    self.assertEqual(claims, warnings)
+                    self.assertIn("không dùng để so tuổi hay so vùng", warnings[0])
+                density = {m.label: m.value for m in at.metric}["Mật độ"]
+                self.assertEqual(density, "—" if limited else f"{original['density_per_km2']:.2f} /km²")
+                self.assertEqual(statistics.summarize(machine, META, 512 * 512), original)
+
+    def test_extreme_json_number_is_a_gentle_message(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "comparison.json"
+            bad = copy.deepcopy(EVIDENCE)
+            bad["regions"]["lunokhod1"]["area_km2"] = 10 ** 400
+            path.write_text(json.dumps(bad), encoding="utf-8")
+            code = f"import app\napp.show_density_comparison({META!r})\n"
+            with mock.patch("app.density_comparison_view", side_effect=lambda meta:
+                            integration.density_comparison_view(meta, comparison_path=path)):
+                at = AppTest.from_string(code).run()
+            self.assertEqual(len(at.exception), 0)
+            self.assertEqual(len(at.error), 0)
+            self.assertEqual(len(at.table), 0)
+            self.assertIn("Chưa đọc được so sánh đếm tay", at.info[0].value)
+
+    def test_summarize_numeric_overflow_is_an_error(self):
+        meta = dict(META, scale_m_per_px=10 ** 400)
+        machine = {"circles": []}
+        self.assertEqual(integration.statistics_view(machine, meta, 512 * 512)["status"], "error")
+
     def test_capped_density_is_hidden_even_after_filtering(self):
         # Interaction fixture: postprocessing retained three of one hundred raw candidates.
         code = """
