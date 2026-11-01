@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "real",
+  "image_id": "moon_ap16_m109134835l_c01",
+  "source": "player",
+  "reference_source": null,
+  "circles": [
+    {
+      "crater_id": "U1",
+      "x": 370,
+      "y": 360,
+      "r": 21,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U2",
+      "x": 320,
+      "y": 446,
+      "r": 15,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U3",
+      "x": 434,
+      "y": 410,
+      "r": 12,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U4",
+      "x": 276,
+      "y": 200,
+      "r": 17,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U5",
+      "x": 195,
+      "y": 211,
+      "r": 11,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U6",
+      "x": 251,
+      "y": 390,
+      "r": 14,
+      "confidence": null,
+      "votes": null
+    },
+    {
+      "crater_id": "U7",
+      "x": 90,
+      "y": 120,
+      "r": 16,
+      "confidence": null,
+      "votes": null
+    }
+  ]
+}

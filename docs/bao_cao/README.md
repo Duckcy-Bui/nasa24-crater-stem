@@ -60,7 +60,7 @@ python scripts/build_report.py --no-pdf       # chỉ DOCX
 python scripts/build_report.py --only 03 --no-pdf --out /tmp/ch3   # thử riêng một chương
 ```
 
-Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice và Python có module `uno` (trên Ubuntu: gói `python3-uno`; nơi khác đặt biến `REPORT_UNO_PYTHON` trỏ tới python của LibreOffice). Script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
+Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice và Python có module `uno` (trên Ubuntu: gói `python3-uno`; nơi khác đặt biến `REPORT_UNO_PYTHON` trỏ tới python của LibreOffice). Script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang, lưu DOCX qua bộ lọc `Office Open XML Text`, mở lại để ổn định dàn trang, cập nhật/lưu trường lần nữa rồi xuất PDF. `--no-pdf` chỉ tạo bản nháp, chưa cập nhật mục lục; không dùng bản đó để nộp. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
 
 Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoảng trắng không ngắt, vì LibreOffice bỏ khoảng trắng TeX và làm số công thức dính vào công thức. Trang bìa hiện vẫn mang số trang 1.
 
@@ -75,33 +75,32 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 - [ ] Bìa đủ tên trường, mã lớp, MSSV, giảng viên.
 - [ ] Phụ lục có bảng đóng góp đã được cả bốn người xác nhận và phần khai báo dùng AI.
 
-## 5. Trạng thái bản ghép (cập nhật 31/10/2026)
+## 5. Trạng thái bản ghép (cập nhật 01/11/2026, S3-12)
 
-Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sau bản sửa ngày 31/10 (nhánh `s3-08-report-final`): 53 trang, phần chính 43 trang (trang 5–47); bìa, mục lục và ký hiệu 4 trang, tài liệu tham khảo 3 trang, phụ lục 3 trang. **Phần chính còn vượt mức 40 trang.** Mức 25–40 trang phần chính và 30–60 trang toàn báo cáo được ghi ở mục 4; chưa tìm thấy bản quy định học phần gốc trong repo để đối chiếu.
+Nền `c466c2d`, nhánh `s3-12-rut-gon-bao-cao`, đã có PR #33–#36. Trưởng nhóm cho phép rút Chương 2–4; bản sửa chưa được chủ phần xác nhận. Bản nền dựng lại có 58 trang, phần chính 48 trang (5–52). Bản rút gọn có **56 trang tổng, 37 trang phần chính (5–41)**, đạt mục tiêu ≤39 và ngân sách dưới đây. Số trang được đếm bằng pypdf; bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12.
 
-| Chương | Trước | Sau | Ngân sách đề xuất | Việc tiếp theo (người chốt quyết định) |
+| Chương | Nền | Rút gọn | Ngân sách | Chủ phần kiểm bản rút gọn |
 |---|---:|---:|---:|---|
-| 1 | 4 | 3 | 3 | Đã bỏ lặp mục tiêu, rút Bảng 1.1 và phần tổ chức |
-| 2 | 11 | 11 | 9 | Tiến rút 2.2.5–2.2.6; Hưng rút ví dụ CLAHE và 2.3.3 |
-| 3 | 12 | 12 | 10 | Hưng xem bỏ overlay cũ 3.1, rút 3.4–3.5; Tiến rút phần lặp và bảng thời gian 3.3 |
-| 4 | 11 | 11 | 9 | Quốc Anh thay 4.8 bằng trạng thái chưa khảo sát và thiết kế tương lai; rút 4.2, 4.6 |
-| 5 | 7 | 6 | 6 | Đã rút mô tả thao tác, dữ liệu và kết luận lặp; giữ ba hình |
+| 1 | 3 | 3 | 3 | Đức |
+| 2 | 11 | 9 | 9 | Tiến (Hough), Hưng (tiền xử lý/sáng–tối) |
+| 3 | 17 | 10 | 10 | Hưng; Tiến mục 3.3 và phần Hough |
+| 4 | 11 | 9 | 9 | Quốc Anh; Hưng mục 4.1; Tiến phần đánh giá |
+| 5 | 6 | 6 | 6 | Đức |
 
-Ngân sách đề xuất tổng 37 trang, chừa 3 trang trong mức 40 cho kết quả và hình còn phải cập nhật. Đây là ước lượng biên tập, chưa phải số trang sau sửa Chương 2–4. Số trang đo bằng pypdf trên bản dựng trước và sau sửa; đề xuất cắt chi tiết cho từng chương đã gửi riêng cho người chốt. Chưa sửa Chương 2–4 trong vòng này.
+Giữ giả mã `dedupe_circles` và ví dụ M32/M8 trong Chương 3. Phụ lục E chứa các giả mã phụ, bảng cấu hình, bằng chứng lịch sử và quy đổi tọa độ được chuyển khỏi phần chính. Không thay số liệu đánh giá; hai số thời gian 24 ms/28 ms bị bỏ vì không tìm thấy bằng chứng trong repo. Mục 3.6.4 khớp app sau PR #34: ứng viên thô ≥ `max_circles` thì ẩn mật độ và cảnh báo; ảnh Lunokhod 1/Mare Frigoris hiện bảng đếm tay độc lập.
 
-**Sau khi ghép PR #33 (S2-12), đo ngày 01/11/2026:** 58 trang, phần chính 48 trang (trang 5–52). Chương 3 tăng từ 12 lên 17 trang, vượt ngân sách 7 trang; các chương khác giữ số ở cột Sau. Phần chính cần rút thêm 8 trang để về mức 40.
+Dấu chờ trong tám file ghép, không tính comment HTML: **35 → 29**.
 
-Các dấu chờ và việc còn lại:
+| Phần | Nền | Rút gọn | Người cần làm |
+|---|---:|---:|---|
+| Chương 2 | 1 | 0 | Đã đối chiếu PR #26 trên nền |
+| Chương 4 | 6 | 1 | Quốc Anh điền kết quả S3-05 ở 4.6 |
+| Chương 5 | 2 | 2 | Quốc Anh: S3-05 ở 5.7; người điều phối: số test cuối ở 5.6 sau khi merge bản sửa app cuối |
+| Phụ lục A | 17 | 17 | Cả nhóm đối chiếu sản phẩm sprint 3; từng người điền tỷ lệ, tự đánh giá, nhận đánh giá chéo và xác nhận |
+| Phụ lục D | 9 | 9 | Tiến, Hưng, Quốc Anh tự khai công cụ AI, việc sử dụng và cách kiểm soát (mỗi người 3 ô) |
 
-- **PR #26:** đã merge tại `d315169`, có trong main `13394de`; S2-16 mục 6 ghi lượt đối chiếu của trưởng nhóm. Đã bỏ dấu chờ ở Bảng 1.1, mục 5.4 và 5.7. Riêng 3.3.5 đã đối chiếu và xóa trong S2-12 (PR #33). Tiến đối chiếu rồi xử lý các dấu còn ở 2.2.3, 4.3.1 và 4.7 cùng người chốt chương.
-- **S2-15:** đã chốt `configs/s215_frozen.json`, đồng bộ `configs/default.json`, giữ `score`, tập điều chỉnh 10/174. Mục 3.7 đã cập nhật; Quốc Anh và Tiến cần bỏ dấu chờ cũ ở 4.5, mô tả các lượt holdout sau là đánh giá lặp.
-- **Hình 5.1–5.3:** giữ ảnh hiện có. Chính sách game không đổi, nên bỏ lý do chụp lại Hình 5.2 do chuyển sang cân bằng. Chụp lại giao diện ở vòng sau, khi lỗi #10 và #11 đã merge; ảnh hiện tại chưa chứng minh giao diện cuối.
-- **S2-09/S3-03:** Bảng 1.1 và 5.7 đã ghi kết quả đếm tay. Mục 3.6 và câu về cặp vùng ở 4.1 đã cập nhật theo cặp Lunokhod 1 – Mare Frigoris, dải 300–2.000 m (S2-12, PR #33). Quốc Anh còn xác nhận S2-09. Nếu quy tắc loại vùng đổi thì đối chiếu lại các số liên quan.
-- **S3-05 (Quốc Anh):** giữ dấu chờ kết quả ba thí nghiệm ở 4.6 và 5.7.
-- **Thử người chơi và khảo sát:** trưởng nhóm quyết định bỏ ngày 31/10/2026 (phần thử của S2-07, S2-14, S3-01). Bảng 1.1, mục 5.7–5.9 đã ghi yêu cầu khảo sát ít nhất 10 học sinh chưa đạt, không có dữ liệu hứng thú/hiểu bài. Dấu chờ khảo sát đã bỏ trong phần của Đức. Quốc Anh cập nhật 4.8, 4.9 và ghi chú đầu Chương 4 theo quyết định này; đề xuất câu chữ ở `page-budget.md`. Khung phiếu chỉ còn là thiết kế cho hướng tiếp theo.
-- **Số test cuối:** giữ nguyên dấu chờ ở 5.6, điền sau khi merge các PR cuối.
-- **Phụ lục A, D:** giữ các ô chờ đóng góp, đánh giá và khai báo của từng người. Chỉ bổ sung Codex vào dòng của Đức ở Bảng D.1; các thành viên tự xác nhận phần mình.
+Các phần khác không còn dấu chờ. PR #26 và S2-15 đã có nguồn; cấu hình cuối giữ `score`, tuning 10/174, mọi lượt holdout sau lần đầu là đánh giá lặp. Khảo sát/thử người chơi đã bỏ theo quyết định 31/10: yêu cầu ít nhất 10 học sinh chưa đạt, không có số liệu hứng thú/hiểu bài. Chương 4 chỉ giữ thiết kế dự kiến và giới hạn.
 
-Số dấu chờ trong phần được ghép (không tính ghi chú HTML): Chương 1 từ 2 xuống 0; Chương 5 từ 4 xuống 2; Chương 2, 3, 4 và Phụ lục lần lượt giữ 1, 2, 6 và 26. Tổng từ 41 xuống 37. Sau khi ghép PR #33, Chương 3 còn 0 dấu chờ, tổng còn 35. Đây vẫn là bản làm việc, chưa phải bản nộp.
+Hình 5.1–5.3 chụp lại ngày 01/11/2026 qua tunnel VPS bằng Playwright; xem `docs/evidence/s3-08/README.md`. Bảy vòng minh họa cho 60/100, tìm đúng 6/10 nhãn, trùng máy 0; đây không phải khảo sát người thật. Commit VPS do trưởng nhóm cung cấp; không coi ảnh chụp là phép kiểm hash mã trên máy chủ.
 
-Còn để người chốt xem lại: tiêu đề ảnh có mã việc ở Hình 3.4–3.5, sơ đồ chữ ở 3.1 chưa có số hình, các công thức hoặc ví dụ lặp giữa Chương 2–4. Ghi chú đầu Chương 2–4 còn nhiều trạng thái cũ về PR #26, nhãn và thống kê; cần đối chiếu nguồn trước khi xóa. Bảng trong `S2-03_TAP_DIEU_CHINH.md` còn ghi `sparse_unreviewed`; `manifest_split.json` ghi `sun_quality=measured` cho ảnh Apollo 16 trong khi metadata ghi `side_only` hoặc `none`.
+Bản dựng đầy đủ lưu mục lục vào cả DOCX và PDF. Kiểm cuối đối chiếu từng dòng mục lục DOCX với trang tiêu đề PDF và kiểm không còn lời nhắc F9. Vẫn là **bản làm việc** vì còn các ô cá nhân, S3-05, số test cuối và xác nhận của chủ phần. Mức 25–40 trang chính/30–60 trang tổng lấy từ mục 4; chưa tìm thấy bản quy định học phần gốc trong repo. Số trang có thể đổi khi điền các phần này hoặc dựng trên máy có font khác.
