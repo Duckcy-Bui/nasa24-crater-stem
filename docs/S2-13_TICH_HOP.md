@@ -99,6 +99,7 @@ Số trên bảng là số hiển thị của `statistics.summarize` thật, kh�
 | 9 | Nhãn ô điểm "Điểm theo nhãn đã kiểm chéo" bị cắt chữ cuối ở bề rộng 1440 px (cột hẹp của `st.metric`) | Thấp | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. CSS cho nhãn xuống dòng. Chromium kiểm đủ chữ ở 1440 px, 390 px và cột thử hẹp; ca cột hẹp thất bại khi trả CSS cũ |
 | 10 | Mục Thống kê tính mật độ trên ứng viên máy, mà máy luôn trả đủ 100 vòng (lỗi #2). Vì vậy mọi ảnh 20 m/px hiện 0,954 hố/km² và mọi ảnh 2 m/px hiện 95,4 hố/km², dù bề mặt khác nhau | Cao: học sinh có thể đọc thành "các vùng cùng tuổi" | Đức | **Đã sửa (S2-13/S3-04, 31/10)**, bổ sung r2 theo A-01. Integration bỏ đúng caption chạm trần vô điều kiện cũ; chưa chạm trần không có lời chạm trần, chạm trần chỉ có một warning và ẩn mật độ. Test dùng `summarize` thật ở số thô 0/99/100/101, kiểm toàn bộ caption/warning. Không sửa API hoặc dữ liệu `summarize`; chờ kiểm độc lập r2 |
 | 11 | So sánh mật độ hai vùng (yêu cầu 2 của đề) mới có trong `scripts/s209_density.py` và `docs/S2-09_MAT_DO_HO.md`, chưa có trong app | Cao cho đủ chức năng | Đức | **Đã sửa (S2-13/S3-04, 31/10)**. Đọc, kiểm JSON lúc chạy; nhận vùng bằng vùng đếm và metadata. Test Python kiểm dữ liệu, file lỗi và đổi ảnh; Chromium kiểm bảng trên cả hai vùng, ô cùng nguồn không được đếm và ảnh ngoài vùng |
+| 12 | A-06: picker quay về ảnh đầu khi xóa/hoàn tác/lưu nhanh trên ảnh khác; yêu cầu lưu có thể chưa được xử lý | Thấp (A-06) | Đức | **Đã sửa cục bộ (S3-04 r4, 01/11)**. Giữ nhãn lựa chọn độc lập với số vòng; bỏ đoạn tự gán state cho nhãn động. Main `c466c2d` tái hiện 13/20 lượt, bản sửa 0/20 lượt cùng kịch bản. Test AppTest phát lại nhãn wire cũ fail trên main, pass trên bản sửa; xem mục 3.4. Chưa nghiệm thu độc lập hoặc deploy |
 
 ### 3.1. Lỗi #1: quy ước tâm pixel trên canvas và ảnh đối chiếu
 
@@ -147,11 +148,23 @@ Trong terminal thứ hai:
 
 `--out` phải chưa tồn tại, kể cả khi chạy lại sau một lượt lỗi; script từ chối ghi đè. Dừng Streamlit bằng Ctrl+C sau khi chụp. `--help` không cần mở browser; `--layout-only` chỉ kiểm nhãn điểm. Đường dẫn Python trên Windows là `.venv\Scripts\python.exe`.
 
+Khi chọn ảnh, script click option có `image_id` khớp đúng trước dấu `·`, rồi assert lại giá trị picker. Cách tìm này dùng được với nhãn ổn định chỉ gồm mã ảnh và tên vùng, không cần số vòng.
+
 `run_identity.json` và `browser_results.json` ghi HEAD, URL yêu cầu, hash source/cấu hình/bằng chứng từ checkout; file kết quả còn ghi URL đã mở. HEAD là danh tính checkout cung cấp kỳ vọng, **không chứng minh** server tại `--url` chạy đúng source đó (`server_source_verified=false`); khi kiểm cục bộ phải tự khởi động server từ checkout cần kiểm. PASS chỉ nói các assertion đã chạy: biên chữ; chuỗi tên/số đếm/diện tích/mật độ và câu kết luận trong bảng; số ứng viên, ô mật độ, một lời chạm trần và không có exception ở từng ảnh; tâm và bán kính hiển thị sau kéo nút. Script chỉ lưu, không assert CI, tỷ lệ, p-value hoặc thẻ khoa học trong vòng bảy ảnh. Mỗi ảnh được mở lại trên trang mới, nên lượt này không chứng minh giữ draft/score khi đổi ảnh trong cùng phiên.
 
-### 3.4. A-06 — vấn đề đồng bộ trạng thái cần theo dõi
+### 3.4. A-06 — nguyên nhân và sửa picker (r4, 01/11/2026)
 
-Người kiểm có lần thấy picker về ảnh đầu khi thao tác nhanh sau xóa/hoàn tác/lưu, và có lượt chậm hơn đi qua được. Bằng chứng nằm trong hồ sơ của người kiểm độc lập, chưa đưa vào repo. Chưa có đối chứng cùng nhịp thao tác để quy hiện tượng này cho commit `4ee5a86`. R2 chỉ ghi nhận để theo dõi, không sửa hoặc tuyên bố hết lỗi. Lượt kiểm tiếp nên đợi revision được Python phản hồi và nonce lưu khớp, không chỉ dựa vào số vòng cục bộ hay `notRunning`; một khoảng đợi cố định chưa chứng minh an toàn ở mọi nhịp thao tác.
+Ghi nhận trước r4: người kiểm thấy picker về ảnh đầu khi thao tác nhanh sau xóa/hoàn tác/lưu; lượt chậm hơn đi qua được. R1/r2 chưa có đối chứng cùng nhịp để quy hiện tượng này cho commit `4ee5a86`, nên giữ mở. Bằng chứng các vòng đó vẫn nằm trong hồ sơ người kiểm, không được coi là bằng chứng đã sửa.
+
+R4 tái hiện trên main `c466c2d`, Streamlit cục bộ cổng 8624, Chromium trong `venv-verify`. Sau khi mở Lunokhod 1 và nhận phản hồi revision của vòng đầu, harness bấm xóa → hoàn tác → lưu bằng click Playwright, không thêm khoảng đợi hoặc chờ ACK giữa ba thao tác. Mỗi lượt là một phiên mới; chỉ chụp ảnh sau cả chuỗi. Main có **13/20 lượt reset (65 %)**; bản sửa có **0/20 reset, 20/20 lưu thành công** với cùng harness và tham số. Nhịp thông điệp trung vị xóa→hoàn tác / hoàn tác→lưu lần lượt khoảng 62/40 ms trên main và 61/49 ms trên bản sửa. Đây là tỷ lệ của các lượt đã chạy, không phải cam kết cho mọi thiết bị hoặc mọi nhịp thao tác.
+
+Nguyên nhân đã có log hai phía: nhãn picker trước đây chứa số vòng, nên đổi giữa chuỗi không có số vòng và chuỗi thêm `· 1 vòng`. Khi trình duyệt gửi lại nhãn cũ trong yêu cầu lưu, `SelectboxSerde.deserialize` của Streamlit không tìm thấy nó trong map nhãn hiện tại và trả chính chuỗi nhãn đó thay vì `image_id`. `image_label` tiếp tục định dạng chuỗi này như một mã ảnh; `resolve_value_against_options` nhận giá trị không thuộc options và reset về ảnh đầu. Log còn ghi yêu cầu canvas có đúng ảnh/revision/nonce, nhưng ảnh đang mở đã đổi trước khi xử lý lưu. Đây là cuộc đua giữa nhãn lựa chọn và rerun, không phải bằng chứng canvas gửi nhầm ảnh.
+
+Cách sửa tối thiểu trong `app.py`: nhãn chỉ gồm mã ảnh và tên vùng cố định; số vòng vẫn xem ở panel canvas. Bỏ đoạn tự gán `player_image_picker` từng dùng để cập nhật nhãn động. Không đổi key, hợp đồng revision/nonce, lưu câu trả lời, chấm bài hoặc thuật toán máy. Không chữa bằng chờ cố định hay tự chọn lại ảnh sau reset.
+
+`tests/test_app_state.py::PlayerRerunStateTests.test_fast_delete_undo_save_keeps_image_with_delayed_picker_wire_value` phát lại giá trị string của widget đúng như browser sau xóa/hoàn tác, rồi gửi Save với nhãn cũ. Test thất bại trên main vì lựa chọn thành Apollo 15; bản sửa giữ Lunokhod, revision và nonce đúng, có một file câu trả lời đúng hình học. Test dùng `install_dataset` vào thư mục tạm; đã chạy đối chứng trong bản sao không có ảnh tại `data/processed`.
+
+Chi tiết nhịp, source hash, log deserialize/resolve và ảnh mỗi lượt nằm trong hồ sơ `n24-team/runs/app/r4/`; báo cáo `n24-app-r4.md` chỉ rõ lệnh và giới hạn. Bộ ghi log chỉ quan sát lời gọi thật và chuyển thư mục lưu sang vùng minh chứng. Kết quả r4 là kiểm cục bộ, chờ kiểm độc lập. Harness vẫn chờ revision do Python phản hồi và nonce lưu khớp **sau** chuỗi nhanh; không dùng số vòng cục bộ hoặc riêng `notRunning` làm xác nhận đã lưu.
 
 ## 4. Việc còn lại để đóng S2-13
 
