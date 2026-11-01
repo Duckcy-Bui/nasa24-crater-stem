@@ -51,7 +51,7 @@ Bảng này liệt kê việc cần từng người tự xác nhận, không ký
 
 | Người | Cần xác nhận gì | Ghi ở đâu | Xác nhận bản cuối |
 |---|---|---|---|
-| Nguyễn Mạnh Tiến | Đóng góp/đánh giá chéo và AI; dòng của mình trong S2-16; phần Hough Chương 2 và 3, nhất là 3.3.5 được sửa hộ ở PR #33; số liệu đánh giá cùng Quốc Anh; đọc lại sau rút gọn; kết quả kiểm đủ bộ S3-14 | [Phụ lục A/D](bao_cao/07_phu_luc.md), S2-16 mục 5, [PR #33](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/33), Chương 2–4 và biên bản kiểm phiên bản cuối | |
+| Nguyễn Mạnh Tiến | Đóng góp/đánh giá chéo và AI; dòng của mình trong S2-16; tự xác nhận không phản đối đổi cặp vùng Lunokhod 1 – Mare Frigoris; phần Hough Chương 2 và 3, nhất là 3.3.5 được sửa hộ ở PR #33; số liệu đánh giá cùng Quốc Anh; đọc lại sau rút gọn; kết quả kiểm đủ bộ S3-14 | [Phụ lục A/D](bao_cao/07_phu_luc.md), S2-16 mục 5; việc đổi cặp vùng theo [review PR #30](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/30#pullrequestreview-5679533272), trả lời tại PR #30 hoặc [PR #29](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/29) mục 5; [PR #33](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/33), Chương 2–4 và biên bản kiểm phiên bản cuối | |
 | Đinh Quang Hưng | Đóng góp/AI và S2-16; Chương 2 phần tiền xử lý/sáng–tối, Chương 3 phần 3.4–3.6 sau PR #33; nguồn các số đo thời gian, mô tả mật độ khớp app PR #34; nội dung sau rút gọn; slide/phân vai S3-11 và tổng duyệt S3-15 | Phụ lục A/D, S2-16 mục 5, PR #33, [Chương 2](bao_cao/02_chuong_2_co_so_ly_thuyet.md), [Chương 3](bao_cao/03_chuong_3_phuong_phap_cai_dat.md), tệp slide và biên bản tổng duyệt | |
 | Hoàng Quốc Anh | Đóng góp/AI và S2-16; tự xác nhận kiểm chéo đếm tay/cặp vùng trên PR #30; mục 4.1 sửa hộ ở PR #33; Chương 4 sau rút gọn, ba thí nghiệm S3-05 và giới hạn không khảo sát; thẻ khoa học và video S3-13 | Phụ lục A/D, S2-16 mục 5, [PR #30](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/30), PR #33, [Chương 4](bao_cao/04_chuong_4_du_lieu_danh_gia.md), tệp video | |
 | Bùi Hải Đức | Tự rà dòng đóng góp/AI và xác nhận S2-16 của mình; Chương 1/5 và bản ghép sau khi Chương 2–4 rút gọn; PDF/số trang, các sản phẩm, gói cuối và thông tin nộp chính thức. S3-10 đã nghiệm thu theo mục 1 | Phụ lục A/D, S2-16 mục 5, [README báo cáo](bao_cao/README.md), biên bản bàn giao cuối; người điều phối cập nhật trạng thái giao việc | |
@@ -70,7 +70,7 @@ python -B scripts/package_s316.py \
   --output outputs/s316_c466c2d
 ```
 
-Nếu Python dựng báo cáo nằm ở venv khác, thêm `--report-python <đường-dẫn-python>`. Để tạo gói nộp cuối, thay `c466c2d` bằng SHA đã chốt và chọn thư mục đầu ra mới; dùng tên chính thức sau khi Đức cung cấp.
+Nếu Python dựng báo cáo nằm ở venv khác, thêm `--report-python <đường-dẫn-python>`. Đường dẫn tương đối tính từ thư mục gọi lệnh, giữ nguyên symlink của venv; tên lệnh đơn như `python3.12` được tìm qua PATH. Để tạo gói nộp cuối, thay `c466c2d` bằng SHA đã chốt và chọn thư mục đầu ra mới; dùng tên chính thức sau khi Đức cung cấp.
 
 ```text
 outputs/s316_<phiên-bản>/

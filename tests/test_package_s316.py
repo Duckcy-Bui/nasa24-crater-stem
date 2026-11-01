@@ -1,7 +1,9 @@
 """Commit isolation and failure controls; no processed dataset or real report tools."""
+import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import struct
 import subprocess
@@ -10,6 +12,7 @@ import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
+import venv
 import zipfile
 
 from scripts import package_s316 as packager
@@ -29,7 +32,7 @@ PDF_LINE
 '''
 
 
-def snapshot(*, missing_pdf=False, bad_bundle=False, failed_build=False):
+def snapshot(*, missing_pdf=False, bad_bundle=False, failed_build=False, expected_prefix=None):
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as archive:
         archive.writestr("crop.fixture", b"tiny bundle fixture")
@@ -39,6 +42,9 @@ def snapshot(*, missing_pdf=False, bad_bundle=False, failed_build=False):
                 "files": {"crop.fixture": {"bytes": 19, "sha256": hashlib.sha256(b"tiny bundle fixture").hexdigest()}}}
     pdf_line = "pass" if missing_pdf else '(out / "BaoCao_Nhom2_NASA24.pdf").write_bytes(b"%PDF-1.4\\n" + text.encode() + b"\\n%%EOF\\n")'
     builder = "raise SystemExit(9)\n" if failed_build else BUILDER.replace("PDF_LINE", pdf_line)
+    if expected_prefix is not None:
+        builder = ("import sys\nfrom pathlib import Path\n"
+                   f"assert Path(sys.prefix) == Path({str(expected_prefix)!r})\n" + builder)
     files = {"README.md": b"committed snapshot", "requirements-test.txt": b"",
              "scripts/build_report.py": builder.encode(), "docs/bao_cao/01_test.md": b"[CH\xe1\xbb\x9c test]",
              "data/s106_bundle/manifest.json": json.dumps(manifest).encode(),
@@ -65,14 +71,43 @@ def git_fixture(raw):
 
 
 class PackageTests(unittest.TestCase):
-    def build(self, root, **options):
+    def build(self, root, report_python=sys.executable, **options):
         repo = root / "live"
         repo.mkdir(exist_ok=True)
         (repo / "README.md").write_text("uncommitted working tree")
         (repo / "scripts").mkdir(exist_ok=True)
         (repo / "scripts/build_report.py").write_text("raise SystemExit('wrong source')")
         with patch.object(packager, "git_output", side_effect=git_fixture(snapshot(**options))):
-            return packager.package_commit(repo, "selected", root / "output", sys.executable)
+            return packager.package_commit(repo, "selected", root / "output", report_python)
+
+    def make_report_python(self, caller):
+        directory = caller / "report_env"
+        venv.EnvBuilder(with_pip=False, symlinks=os.name != "nt").create(directory)
+        executable = directory / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+        return directory, executable
+
+    def test_relative_report_python_uses_caller_directory_and_keeps_venv(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            caller = root / "caller"
+            directory, executable = self.make_report_python(caller)
+            with contextlib.chdir(caller):
+                try:
+                    result = self.build(root, report_python=os.path.relpath(executable, caller),
+                                        expected_prefix=directory)
+                except (OSError, subprocess.CalledProcessError) as error:
+                    self.fail(f"Relative report Python did not use the caller's venv: {error}")
+            self.assertTrue((root / "output" / result["zip"]).is_file())
+
+    def test_bare_report_python_is_found_on_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            caller = root / "caller"
+            directory, executable = self.make_report_python(caller)
+            search = str(executable.parent) + os.pathsep + os.environ.get("PATH", "")
+            with contextlib.chdir(caller), patch.dict(os.environ, {"PATH": search}):
+                result = self.build(root, report_python=executable.name, expected_prefix=directory)
+            self.assertTrue((root / "output" / result["zip"]).is_file())
 
     def test_commit_archive_supplies_both_source_and_report(self):
         with tempfile.TemporaryDirectory() as tmp:

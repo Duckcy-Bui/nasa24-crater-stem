@@ -121,6 +121,10 @@ def pending_markers(source: Path) -> dict:
 
 
 def package_commit(repo: Path, commit: str, output: Path, report_python: str = sys.executable) -> dict:
+    # Giữ symlink của venv; tên lệnh đơn vẫn được tìm qua PATH.
+    report_python = os.fspath(report_python)
+    if os.path.dirname(report_python):
+        report_python = os.path.abspath(report_python)
     repo, output = repo.resolve(), output.resolve()
     if output.exists():
         raise FileExistsError(f"Thư mục đầu ra đã tồn tại, không ghi đè: {output}")
