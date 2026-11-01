@@ -273,4 +273,35 @@ check("rings are painted around pixel centres at fit and when zoomed", () => {
   arc = small.calls.filter(call => call.name === "arc").at(-1);
   near(arc.args[0], 0.5 * 358 / 512, "first pixel centre at 358 px"); near(arc.args[1], 511.5 * 358 / 512, "last pixel centre at 358 px");
 });
+check("resize handle stays on the visible rim when the right edge is outside the image", () => {
+  const original = {crater_id: "U1", x: 500, y: 200, r: 40};
+  const ui = boot([original]);
+  ui.elements.circles.children[0].click();
+  const handle = ui.calls.filter(call => call.name === "fillRect").at(-1);
+  const hx = handle.args[0] + 4, hy = handle.args[1] + 4;
+  near(hx, 460.5); near(hy, 200.5);
+  near(Math.hypot(hx - 500.5, hy - 200.5), 40, "handle is on the rim");
+  ui.pointer("pointerdown", hx, hy);
+  ui.pointer("pointermove", hx - 10, hy + 10);
+  ui.pointer("pointerup", hx - 10, hy + 10);
+  const changed = ui.events().at(-1).circles[0];
+  near(changed.x, original.x); near(changed.y, original.y);
+  near(changed.r, Math.hypot(50, 10), "drag sets radius to distance from the fixed centre");
+});
+check("resize handle tries bottom then top and handles corner intersections or an invisible rim", () => {
+  for (const [circle, expected] of [
+    [{crater_id: "U1", x: 256, y: 0, r: 300}, {x: 256, y: 300}],
+    [{crater_id: "U1", x: 256, y: 511, r: 300}, {x: 256, y: 211}],
+    [{crater_id: "U1", x: 256, y: 256, r: 300}, null],
+    [{crater_id: "U1", x: 256, y: 256, r: 1000}, null],
+  ]) {
+    const ui = boot([circle]); ui.elements.circles.children[0].click();
+    const handle = ui.calls.filter(call => call.name === "fillRect").at(-1);
+    if (circle.r === 1000) {assert.equal(handle, undefined); continue;}
+    const x = handle.args[0] + 4 - 0.5, y = handle.args[1] + 4 - 0.5;
+    assert.ok(x >= 0 && x <= 511 && y >= 0 && y <= 511);
+    near(Math.hypot(x - circle.x, y - circle.y), circle.r);
+    if (expected) {near(x, expected.x); near(y, expected.y);}
+  }
+});
 console.log("Canvas zoom acceptance checks passed (" + checks + " scenarios)");
