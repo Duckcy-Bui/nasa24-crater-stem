@@ -5,7 +5,7 @@ Ngày 31/10/2026. Đức phụ trách, cả nhóm phối hợp. Đây là danh s
 ## 1. Căn cứ
 
 - [Chương 1, mục 1.2–1.3](bao_cao/01_chuong_1_gioi_thieu.md), [khóa `debai_nasa`](bao_cao/tai_lieu.bib), [phân công](PHAN_CONG.md) và [README báo cáo](bao_cao/README.md).
-- [Sheet `Giao_viec`](https://docs.google.com/spreadsheets/d/1yKUWW9lZNTrUFJ4CoFqSsDLIDddZcx6k_QKQN46ed8k/edit#gid=1240581173), ảnh chụp đọc ngày 31/10: `A40:P55`; S3-10 hàng 49, S3-16 hàng 55. Trạng thái dưới đây theo lần đọc đó, không tự xác nhận thay chủ phần. S3-16 phụ thuộc S3-14/S3-15, chỉ sửa lỗi cuối và bàn giao.
+- Sheet `Giao_viec` của nhóm, ảnh chụp đọc ngày 31/10: `A40:P55`; S3-10 hàng 49, S3-16 hàng 55. Trạng thái dưới đây theo lần đọc đó, không tự xác nhận thay chủ phần. S3-16 phụ thuộc S3-14/S3-15, chỉ sửa lỗi cuối và bàn giao.
 - Chưa có đề gốc trong repo/Drive. Các quy định chỉ có ở đề gốc, gồm nơi nộp, hạn, tên tệp và biểu mẫu: **cần trưởng nhóm đối chiếu đề gốc**.
 
 ## 2. Sản phẩm cần nhận

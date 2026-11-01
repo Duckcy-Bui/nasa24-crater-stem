@@ -35,7 +35,7 @@ Chỉ nhận bộ bảng có manifest `status=complete, mode=full`. Dữ liệu 
 
 ## Kiểm độc lập trên Linux (31/10/2026)
 
-Lượt do trưởng nhóm Bùi Hải Đức phối hợp chạy với Codex hỗ trợ trên `duckcy-LOQ-15IAX9` (Intel i5-12450HX, Linux x86_64, Python 3.12.3), commit `13394de`. Lệnh full giữ mặc định ba lượt đo, một warm-up trong phép đối chiếu Hough; chạy 13:00:56–13:14:24 UTC, mất 807,232 giây, đủ tám bước `complete/full`.
+Lượt do trưởng nhóm Bùi Hải Đức phối hợp chạy với Codex hỗ trợ trên máy của trưởng nhóm (Intel i5-12450HX, Linux x86_64, Python 3.12.3), commit `13394de`. Lệnh full giữ mặc định ba lượt đo, một warm-up trong phép đối chiếu Hough; chạy 13:00:56–13:14:24 UTC, mất 807,232 giây, đủ tám bước `complete/full`.
 
 [Hồ sơ Linux gọn](evidence/s3-10/kiem_doc_lap_linux/README.md) lưu manifest nguyên byte và số dòng khớp/lệch: frozen tuning 18/18, đối chiếu tuning 9/9, holdout 24/24; E1/E2/E3 lần lượt 15/15, 14/14, 10/10; hai bảng density mỗi bảng 2/2, giả lập 8/8. Không có dòng chung nào lệch; tổng S2-15 vẫn 10/174, holdout score/balanced/OpenCV vẫn 4/66, 5/66, 65/66. Phạm vi riêng của S2-07 cũ được ghi trong hồ sơ.
 
