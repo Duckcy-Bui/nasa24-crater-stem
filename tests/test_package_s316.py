@@ -18,6 +18,18 @@ import zipfile
 from scripts import package_s316 as packager
 
 COMMIT = "a" * 40
+REQUIRED_DELIVERABLES = {
+    "slides": "slide",
+    "video": "video",
+    "peer_review": "danh_gia_cheo",
+    "signed_assignment": "phan_cong_ky",
+}
+DELIVERABLE_FLAGS = {
+    "--slides": "slides",
+    "--video": "video",
+    "--peer-review": "peer_review",
+    "--signed-assignment": "signed_assignment",
+}
 BUILDER = '''from pathlib import Path
 import argparse
 import zipfile
@@ -141,15 +153,19 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(marker.read_bytes(), b"keep")
 
     def test_draft_has_slots_and_records_missing_deliverables(self):
+        self.assertEqual(set(packager.DELIVERABLES), set(REQUIRED_DELIVERABLES))
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             result = self.build(root)
             directory = root / "output" / result["package"]
             manifest = packager.verify_payload(directory)
-            self.assertFalse(manifest["submission_ready"])
-            self.assertEqual(set(manifest["required_deliverables_missing"]), set(packager.DELIVERABLES))
+            self.assertIs(manifest["submission_ready"], False)
+            self.assertIs(result["submission_ready"], False)
+            self.assertEqual(set(manifest["deliverables"]), set(REQUIRED_DELIVERABLES))
+            self.assertEqual(set(manifest["required_deliverables_missing"]), set(REQUIRED_DELIVERABLES))
+            self.assertEqual(set(result["required_deliverables_missing"]), set(REQUIRED_DELIVERABLES))
             self.assertEqual(manifest["source_repository"], packager.REPOSITORY)
-            for role, (folder, _, _) in packager.DELIVERABLES.items():
+            for role, folder in REQUIRED_DELIVERABLES.items():
                 self.assertEqual(manifest["deliverables"][role]["status"], "missing")
                 self.assertIsNone(manifest["deliverables"][role]["path"])
                 self.assertTrue((directory / "san_pham_bo_sung" / folder / "README.md").is_file())
@@ -158,15 +174,18 @@ class PackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             supplied = {}
-            for role in packager.DELIVERABLES:
+            for role in REQUIRED_DELIVERABLES:
                 path = root / ("private-author-" + role + ".fixture")
                 path.write_bytes(role.encode())
                 supplied[role] = path
             result = self.build(root, supplements=supplied)
             directory = root / "output" / result["package"]
             manifest = packager.verify_payload(directory)
+            self.assertEqual(set(manifest["deliverables"]), set(REQUIRED_DELIVERABLES))
             self.assertEqual(manifest["required_deliverables_missing"], [])
-            self.assertFalse(result["submission_ready"])
+            self.assertEqual(result["required_deliverables_missing"], [])
+            self.assertIs(manifest["submission_ready"], False)
+            self.assertIs(result["submission_ready"], False)
             self.assertNotIn(str(root), (directory / "manifest.json").read_text())
             for role, path in supplied.items():
                 receipt = manifest["deliverables"][role]
@@ -184,8 +203,14 @@ class PackageTests(unittest.TestCase):
             slides = root / "slides.pdf"
             slides.write_bytes(b"owner slide fixture")
             result = self.build(root, supplements={"slides": slides})
-            self.assertEqual(set(result["required_deliverables_missing"]),
-                             set(packager.DELIVERABLES) - {"slides"})
+            directory = root / "output" / result["package"]
+            manifest = packager.verify_payload(directory)
+            self.assertIs(manifest["submission_ready"], False)
+            self.assertIs(result["submission_ready"], False)
+            self.assertEqual(set(manifest["deliverables"]), set(REQUIRED_DELIVERABLES))
+            for record in (manifest, result):
+                self.assertEqual(set(record["required_deliverables_missing"]),
+                                 {"video", "peer_review", "signed_assignment"})
 
     def test_invalid_deliverable_does_not_publish_zip(self):
         for kind in ("missing", "empty", "directory", "unknown_role"):
@@ -209,9 +234,9 @@ class PackageTests(unittest.TestCase):
             root = Path(tmp)
             args = ["--commit", "selected", "--output", str(root / "output")]
             expected = {}
-            for role in packager.DELIVERABLES:
+            for flag, role in DELIVERABLE_FLAGS.items():
                 path = root / (role + ".fixture")
-                args += ["--" + role.replace("_", "-"), str(path)]
+                args += [flag, str(path)]
                 expected[role] = path
             with patch.object(packager, "package_commit", return_value={"zip": "fixture.zip", "zip_sha256": "test"}) as call:
                 with contextlib.redirect_stdout(io.StringIO()):
