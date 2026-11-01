@@ -13,11 +13,11 @@
     {
       "name": "dataset",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/install_s106_dataset.py"
+        "<repo>/scripts/install_s106_dataset.py"
       ],
       "status": "complete",
       "returncode": 0
@@ -25,13 +25,13 @@
     {
       "name": "synthetic",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/verify_hough_examples.py",
+        "<repo>/scripts/verify_hough_examples.py",
         "--output-root",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/synthetic"
+        "<run-dir>/synthetic"
       ],
       "status": "complete",
       "returncode": 0
@@ -39,13 +39,13 @@
     {
       "name": "frozen_tuning",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/freeze_s215.py",
+        "<repo>/scripts/freeze_s215.py",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/frozen_tuning"
+        "<run-dir>/frozen_tuning"
       ],
       "status": "complete",
       "returncode": 0
@@ -53,19 +53,19 @@
     {
       "name": "evaluation_tuning",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/evaluate_hough.py",
+        "<repo>/scripts/evaluate_hough.py",
         "--config",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/comparison_config.json",
+        "<run-dir>/comparison_config.json",
         "--images",
         "moon_ap16_m132732855l_c01",
         "moon_ap16_m109134835l_c01",
         "moon_ap15_hia_c01",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/evaluation_tuning",
+        "<run-dir>/evaluation_tuning",
         "--repeats",
         "3"
       ],
@@ -75,15 +75,15 @@
     {
       "name": "experiments_tuning",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/s207_experiments.py",
+        "<repo>/scripts/s207_experiments.py",
         "--config",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/game_config.json",
+        "<run-dir>/game_config.json",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/experiments_tuning.json",
+        "<run-dir>/experiments_tuning.json",
         "--write"
       ],
       "status": "complete",
@@ -92,16 +92,16 @@
     {
       "name": "evaluation_holdout",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/evaluate_hough.py",
+        "<repo>/scripts/evaluate_hough.py",
         "--config",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/comparison_config.json",
+        "<run-dir>/comparison_config.json",
         "--holdout",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/evaluation_holdout",
+        "<run-dir>/evaluation_holdout",
         "--repeats",
         "3"
       ],
@@ -111,18 +111,18 @@
     {
       "name": "experiments_holdout",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/s207_experiments.py",
+        "<repo>/scripts/s207_experiments.py",
         "--holdout",
         "--config",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/game_config.json",
+        "<run-dir>/game_config.json",
         "--chosen-config",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/game_config.json",
+        "<run-dir>/game_config.json",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/experiments_holdout.json",
+        "<run-dir>/experiments_holdout.json",
         "--write"
       ],
       "status": "complete",
@@ -131,13 +131,13 @@
     {
       "name": "density",
       "command": [
-        "/home/duckcy/work/XLA/nasa24-crater-stem-s1-09/.venv/bin/python",
+        "<venv>/bin/python",
         "-X",
         "utf8",
         "-B",
-        "/home/duckcy/work/XLA/n24-repro/scripts/s209_density.py",
+        "<repo>/scripts/s209_density.py",
         "--output",
-        "/home/duckcy/work/XLA/n24-team/runs/s310_full/density"
+        "<run-dir>/density"
       ],
       "status": "complete",
       "returncode": 0
