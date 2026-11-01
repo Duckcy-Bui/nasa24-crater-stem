@@ -1,10 +1,10 @@
 # S3-16 — Đóng gói và bàn giao NASA 24 · Nhóm 2
 
-Cập nhật 01/11/2026. Đức phụ trách bàn giao; từng thành viên tự xác nhận nội dung của mình. Gói chạy thử đã tạo từ main `c466c2d`; việc tạo gói không thay nghiệm thu bộ nộp cuối.
+Cập nhật 01/11/2026, đối chiếu main `94c17ff`. Đức phụ trách bàn giao; từng thành viên tự xác nhận nội dung của mình. Gói thử cũ từ `c466c2d` chỉ là bằng chứng đóng gói tại mốc đó, chưa phải bộ nộp cuối.
 
 ## 1. Trạng thái main
 
-Mã nền: `c466c2d14a47d424b2ec74e61c782ef534dcfdcf`. Các PR sau đã merge và nằm trong mã này:
+Mã nền đối chiếu: `94c17ffbdced8178083d9092cd0d1207e1b62226`. Đã có bản rút gọn báo cáo; các PR #33–#36 dưới đây là mốc tích hợp trước đó:
 
 | PR | Nội dung đã vào main | Phần còn cần chủ nội dung chốt |
 |---|---|---|
@@ -13,41 +13,77 @@ Mã nền: `c466c2d14a47d424b2ec74e61c782ef534dcfdcf`. Các PR sau đã merge v�
 | [#35](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/35) | S3-08: quyết định bỏ khảo sát, rút Chương 1/5, Phụ lục và cập nhật biên bản S2-16 | Chương 2–4, số trang, dấu chờ và xác nhận thành viên vẫn cần hoàn thiện |
 | [#36](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/36) | Hồ sơ Linux S3-10 và tài liệu bàn giao S3-16 | Chốt sản phẩm còn thiếu và gói cuối |
 
-Theo xác nhận của trưởng nhóm ngày 01/11, VPS đã chạy `c466c2d`. Bản demo: [https://nasa24.webs.id.vn](https://nasa24.webs.id.vn), có mật khẩu: **hỏi trưởng nhóm**. Lượt đóng gói này không truy cập hoặc thay đổi VPS.
+Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày 01/11. Bản demo: [https://nasa24.webs.id.vn](https://nasa24.webs.id.vn), có mật khẩu: **hỏi trưởng nhóm**. Chưa kiểm lại commit đang chạy trên VPS trong lượt đối chiếu này.
 
 **Trưởng nhóm đã nghiệm thu S3-10**, căn cứ [bình luận PR #31](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/31#issuecomment-6552877683) và [hồ sơ Linux trong repo](evidence/s3-10/kiem_doc_lap_linux/README.md). Người kiểm độc lập đã đối chiếu 25/25 nhóm, 9 bảng CSV/102 dòng riêng, 0 giá trị lệch; đủ 62 artifact lượt gốc đúng hash. Sheet J49 do người điều phối cập nhật; không ghi URL hoặc sửa bảng trong lượt này. Giữ giới hạn NPZ cũ và mã nền `13394de` của bằng chứng lịch sử.
 
-## 2. Yêu cầu đã biết và thông tin còn thiếu
+## 2. Đối chiếu tài liệu học phần
 
-Đề gốc “ĐỀ TÀI LIÊN QUAN ĐẾN NASA.docx” không có trong repo, Drive hoặc máy theo xác nhận của trưởng nhóm. [Khóa `debai_nasa`](bao_cao/tai_lieu.bib) ghi tên nguồn; các yêu cầu sau có bản ghi trong repo:
+Đã đọc **Quy định BTL Xử lý ảnh** (Q) và **Danh sách đề tài NASA, Đề 24** (N24), do trưởng nhóm cung cấp ngày 01/11. Hai tài liệu học phần được giữ ngoài repo public; ở đây chỉ tóm tắt yêu cầu và dẫn tên/mục, không chép tài liệu gốc. [Khóa `debai_nasa`](bao_cao/tai_lieu.bib) là bản ghi nguồn đã có trong báo cáo.
 
-| Yêu cầu đã biết | Nguồn trong repo | Mức đáp ứng cần trình bày |
+**Đạt** chỉ áp dụng cho phạm vi có bằng chứng của từng dòng; **Lệch** là còn thiếu hoặc khác yêu cầu; **Chưa biết** là chưa có bản cuối hoặc kết quả kiểm. Đạt kiểm kỹ thuật không thay xác nhận của tác giả hay giảng viên.
+
+### 2.1. Sản phẩm nộp
+
+| Yêu cầu và nguồn | Đối chiếu repo/gói | Trạng thái; người chốt |
 |---|---|---|
-| Bốn chức năng: tiền xử lý/Hough tự viết và sáng–tối; thống kê/mật độ hai vùng; khoanh/chấm; thẻ khoa học | [Chương 1, mục 1.2](bao_cao/01_chuong_1_gioi_thieu.md) | Mã đã có; nêu đúng giới hạn của từng chức năng, không coi ứng viên máy là đáp án |
-| Đánh giá Precision/Recall, ghép tâm lệch ≤0,5 bán kính; khảo sát ít nhất 10 học sinh | Chương 1, mục 1.2–1.3 | Nhãn thưa chỉ cho Recall_known, Precision/F1 toàn ảnh chưa xác định. Theo quyết định 31/10, không thử người chơi thật/khảo sát; tiêu chí khảo sát **chưa đạt** |
-| Phạm vi dữ liệu hiện tại: 26 ảnh LROC Mặt Trăng, metadata/nhãn/bundle | Chương 1, mục 1.3; [hướng dẫn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md) | Sao Hỏa chưa triển khai; dùng ảnh browse, không suy tuổi tuyệt đối |
-| S3-12: năm chương, tài liệu và phụ lục; A4, Times New Roman 13, giãn dòng 1,3; 25–40 trang chính, tổng 30–60 | [README báo cáo, mục 4](bao_cao/README.md) | Đếm lại trên PDF cuối; bản hiện tại còn vượt ngân sách và có dấu chờ |
-| Ít nhất 10 tài liệu, ít nhất 3 bài có DOI; IEEE; bìa đủ thông tin; đóng góp/AI do thành viên xác nhận | README báo cáo, mục 4 | Người chốt kiểm danh mục, bìa, hình/bảng/công thức và xác nhận thật |
-| S3-11: slide 15–20 trang, phân vai; S3-13: video 5–7 phút, đủ bốn chức năng/kết quả chính | [Tiêu chí đã ghi trong S3-16 tại c466c2d](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/c466c2d14a47d424b2ec74e61c782ef534dcfdcf/docs/S3-16_BAN_GIAO.md#L22-L23) | Hưng bàn giao slide; Quốc Anh bàn giao video. Chưa có tệp được nhận làm đầu vào đóng gói |
+| PDF 30–60 trang (Q, Hình thức; Định dạng văn bản) | [README báo cáo mục 5](bao_cao/README.md) ghi bản rút gọn trước đó 56 trang; `validate_reports` bắt buộc PDF, DOCX là bản chỉnh sửa kèm theo | **Chưa biết** bản PDF cuối. Người phụ trách báo cáo kiểm số trang, chương, lề và phụ lục; Đức nhận bản đã chốt |
+| Mã nguồn dưới dạng repo Git (Q, Hình thức) | [Repo Git](https://github.com/Duckcy-Bui/nasa24-crater-stem), [README](../README.md), `ma_nguon/` từ `git archive`; gói ghi URL repo và SHA | **Đạt** khả năng truy cập nguồn. Archive không mang lịch sử Git; lịch sử đối chiếu riêng ở 2.3 |
+| Ứng dụng demo có giao diện (Q, Hình thức) | [app.py](../app.py), Streamlit, bundle ngoại tuyến và lệnh chạy trong hướng dẫn gói; [S2-13](S2-13_TICH_HOP.md) | **Đạt** phần giao diện/mã chạy; phạm vi bốn chức năng còn lệch ở 2.4. Đức kiểm demo bản cuối |
+| 15–20 slide (Q, Hình thức) | Chưa nhận tệp slide làm đầu vào; script có `--slides` và ô `san_pham_bo_sung/slide/` | **Lệch** bộ nộp hiện tại; Hưng giao tệp và tự xác nhận số slide/phân vai |
+| Video demo 5–7 phút (Q, Hình thức) | Chưa nhận tệp video; script có `--video` và ô `san_pham_bo_sung/video/` | **Lệch** bộ nộp hiện tại; Quốc Anh giao tệp, kiểm thời lượng và nội dung |
+| Bảng đánh giá chéo thành viên (Q, Hình thức) | [Phụ lục A.2](bao_cao/07_phu_luc.md) còn các ô chờ; `--peer-review` nhận bản được cả nhóm hoàn thiện | **Lệch**; từng người tự đánh giá, nhận đánh giá của bạn và xác nhận, không ký thay |
+| Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [PHAN_CONG](PHAN_CONG.md), Phụ lục A.1/A.2 mới là căn cứ ghép, chưa đúng vị trí mở đầu; `--signed-assignment` nhận bản có chữ ký thật | **Lệch**; bốn người tự xác nhận, người phụ trách báo cáo ghép đúng vị trí. Không coi bình luận S2-16 là đủ chữ ký của bảng cuối |
 
-Các mục **chỉ đề gốc mới trả lời được**, Đức cung cấp trước khi nộp:
+### 2.2. Bảo vệ và vai trò
 
-| Thông tin cần Đức cung cấp | Nội dung cần chốt |
-|---|---|
-| Nơi nộp | Hệ thống/thư mục/người nhận, cách gửi và quyền truy cập |
-| Hạn nộp | Ngày, giờ và múi giờ chính thức |
-| Tên tệp | Quy tắc tên ZIP, báo cáo, slide, video; định dạng bắt buộc |
-| Biểu mẫu | Mẫu bìa, đánh giá/đóng góp, chữ ký hoặc phiếu nộp riêng của học phần |
+| Yêu cầu và nguồn | Bằng chứng, việc cần làm | Trạng thái |
+|---|---|---|
+| 20 phút: 12 trình bày, 3 demo, 5 vấn đáp (Q, Hình thức) | Hưng điều phối tổng duyệt S3-15, ghi thời gian từng phần; Đức chuẩn bị bản demo dự phòng. Chưa có biên bản tổng duyệt bản cuối | **Chưa biết** |
+| Giảng viên chỉ định người trả lời; mỗi người hiểu cả phần bạn (Q, Hình thức) | Bảng mục 3 bổ sung xác nhận đọc chéo; tập trả lời câu hỏi về Hough, tiền xử lý, dữ liệu, đánh giá, game và giới hạn | **Chưa biết**; không khóa người trả lời theo phân vai slide |
+| Nhóm 5 người/5 vai trò; được điều chỉnh vai trò nhưng ghi rõ trong đề cương (Q, Quy định chung; Cơ cấu 5 vai trò) | [PHAN_CONG](PHAN_CONG.md) chỉ có bốn thành viên | **Lệch**; Đức xin giảng viên xác nhận cơ cấu bốn người và cách gộp vai trò, không tự thêm thành viên |
 
-Không dùng hạn trong kế hoạch sprint làm hạn nộp chính thức. Không tự tạo biểu mẫu hoặc số liệu để thay phần chưa có.
+### 2.3. Mã nguồn và liêm chính
 
-Tên `BaoCao_Nhom2_NASA24.docx` và `.pdf` là **quy ước nội bộ của nhóm**, do `NAME = "BaoCao_Nhom2_NASA24"` trong [scripts/build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026. Không có nguồn cho thấy học phần yêu cầu tên này. Chờ đề gốc hoặc giảng viên xác nhận quy cách tên tệp và nơi nộp; các tên do script tạo hiện chỉ là tên làm việc.
+| Yêu cầu và nguồn | Bằng chứng repo; xử lý đề xuất | Trạng thái |
+|---|---|---|
+| Python 3.10+, thuật toán cốt lõi tự cài NumPy; đối chiếu thư viện (Q, Hình thức) | [Hough](../src/hough.py), [tiền xử lý](../src/preprocessing.py), [S2-06/S3-02](S2-06_S3-02_KIEM_CHUNG.md), ví dụ số và OpenCV ở [S3-10](S3-10_TAI_TAO_KET_QUA.md) | **Đạt** phần cài đặt/đối chiếu, không suy ra độ chính xác toàn ảnh |
+| `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; đề xuất giảng viên chấp nhận bảng ánh xạ, hoặc mở lượt chuyển cấu trúc riêng. Không tạo thư mục rỗng để coi là đạt |
+| Một lệnh tái tạo **toàn bộ bảng Chương 4**, seed cố định (Q, Mã nguồn) | [README, S3-10](../README.md) và [runner](../scripts/reproduce_s310.py) cố định seed 0, tái tạo bảng thuật toán/thống kê; chưa xuất lại mọi bảng mô tả/thiết kế 4.1–4.4, không có dữ liệu khảo sát | **Lệch** phạm vi “toàn bộ”. Chủ Chương 4 liệt kê từng bảng và nguồn, Đức chốt phạm vi bổ sung; không tạo kết quả thiếu |
+| PEP 8; mỗi hàm có docstring nêu vào/ra/công thức (Q, Mã nguồn) | Ví dụ `sha256`, `inventory` trong [script đóng gói](../scripts/package_s316.py) chưa có docstring; chưa có kết quả lint PEP 8 toàn repo | **Lệch** docstring; PEP 8 **chưa biết**. Đề xuất lượt audit riêng, không định dạng lại mã trong vòng này |
+| Commit trải đều 8 tuần từ tài khoản từng thành viên (Q, Mã nguồn) | `git log HEAD` có 135 commit, từ 12/10 đến 01/11/2026, khoảng 20 ngày; tài khoản GitHub từng người chưa được đối chiếu độc lập. Mở đầu Q lại ghi BTL trong 3 tuần | **Lệch** 8 tuần; Đức hỏi giảng viên cách áp dụng hai mốc. Không tạo lại hoặc lùi ngày commit |
+| Ghi nguồn mã, hình, dữ liệu trong mã và báo cáo (Q, Liêm chính) | [Nguồn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md), [bib](bao_cao/tai_lieu.bib), nguồn thẻ khoa học; cần rà toàn bộ bản cuối | **Chưa biết** mức bao phủ đầy đủ; từng chủ phần xác nhận |
+| Phụ lục “Sử dụng công cụ AI”: tên công cụ, phần dùng, cách kiểm; tự giải thích mã (Q, Liêm chính) | [Phụ lục D](bao_cao/07_phu_luc.md) có dòng Đức, ba người còn ô chờ; cần khai đúng phạm vi thực tế | **Lệch** khai báo chưa đủ. Các thành viên tự hoàn thiện và chuẩn bị giải thích mã |
+| Mục tiêu trùng lặp ≤25%, loại trích dẫn/công thức; vượt 25% phải giải trình (Q, Liêm chính) | Chưa có kết quả kiểm trùng lặp bản PDF cuối; không có căn cứ tự ghi tỷ lệ | **Chưa biết**; Đức nhận kết quả chính thức và giải trình nếu vượt ngưỡng |
+| Che mờ mặt/biển số của người khác khi công bố (Q, Liêm chính) | Bộ dữ liệu chính là ảnh LROC; chưa nhận video/slide cuối để rà hình có người/biển số | **Chưa biết** toàn bộ bộ nộp; Hưng, Quốc Anh và Đức kiểm trước công bố |
+
+### 2.4. Danh sách đề tài NASA, Đề 24
+
+| Yêu cầu | Bằng chứng và giới hạn hiện tại | Trạng thái |
+|---|---|---|
+| (1) Tương phản/làm trơn, Hough tròn tự viết, kết hợp cặp sáng–tối theo nắng | `src/preprocessing.py`, `src/hough.py`, `src/postprocessing.py`; [hồ sơ sáng–tối](evidence/s1-11/). Game chỉ gắn nhãn sáng–tối; nhiều ảnh thiếu hướng nắng đo được nên không kiểm được | **Đạt** phần mã/luồng; chưa chứng minh hiệu quả kết hợp sáng–tối trên toàn bộ dữ liệu |
+| (2) Đếm, phân bố kích thước, so mật độ hai vùng để giải thích tuổi tương đối | [S2-09](evidence/s2-09/), `src/statistics.py`, bảng đếm tay Lunokhod 1/Mare Frigoris. Ứng viên game chạm trần thì ẩn mật độ; không đủ căn cứ kết luận vùng nào già hơn | **Lệch** phần diễn giải tuổi theo yêu cầu; không thay đếm tay thành kết quả máy hoặc suy tuổi tuyệt đối |
+| (3) Học sinh khoanh, hệ thống chấm và so máy/danh mục | [app.py](../app.py), [scoring.py](../src/scoring.py), [màn hình kết quả](S2-08_MAN_HINH_KET_QUA.md). Điểm dùng nhãn tham chiếu; giao máy chỉ là so sánh tham khảo | **Đạt** luồng kỹ thuật; chưa thử học sinh thật, nhãn/danh mục còn giới hạn dưới đây |
+| (4) Thẻ thiết bị NASA trong vùng ảnh, hiện khi học sinh tìm thấy | [S2-10](S2-10_THE_KHOA_HOC.md), [science_cards.py](../src/science_cards.py). Chỉ có thẻ vùng, `position: null`, thiết bị ngoài crop, không mở khóa khi tìm/nhấp vị trí; Lunokhod không phải thiết bị NASA | **Lệch** phần vị trí/kích hoạt; giữ rõ giới hạn, không tạo ghim giả |
+| Ảnh LRO, CTX/HiRISE Sao Hỏa, bãi Apollo/rover; danh mục hố công bố | [Chương 1 mục 1.3](bao_cao/01_chuong_1_gioi_thieu.md), [hướng dẫn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md): 26 crop LROC Mặt Trăng; không có CTX/HiRISE, thiết bị ngoài crop. Nhãn tay thưa không thay đối chiếu danh mục đầy đủ | **Lệch** phạm vi dữ liệu; Đức xác nhận với giảng viên cách trình bày phần chưa đạt |
+| Precision và Recall so danh mục; tâm lệch ≤0,5 bán kính | [matching.py](../src/matching.py), [evaluation.py](../src/evaluation.py), [Chương 4 mục 4.5/4.7](bao_cao/04_chuong_4_du_lieu_danh_gia.md): ghép một–một đúng ngưỡng, chỉ có Recall_known; Precision/F1 toàn ảnh chưa xác định | **Lệch** độ đo/danh mục, **đạt** quy tắc ghép. Không biến nhãn thưa thành ground truth đầy đủ |
+| Khảo sát ≥10 học sinh về hứng thú và hiểu bài | [Chương 4 mục 4.8](bao_cao/04_chuong_4_du_lieu_danh_gia.md), [S2-16 mục 8](S2-16_NGHIEM_THU_TUAN_2.md): quyết định 31/10 không khảo sát/thử người thật | **Lệch — chưa đạt**, giữ nguyên quyết định của Đức; không thay bằng test kỹ thuật hoặc số liệu giả |
+
+Chọn điểm hạ cánh, quản lý tiền đồn và bản tiếng Việt ngoại tuyến nằm ở mục **ý tưởng phát triển tiếp** của N24, không cộng thành chức năng bắt buộc mới.
+
+### 2.5. Thông tin vẫn chờ giảng viên
+
+Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**. Đức cần nhận thông báo chính thức về hệ thống/người nhận, ngày giờ/múi giờ và tên ZIP/PDF/slide/video. Các nội dung bảng phân công/chữ ký và đánh giá chéo đã có yêu cầu; nếu học phần dùng biểu mẫu riêng, xin đúng mẫu. Không dùng hạn sprint làm hạn chính thức. Người phụ trách báo cáo đối chiếu thêm cấu trúc phụ lục A/B/C, định dạng và chương theo Q; tài liệu này không sửa nguồn báo cáo.
+
+`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, độ bao phủ bảng Chương 4 và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận.
 
 ## 3. Sản phẩm và xác nhận thành viên
 
-Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s209_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dưới dựng DOCX/PDF và hướng dẫn chạy cùng nguồn; slide, video và xác nhận người thật phải nhận riêng.
+Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s209_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dựng PDF/DOCX cùng nguồn; slide, video, đánh giá chéo và phân công có chữ ký nhận bằng các cờ riêng ở mục 4.
 
 Bảng này liệt kê việc cần từng người tự xác nhận, không ký thay. Cột cuối để trống cho bằng chứng xác nhận phiên bản cuối. [S2-16 mục 5](S2-16_NGHIEM_THU_TUAN_2.md) đã có “Đồng ý” lịch sử của Đức; không tự điền các ô còn lại.
+
+**Áp dụng riêng cho từng người trong cả bốn dòng:** tự đối chiếu công việc, file mã, mục báo cáo và tỷ lệ đóng góp; ký bảng phân công bản cuối; tự đánh giá/đánh giá chéo và khai AI; đọc phần của bạn để trả lời khi giảng viên chỉ định. Ghi ở Phụ lục A/D, bản phân công có chữ ký, bảng đánh giá chéo và biên bản tổng duyệt 12/3/5. Các tệp ký/đánh giá do chính thành viên cung cấp, chưa có xác nhận nào được điền thêm ở đây.
 
 | Người | Cần xác nhận gì | Ghi ở đâu | Xác nhận bản cuối |
 |---|---|---|---|
@@ -60,23 +96,33 @@ Người chốt từng chương đối chiếu số liệu sau rút gọn, khôn
 
 ## 4. Đóng gói bằng script
 
-[package_s316.py](../scripts/package_s316.py) chỉ lấy file từ commit qua `git archive`. Script dựng báo cáo bằng `scripts/build_report.py` trong chính bản archive, kiểm bundle/SHA, yêu cầu có cả DOCX/PDF, ghi manifest mọi file, tạo ZIP và gọi `ZipFile.testzip()`; sau đó so lại byte ZIP với gói và ghi checksum ZIP riêng. Không cần `data/processed/` để đóng gói, không ghi đè thư mục đầu ra có sẵn.
+[package_s316.py](../scripts/package_s316.py) lấy mã/bundle/nguồn báo cáo từ commit qua `git archive`, dựng bằng `scripts/build_report.py` trong bản archive. Script bắt buộc có PDF để nộp và DOCX kèm theo, kiểm bundle/SHA, ghi manifest mọi file, kiểm ZIP bằng `ZipFile.testzip()` và so byte với manifest, rồi ghi checksum ZIP. Không cần `data/processed/`, không ghi đè đầu ra có sẵn. URL repo Git được ghi trong hướng dẫn/manifest để xem lịch sử, ngoài bản archive tĩnh.
 
 Từ gốc repo, dùng Python 3.12 đã cài `requirements-report.txt` và LibreOffice/UNO theo README báo cáo:
 
 ```bash
 python -B scripts/package_s316.py \
-  --commit c466c2d \
-  --output outputs/s316_c466c2d
+  --commit 94c17ff \
+  --output outputs/s316_94c17ff
 ```
 
-Nếu Python dựng báo cáo nằm ở venv khác, thêm `--report-python <đường-dẫn-python>`. Đường dẫn tương đối tính từ thư mục gọi lệnh, giữ nguyên symlink của venv; tên lệnh đơn như `python3.12` được tìm qua PATH. Để tạo gói nộp cuối, thay `c466c2d` bằng SHA đã chốt và chọn thư mục đầu ra mới; dùng tên chính thức sau khi Đức cung cấp.
+Nếu Python dựng báo cáo nằm ở venv khác, thêm `--report-python <đường-dẫn-python>`. Đường dẫn tương đối tính từ thư mục gọi lệnh, giữ nguyên symlink venv; tên lệnh đơn như `python3.12` được tìm qua PATH. Chỉ thêm các cờ dưới khi chủ phần đã giao file, không dùng README giữ chỗ làm sản phẩm:
+
+| Cờ | Chủ phần/đầu vào | Chỗ trong gói |
+|---|---|---|
+| `--slides ban_giao/slide.pdf` | Hưng, kiểm 15–20 slide | `san_pham_bo_sung/slide/` |
+| `--video ban_giao/video.mp4` | Quốc Anh, kiểm 5–7 phút | `san_pham_bo_sung/video/` |
+| `--peer-review ban_giao/danh_gia_cheo.pdf` | Cả nhóm tự đánh giá và xác nhận | `san_pham_bo_sung/danh_gia_cheo/` |
+| `--signed-assignment ban_giao/phan_cong_ky.pdf` | Công việc/file mã/mục báo cáo/tỷ lệ và chữ ký cả nhóm | `san_pham_bo_sung/phan_cong_ky/` |
+
+Đuôi file ở ví dụ là lựa chọn nội bộ; đề không ấn định định dạng slide/video/phiếu. Script sao chép file có nội dung, giữ đuôi nhưng dùng tên theo vai trò, không ghi đường dẫn máy hoặc tên gốc vào manifest. File ngoài commit được ghi SHA/kích thước và `received_not_reviewed`; chưa cung cấp thì `missing`, liệt kê trong `required_deliverables_missing`. Mỗi ô có README nói rõ chỉ giữ chỗ. Tất cả file thật và README đều nằm trong ZIP, được kiểm hash; việc có file chưa chứng minh số slide, thời lượng hoặc chữ ký hợp lệ.
 
 ```text
 outputs/s316_<phiên-bản>/
   NASA24_Nhom2_<SHA>/
     ma_nguon/                 # đúng tệp tracked của commit, gồm README và bundle
-    bao_cao/                  # DOCX/PDF dựng từ cùng commit
+    bao_cao/                  # PDF bắt buộc, DOCX kèm theo, dựng cùng commit
+    san_pham_bo_sung/         # slide/, video/, danh_gia_cheo/, phan_cong_ky/
     HUONG_DAN_BAN_GIAO.md
     manifest.json             # SHA-256/kích thước mọi file trừ chính manifest
   NASA24_Nhom2_<SHA>.zip
@@ -86,17 +132,24 @@ outputs/s316_<phiên-bản>/
   result.json
 ```
 
-Lượt thử r5 đã tạo gói từ `c466c2d`, DOCX/PDF dựng được, manifest và ZIP qua kiểm SHA-256/CRC. Gói chỉ chứa nguồn của commit đó, nên chưa có script/tài liệu r5 đang sửa; SHA của công cụ đóng gói được ghi riêng trong manifest. Sau khi thay đổi được tích hợp, chạy lại bằng commit cuối. Kết quả chạy thử không xác nhận chất lượng nội dung, số trang hoặc hoàn thành các phần của thành viên.
+Lượt thử r5 từ `c466c2d` đã qua kiểm dựng/manifest/ZIP, là hồ sơ lịch sử. Khi thay đổi hiện tại được tích hợp, chọn SHA cuối thay `94c17ff` và thư mục đầu ra mới, nhận đúng bốn tệp bổ sung và chạy lại. Mã nguồn/báo cáo luôn lấy từ commit chọn; SHA công cụ đóng gói ghi riêng vì công cụ đang gọi có thể mới hơn commit đó.
 
-Script ghi số dấu chờ và phạm vi chưa kiểm (slide/video/xác nhận) trong manifest. Không đưa gói hoặc thư mục dựng vào Git. Khi bàn giao thật: nhận thêm sản phẩm còn thiếu; kiểm mọi hash sau giải nén, mở DOCX/PDF/slide/video từ bản sao; kiểm giao diện desktop/mobile và đúng phiên bản demo; ghi SHA ZIP, nơi lưu dự phòng và người nhận. Chỉ đánh dấu S3-16 hoàn thành khi Đức chốt đủ bộ.
+Lượt thử đối chiếu ngày 01/11 từ `94c17ff` dựng được PDF 56 trang và DOCX, còn 28 dấu chờ; manifest có bốn sản phẩm bổ sung `missing`. Kiểm đủ 467 file nguồn theo archive, 474 hash payload và 475 mục ZIP/CRC đều khớp. Đây là gói thử kỹ thuật, chưa đủ bộ nộp hoặc xác nhận nội dung cuối.
+
+Pin `94c17ff` còn đường dẫn máy trong log/manifest lịch sử. Trước khi phát hành gói, tích hợp thay đổi ẩn đường dẫn đã chuẩn bị riêng, kiểm lại chuỗi SHA chứng cứ và quét bản archive theo commit cuối. Không coi gói thử từ pin cũ là bản đã làm sạch để công bố.
+
+Manifest schema `s316-package-2` ghi số dấu chờ, sản phẩm còn thiếu và các kiểm nội dung chưa làm. `status=complete` chỉ xác nhận tạo gói kỹ thuật; `submission_ready=false` luôn giữ để chờ Đức kiểm bộ nộp, không tự nghiệm thu dù đã nhận đủ file. Không đưa gói/thư mục dựng vào Git. Khi bàn giao thật: kiểm từng hash sau giải nén, mở PDF/slide/video/phiếu từ bản sao; kiểm demo desktop/mobile đúng phiên bản; ghi checksum ZIP, bản dự phòng và người nhận.
 
 ## 5. Kiểm tra cuối
 
-- [ ] Đức đã cung cấp bốn nhóm thông tin đề gốc còn thiếu ở mục 2.
+- [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người và cách áp dụng yêu cầu 8 tuần.
+- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên.
 - [ ] Mã/config/bundle và báo cáo cùng SHA đã chốt; phần đánh giá bị ảnh hưởng bởi thay đổi đã kiểm lại.
-- [ ] DOCX/PDF cuối mở được, đạt cấu trúc/định dạng/số trang và hết dấu chờ chưa giải quyết; các chương sau rút gọn được đúng tác giả xác nhận.
-- [ ] Đủ slide 15–20 trang, video 5–7 phút, phân vai; đóng góp/đánh giá chéo/AI và các xác nhận ở mục 3 có bằng chứng thật.
+- [ ] PDF cuối 30–60 trang, mở được và được người phụ trách báo cáo kiểm chương/lề/định dạng; DOCX kèm theo; hết dấu chờ chưa giải quyết, các tác giả xác nhận bản sau rút gọn.
+- [ ] Đủ slide 15–20, video 5–7 phút, bảng đánh giá chéo và bảng phân công có công việc/file mã/mục báo cáo/tỷ lệ/chữ ký thật; manifest không còn ô thiếu file, mọi nội dung đã được chủ phần kiểm.
+- [ ] AI đã khai đủ từng người; nguồn mã/hình/dữ liệu đầy đủ; có kết quả trùng lặp ≤25% hoặc giải trình theo quy định; mặt/biển số của người khác đã che mờ nếu có.
 - [ ] Mọi sản phẩm ghi đúng khảo sát chưa đạt, nhãn thưa, đánh giá lặp và giới hạn khoa học; không tạo số liệu thay thế.
-- [ ] Có biên bản kiểm đủ bộ/tổng duyệt và người xử lý lỗi còn lại; luồng game, thống kê/thẻ và demo đã được kiểm trên bản cuối.
+- [ ] Có biên bản tổng duyệt đủ 20 phút: 12 trình bày, 3 demo, 5 vấn đáp; mỗi người đã tập trả lời phần bạn, người trả lời thực tế do giảng viên chỉ định.
+- [ ] Có biên bản kiểm đủ bộ và người xử lý lỗi còn lại; luồng game, thống kê/thẻ và demo đã kiểm trên bản cuối, có demo dự phòng.
 - [ ] ZIP giải nén và kiểm hash được, tệp mở được, hướng dẫn không cần đường dẫn máy tác giả; bản sao dự phòng trùng hash.
 - [ ] Đức quyết định nghiệm thu gói nộp, lưu link repo/SHA, checksum ZIP, nơi nộp và nơi dự phòng.

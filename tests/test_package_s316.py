@@ -46,6 +46,7 @@ def snapshot(*, missing_pdf=False, bad_bundle=False, failed_build=False, expecte
         builder = ("import sys\nfrom pathlib import Path\n"
                    f"assert Path(sys.prefix) == Path({str(expected_prefix)!r})\n" + builder)
     files = {"README.md": b"committed snapshot", "requirements-test.txt": b"",
+             "requirements.txt": b"streamlit", "app.py": b"# demo entry point\n",
              "scripts/build_report.py": builder.encode(), "docs/bao_cao/01_test.md": b"[CH\xe1\xbb\x9c test]",
              "data/s106_bundle/manifest.json": json.dumps(manifest).encode(),
              "data/s106_bundle/bundle.zip": bundle}
@@ -71,14 +72,15 @@ def git_fixture(raw):
 
 
 class PackageTests(unittest.TestCase):
-    def build(self, root, report_python=sys.executable, **options):
+    def build(self, root, report_python=sys.executable, supplements=None, **options):
         repo = root / "live"
         repo.mkdir(exist_ok=True)
         (repo / "README.md").write_text("uncommitted working tree")
         (repo / "scripts").mkdir(exist_ok=True)
         (repo / "scripts/build_report.py").write_text("raise SystemExit('wrong source')")
         with patch.object(packager, "git_output", side_effect=git_fixture(snapshot(**options))):
-            return packager.package_commit(repo, "selected", root / "output", report_python)
+            return packager.package_commit(repo, "selected", root / "output", report_python,
+                                           supplements=supplements)
 
     def make_report_python(self, caller):
         directory = caller / "report_env"
@@ -137,6 +139,84 @@ class PackageTests(unittest.TestCase):
                     packager.package_commit(Path(tmp), "selected", out)
                 git.assert_not_called()
             self.assertEqual(marker.read_bytes(), b"keep")
+
+    def test_draft_has_slots_and_records_missing_deliverables(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result = self.build(root)
+            directory = root / "output" / result["package"]
+            manifest = packager.verify_payload(directory)
+            self.assertFalse(manifest["submission_ready"])
+            self.assertEqual(set(manifest["required_deliverables_missing"]), set(packager.DELIVERABLES))
+            self.assertEqual(manifest["source_repository"], packager.REPOSITORY)
+            for role, (folder, _, _) in packager.DELIVERABLES.items():
+                self.assertEqual(manifest["deliverables"][role]["status"], "missing")
+                self.assertIsNone(manifest["deliverables"][role]["path"])
+                self.assertTrue((directory / "san_pham_bo_sung" / folder / "README.md").is_file())
+
+    def test_received_files_are_hashed_without_claiming_owner_approval(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            supplied = {}
+            for role in packager.DELIVERABLES:
+                path = root / ("private-author-" + role + ".fixture")
+                path.write_bytes(role.encode())
+                supplied[role] = path
+            result = self.build(root, supplements=supplied)
+            directory = root / "output" / result["package"]
+            manifest = packager.verify_payload(directory)
+            self.assertEqual(manifest["required_deliverables_missing"], [])
+            self.assertFalse(result["submission_ready"])
+            self.assertNotIn(str(root), (directory / "manifest.json").read_text())
+            for role, path in supplied.items():
+                receipt = manifest["deliverables"][role]
+                self.assertEqual(receipt["status"], "received_not_reviewed")
+                self.assertEqual((directory / receipt["path"]).read_bytes(), path.read_bytes())
+                self.assertEqual(receipt["sha256"], hashlib.sha256(path.read_bytes()).hexdigest())
+                self.assertNotIn(path.name, receipt["path"])
+                self.assertIn(receipt["path"], manifest["files"])
+                with zipfile.ZipFile(root / "output" / result["zip"]) as archive:
+                    self.assertEqual(archive.read(result["package"] + "/" + receipt["path"]), path.read_bytes())
+
+    def test_partial_delivery_keeps_other_slots_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            slides = root / "slides.pdf"
+            slides.write_bytes(b"owner slide fixture")
+            result = self.build(root, supplements={"slides": slides})
+            self.assertEqual(set(result["required_deliverables_missing"]),
+                             set(packager.DELIVERABLES) - {"slides"})
+
+    def test_invalid_deliverable_does_not_publish_zip(self):
+        for kind in ("missing", "empty", "directory", "unknown_role"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                path = root / "owner-file"
+                if kind == "empty":
+                    path.write_bytes(b"")
+                elif kind == "directory":
+                    path.mkdir()
+                elif kind == "unknown_role":
+                    path.write_bytes(b"owner fixture")
+                role = "typo" if kind == "unknown_role" else "slides"
+                with self.assertRaisesRegex(ValueError, "không hợp lệ|phải là file có nội dung"):
+                    self.build(root, supplements={role: path})
+                self.assertEqual(list((root / "output").glob("*.zip")), [])
+                self.assertFalse((root / "output/build_report.log").exists())
+
+    def test_cli_passes_owner_deliverables_to_packager(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            args = ["--commit", "selected", "--output", str(root / "output")]
+            expected = {}
+            for role in packager.DELIVERABLES:
+                path = root / (role + ".fixture")
+                args += ["--" + role.replace("_", "-"), str(path)]
+                expected[role] = path
+            with patch.object(packager, "package_commit", return_value={"zip": "fixture.zip", "zip_sha256": "test"}) as call:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(packager.main(args), 0)
+            self.assertEqual(call.call_args.kwargs["supplements"], expected)
 
     def test_missing_pdf_even_after_exit_zero_does_not_publish_zip(self):
         with tempfile.TemporaryDirectory() as tmp:

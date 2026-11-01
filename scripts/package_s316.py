@@ -17,6 +17,13 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_NAME = "BaoCao_Nhom2_NASA24"
+REPOSITORY = "https://github.com/Duckcy-Bui/nasa24-crater-stem"
+DELIVERABLES = {
+    "slides": ("slide", "Hưng", "15–20 slide"),
+    "video": ("video", "Quốc Anh", "5–7 phút"),
+    "peer_review": ("danh_gia_cheo", "Cả nhóm", "Bảng đánh giá chéo thành viên"),
+    "signed_assignment": ("phan_cong_ky", "Cả nhóm", "Bảng phân công, tỷ lệ đóng góp và chữ ký cả nhóm"),
+}
 
 
 def sha256(path: Path) -> str:
@@ -120,7 +127,34 @@ def pending_markers(source: Path) -> dict:
     return result
 
 
-def package_commit(repo: Path, commit: str, output: Path, report_python: str = sys.executable) -> dict:
+def add_deliverables(directory: Path, supplied: dict[str, Path]) -> dict:
+    """Copy owner-supplied files into role slots; return receipt states, not approval."""
+    if supplied.keys() - DELIVERABLES.keys():
+        raise ValueError("Loại sản phẩm bổ sung không hợp lệ")
+    paths = {role: Path(path).absolute() for role, path in supplied.items()}
+    for role, path in paths.items():
+        if not path.is_file() or path.stat().st_size == 0:
+            raise ValueError(f"Sản phẩm {role} phải là file có nội dung")
+    receipts = {}
+    for role, (folder, owner, requirement) in DELIVERABLES.items():
+        target = directory / "san_pham_bo_sung" / folder
+        target.mkdir(parents=True)
+        receipt = {"owner": owner, "requirement": requirement, "status": "missing", "path": None}
+        if role in paths:
+            artifact = target / ("san_pham" + paths[role].suffix)
+            shutil.copyfile(paths[role], artifact)
+            receipt.update(status="received_not_reviewed", path=artifact.relative_to(directory).as_posix(),
+                           bytes=artifact.stat().st_size, sha256=sha256(artifact))
+        note = (f"# {requirement}\n\nChủ phần: {owner}. Trạng thái: `{receipt['status']}`.\n\n"
+                "README này chỉ giữ chỗ. File đã nhận vẫn cần chủ phần kiểm nội dung, "
+                "số slide/thời lượng, đánh giá hoặc chữ ký thật; không xác nhận thay thành viên.\n")
+        (target / "README.md").write_text(note, encoding="utf-8")
+        receipts[role] = receipt
+    return receipts
+
+
+def package_commit(repo: Path, commit: str, output: Path, report_python: str = sys.executable,
+                   *, supplements: dict[str, Path] | None = None) -> dict:
     # Giữ symlink của venv; tên lệnh đơn vẫn được tìm qua PATH.
     report_python = os.fspath(report_python)
     if os.path.dirname(report_python):
@@ -136,11 +170,13 @@ def package_commit(repo: Path, commit: str, output: Path, report_python: str = s
     directory.mkdir()
     source = directory / "ma_nguon"
     extract_archive(raw, source)
-    for name in ["README.md", "requirements-test.txt", "scripts/build_report.py"]:
+    for name in ["README.md", "requirements.txt", "requirements-test.txt", "app.py", "scripts/build_report.py"]:
         if not (source / name).is_file():
             raise ValueError(f"Commit thiếu đầu vào đóng gói: {name}")
     source_before = inventory(source)
     bundle = verify_bundle(source)
+    deliverables = add_deliverables(directory, supplements or {})
+    missing = [role for role, receipt in deliverables.items() if receipt["status"] == "missing"]
 
     build = output / "report_build"
     build.mkdir()
@@ -159,7 +195,9 @@ def package_commit(repo: Path, commit: str, output: Path, report_python: str = s
     guide = f"""# Gói bàn giao NASA 24 · Nhóm 2
 
 Mã nguồn và nguồn báo cáo lấy bằng git archive từ commit `{revision}`.
-DOCX/PDF trong `bao_cao/` được dựng bằng script của chính commit đó.
+Repo Git để xem lịch sử/đóng góp: {REPOSITORY} (commit `{revision}`).
+PDF trong `bao_cao/` là định dạng nộp bắt buộc; DOCX là bản chỉnh sửa kèm theo.
+Hai bản được dựng bằng script của chính commit đó; số trang cần kiểm riêng (30–60).
 Script đóng gói đang dùng được nhận diện riêng bằng SHA-256 trong manifest.
 
 ## Chạy trên máy nhận
@@ -185,21 +223,29 @@ ZIP có checksum riêng; kiểm CRC bằng `ZipFile.testzip()` rồi giải nén
 ## Phạm vi
 
 Gói này gồm mã, bundle, hướng dẫn và bản báo cáo dựng từ commit đã chọn.
-Slide, video và xác nhận thành viên chưa được nhận làm đầu vào của script.
+`san_pham_bo_sung/` có chỗ cho slide, video, đánh giá chéo và phân công có chữ ký.
+Trạng thái nhận từng file ở `deliverables` trong manifest; file nhận ngoài commit được băm riêng.
+Sản phẩm chưa nhận: {', '.join(missing) or 'không còn ô thiếu file; vẫn chờ kiểm nội dung'}.
+README giữ chỗ không phải sản phẩm đã nộp; nhận file không xác nhận số slide, thời lượng hay chữ ký.
 Các dấu chờ trong báo cáo được đếm trong manifest; dựng thành công không phải nghiệm thu nội dung.
 Khảo sát ít nhất 10 học sinh chưa thực hiện theo quyết định 31/10/2026.
-Trưởng nhóm chốt đầu ra và bổ sung nơi nộp, hạn, tên tệp, biểu mẫu từ đề gốc.
+Theo Quy định BTL Xử lý ảnh: bảo vệ 20 phút (12 trình bày, 3 demo, 5 vấn đáp);
+giảng viên chỉ định người trả lời, mọi người cần hiểu cả phần của thành viên khác.
+Trưởng nhóm chốt đầu ra; nơi nộp, hạn và tên tệp vẫn chờ giảng viên, hai tài liệu học phần không ghi.
 """
     (directory / "HUONG_DAN_BAN_GIAO.md").write_text(guide, encoding="utf-8")
     manifest = {
-        "schema_version": "s316-package-1", "status": "complete",
+        "schema_version": "s316-package-2", "status": "complete", "submission_ready": False,
         "scope": "Mã, báo cáo, hướng dẫn và bundle; chưa nghiệm thu bộ nộp cuối.",
-        "source_commit": revision, "source_tree": tree,
+        "source_repository": REPOSITORY, "source_commit": revision, "source_tree": tree,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "packager_sha256": sha256(Path(__file__)), "source_files": len(source_before),
         "report_build_script_sha256": source_before["scripts/build_report.py"]["sha256"],
         "report_pending_markers": pending_markers(source),
-        "external_deliverables_not_checked": ["slide", "video", "xác nhận thành viên"],
+        "deliverables": deliverables, "required_deliverables_missing": missing,
+        "external_deliverables_not_checked": ["slide", "video", "đánh giá chéo", "phân công có chữ ký", "xác nhận thành viên"],
+        "submission_checks_not_performed": ["PDF 30–60 trang", "15–20 slide", "Video 5–7 phút",
+                                            "Nội dung, đánh giá và chữ ký thật", "Liêm chính học thuật", "Tổng duyệt 20 phút"],
         "dataset_bundle": bundle, "files": inventory(directory),
     }
     (directory / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -225,7 +271,8 @@ Trưởng nhóm chốt đầu ra và bổ sung nơi nộp, hạn, tên tệp, bi
     archive_path.with_suffix(".zip.sha256").write_text(f"{archive_hash}  {archive_path.name}\n", encoding="utf-8")
     result = {"source_commit": revision, "package": directory.name, "zip": archive_path.name,
               "zip_sha256": archive_hash, "payload_files": len(manifest["files"]),
-              "source_files": len(source_before), "zip_crc": "pass", "payload_sha256": "pass"}
+              "source_files": len(source_before), "zip_crc": "pass", "payload_sha256": "pass",
+              "submission_ready": False, "required_deliverables_missing": missing}
     (output / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
 
@@ -235,9 +282,14 @@ def main(argv=None) -> int:
     parser.add_argument("--commit", required=True, help="Commit đã chốt; không lấy file chưa commit")
     parser.add_argument("--output", type=Path, required=True, help="Thư mục mới, không ghi đè")
     parser.add_argument("--report-python", default=sys.executable, help="Python đã cài requirements-report.txt")
+    parser.add_argument("--slides", type=Path, help="Slide do chủ phần bàn giao; vẫn cần kiểm 15–20 slide")
+    parser.add_argument("--video", type=Path, help="Video do chủ phần bàn giao; vẫn cần kiểm 5–7 phút")
+    parser.add_argument("--peer-review", type=Path, help="Bảng đánh giá chéo thành viên, không tự điền")
+    parser.add_argument("--signed-assignment", type=Path, help="Bảng phân công có chữ ký thật của cả nhóm")
     args = parser.parse_args(argv)
     try:
-        result = package_commit(ROOT, args.commit, args.output, args.report_python)
+        supplements = {role: getattr(args, role) for role in DELIVERABLES if getattr(args, role) is not None}
+        result = package_commit(ROOT, args.commit, args.output, args.report_python, supplements=supplements)
     except (OSError, ValueError, KeyError, subprocess.CalledProcessError, tarfile.TarError, zipfile.BadZipFile) as error:
         print(f"Đóng gói thất bại: {error}", file=sys.stderr)
         return 1
