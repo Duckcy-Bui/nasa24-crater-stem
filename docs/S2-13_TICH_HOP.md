@@ -82,7 +82,7 @@ Chạy `scripts/check_s213_app.py` trên nhánh `s2-13-app-fixes`, gốc `13394d
 | `moon_marefrig_loc_c02` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Có | Chưa có thẻ |
 | `moon_vandegraff_hia_c01` | 100 | 104,86 | Ẩn, có cảnh báo giới hạn | Không hiện | Chưa có thẻ |
 
-Số trên bảng là số hiển thị của `statistics.summarize` thật, không phải số hố đếm tay. Tất cả lượt chấm có điểm theo nhãn và không có lỗi trang. Script ghi log, ảnh chụp và `browser_results.json` (số hiển thị và nội dung trang của từng ảnh) vào thư mục `--out`; kết quả lượt này không đưa vào repo. Chưa kiểm trên VPS.
+Số trên bảng là số hiển thị của `statistics.summarize` thật, không phải số hố đếm tay. Tất cả lượt chấm có điểm theo nhãn và không có lỗi trang. Script ghi ảnh chụp và `browser_results.json` (số hiển thị và nội dung trang của từng ảnh) vào thư mục `--out`, còn log in ra terminal; kết quả lượt này không đưa vào repo. Chưa kiểm trên VPS.
 
 ## 3. Danh sách lỗi cần sửa
 
