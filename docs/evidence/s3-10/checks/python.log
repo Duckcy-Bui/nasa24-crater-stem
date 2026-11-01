@@ -160,7 +160,7 @@ test_default_source_is_unreviewed_not_verified (test_label_craters.TestLabelCrat
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 1 nhãn hố
-  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmpfvsdmoxc\reference_labels\test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): <tmp-dir>\tmpfvsdmoxc\reference_labels\test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; sparse manual labels, unreviewed
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 150.0,  150.0) | r= 10.0px | D≈    40m
@@ -182,7 +182,7 @@ test_never_writes_processed_catalogue (test_label_craters.TestLabelCraters.test_
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 5 nhãn hố
-  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmpai7lq7v5\reference_labels\test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): <tmp-dir>\tmpai7lq7v5\reference_labels\test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; fixture
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
@@ -213,7 +213,7 @@ test_save_succeeds_on_valid_data (test_label_craters.TestLabelCraters.test_save_
 
 ────────────────────────────────────────────────────────────
 LƯU THÀNH CÔNG: 4 nhãn hố
-  → JSON tham chiếu (Git): C:\Users\User\AppData\Local\Temp\tmpk2yo0h53\reference_labels\test_crop_01_craters_catalogue.json
+  → JSON tham chiếu (Git): <tmp-dir>\tmpk2yo0h53\reference_labels\test_crop_01_craters_catalogue.json
   → Nguồn reference:       manual_label_s110; fixture
 Danh sách hố đã ghi nhãn:
   C1                        | Tâm=( 100.0,  100.0) | r= 10.0px | D≈    40m
