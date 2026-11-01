@@ -32,3 +32,13 @@ Seed cố định 0 cho hash Python; ảnh giả lập dựng cố định, Houg
 Kết quả chạy thực tế tại [docs/evidence/s3-10/](evidence/s3-10/README.md). Lượt đầy đủ `--repeats 1` hoàn tất tám bước; lượt quick chạy từ thư mục cha repo cũng complete. **303/303 test Python, 6/6 bộ test canvas và kiểm hợp đồng đạt**. Đối chiếu 31 file S2-15 giữ nguyên nội dung; vòng máy/metrics trên cả 18 ảnh giống hồ sơ cũ. Số liệu holdout score 4/66, balanced 5/66, OpenCV 65/66; bảng đếm hai vùng 47/32. Sau lượt full chỉ sửa chuỗi trợ giúp CLI và cách in đường dẫn output; hash hai phiên bản được ghi rõ, lượt quick và bộ test xác nhận bản cuối. Không suy kết luận tốc độ từ lượt một lần đo. Bộ Python/canvas kiểm tra logic và luồng Streamlit bằng test; không thay kiểm thao tác trực quan trên trình duyệt hay lượt chạy của người phối hợp. Chưa có xác nhận của Bùi Hải Đức trên máy khác; không ghi thay xác nhận này.
 
 Chỉ nhận bộ bảng có manifest `status=complete, mode=full`. Dữ liệu khảo sát người dùng S3-01, quyết định S3-03/S3-05 và nghiệm thu giao diện vẫn thuộc chủ task tương ứng. Không cập nhật Excel, gửi thông báo, commit/push hay triển khai dịch vụ trong lượt này.
+
+## Kiểm độc lập trên Linux (31/10/2026)
+
+Lượt do trưởng nhóm Bùi Hải Đức phối hợp chạy với Codex hỗ trợ trên máy của trưởng nhóm (Intel i5-12450HX, Linux x86_64, Python 3.12.3), commit `13394de`. Lệnh full giữ mặc định ba lượt đo, một warm-up trong phép đối chiếu Hough; chạy 13:00:56–13:14:24 UTC, mất 807,232 giây, đủ tám bước `complete/full`.
+
+[Hồ sơ Linux gọn](evidence/s3-10/kiem_doc_lap_linux/README.md) lưu manifest nguyên byte và số dòng khớp/lệch: frozen tuning 18/18, đối chiếu tuning 9/9, holdout 24/24; E1/E2/E3 lần lượt 15/15, 14/14, 10/10; hai bảng density mỗi bảng 2/2, giả lập 8/8. Không có dòng chung nào lệch; tổng S2-15 vẫn 10/174, holdout score/balanced/OpenCV vẫn 4/66, 5/66, 65/66. Phạm vi riêng của S2-07 cũ được ghi trong hồ sơ.
+
+Hash nguồn có 117/127 file trùng byte, tám file chỉ khác LF/CRLF và hai script là bản CLI cuối đã ghi trong verification/quick. NPZ giả lập khác hash byte; thiếu bản NPZ cũ để so từng mảng, chưa kết luận nguyên nhân. Không dùng thời gian để so tốc độ giữa máy; nhãn thưa và đánh giá lặp giữ nguyên giới hạn.
+
+Ngày 31/10/2026, người kiểm độc lập đối chiếu bằng script riêng: **25/25 nhóm, 9 bảng CSV/102 dòng riêng, 0 giá trị lệch**; xác nhận lượt gốc có đủ **62 artifact**, tất cả đúng hash manifest. Kết quả PASS trong phạm vi S3-10 và nháp S3-16. **Đức quyết định nghiệm thu S3-10; Sheet J49 do Đức cập nhật.**
