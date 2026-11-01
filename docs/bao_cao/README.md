@@ -89,13 +89,13 @@ Nền `c466c2d`, nhánh `s3-12-rut-gon-bao-cao`, đã có PR #33–#36. Trưởn
 
 Giữ giả mã `dedupe_circles` và ví dụ M32/M8 trong Chương 3. Phụ lục E chứa các giả mã phụ, bảng cấu hình, bằng chứng lịch sử và quy đổi tọa độ được chuyển khỏi phần chính. Không thay số liệu đánh giá; hai số thời gian 24 ms/28 ms bị bỏ vì không tìm thấy bằng chứng trong repo. Mục 3.6.4 khớp app sau PR #34: ứng viên thô ≥ `max_circles` thì ẩn mật độ và cảnh báo; ảnh Lunokhod 1/Mare Frigoris hiện bảng đếm tay độc lập.
 
-Dấu chờ trong tám file ghép, không tính comment HTML: **35 → 29**.
+Dấu chờ trong tám file ghép, không tính comment HTML: **35 → 28**.
 
 | Phần | Nền | Rút gọn | Người cần làm |
 |---|---:|---:|---|
 | Chương 2 | 1 | 0 | Đã đối chiếu PR #26 trên nền |
 | Chương 4 | 6 | 1 | Quốc Anh điền kết quả S3-05 ở 4.6 |
-| Chương 5 | 2 | 2 | Quốc Anh: S3-05 ở 5.7; người điều phối: số test cuối ở 5.6 sau khi merge bản sửa app cuối |
+| Chương 5 | 2 | 1 | Quốc Anh: S3-05 ở 5.7. Số test 5.6 đã điền: 333 test Python, 6 bộ test JavaScript (đúng khi PR #39 merge) |
 | Phụ lục A | 17 | 17 | Cả nhóm đối chiếu sản phẩm sprint 3; từng người điền tỷ lệ, tự đánh giá, nhận đánh giá chéo và xác nhận |
 | Phụ lục D | 9 | 9 | Tiến, Hưng, Quốc Anh tự khai công cụ AI, việc sử dụng và cách kiểm soát (mỗi người 3 ô) |
 
@@ -103,4 +103,4 @@ Các phần khác không còn dấu chờ. PR #26 và S2-15 đã có nguồn; c�
 
 Hình 5.1–5.3 chụp lại ngày 01/11/2026 qua tunnel VPS bằng Playwright; xem `docs/evidence/s3-08/README.md`. Bảy vòng minh họa cho 60/100, tìm đúng 6/10 nhãn, trùng máy 0; đây không phải khảo sát người thật. Commit VPS do trưởng nhóm cung cấp; không coi ảnh chụp là phép kiểm hash mã trên máy chủ.
 
-Bản dựng đầy đủ lưu mục lục vào cả DOCX và PDF. Kiểm cuối đối chiếu từng dòng mục lục DOCX với trang tiêu đề PDF và kiểm không còn lời nhắc F9. Vẫn là **bản làm việc** vì còn các ô cá nhân, S3-05, số test cuối và xác nhận của chủ phần. Mức 25–40 trang chính/30–60 trang tổng lấy từ mục 4; chưa tìm thấy bản quy định học phần gốc trong repo. Số trang có thể đổi khi điền các phần này hoặc dựng trên máy có font khác.
+Bản dựng đầy đủ lưu mục lục vào cả DOCX và PDF. Kiểm cuối đối chiếu từng dòng mục lục DOCX với trang tiêu đề PDF và kiểm không còn lời nhắc F9. Vẫn là **bản làm việc** vì còn các ô cá nhân, S3-05 và xác nhận của chủ phần. Mức 25–40 trang chính/30–60 trang tổng lấy từ mục 4; chưa tìm thấy bản quy định học phần gốc trong repo. Số trang có thể đổi khi điền các phần này hoặc dựng trên máy có font khác.
