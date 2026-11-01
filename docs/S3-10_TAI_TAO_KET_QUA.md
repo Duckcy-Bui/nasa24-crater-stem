@@ -37,8 +37,10 @@ Chỉ nhận bộ bảng có manifest `status=complete, mode=full`. Dữ liệu 
 
 Lượt do trưởng nhóm Bùi Hải Đức phối hợp chạy với Codex hỗ trợ trên máy của trưởng nhóm (Intel i5-12450HX, Linux x86_64, Python 3.12.3), commit `13394de`. Lệnh full giữ mặc định ba lượt đo, một warm-up trong phép đối chiếu Hough; chạy 13:00:56–13:14:24 UTC, mất 807,232 giây, đủ tám bước `complete/full`.
 
-[Hồ sơ Linux gọn](evidence/s3-10/kiem_doc_lap_linux/README.md) lưu manifest nguyên byte và số dòng khớp/lệch: frozen tuning 18/18, đối chiếu tuning 9/9, holdout 24/24; E1/E2/E3 lần lượt 15/15, 14/14, 10/10; hai bảng density mỗi bảng 2/2, giả lập 8/8. Không có dòng chung nào lệch; tổng S2-15 vẫn 10/174, holdout score/balanced/OpenCV vẫn 4/66, 5/66, 65/66. Phạm vi riêng của S2-07 cũ được ghi trong hồ sơ.
+[Hồ sơ Linux gọn](evidence/s3-10/kiem_doc_lap_linux/README.md) lưu manifest công khai đã ẩn đường dẫn và số dòng khớp/lệch: frozen tuning 18/18, đối chiếu tuning 9/9, holdout 24/24; E1/E2/E3 lần lượt 15/15, 14/14, 10/10; hai bảng density mỗi bảng 2/2, giả lập 8/8. Không có dòng chung nào lệch; tổng S2-15 vẫn 10/174, holdout score/balanced/OpenCV vẫn 4/66, 5/66, 65/66. Phạm vi riêng của S2-07 cũ được ghi trong hồ sơ.
 
 Hash nguồn có 117/127 file trùng byte, tám file chỉ khác LF/CRLF và hai script là bản CLI cuối đã ghi trong verification/quick. NPZ giả lập khác hash byte; thiếu bản NPZ cũ để so từng mảng, chưa kết luận nguyên nhân. Không dùng thời gian để so tốc độ giữa máy; nhãn thưa và đánh giá lặp giữ nguyên giới hạn.
 
 Ngày 31/10/2026, người kiểm độc lập đối chiếu bằng script riêng: **25/25 nhóm, 9 bảng CSV/102 dòng riêng, 0 giá trị lệch**; xác nhận lượt gốc có đủ **62 artifact**, tất cả đúng hash manifest. Kết quả PASS trong phạm vi S3-10 và nháp S3-16. **Đức quyết định nghiệm thu S3-10; Sheet J49 do Đức cập nhật.**
+
+Bản công khai cập nhật ngày 01/11/2026 chỉ ẩn đường dẫn và cập nhật SHA phụ thuộc; SHA-256 manifest Linux công khai: `7052219bf52564048ce51419b5b3972f12bb339d4fb5711dd5116374488150cf`. Xem [quy tắc và bảng SHA cũ → mới](evidence/s3-10/README.md#an-duong-dan-20261101); bản gốc cùng hash được lưu riêng, không thay số liệu hoặc kết luận kiểm độc lập.
