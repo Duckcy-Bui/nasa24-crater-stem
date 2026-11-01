@@ -45,7 +45,7 @@ def chapters(only: list[str] | None = None) -> list[Path]:
 # LibreOffice bỏ khoảng trắng TeX (\qquad) và thu hẹp em-space khi đọc công thức Word, nên số công thức
 # dính vào công thức. Khi ghép, đổi "\qquad (2.1)" ở cuối công thức thành 8 khoảng trắng không ngắt (U+00A0);
 # Word cũng hiển thị đúng.
-EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\(\d+\.\d+\))\s*(?=\$\$)")
+EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\((?:\d+|[A-Z])\.\d+\))\s*(?=\$\$)")
 
 
 def combined_markdown(files: list[Path]) -> str:

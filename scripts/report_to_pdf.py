@@ -1,4 +1,4 @@
-"""Đức — S3-12: mở DOCX bằng LibreOffice, cập nhật mục lục và số trang, xuất PDF.
+"""Đức — S3-12: cập nhật và lưu mục lục trong DOCX bằng LibreOffice, xuất PDF.
 
 Chạy bằng Python có module uno (python3 hệ thống trên Linux, hoặc
 "C:\\Program Files\\LibreOffice\\program\\python.exe" trên Windows):
@@ -60,16 +60,29 @@ def convert(source: Path, target: Path) -> None:
             if document is None:
                 raise SystemExit(f"LibreOffice không mở được {source}.")
             try:
-                # Hai lượt: lượt đầu điền mục lục làm dời trang, lượt sau ghi lại số trang đúng.
-                for _ in range(2):
-                    indexes = document.getDocumentIndexes()
-                    for i in range(indexes.getCount()):
-                        indexes.getByIndex(i).update()
-                    document.getTextFields().refresh()
-                    document.refresh()
+                # DOCX có thể dàn lại công thức khi đọc sau lần lưu đầu tiên.
+                # Mở lại để số trang được tính trên chính định dạng bàn giao.
+                for roundtrip in range(2):
+                    # Lượt đầu điền mục lục làm dời trang, lượt sau chốt số trang.
+                    for _ in range(2):
+                        indexes = document.getDocumentIndexes()
+                        for i in range(indexes.getCount()):
+                            indexes.getByIndex(i).update()
+                        document.getTextFields().refresh()
+                        document.refresh()
+                    document.storeAsURL(source.resolve().as_uri(), (
+                        _prop("FilterName", "Office Open XML Text"), _prop("Overwrite", True),
+                    ))
+                    if roundtrip == 0:
+                        document.close(True)
+                        document = desktop.loadComponentFromURL(
+                            source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),))
+                        if document is None:
+                            raise SystemExit(f"LibreOffice không mở lại được {source}.")
                 document.storeToURL(target.resolve().as_uri(), (_prop("FilterName", "writer_pdf_Export"),))
             finally:
-                document.close(True)
+                if document is not None:
+                    document.close(True)
             try:
                 desktop.terminate()
             except Exception:  # LibreOffice có thể ngắt kết nối khi tự thoát

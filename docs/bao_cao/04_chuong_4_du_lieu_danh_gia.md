@@ -1,26 +1,5 @@
-<!--
-Chương 4. Người chốt: Hoàng Quốc Anh (S3-09); Nguyễn Mạnh Tiến (S3-02) cho phần Precision/Recall (mục 4.5 và 4.7).
-Bản ghép đầu tiên lấy từ: docs/S1-16_HO_SO_DU_LIEU.md, docs/S1-16_CHUONG_4_NHAP.md, docs/S1-16_KHAO_SAT.md, docs/S1-06_HUONG_DAN_DU_LIEU.md, docs/S1-06_BANG_ANH_XA_ANH_CAT.md, docs/DINH_DANG_DU_LIEU.md, docs/S1-10_HUONG_DAN_NHAN_HO.md, docs/S2-02_RA_SOAT_SANG_TOI.md, docs/S2-03_TAP_DIEU_CHINH.md, docs/S2-04_CHAM_DIEM.md, docs/S2-05_LOC_TRUNG.md, docs/S2-07_THI_NGHIEM_VA_THU_GAME.md, docs/evidence/s2-07/results.json; dữ liệu data/s106_bundle/, data/processed/*.json, data/reference_labels/*.json, data/s202_labels/, data/s203_split/manifest_split.json, data/s111_sun_checks.json; mã src/contracts.py, src/matching.py, src/hough.py, src/postprocessing.py, scripts/s207_experiments.py, scripts/verify_s116_coords.py (chạy lại ngày 27/10/2026: 26 ảnh, 0 lỗi).
-Số nhãn ở mục 4.3 và 4.4 đếm trực tiếp từ 26 file data/reference_labels/*_craters_catalogue.json ngày 27/10/2026.
-Hình phiếu nhãn mù (docs/evidence/s2-02/moon_ap16_m132732855l_c01/phieu_nhan.png) chưa đưa vào để giữ số trang; có thể thêm ở mục 4.3.2 nếu còn chỗ.
-
-Cập nhật từ PR #26 (chưa merge, CI xanh; đọc qua git ref pr26 theo chỉ dẫn của người ghép, ngày 27/10/2026):
-– Mục 4.7 lấy số liệu từ pr26:docs/S2-06_S3-02_KIEM_CHUNG.md, pr26:docs/evidence/s2-06-s3-02/results.csv (cột split phân biệt tuning/holdout). Bảng 4.5 chép nguyên bảng tóm tắt của tài liệu (chỉ đổi dấu thập phân sang dấu phẩy, đưa ký hiệu % lên tiêu đề cột và ghi TP_known/FN_known thành TP/FN có chú thích, để bảng không vỡ cột khi build_report.py tự chia độ rộng); Bảng 4.6 lấy TP/FN và số vòng OpenCV từ bảng từng ảnh; khoảng thời gian trung vị trong đoạn văn tính từ cột median_seconds với split=holdout. Các số khớp CSV gộp sau review.
-– Mục 4.3.1 dựa trên pr26:data/reference_labels/review_confirmation.json: reviewer Nguyen Manh Tien, date 2026-10-27, scope 26 overlay, status confirmed_on_github. File ghi rằng đây là lời xác nhận của người kiểm, không phải kiểm tra độc lập; Tiến đã xác nhận công khai ngày 28/10/2026: https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/20#issuecomment-6462992167. pr26:docs/S2-03_TAP_DIEU_CHINH.md chỉ thêm mục "Xác nhận của Tiến ngày 27/10/2026".
-– Cấu hình đánh giá ở PR #26 là configs/s201_large_craters.json với hai chế độ score/balanced, cố định trước khi đánh giá; nó không phải cấu hình chọn qua E2 ở mục 4.6. Người chốt cần làm khớp mô tả E2 với cách chọn này.
-– Sau khi PR #26 được merge: kiểm lại mọi số ở mục 4.7, rồi xóa hai dấu [CHỜ PR #26 ...].
-
-Việc còn mở cho người chốt:
-1. Xác nhận kiểm chéo trên PR #20 đã có ngày 28/10/2026; sau khi #26 merge, đối chiếu hồ sơ rồi cập nhật phần kết quả theo S3-06.
-2. S3-05 chạy ba thí nghiệm (mục 4.6); src/evaluation.py ở nhánh main hiện còn NotImplementedError, bản cài nằm trong PR #26.
-3. Chốt mục tiêu định lượng của E2 ("giảm vòng/thời gian theo mục tiêu nêu trước", S2-07) trước khi chạy.
-4. Nhóm chốt phương án tập kiểm tra (giữ split v3 hay thêm cụm Apollo 16 mới, S2-03 mục 2.4). Văn bản hiện mô tả split v3 và giới hạn của nó.
-5. moon_marefrig_loc_c01 (tập kiểm tra) đã dùng trong thử nghiệm có kiểm soát của S2-02 mục 4 trước khi có split v3; manifest chỉ ghi STT 13. Xác nhận cách nêu ở mục 4.4.
-6. Lần chạy kiểm tra ngày 26/10 (results.json, commit dc43eac) do bản script cũ tạo: thiếu các trường remove_inverted_experiment, shading_by_label_match, machine_radius_px, hit_max_circles. Chạy lại khi làm S3-05.
-7. Khảo sát: chốt ngày giờ, địa điểm, đồng ý của giảng viên; xác nhận dùng sinh viên thay học sinh; S2-10 đã có thẻ khoa học nên cân nhắc thêm 1–2 câu hiểu bài về thẻ (S1-16_KHAO_SAT mục 6); thử nhỏ S2-07 chưa có lượt nào.
-8. Sửa tài liệu nguồn lệch dữ liệu: S2-03 các bảng mục 3.1 và 7 còn ghi sparse_unreviewed; manifest_split.json ghi sun_quality "measured" cho 11 ảnh Apollo 16, trong khi metadata ghi side_only (8 ảnh) và none (3 ảnh); S1-16_HO_SO_DU_LIEU mục 1 và 7 còn ghi "4 nhãn chưa kiểm chéo"; data/reference_labels/README.md còn ghi "chưa kiểm chéo"; S1-10_HUONG_DAN_NHAN_HO mục 1 ghi STT 9 nắng "Đông" trong khi metadata ghi side_only phía Tây.
-9. Chưa có ghi chép lý do không dùng ảnh nguồn STT 7; chưa đọc toàn văn Robbins (2019), Robinson et al. (2012), Martin et al. (2018); chưa tìm thấy điều khoản sử dụng riêng của LROC và danh mục Robbins (S1-16 mục 8).
-10. Thống kê mật độ hai vùng (S3-03, Hưng) không có mục trong chương này; nhóm chốt đặt ở Chương 3 hay Chương 5.
+<!-- S3-12, 01/11/2026: rút theo giao việc của Đức trên main c466c2d (đã gồm PR #26, #31, #33–#36).
+Bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12. Chủ phần chưa xác nhận bản rút gọn; bản trước rút là main c466c2d.
 -->
 
 # Chương 4. Dữ liệu, đánh giá và khảo sát
@@ -54,23 +33,9 @@ Dữ liệu phục vụ ba kiểu so sánh. Vùng 1 gồm Apollo 15 khi Mặt Tr
 
 ## 4.2. Quy đổi tọa độ ảnh cắt và ảnh nguồn
 
-Tâm và bán kính hố được lưu theo pixel ảnh cắt: $x$ là cột, $y$ là hàng, gốc ở góc trên-trái, tâm pixel có tọa độ nguyên. Gọi $s$ là tỷ lệ m/px của ảnh cắt. Công thức (4.1), cài trong hàm `source_coordinates` của `src/contracts.py`, đổi một vòng tròn sang ảnh nguồn:
+Tâm pixel ảnh cắt có tọa độ nguyên, x là cột, y là hàng, gốc ở góc trên-trái. `source_coordinates` trong `src/contracts.py` đổi sang ảnh nguồn bằng vị trí cửa sổ và hệ số thu nhỏ, có bù tâm pixel khi k khác 1. Khi áp dụng affine của rasterio phải cộng 0,5 vì affine dùng góc pixel. Công thức và ví dụ tọa độ địa lý ở Phụ lục E.7.
 
-$$ x_{\mathrm{src}} = x_0 + k\,x + \frac{k-1}{2}, \qquad y_{\mathrm{src}} = y_0 + k\,y + \frac{k-1}{2}, \qquad r_{\mathrm{src}} = k\,r \qquad (4.1) $$
-
-Số hạng $(k-1)/2$ là độ lệch tâm khi thu nhỏ bằng trung bình khối; với $k = 1$ nó bằng 0. Ma trận affine $(a, b, c, d, e, f)$ của rasterio tính theo góc pixel, nên phải cộng 0,5 trước khi đổi sang tọa độ phẳng $(X, Y)$ tính bằng mét:
-
-$$ \mathrm{col} = x_{\mathrm{src}} + \text{0,5}, \quad \mathrm{row} = y_{\mathrm{src}} + \text{0,5}, \quad X = a\,\mathrm{col} + b\,\mathrm{row} + c, \quad Y = d\,\mathrm{col} + e\,\mathrm{row} + f \qquad (4.2) $$
-
-Với dữ liệu này $b = d = 0$, $a = s$, $e = -s$. Vĩ độ và kinh độ theo phép chiếu Equirectangular là
-
-$$ \varphi = \frac{Y}{R}, \qquad \lambda = \lambda_0 + \frac{X}{R\cos\varphi_1} \qquad (4.3) $$
-
-với bán kính Mặt Trăng $R$ = 1.737.400 m, góc tính bằng radian, $\lambda_0$ và $\varphi_1$ đọc từ CRS của ảnh nguồn. Đường kính và dải bán kính tìm kiếm được đổi theo công thức (4.4):
-
-$$ D = 2\,r\,s, \qquad r_{\min} = \max\bigl(5,\ \lceil D_{\min}/(2s) \rceil\bigr), \qquad r_{\max} = \min\bigl(128,\ \lfloor D_{\max}/(2s) \rfloor\bigr) \qquad (4.4) $$
-
-Dải 20–500 m ở 2 m/px cho $r \in [5, 125]$ px; dải 200–4.000 m ở 20 m/px cho $r \in [5, 100]$ px. Ví dụ, tâm (255,5; 255,5) của ảnh `moon_ap16_m106777343r_c01` ($x_0 = 170$, $y_0 = 6600$, $s = 2$ m/px) đổi thành (425,5; 6855,5) trong ảnh nguồn và (−9,0717548°; 15,4355671°), khớp tọa độ tâm trong metadata. Script `scripts/verify_s116_coords.py` lặp lại phép tính cho cả 26 ảnh: 26/26 ảnh khớp, chênh lệch lớn nhất cỡ $6 \cdot 10^{-14}$ độ.
+Đường kính $D = 2rs$ và dải bán kính theo (2.14): D = 20–500 m ở 2 m/px cho r = 5–125 px; D = 200–4.000 m ở 20 m/px cho r = 5–100 px. `scripts/verify_s116_coords.py` kiểm cả 26 ảnh: 26/26 khớp metadata, sai khác lớn nhất khoảng $6 \cdot 10^{-14}$ độ.
 
 ## 4.3. Nhãn tham chiếu
 
@@ -93,7 +58,7 @@ Cả 26 ảnh cắt có file nhãn, tổng cộng 241 nhãn, mỗi ảnh từ 4 
 
 : Bảng 4.2. Nhãn tham chiếu theo vùng mặt đất. Các vùng ngoài Apollo 16 có tỷ lệ 20 m/px.
 
-Cả 26 file ghi nguồn `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`. Theo xác nhận của người kiểm ngày 27/10/2026, Nguyễn Mạnh Tiến đã đối chiếu bằng mắt từng vòng trên đủ 26 ảnh overlay. Kiểm tra tự động cho thấy 26/26 file khớp với manifest, chỉ mục nhãn và ảnh overlay, nhưng kiểm tra này chỉ xác nhận định dạng, không xác nhận vị trí hố. [CHỜ PR #26 được merge]
+Cả 26 file ghi nguồn `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`. Theo xác nhận của người kiểm ngày 27/10/2026, Nguyễn Mạnh Tiến đã đối chiếu bằng mắt từng vòng trên đủ 26 ảnh overlay. Kiểm tra tự động cho thấy 26/26 file khớp với manifest, chỉ mục nhãn và ảnh overlay, nhưng kiểm tra này chỉ xác nhận định dạng, không xác nhận vị trí hố.
 
 ### 4.3.2. Danh mục Robbins và nhãn mù
 
@@ -111,13 +76,9 @@ Cách chia có hai giới hạn. Thứ nhất, cả 8 ảnh kiểm tra đều l�
 
 ## 4.5. Phương pháp đánh giá
 
-**Quy tắc ghép.** Theo mục 2.4, một ứng viên máy khớp một nhãn khi khoảng cách hai tâm không vượt quá 0,5 $r_{\mathrm{ref}}$; mỗi ứng viên và mỗi nhãn chỉ dùng một lần. Cách ghép có nhiều cặp nhất, rồi có tổng khoảng cách chuẩn hóa nhỏ nhất, được tìm bằng thuật toán Hungary [@kuhn1955], tự viết bằng NumPy trong `src/matching.py`. Ngưỡng 0,5 dùng chung cho đánh giá máy và chấm điểm người chơi.
+**Ghép và độ đo.** Dùng quy tắc một–một và Recall_known ở mục 2.4: tâm lệch không quá 0,5 bán kính nhãn, tối đa số cặp rồi tối thiểu tổng khoảng cách bằng Hungary tự viết. Máy chỉ so với nhãn tham chiếu; so người chơi với máy không sinh điểm. Nhãn thưa không cho Precision/F1 toàn ảnh; nhãn chưa chắc chắn thuộc tập bỏ qua. Chỉ tính Precision/F1 khi `catalogue_coverage = "complete"`, hiện chưa file nào đạt. Recall_known luôn đi kèm số nhãn, số ứng viên và trạng thái chạm trần.
 
-**Máy không phải đáp án.** Đánh giá phát hiện chỉ so ứng viên máy với nhãn tham chiếu. Khi trò chơi so người chơi với máy, kết quả chỉ là mức trùng và không cho điểm (Chương 5).
-
-**Nhãn thưa.** Một ứng viên không khớp nhãn nào vẫn có thể là hố thật chưa được gán, nên nhóm không đếm dương tính giả và không tính Precision hay F1. Độ đo chính là Recall trên nhãn đã biết (Recall_known, mục 2.4). Nhãn chưa chắc chắn thuộc tập bỏ qua. Precision và F1 chỉ được tính khi file nhãn được đánh dấu đầy đủ (`catalogue_coverage = "complete"`); hiện chưa file nào như vậy. Mỗi giá trị Recall_known đi kèm số nhãn, số ứng viên và trạng thái chạm trần 100 vòng.
-
-**Chạy tập kiểm tra.** Tham số chỉ được chọn trên tập điều chỉnh; tập kiểm tra chạy một lần với cấu hình đã đóng băng. Lần đánh giá ở mục 4.7 đã dùng tập kiểm tra một lần cho hai chế độ chọn ứng viên được cố định từ trước, khi bộ tham số chính thức chưa được chốt [CHỜ S2-15]; mọi lần chạy lại trên tập kiểm tra sau đó phải được ghi rõ trong báo cáo. Script `scripts/s207_experiments.py` từ chối ảnh kiểm tra nếu thiếu cờ `--holdout`, cờ này bắt buộc kèm `--chosen-config` (file tham số đã chốt), và ở chế độ đó script chỉ chạy đúng cấu hình đã chốt, không quét biến thể.
+**Chạy tập kiểm tra.** Tham số chỉ được chọn trên tập điều chỉnh; tập kiểm tra chạy một lần với cấu hình đã đóng băng. Lần đánh giá ở mục 4.7 đã dùng tập kiểm tra một lần cho hai chế độ chọn ứng viên được cố định từ trước, trước khi S2-15 chốt tham số ngày 29/10/2026; cấu hình cuối `configs/s215_frozen.json` giữ `score` dựa trên 18 ảnh điều chỉnh; mọi lần chạy lại trên tập kiểm tra sau đó phải được ghi rõ trong báo cáo. Script `scripts/s207_experiments.py` từ chối ảnh kiểm tra nếu thiếu cờ `--holdout`, cờ này bắt buộc kèm `--chosen-config` (file tham số đã chốt), và ở chế độ đó script chỉ chạy đúng cấu hình đã chốt, không quét biến thể.
 
 ## 4.6. Thiết kế ba thí nghiệm
 
@@ -185,43 +146,11 @@ Bảng 4.6 cho kết quả từng ảnh của tập kiểm tra. Trên tập ki�
 
 OpenCV đạt 98,48 % nhưng tạo 8.195–9.086 vòng mỗi ảnh kiểm tra (7.112–8.984 trên tập điều chỉnh), so với 100 vòng của NumPy. Vì không đếm được dương tính giả, Recall cao này không nói gì về Precision, và nhãn hiện có không đủ để kết luận phương pháp nào chính xác hơn. Các số thời gian này cũng không dùng để xếp hạng tốc độ, vì hai bên đo phạm vi khác nhau. Lọc vòng trùng, đo riêng và không bật trong trò chơi, làm mất cặp ghép đúng duy nhất của `numpy_balanced` trên STT 13.
 
-[CHỜ PR #26 được merge: kiểm lại số liệu]
-
 ## 4.8. Khảo sát người chơi
 
-### 4.8.1. Mục tiêu, người tham gia và quy trình
+Đề bài yêu cầu khảo sát ít nhất 10 học sinh về hứng thú và hiểu bài [@debai_nasa]. Ngày 31/10/2026, trưởng nhóm quyết định bỏ thử người chơi thật và khảo sát để ưu tiên hoàn thành dự án. Nhóm chưa thực hiện thử nhỏ S2-07 hay khảo sát S3-01; chưa có dữ liệu để kết luận sản phẩm làm tăng hứng thú hoặc hiểu bài. Đây là yêu cầu chưa đạt.
 
-Đề bài yêu cầu khảo sát ít nhất 10 học sinh về mức hứng thú và mức hiểu bài [@debai_nasa]. Nhóm đo hai mặt này riêng biệt, với cùng hướng dẫn và cùng câu hỏi cho mọi người; khảo sát đánh giá trải nghiệm sản phẩm, không đo độ chính xác thuật toán. Người tham gia dự kiến là 10–15 sinh viên một lớp cử nhân Công nghệ thông tin, chọn thuận tiện, với mục tiêu ít nhất 10 người hoàn thành đủ phiếu. Đối tượng này khác với học sinh phổ thông vùng xa mà sản phẩm hướng tới (Chương 1), nên kết quả chỉ mô tả nhóm tham gia. Nếu người tham gia là học sinh dưới 18 tuổi, cần sự đồng ý của nhà trường và phụ huynh.
-
-Mỗi lượt gồm năm bước với thời lượng tạm tính: giới thiệu và cấp mã tham gia (3 phút); 5 câu hiểu bài lần trước (3 phút); chơi khoanh hố và lưu câu trả lời (10 phút); 4 câu hứng thú và 5 câu hiểu bài lần sau, đổi thứ tự lựa chọn (5 phút); phản hồi mở (2–3 phút). Mọi người nghe cùng một hướng dẫn được đọc nguyên văn. Khảo sát ẩn danh: nhóm chỉ dùng mã tham gia, không thu tên, mã sinh viên hay ảnh; người tham gia được biết việc tham gia là tự nguyện, có thể dừng bất cứ lúc nào, và dữ liệu chỉ dùng cho báo cáo học phần.
-
-### 4.8.2. Phiếu khảo sát
-
-Phiếu có bốn phần: thông tin chung không ghi tên (lớp, đã từng xem nội dung về Mặt Trăng chưa, mức quan tâm đến không gian 1–5); bốn phát biểu hứng thú theo thang Likert 1–5; năm câu hiểu bài trắc nghiệm, điểm là số câu đúng (0–5); và ba câu phản hồi mở chỉ dùng để sửa giao diện (Bảng 4.7).
-
-| Mã | Nội dung | Thang hoặc đáp án đúng |
-|:---:|:---------------------------------------------------|:-----------------------------|
-| H1 | Tôi thấy việc khoanh hố trên ảnh Mặt Trăng thú vị. | 1–5 |
-| H2 | Tôi muốn chơi thêm với những ảnh khác. | 1–5 |
-| H3 | Trải nghiệm này làm tôi tò mò hơn về Mặt Trăng và không gian. | 1–5 |
-| H4 | Tôi sẵn lòng giới thiệu trò chơi này cho bạn bè. | 1–5 |
-| U1 | Hố va chạm thường hiện ra thế nào trên ảnh chụp từ quỹ đạo? | Vành gần tròn, một phía sáng, phía kia tối tùy hướng nắng |
-| U2 | Vì sao cùng một vùng trông khác nhau khi Mặt Trời thấp và gần đỉnh đầu? | Mặt Trời thấp cho bóng dài; gần đỉnh đầu gần như không có bóng |
-| U3 | Phần thành hố nằm trong bóng thường ở phía nào so với Mặt Trời? | Phía gần Mặt Trời |
-| U4 | Vùng A có mật độ hố cao hơn vùng B. Kết luận hợp lý nhất? | A nhiều khả năng già hơn B về tuổi tương đối |
-| U5 | Máy đánh dấu 100 vòng trên một ảnh. Điều nào đúng? | Đó là ứng viên cần kiểm tra, không phải số hố đã xác nhận |
-
-: Bảng 4.7. Câu hỏi hứng thú (thang Likert 1–5) và câu hỏi hiểu bài.
-
-### 4.8.3. Thử nhỏ và kế hoạch phân tích
-
-Trước khảo sát, nhóm thiết kế một lượt thử với 1–2 người (mã P01, P02) trên ảnh `moon_ap16_m106777343r_c01` để sửa thao tác và câu chữ, không để đo hiệu quả. Người điều phối đọc nguyên văn kịch bản, nói rõ vòng của máy chỉ là ứng viên, không phải đáp án. Phiếu thử ghi thiết bị, thời lượng, việc lưu JSON và hiện điểm, cùng các lỗi gặp phải; sau lượt chơi, người thử trả lời bốn câu ngắn về thao tác, về cách hiểu vòng máy, về việc điểm có gây hiểu nhầm rằng vòng ngoài nhãn là sai, và về thời gian chờ.
-
-[CHỜ S2-07: kết quả thử nhỏ 1–2 người và danh sách lỗi đã xác nhận]
-
-Nhóm sẽ báo số người tham gia và số người hoàn thành đủ phiếu; trung bình, độ lệch chuẩn và phân bố điểm của từng câu hứng thú và của tổng; điểm hiểu bài trước và sau của từng người, số người tăng, không đổi, giảm điểm và tỷ lệ đúng từng câu. Với 10–15 người, nhóm chỉ trình bày số liệu mô tả. Cùng năm câu được hỏi hai lần và không có nhóm đối chứng, nên mức tăng điểm không chứng minh trò chơi là nguyên nhân.
-
-[CHỜ S3-01: kết quả khảo sát (số người tham gia, thời gian và địa điểm, điểm hứng thú H1–H4, điểm hiểu bài trước và sau, phản hồi mở)]
+Thiết kế dự kiến được giữ trong `docs/S1-16_KHAO_SAT.md` và `docs/S2-07_THI_NGHIEM_VA_THU_GAME.md`: thử thao tác với 1–2 người; khảo sát 10–15 sinh viên chọn thuận tiện, mục tiêu ít nhất 10 phiếu hoàn chỉnh, với bốn câu hứng thú Likert 1–5, năm câu hiểu bài trước/sau và phản hồi mở. Khảo sát tự nguyện, ẩn danh. Đối tượng sinh viên khác học sinh mà đề bài yêu cầu; mẫu nhỏ, hỏi lại cùng câu và không có nhóm đối chứng nên chỉ dùng thống kê mô tả, không suy ra quan hệ nhân quả. Đây là kế hoạch chưa thực hiện.
 
 ## 4.9. Thảo luận và hạn chế
 
@@ -233,4 +162,4 @@ Nhóm sẽ báo số người tham gia và số người hoàn thành đủ phi�
 
 **Trần 100 ứng viên.** Chế độ `numpy_balanced` đưa được vòng lớn hơn vào danh sách, nhưng Recall_known trên tập kiểm tra chỉ tăng từ 6,06 % lên 7,58 %. Giới hạn 100 vòng là một nguyên nhân bỏ sót, không phải nguyên nhân duy nhất.
 
-**Mẫu nhỏ.** Bộ dữ liệu có 26 ảnh cắt từ 7 vùng mặt đất, và các ảnh cùng vùng không độc lập. Khảo sát dự kiến 10–15 sinh viên chọn thuận tiện, nên kết quả chỉ mang tính mô tả.
+**Mẫu nhỏ.** Bộ dữ liệu có 26 ảnh cắt từ 7 vùng mặt đất, và các ảnh cùng vùng không độc lập. Khảo sát chưa thực hiện, nên chưa có bằng chứng về hiệu quả giáo dục.

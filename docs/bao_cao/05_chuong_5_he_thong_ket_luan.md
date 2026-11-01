@@ -2,10 +2,11 @@
 Người chốt: Bùi Hải Đức (S3-08). Nguồn: docs/DINH_DANG_DU_LIEU.md, docs/S1-09_GIAO_DIEN_KHOANH_HO.md,
 docs/S2-04_CHAM_DIEM.md, docs/S2-08_MAN_HINH_KET_QUA.md, docs/S2-10_THE_KHOA_HOC.md, docs/S2-13_TICH_HOP.md,
 src/contracts.py, src/matching.py, src/scoring.py, src/game_results.py, src/integration.py, app.py, src/crater_canvas/.
-Ảnh: docs/evidence/s3-08/ chụp ngày 27/10/2026. Đã chụp lại trên main 3cff367 (có S3-04: tọa độ tâm pixel, màu link):
-Hình 5.1 và 5.3 trùng từng byte, Hình 5.2 chỉ khác dòng thời điểm lưu lượt chấm, điểm vẫn 60/100.
-Ngày 31/10/2026: bỏ chờ PR #26 theo S2-16 mục 6 và cấu hình score đã chốt ở S2-15; ghi khảo sát chưa thực hiện.
-Việc còn lại: cập nhật 5.6 (số test cuối), 5.7 (S3-05); chụp lại Hình 5.x sau khi lỗi #10 và #11 được merge.
+Ảnh: docs/evidence/s3-08/ chụp lại qua tunnel VPS ngày 01/11/2026 bằng Playwright.
+Mốc main c466c2d do trưởng nhóm cung cấp; cách chụp và kết quả kiểm ở evidence/s3-08/README.md.
+Bảy vòng minh họa giữ như ảnh cũ; kết quả vẫn 60/100, tìm đúng 6/10 nhãn, trùng máy 0.
+Số test ở 5.6 đo ngày 01/11/2026 trên main adc31ad ghép PR #39 (S3-16) và nhánh S3-12;
+đúng khi #39 merge. Nếu PR #38 (S3-05) merge trước thì cộng 4 test của #38. Việc còn lại: 5.7 (S3-05, Quốc Anh).
 -->
 
 # Chương 5. Hệ thống, trò chơi và kết luận
@@ -71,7 +72,7 @@ Người chơi bấm "Chấm bài" dưới bản đồ; máy chạy chuỗi phá
 
 Ảnh đối chiếu phóng 3 lần để vòng nằm đúng tâm pixel. Màn hình hiện điểm theo nhãn, số hố tìm đúng và bỏ sót, giải thích nhãn thưa; thiếu nhãn kiểm chéo thì ghi "Chưa có điểm". Phần máy ghi rõ chỉ để tham khảo, nêu dải tìm và cảnh báo khi bước lưới lớn hơn 2 px hoặc chạm trần 100 ứng viên. Sửa vòng sau khi chấm sẽ có cảnh báo kết quả cũ.
 
-Hình 5.2 cho điểm 60 vì người chơi tìm đúng 6/10 nhãn; máy không trùng vòng nào của người chơi vì giữ 100 vòng nhỏ. Game vẫn dùng `score` theo cấu hình đã chốt, nên ví dụ này giữ nguyên. Hạn chế đó giải thích vì sao không chấm người chơi theo máy.
+Lượt minh họa chụp ngày 01/11/2026 vẫn cho 60/100, tìm đúng 6/10 nhãn và trùng máy 0; game dùng `score`. Các vòng được nhập bằng Playwright theo ảnh cũ, không phải dữ liệu khảo sát người chơi. Ví dụ cho thấy vì sao không dùng ứng viên máy làm đáp án.
 
 Mỗi lượt chấm lưu riêng metadata, tham số, các lớp vòng, kết quả, thời điểm và mã phiên bản để phân tích lại.
 
@@ -87,7 +88,7 @@ Mọi bãi đáp và rover đã đối chiếu đều nằm ngoài ảnh cắt, 
 
 **Tích hợp.** `src/integration.py` gọi mô-đun thống kê và thẻ, trả `pending` khi chưa cài, `ok` khi đúng định dạng, `error` khi lỗi. Giao diện không tự tạo số liệu khi lỗi; thẻ thiếu nguồn, link không phải `http(s)` hoặc vị trí ngoài ảnh bị ẩn kèm lý do.
 
-**Kiểm thử.** Kho mã có [CHỜ: số test Python và JavaScript ở phiên bản cuối] test tự động trên GitHub Actions: hợp đồng dữ liệu, Hough tính tay, ghép một–một so với vét cạn, luật chấm, luồng Streamlit và thao tác canvas. Test đạt xác nhận hành vi theo thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
+**Kiểm thử.** Kho mã có 333 test Python và 6 bộ test JavaScript tự động trên GitHub Actions: hợp đồng dữ liệu, Hough tính tay, ghép một–một so với vét cạn, luật chấm, luồng Streamlit và thao tác canvas. Test đạt xác nhận hành vi theo thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
 
 **Triển khai.** Ứng dụng chạy trên máy chủ, có HTTPS và mật khẩu. Lượt đo trên máy chủ thử nghiệm mất 9,4 s cho lần chấm đầu; ứng viên được giữ trong bộ nhớ đệm tối đa 8 ảnh. Có thể chấm trước các ảnh dùng trình diễn để làm nóng bộ nhớ đệm.
 
