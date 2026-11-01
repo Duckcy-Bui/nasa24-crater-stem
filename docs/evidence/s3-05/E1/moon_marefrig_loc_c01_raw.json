@@ -1,0 +1,1238 @@
+{
+  "image_id": "moon_marefrig_loc_c01",
+  "split": "holdout",
+  "variant": "raw",
+  "scope": "not_evaluable_on_holdout",
+  "configuration": "baseline",
+  "candidates": 100,
+  "removed": 0,
+  "tp_known": 0,
+  "fn_known": 6,
+  "known_labels": 6,
+  "recall_known": 0.0,
+  "precision": null,
+  "f1": null,
+  "seconds_hough": 5.9758617999905255,
+  "r_min_px": 5,
+  "r_max_px": 100,
+  "radius_step_px": 1,
+  "input_hit_max_circles": true,
+  "known_labels_outside_search": 0,
+  "machine": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_marefrig_loc_c01",
+    "source": "machine",
+    "reference_source": null,
+    "circles": [
+      {
+        "crater_id": "M1",
+        "x": 113.0,
+        "y": 17.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M2",
+        "x": 72.0,
+        "y": 80.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29
+      },
+      {
+        "crater_id": "M3",
+        "x": 106.0,
+        "y": 22.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M4",
+        "x": 478.0,
+        "y": 91.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M5",
+        "x": 73.0,
+        "y": 104.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M6",
+        "x": 427.0,
+        "y": 132.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M7",
+        "x": 217.0,
+        "y": 356.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M8",
+        "x": 421.0,
+        "y": 406.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24
+      },
+      {
+        "crater_id": "M9",
+        "x": 424.0,
+        "y": 77.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 28
+      },
+      {
+        "crater_id": "M10",
+        "x": 438.0,
+        "y": 36.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M11",
+        "x": 413.0,
+        "y": 66.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M12",
+        "x": 285.0,
+        "y": 91.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M13",
+        "x": 338.0,
+        "y": 179.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M14",
+        "x": 215.0,
+        "y": 351.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M15",
+        "x": 67.0,
+        "y": 417.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M16",
+        "x": 59.0,
+        "y": 436.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23
+      },
+      {
+        "crater_id": "M17",
+        "x": 128.0,
+        "y": 97.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 32
+      },
+      {
+        "crater_id": "M18",
+        "x": 20.0,
+        "y": 138.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 36
+      },
+      {
+        "crater_id": "M19",
+        "x": 123.0,
+        "y": 74.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27
+      },
+      {
+        "crater_id": "M20",
+        "x": 35.0,
+        "y": 134.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27
+      },
+      {
+        "crater_id": "M21",
+        "x": 217.0,
+        "y": 323.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27
+      },
+      {
+        "crater_id": "M22",
+        "x": 452.0,
+        "y": 100.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31
+      },
+      {
+        "crater_id": "M23",
+        "x": 141.0,
+        "y": 15.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M24",
+        "x": 304.0,
+        "y": 62.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M25",
+        "x": 32.0,
+        "y": 67.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M26",
+        "x": 403.0,
+        "y": 80.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M27",
+        "x": 388.0,
+        "y": 94.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M28",
+        "x": 224.0,
+        "y": 174.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M29",
+        "x": 19.0,
+        "y": 189.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M30",
+        "x": 21.0,
+        "y": 299.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M31",
+        "x": 209.0,
+        "y": 331.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M32",
+        "x": 211.0,
+        "y": 373.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M33",
+        "x": 65.0,
+        "y": 423.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22
+      },
+      {
+        "crater_id": "M34",
+        "x": 62.0,
+        "y": 111.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 35
+      },
+      {
+        "crater_id": "M35",
+        "x": 60.0,
+        "y": 14.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M36",
+        "x": 438.0,
+        "y": 55.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M37",
+        "x": 438.0,
+        "y": 66.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M38",
+        "x": 154.0,
+        "y": 77.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M39",
+        "x": 481.0,
+        "y": 84.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M40",
+        "x": 107.0,
+        "y": 96.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M41",
+        "x": 413.0,
+        "y": 128.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M42",
+        "x": 224.0,
+        "y": 323.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M43",
+        "x": 228.0,
+        "y": 353.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M44",
+        "x": 62.0,
+        "y": 417.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26
+      },
+      {
+        "crater_id": "M45",
+        "x": 363.0,
+        "y": 182.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 30
+      },
+      {
+        "crater_id": "M46",
+        "x": 75.0,
+        "y": 383.0,
+        "r": 9.0,
+        "confidence": null,
+        "votes": 38
+      },
+      {
+        "crater_id": "M47",
+        "x": 497.0,
+        "y": 11.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M48",
+        "x": 107.0,
+        "y": 16.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M49",
+        "x": 56.0,
+        "y": 20.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M50",
+        "x": 422.0,
+        "y": 26.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M51",
+        "x": 132.0,
+        "y": 50.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M52",
+        "x": 160.0,
+        "y": 61.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M53",
+        "x": 474.0,
+        "y": 70.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M54",
+        "x": 87.0,
+        "y": 71.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M55",
+        "x": 484.0,
+        "y": 71.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M56",
+        "x": 29.0,
+        "y": 73.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M57",
+        "x": 485.0,
+        "y": 76.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M58",
+        "x": 413.0,
+        "y": 77.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M59",
+        "x": 153.0,
+        "y": 87.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M60",
+        "x": 65.0,
+        "y": 98.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M61",
+        "x": 420.0,
+        "y": 102.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M62",
+        "x": 331.0,
+        "y": 107.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M63",
+        "x": 462.0,
+        "y": 123.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M64",
+        "x": 40.0,
+        "y": 124.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M65",
+        "x": 423.0,
+        "y": 130.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M66",
+        "x": 33.0,
+        "y": 144.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M67",
+        "x": 292.0,
+        "y": 149.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M68",
+        "x": 343.0,
+        "y": 164.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M69",
+        "x": 360.0,
+        "y": 170.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M70",
+        "x": 371.0,
+        "y": 224.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M71",
+        "x": 38.0,
+        "y": 314.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M72",
+        "x": 209.0,
+        "y": 351.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M73",
+        "x": 218.0,
+        "y": 375.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M74",
+        "x": 430.0,
+        "y": 389.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M75",
+        "x": 465.0,
+        "y": 406.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M76",
+        "x": 62.0,
+        "y": 411.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M77",
+        "x": 69.0,
+        "y": 411.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M78",
+        "x": 85.0,
+        "y": 421.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M79",
+        "x": 497.0,
+        "y": 445.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M80",
+        "x": 478.0,
+        "y": 451.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M81",
+        "x": 252.0,
+        "y": 456.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M82",
+        "x": 34.0,
+        "y": 463.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M83",
+        "x": 46.0,
+        "y": 476.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M84",
+        "x": 469.0,
+        "y": 480.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M85",
+        "x": 286.0,
+        "y": 484.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21
+      },
+      {
+        "crater_id": "M86",
+        "x": 100.0,
+        "y": 12.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M87",
+        "x": 449.0,
+        "y": 22.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M88",
+        "x": 56.0,
+        "y": 31.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M89",
+        "x": 409.0,
+        "y": 63.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M90",
+        "x": 117.0,
+        "y": 83.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M91",
+        "x": 442.0,
+        "y": 91.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M92",
+        "x": 97.0,
+        "y": 92.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M93",
+        "x": 303.0,
+        "y": 167.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M94",
+        "x": 366.0,
+        "y": 188.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M95",
+        "x": 316.0,
+        "y": 321.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M96",
+        "x": 41.0,
+        "y": 385.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M97",
+        "x": 68.0,
+        "y": 395.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M98",
+        "x": 110.0,
+        "y": 434.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M99",
+        "x": 431.0,
+        "y": 438.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      },
+      {
+        "crater_id": "M100",
+        "x": 176.0,
+        "y": 456.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25
+      }
+    ]
+  },
+  "removed_circles": [],
+  "reference": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_marefrig_loc_c01",
+    "source": "catalogue",
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "circles": [
+      {
+        "crater_id": "C1",
+        "x": 255.0,
+        "y": 480.0,
+        "r": 20.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C2",
+        "x": 415.0,
+        "y": 175.0,
+        "r": 16.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C3",
+        "x": 380.0,
+        "y": 275.0,
+        "r": 12.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C4",
+        "x": 450.0,
+        "y": 350.0,
+        "r": 11.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C5",
+        "x": 135.0,
+        "y": 80.0,
+        "r": 15.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C6",
+        "x": 190.0,
+        "y": 30.0,
+        "r": 10.0,
+        "confidence": null,
+        "votes": null
+      }
+    ]
+  },
+  "metrics": {
+    "image_id": "moon_marefrig_loc_c01",
+    "status": "evaluated",
+    "coverage": "sparse",
+    "tp": 0,
+    "fp": null,
+    "fn": 6,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "pairs": [],
+    "ignored_prediction_ids": [],
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "unmatched_prediction_ids": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "M14",
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19",
+      "M20",
+      "M21",
+      "M22",
+      "M23",
+      "M24",
+      "M25",
+      "M26",
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34",
+      "M35",
+      "M36",
+      "M37",
+      "M38",
+      "M39",
+      "M40",
+      "M41",
+      "M42",
+      "M43",
+      "M44",
+      "M45",
+      "M46",
+      "M47",
+      "M48",
+      "M49",
+      "M50",
+      "M51",
+      "M52",
+      "M53",
+      "M54",
+      "M55",
+      "M56",
+      "M57",
+      "M58",
+      "M59",
+      "M60",
+      "M61",
+      "M62",
+      "M63",
+      "M64",
+      "M65",
+      "M66",
+      "M67",
+      "M68",
+      "M69",
+      "M70",
+      "M71",
+      "M72",
+      "M73",
+      "M74",
+      "M75",
+      "M76",
+      "M77",
+      "M78",
+      "M79",
+      "M80",
+      "M81",
+      "M82",
+      "M83",
+      "M84",
+      "M85",
+      "M86",
+      "M87",
+      "M88",
+      "M89",
+      "M90",
+      "M91",
+      "M92",
+      "M93",
+      "M94",
+      "M95",
+      "M96",
+      "M97",
+      "M98",
+      "M99",
+      "M100"
+    ],
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "rule": {
+      "matching": "one_to_one",
+      "center_tolerance_fraction": 0.5
+    },
+    "known_references": 6,
+    "reason": "Chỉ tính Recall trên nhãn đã biết."
+  },
+  "diagnostics": {
+    "known_labels": 6,
+    "true_positive_known": 0,
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "recall_known": 0.0,
+    "precision": null,
+    "f1": null,
+    "reference_radius_in_search": 6,
+    "reference_radius_outside_search": 0,
+    "search_radius_px": [
+      5,
+      100
+    ],
+    "hit_max_circles": true,
+    "machine_radius_px": [
+      5.0,
+      9.0
+    ],
+    "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+  },
+  "preprocess": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 90.94043353199962,
+    "canny_low": 36.37617341279985,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 27101,
+    "edge_px_final": 26046,
+    "steps": [
+      {
+        "id": "B0",
+        "name": "Đọc file và cắt cửa sổ",
+        "impl": "THƯ VIỆN: rasterio (GDAL)"
+      },
+      {
+        "id": "B1",
+        "name": "Thu nhỏ trung bình khối k×k",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B2",
+        "name": "Ảnh xám BT.601",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B3",
+        "name": "Chuẩn hóa theo phân vị",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B4",
+        "name": "Tăng tương phản CLAHE",
+        "impl": "THƯ VIỆN: OpenCV createCLAHE"
+      },
+      {
+        "id": "B5",
+        "name": "Làm trơn Gaussian tách hai chiều",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B6",
+        "name": "Gradient Sobel 3×3",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B7",
+        "name": "Biên Canny",
+        "impl": "THƯ VIỆN: OpenCV Canny"
+      },
+      {
+        "id": "B8",
+        "name": "Mặt nạ biên",
+        "impl": "TỰ VIẾT: NumPy"
+      }
+    ]
+  },
+  "hough": {
+    "voting_method": "full_circle",
+    "candidate_selection": "score",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  },
+  "radius_grid_px": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100
+  ]
+}

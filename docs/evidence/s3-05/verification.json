@@ -1,0 +1,22 @@
+{
+  "task_id": "S3-05",
+  "status": "passed",
+  "checked_at_utc": "2026-11-01T09:28:13.728791+00:00",
+  "artifacts_sha256_verified": 49,
+  "csv_rows_verified": {
+    "E1": 8,
+    "E2": 12,
+    "E3": 10
+  },
+  "images_verified": 11,
+  "checks": [
+    "CSV/JSON/counts/matching consistency",
+    "Sparse FP/Precision/F1 unavailable",
+    "No E2 sweeps on holdout",
+    "Annotation preserves geometry and TP",
+    "Filters partition inputs and retain removal reasons",
+    "Document links and CSV journal valid"
+  ],
+  "unit_tests_passed": 17,
+  "test_log": "validation.log"
+}

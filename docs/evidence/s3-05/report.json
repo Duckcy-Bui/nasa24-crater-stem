@@ -1,0 +1,505 @@
+{
+  "task_id": "S3-05",
+  "status": "complete",
+  "created_at_utc": "2026-11-01T09:24:56.127431+00:00",
+  "base_commit": "c466c2d14a47d424b2ec74e61c782ef534dcfdcf",
+  "working_tree_at_start": "?? S1-10_dong_nhat_cong_thuc.patch\n?? data/processed.zip\n?? scratch/\n?? scripts/check_sun_direction.py\n?? scripts/list_unlabeled.py\n?? scripts/s305_experiments.py\n?? tests/test_s305_experiments.py\n",
+  "source_and_input_sha256": {
+    "scripts/s305_experiments.py": "6e7123c2fa748b4377e83d072666efef287d2a78cad606f8de8b3ef8ec65b37f",
+    "scripts/s207_experiments.py": "bbc41f79a4b125151272708d76dc8d367d194dfc598915780ad70516c5c0e527",
+    "configs/s215_frozen.json": "02c87af9f420412ee7e909f6927ea7ca675b4c2899c306bc2bde1aff9a703370",
+    "configs/default.json": "02c87af9f420412ee7e909f6927ea7ca675b4c2899c306bc2bde1aff9a703370",
+    "data/s203_split/manifest_split.json": "c6448649bda9835b464152b626804be499a07c01a2af4ef8a0313255f3f15199",
+    "data/s203_split/label_index.json": "ba4997d1e6a34d2867b665b494e0d02cc22ca78d7a1889670dc7ae350db8517f",
+    "data/s111_sun_checks.json": "a4b8d241f409d38ebb6711497898f71eb73ddd7d0bac00712be408730c1f472f",
+    "data/reference_labels/review_confirmation.json": "27eb5f472fbaf271769dc5d03521144aacdc0a7ac5a6ae4c4bf95be59094406d",
+    "src/contracts.py": "01baa319d7d74447a227ad7986dc4b0ad1b8e64e241c40a016beebf3591a1766",
+    "src/evaluation.py": "c945ff4cd4745ad71119a08466f4388f2450abcb425a13a2ee972b2f4918aec6",
+    "src/game_results.py": "c48a91a67f638a661447c7ee788e92a90f97aa60c49099c75c05291dcd1f5c88",
+    "src/hough.py": "daee71c1553584c8e64d0844290d28a80292928ba09fb7a45c086c4d5dc2a2f9",
+    "src/integration.py": "639041ed9817d4923af0a1c5b9bb83e2b3b1c88d617adf0ff0cbf50aa12d7128",
+    "src/matching.py": "391f37126f0a321a6775c46fe174cc78616cc2e3fdba34379d513200adc098c9",
+    "src/pipeline.py": "a3c27a684db91a9364eaed83aae949960928d261ef57c8dadeae0614d7d02b94",
+    "src/player_annotations.py": "dcb76142402c690bc3538e20ffcb29f1c368f75ae6c68e23b37d849f91da4dc5",
+    "src/player_ui.py": "1ff842704e7a346dace0857c49b8c209062a7f870de36a18e575c7d6ff722a98",
+    "src/postprocessing.py": "ee89464573326a848c742f8848da1f5336f5d613caf2f70172be72e384dabb69",
+    "src/preprocessing.py": "f495123805d6a34e4310acbd86d94aa156f319940117eac1dd20749410a4b0ad",
+    "src/science_cards.py": "fbb590cf66ec265f320ea6f20d8d050d2e8799457e0db20f732cda0987f6dce1",
+    "src/scoring.py": "30a2d99ae92e9239d871a6284c6f9d73aa8449f04d7211582e8bade5e075d1e4",
+    "src/statistics.py": "c297f2f43a1bf30ac14e10d533a8ad844cfaef2b757fa5bd8d3daf6fd32e0ff9",
+    "src/__init__.py": "59c48246ac8a448a1b0ea52f1c3ac330ce615d49da13cccc6a7921dd2b6bc04f",
+    "requirements-browser.txt": "07f1504a0e1398d25db8e9215c2591ea012ac68f20a4adc87b1f336f9fa14a73",
+    "requirements-report.txt": "858a4db44b574ab5df97961aaf6eeef61205d428c9b5e7569636ec3f7435626f",
+    "requirements-test.txt": "9d39d634713db9f5de4c641e8944c14911a7036235a623b728663e938fccf0a3",
+    "requirements.txt": "0e806d30e3c529185251b8a2c696f6b0ea6a7a23126d4b76c9add5e2ea1c1465",
+    "data/processed/moon_ap16_m132732855l_c01.npy": "324a2b579228e1316873586e498e602afe8634748488d8cfcf99809d036b5b89",
+    "data/processed/moon_ap16_m132732855l_c01.json": "8cf0cc2924825f4f41d884297adab2122edbbee14815fe51418711aa1645beae",
+    "data/processed/moon_ap16_m132732855l_c01_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_ap16_m132732855l_c01_craters_catalogue.json": "4d6877243dc39f668ac29cab592c84f588abc2de27564f8dc0b12c43982ca92a",
+    "data/processed/moon_ap16_m102064759r_c01.npy": "dba023a3439b0baeff8a3ddd8d8c8e27c0d9c5b8277ed6fd44051e29df89f833",
+    "data/processed/moon_ap16_m102064759r_c01.json": "ff9bdc216c9ce9ea8cac79b3d08c5e4a0c75b4dff68d5dbfc68f683f0546958f",
+    "data/processed/moon_ap16_m102064759r_c01_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_ap16_m102064759r_c01_craters_catalogue.json": "4d91ced772c976f116a8cae248c36fffc6be53892ea53f95b0baff7c0b414df4",
+    "data/processed/moon_ap16_m109134835l_c01.npy": "04e8040f6256f0243a0edb9143714359b7e5946b52507134366acb3824fb4cb3",
+    "data/processed/moon_ap16_m109134835l_c01.json": "d22765c9b583eb86d401935427e512f594063181f0586fb1ad0b5c6487f4433b",
+    "data/processed/moon_ap16_m109134835l_c01_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_ap16_m109134835l_c01_craters_catalogue.json": "b3ac97131d3f2036d69a46d449674b2f9a05e3567bc15f4b8ff00ae687300f70",
+    "data/processed/moon_marefrig_loc_c01.npy": "f5482edc2ec2d1dc8a50cb0f8dc274989eb1a98824ab9f6878d968f0caffd964",
+    "data/processed/moon_marefrig_loc_c01.json": "482f6ce95be83f4ba65856f21dcc32a3a1f575a783c0f41284d007bf9b553628",
+    "data/processed/moon_marefrig_loc_c01_valid_mask.npy": "0acd32b99c7188ffb30eacfc6f0f0eae72734665c91e0c57c01f389ab059aaed",
+    "data/reference_labels/moon_marefrig_loc_c01_craters_catalogue.json": "fc6e6e690378d043c70718a4d7a7d96f16c905f3a78255364dc192cab335480a"
+  },
+  "environment": {
+    "python": "3.14.7",
+    "numpy": "2.5.4",
+    "opencv": "5.0.0",
+    "matplotlib": "3.11.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "opencv_threads": 1
+  },
+  "protocol": {
+    "tuning": [
+      "moon_ap16_m132732855l_c01",
+      "moon_ap16_m102064759r_c01",
+      "moon_ap16_m109134835l_c01"
+    ],
+    "holdout_descriptive": [
+      "moon_marefrig_loc_c01"
+    ],
+    "baseline": "S2-15 score policy; shading annotation only",
+    "E2": "S2-07 one factor at a time; tuning only; no production selection",
+    "E3_holdout": "Frozen baseline and class distribution only; no filtering sweeps",
+    "metric": "reviewed sparse labels; Recall_known only; FP/Precision/F1 null",
+    "timing": "one run per variant; no warm-up; diagnostic timing, not a speed benchmark",
+    "holdout": "previously inspected; repeated descriptive evaluation, not unseen validation"
+  },
+  "shading_defaults": {
+    "min_incidence_deg": 30.0,
+    "require_visual_check": true,
+    "disk_fraction": 1.0,
+    "min_pixels": 30,
+    "min_valid_fraction": 0.8,
+    "score_threshold": 0.15,
+    "score_threshold_side_only": 0.25,
+    "detrend": true,
+    "annulus_inner": 1.3,
+    "annulus_outer": 2.0,
+    "min_annulus_pixels": 30,
+    "min_annulus_fraction": 0.5
+  },
+  "images": [
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "split": "tuning",
+      "sun": {
+        "azimuth_deg": 270.0,
+        "incidence_deg": 87.7,
+        "quality": "side_only",
+        "side": "west",
+        "side_candidate": null,
+        "incidence_range_deg": null,
+        "source": "LROC PHO; nắng phía Tây, góc tới 87.70°"
+      },
+      "scale_m_per_px": 2.0,
+      "E1_status": "diagnostic_tuning_only",
+      "shading_counts": {
+        "unclear": 47,
+        "consistent": 28,
+        "inverted": 25
+      },
+      "shading_by_label_match": {
+        "matched_known_label": {},
+        "unmatched": {
+          "unclear": 47,
+          "consistent": 28,
+          "inverted": 25
+        }
+      },
+      "review_report": {
+        "params": {
+          "dark_level": 0.06,
+          "shadow_min_area_px": 1500,
+          "shadow_edge_dist_px": 2,
+          "rim_band_px": 1.5,
+          "radial_tol_deg": 30.0,
+          "angle_bins": 36,
+          "min_radial_coverage": 0.5,
+          "min_rim_contrast": 1.5,
+          "max_shadow_edge_fraction": 0.5
+        },
+        "counts": {
+          "rim": 35,
+          "shadow_edge": 13,
+          "texture": 52,
+          "unclear": 0
+        },
+        "removed": 0,
+        "shadow_area_fraction": 0.4975,
+        "edge_px": 24291,
+        "shadow_edge_px": 4422,
+        "shadow_edge_fraction_of_edges": 0.182
+      },
+      "dedupe_report": {
+        "params": {
+          "max_center_frac": 0.75,
+          "min_radius_ratio": 0.5,
+          "min_outer_vote_ratio": 0.35,
+          "unreliable_classes": [
+            "texture"
+          ],
+          "angle_step_deg": 1.0
+        },
+        "n_in": 100,
+        "n_kept": 96,
+        "n_removed": 4,
+        "pairs": [
+          {
+            "kept": "M32",
+            "removed": "M8",
+            "center_over_R": 0.333,
+            "r_over_R": 0.667
+          },
+          {
+            "kept": "M15",
+            "removed": "M19",
+            "center_over_R": 0.447,
+            "r_over_R": 0.6
+          },
+          {
+            "kept": "M66",
+            "removed": "M98",
+            "center_over_R": 0.728,
+            "r_over_R": 0.714
+          },
+          {
+            "kept": "M40",
+            "removed": "M65",
+            "center_over_R": 0.566,
+            "r_over_R": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "image_id": "moon_ap16_m102064759r_c01",
+      "split": "tuning",
+      "sun": {
+        "azimuth_deg": 270.0,
+        "incidence_deg": 81.08,
+        "quality": "side_only",
+        "side": "west",
+        "side_candidate": null,
+        "incidence_range_deg": null,
+        "source": "LROC PHO; nắng phía Tây, góc tới 81.08°"
+      },
+      "scale_m_per_px": 2.0,
+      "E1_status": "diagnostic_tuning_only",
+      "shading_counts": {
+        "unclear": 49,
+        "inverted": 24,
+        "consistent": 27
+      },
+      "shading_by_label_match": {
+        "matched_known_label": {
+          "inverted": 1
+        },
+        "unmatched": {
+          "unclear": 49,
+          "inverted": 23,
+          "consistent": 27
+        }
+      },
+      "review_report": {
+        "params": {
+          "dark_level": 0.06,
+          "shadow_min_area_px": 1500,
+          "shadow_edge_dist_px": 2,
+          "rim_band_px": 1.5,
+          "radial_tol_deg": 30.0,
+          "angle_bins": 36,
+          "min_radial_coverage": 0.5,
+          "min_rim_contrast": 1.5,
+          "max_shadow_edge_fraction": 0.5
+        },
+        "counts": {
+          "rim": 41,
+          "shadow_edge": 5,
+          "texture": 54,
+          "unclear": 0
+        },
+        "removed": 0,
+        "shadow_area_fraction": 0.3308,
+        "edge_px": 25807,
+        "shadow_edge_px": 3166,
+        "shadow_edge_fraction_of_edges": 0.1227
+      },
+      "dedupe_report": {
+        "params": {
+          "max_center_frac": 0.75,
+          "min_radius_ratio": 0.5,
+          "min_outer_vote_ratio": 0.35,
+          "unreliable_classes": [
+            "texture"
+          ],
+          "angle_step_deg": 1.0
+        },
+        "n_in": 100,
+        "n_kept": 91,
+        "n_removed": 9,
+        "pairs": [
+          {
+            "kept": "M75",
+            "removed": "M15",
+            "center_over_R": 0.1,
+            "r_over_R": 0.6
+          },
+          {
+            "kept": "M26",
+            "removed": "M23",
+            "center_over_R": 0.515,
+            "r_over_R": 0.625
+          },
+          {
+            "kept": "M31",
+            "removed": "M43",
+            "center_over_R": 0.566,
+            "r_over_R": 0.5
+          },
+          {
+            "kept": "M76",
+            "removed": "M77",
+            "center_over_R": 0.559,
+            "r_over_R": 1.0
+          },
+          {
+            "kept": "M74",
+            "removed": "M32",
+            "center_over_R": 0.283,
+            "r_over_R": 0.7
+          },
+          {
+            "kept": "M82",
+            "removed": "M92",
+            "center_over_R": 0.589,
+            "r_over_R": 0.857
+          },
+          {
+            "kept": "M71",
+            "removed": "M40",
+            "center_over_R": 0.625,
+            "r_over_R": 0.625
+          },
+          {
+            "kept": "M75",
+            "removed": "M54",
+            "center_over_R": 0.671,
+            "r_over_R": 0.5
+          },
+          {
+            "kept": "M73",
+            "removed": "M56",
+            "center_over_R": 0.28,
+            "r_over_R": 0.625
+          }
+        ]
+      }
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "split": "tuning",
+      "sun": {
+        "azimuth_deg": 270.0,
+        "incidence_deg": 7.64,
+        "quality": "side_only",
+        "side": "west",
+        "side_candidate": null,
+        "incidence_range_deg": null,
+        "source": "LROC PHO; nắng phía Tây, góc tới 7.64° (gần đỉnh đầu)"
+      },
+      "scale_m_per_px": 2.0,
+      "E1_status": "not_evaluable_no_usable_sun",
+      "shading_counts": {
+        "not_checked": 100
+      },
+      "shading_by_label_match": {
+        "matched_known_label": {},
+        "unmatched": {
+          "not_checked": 100
+        }
+      },
+      "review_report": {
+        "params": {
+          "dark_level": 0.06,
+          "shadow_min_area_px": 1500,
+          "shadow_edge_dist_px": 2,
+          "rim_band_px": 1.5,
+          "radial_tol_deg": 30.0,
+          "angle_bins": 36,
+          "min_radial_coverage": 0.5,
+          "min_rim_contrast": 1.5,
+          "max_shadow_edge_fraction": 0.5
+        },
+        "counts": {
+          "rim": 61,
+          "shadow_edge": 0,
+          "texture": 39,
+          "unclear": 0
+        },
+        "removed": 0,
+        "shadow_area_fraction": 0.0092,
+        "edge_px": 26642,
+        "shadow_edge_px": 186,
+        "shadow_edge_fraction_of_edges": 0.007
+      },
+      "dedupe_report": {
+        "params": {
+          "max_center_frac": 0.75,
+          "min_radius_ratio": 0.5,
+          "min_outer_vote_ratio": 0.35,
+          "unreliable_classes": [
+            "texture"
+          ],
+          "angle_step_deg": 1.0
+        },
+        "n_in": 100,
+        "n_kept": 97,
+        "n_removed": 3,
+        "pairs": [
+          {
+            "kept": "M66",
+            "removed": "M67",
+            "center_over_R": 0.714,
+            "r_over_R": 1.0
+          },
+          {
+            "kept": "M45",
+            "removed": "M53",
+            "center_over_R": 0.401,
+            "r_over_R": 0.556
+          },
+          {
+            "kept": "M46",
+            "removed": "M69",
+            "center_over_R": 0.629,
+            "r_over_R": 0.778
+          }
+        ]
+      }
+    },
+    {
+      "image_id": "moon_marefrig_loc_c01",
+      "split": "holdout",
+      "sun": {
+        "azimuth_deg": null,
+        "incidence_deg": null,
+        "quality": "none",
+        "side": null,
+        "side_candidate": null,
+        "incidence_range_deg": [
+          61,
+          84
+        ],
+        "source": "LROC RDR NAC_ROI_MAREFRIGLOA; Low-Sun 61-84°; không dùng trung điểm dải góc tới làm góc đo của cửa sổ"
+      },
+      "scale_m_per_px": 20.0,
+      "E1_status": "not_evaluable_on_holdout",
+      "shading_counts": {
+        "not_checked": 100
+      },
+      "shading_by_label_match": {
+        "matched_known_label": {},
+        "unmatched": {
+          "not_checked": 100
+        }
+      },
+      "review_report": {
+        "params": {
+          "dark_level": 0.06,
+          "shadow_min_area_px": 1500,
+          "shadow_edge_dist_px": 2,
+          "rim_band_px": 1.5,
+          "radial_tol_deg": 30.0,
+          "angle_bins": 36,
+          "min_radial_coverage": 0.5,
+          "min_rim_contrast": 1.5,
+          "max_shadow_edge_fraction": 0.5
+        },
+        "counts": {
+          "rim": 27,
+          "shadow_edge": 4,
+          "texture": 69,
+          "unclear": 0
+        },
+        "removed": 0,
+        "shadow_area_fraction": 0.2864,
+        "edge_px": 26046,
+        "shadow_edge_px": 3705,
+        "shadow_edge_fraction_of_edges": 0.1422
+      }
+    }
+  ],
+  "artifacts_sha256": {
+    "configs/baseline.json": "0b4f67eddc45140dc1a2d6fbeefb8c75db8a5977c42081f4f17aa6a0d7526bea",
+    "configs/min_vote_ratio_030.json": "2c50c6ec0f987d1b0bb10cd71b508317106af27c815f08a6157fe2c1731f1b11",
+    "configs/min_vote_ratio_040.json": "7bc557524b94f4376b4398cc2a581865fa8ecf2ab89fe04f8394e6e6864d892d",
+    "configs/radius_step_2.json": "105f154a22da25c91d1262c1ddcc9a907cb0ede74eb5e223a68656d046bfcd54",
+    "E1/moon_ap16_m102064759r_c01.png": "970e03abd876f78e1a8894a59734ec2bdbaae0ae977571462b8e400213174a1d",
+    "E1/moon_ap16_m102064759r_c01_raw.json": "df643d7495effb09ded8dc4668e61c61decc939fea13bdee67a1987d1d7cd1ed",
+    "E1/moon_ap16_m102064759r_c01_remove_inverted.json": "ed85096e93659cac60be2ef4b54be1de81635064f0b9396b3c2b0869fd68467e",
+    "E1/moon_ap16_m102064759r_c01_shading_annotation.json": "1ab7ae94f8b8d41a22cd58dcceac35fa57ffc9939680737276a0f979b3192299",
+    "E1/moon_ap16_m109134835l_c01.png": "3f9b84bad298775f4cb5cbc2bb8f50b960c493e548477eda52b803f18ddd9ad7",
+    "E1/moon_ap16_m109134835l_c01_raw.json": "37d60906f89ee35915f42f1b345707e167c129487e3d65fa8c3deaa41d999c75",
+    "E1/moon_ap16_m132732855l_c01.png": "a96f96b561a85736973ff85852e822f684b66fb9006ff8e476eb5f2e8ba7426c",
+    "E1/moon_ap16_m132732855l_c01_raw.json": "33fbf53bfb1cfac6970a2cc2d26bd520f79ad9a324803828b1c3db41a0780788",
+    "E1/moon_ap16_m132732855l_c01_remove_inverted.json": "41ddb7a5ecad2e49b417f4531f67596ddc57fb9c53f35365f7e10179c9d4c468",
+    "E1/moon_ap16_m132732855l_c01_shading_annotation.json": "126f52ed82f383ebf4c78582c22d13e84aa40ca44135022aa1a3b1df54b14dbd",
+    "E1/moon_marefrig_loc_c01.png": "8f0fd97f7f92b6ceaa49698be9743be07bae70eaa43138b8dcf01b623ed0582c",
+    "E1/moon_marefrig_loc_c01_raw.json": "e89f2a332f724f8d24cde44f8f0df6c1ea15fbc6836394d329416abddf076809",
+    "E1.csv": "dccf79aae57ee0902436558f74d8d719811ea154c6613009688405305d31e387",
+    "E2/moon_ap16_m102064759r_c01.png": "6a2608c918f61630a9616ea9d9664a23ce72d6e81e97c98ac6e488042762c09a",
+    "E2/moon_ap16_m102064759r_c01_baseline.json": "a67ce2c3ef3b3734cd7869429c49921c8fa9620a8a5ec819adf35f86ac1d3035",
+    "E2/moon_ap16_m102064759r_c01_min_vote_ratio_030.json": "2e7b6aaaba04ab1e05bc324a70d8f53988aa56cc2486a1bbe748cd501de8b11f",
+    "E2/moon_ap16_m102064759r_c01_min_vote_ratio_040.json": "f844637b51ab7cb38d47e58774b63ccb42885304017f7c6c05d6fc69681adc82",
+    "E2/moon_ap16_m102064759r_c01_radius_step_2.json": "139c044226f90f15eb1aeb5ee931a578a01eaa685223210591a0bb77c24655c1",
+    "E2/moon_ap16_m109134835l_c01.png": "93aebfbe11824059bbaa0856e7991e55dbc5b3f8ab6d07a032d5ec9ae812a1be",
+    "E2/moon_ap16_m109134835l_c01_baseline.json": "f73d67d63cd967306cceb3681a2a319a9d2ffeb8e30b9941caba9dc65ae86643",
+    "E2/moon_ap16_m109134835l_c01_min_vote_ratio_030.json": "d0bb5e9a57edada7648204efde01b62c76262652ba8f69ecfda0da5faaa22e93",
+    "E2/moon_ap16_m109134835l_c01_min_vote_ratio_040.json": "35e9d4fb21208dc4f3b08b9aca1ba1558e8b449fc63b1f825efbe5221ee0b690",
+    "E2/moon_ap16_m109134835l_c01_radius_step_2.json": "3a334b9ceccaebc427516a51a9fd0544472c078abe17f6d6602ff7d5cb9320e8",
+    "E2/moon_ap16_m132732855l_c01.png": "7d5c14b267d288d0b6093043cf5d50b965552c09133055fd512c7611346e2221",
+    "E2/moon_ap16_m132732855l_c01_baseline.json": "486fbb694848381e861f11e1d12867e3a4a59ecff11003fb0f1699bb7b640be8",
+    "E2/moon_ap16_m132732855l_c01_min_vote_ratio_030.json": "c0fa3ecb3b4802c3bc2cf846962c9182f8dcc20738adaef35142984095a4b719",
+    "E2/moon_ap16_m132732855l_c01_min_vote_ratio_040.json": "aeaeb23d4fbe48600eff90bc2976f4466d286b5b60c680ee49aa4907ebd6161e",
+    "E2/moon_ap16_m132732855l_c01_radius_step_2.json": "6b20624aad36f9a85b7d03be778ccbdb724f15b184378f32ba48d9f0c6940780",
+    "E2.csv": "354b318b3b5103df3a6c7dec1ba15c7e6650b750f78749ed94c20a0eb1ba0a0f",
+    "E3/moon_ap16_m102064759r_c01.png": "72f9caf4a4048a47f152462c328bef76ac234fb5a64bc73b0a77555216e6ef79",
+    "E3/moon_ap16_m102064759r_c01_baseline.json": "caf25b94df3fc470e55b1896c3d05a5a5bc633894adbdc8eb7b6f269d477da1c",
+    "E3/moon_ap16_m102064759r_c01_dedupe.json": "09d948017ae81bcad0cd087ed9d4c9b604524193fba35b878020fb84dc303e7b",
+    "E3/moon_ap16_m102064759r_c01_remove_texture.json": "4a67b4b74d805062b68be52424494fde0c93a48f1188da10a30a231f11cc24df",
+    "E3/moon_ap16_m109134835l_c01.png": "4b7526b190d2f349b7f4673b34dafd8e14a665f768f943e2c90b95d67b9cacd3",
+    "E3/moon_ap16_m109134835l_c01_baseline.json": "7183fa033642b7731ba435db699203315da93a673612447a70ec508f99c56ef1",
+    "E3/moon_ap16_m109134835l_c01_dedupe.json": "74a2c536278f523b39e96f4a730a49c044a238ee19cc40f01b8a7f4c3b553e23",
+    "E3/moon_ap16_m109134835l_c01_remove_texture.json": "d92740fab53ee322a40a0c42b044e8a56378bbc66ae78fc083910da31366c3b8",
+    "E3/moon_ap16_m132732855l_c01.png": "6008bb589b7ded9cd8aae4c0b294b4daa7cf29e1d86f1f4b8a5f021d598cd6ce",
+    "E3/moon_ap16_m132732855l_c01_baseline.json": "922f4c6e4b984157b219a7401a9d681c53dff442b20a288e4e2d05ae20663e18",
+    "E3/moon_ap16_m132732855l_c01_dedupe.json": "069378df365c8c9a50d216f688ab77011f0d94b3cdae4b06f55c1509a70e67af",
+    "E3/moon_ap16_m132732855l_c01_remove_texture.json": "08a1dce672b07aa6aee872480e3130d028a420d59677194ba0f734b3fa4b8736",
+    "E3/moon_marefrig_loc_c01.png": "65ba76452238b6f1bd3de138785bdf830e50d4d8db51540305d7fa24fd18d21c",
+    "E3/moon_marefrig_loc_c01_baseline.json": "fb939827115e33b0162a7580231c4e93bfad03156db3f806703d67f8b9be9c2f",
+    "E3.csv": "76a37519e029cc07c150e108aad2e6a1b008ff0b0006daebc5083b56106705cd",
+    "README.md": "00e6c857949e2005afaabcf7d41c27e1b36a1163d391d0bfa69ce3159e372d3b"
+  },
+  "completed_at_utc": "2026-11-01T09:26:45.968394+00:00",
+  "table_rows": {
+    "E1": 8,
+    "E2": 12,
+    "E3": 10
+  },
+  "post_run_documentation": {
+    "README.md": {
+      "previous_sha256": "d51e86366bc4963239c4118ec6f1a391d8cec5d659a5cdb57902fc9f0552dab7",
+      "sha256": "00e6c857949e2005afaabcf7d41c27e1b36a1163d391d0bfa69ce3159e372d3b",
+      "reason": "Clarify manifest scope; computed data and metrics unchanged."
+    }
+  }
+}

@@ -1,0 +1,13 @@
+image_id,split,variant,scope,configuration,candidates,removed,tp_known,fn_known,known_labels,recall_known,precision,f1,seconds_hough,r_min_px,r_max_px,radius_step_px,input_hit_max_circles,known_labels_outside_search
+moon_ap16_m132732855l_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,0,9,9,0.0,,,9.946153299999423,5,125,1,True,0
+moon_ap16_m132732855l_c01,tuning,min_vote_ratio_030,tuning_diagnostic,min_vote_ratio_030,100,0,0,9,9,0.0,,,8.196891999992658,5,125,1,True,0
+moon_ap16_m132732855l_c01,tuning,min_vote_ratio_040,tuning_diagnostic,min_vote_ratio_040,100,0,0,9,9,0.0,,,7.809584299990092,5,125,1,True,0
+moon_ap16_m132732855l_c01,tuning,radius_step_2,tuning_diagnostic,radius_step_2,100,0,0,9,9,0.0,,,3.975848699992639,5,125,2,True,0
+moon_ap16_m102064759r_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,1,10,11,0.09090909090909091,,,9.679079099994851,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,min_vote_ratio_030,tuning_diagnostic,min_vote_ratio_030,100,0,1,10,11,0.09090909090909091,,,8.413214100000914,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,min_vote_ratio_040,tuning_diagnostic,min_vote_ratio_040,100,0,1,10,11,0.09090909090909091,,,8.267865200003143,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,radius_step_2,tuning_diagnostic,radius_step_2,100,0,1,10,11,0.09090909090909091,,,4.384206500006258,5,125,2,True,0
+moon_ap16_m109134835l_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,0,10,10,0.0,,,9.361846699990565,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,min_vote_ratio_030,tuning_diagnostic,min_vote_ratio_030,100,0,0,10,10,0.0,,,8.70831200000248,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,min_vote_ratio_040,tuning_diagnostic,min_vote_ratio_040,100,0,0,10,10,0.0,,,9.672661899996456,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,radius_step_2,tuning_diagnostic,radius_step_2,100,0,0,10,10,0.0,,,4.968112300004577,5,125,2,True,0
