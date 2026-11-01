@@ -13,7 +13,7 @@ GitHub chỉ được coi là đã tạo khi bạn thấy trang repo. Nếu tên
 Repo local đã có nhánh main, commit đầu tiên và origin trỏ tới địa chỉ dự kiến. Từ Terminal:
 
 ```bash
-cd /home/duckcy/work/XLA/nasa24-crater-stem
+cd <repo>
 git remote -v
 git push -u origin main
 ```

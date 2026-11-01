@@ -164,7 +164,7 @@ Cách sửa tối thiểu trong `app.py`: nhãn chỉ gồm mã ảnh và tên v
 
 `tests/test_app_state.py::PlayerRerunStateTests.test_fast_delete_undo_save_keeps_image_with_delayed_picker_wire_value` phát lại giá trị string của widget đúng như browser sau xóa/hoàn tác, rồi gửi Save với nhãn cũ. Test thất bại trên main vì lựa chọn thành Apollo 15; bản sửa giữ Lunokhod, revision và nonce đúng, có một file câu trả lời đúng hình học. Test dùng `install_dataset` vào thư mục tạm; đã chạy đối chứng trong bản sao không có ảnh tại `data/processed`.
 
-Chi tiết nhịp, source hash, log deserialize/resolve và ảnh mỗi lượt nằm trong hồ sơ `n24-team/runs/app/r4/`; báo cáo `n24-app-r4.md` chỉ rõ lệnh và giới hạn. Bộ ghi log chỉ quan sát lời gọi thật và chuyển thư mục lưu sang vùng minh chứng. Kết quả r4 là kiểm cục bộ, chờ kiểm độc lập. Harness vẫn chờ revision do Python phản hồi và nonce lưu khớp **sau** chuỗi nhanh; không dùng số vòng cục bộ hoặc riêng `notRunning` làm xác nhận đã lưu.
+Chi tiết nhịp, source hash, log deserialize/resolve và ảnh mỗi lượt nằm trong hồ sơ `<app-run-dir>/`; báo cáo `<app-report>.md` chỉ rõ lệnh và giới hạn. Bộ ghi log chỉ quan sát lời gọi thật và chuyển thư mục lưu sang vùng minh chứng. Kết quả r4 là kiểm cục bộ, chờ kiểm độc lập. Harness vẫn chờ revision do Python phản hồi và nonce lưu khớp **sau** chuỗi nhanh; không dùng số vòng cục bộ hoặc riêng `notRunning` làm xác nhận đã lưu.
 
 ## 4. Việc còn lại để đóng S2-13
 

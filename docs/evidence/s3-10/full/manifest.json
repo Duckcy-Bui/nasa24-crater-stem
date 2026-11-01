@@ -13,11 +13,11 @@
     {
       "name": "dataset",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\install_s106_dataset.py"
+        "<repo>\\scripts\\install_s106_dataset.py"
       ],
       "status": "complete",
       "returncode": 0
@@ -25,13 +25,13 @@
     {
       "name": "synthetic",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\verify_hough_examples.py",
+        "<repo>\\scripts\\verify_hough_examples.py",
         "--output-root",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\synthetic"
+        "<repo>\\outputs\\s310_full_validation\\synthetic"
       ],
       "status": "complete",
       "returncode": 0
@@ -39,13 +39,13 @@
     {
       "name": "frozen_tuning",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\freeze_s215.py",
+        "<repo>\\scripts\\freeze_s215.py",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\frozen_tuning"
+        "<repo>\\outputs\\s310_full_validation\\frozen_tuning"
       ],
       "status": "complete",
       "returncode": 0
@@ -53,19 +53,19 @@
     {
       "name": "evaluation_tuning",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\evaluate_hough.py",
+        "<repo>\\scripts\\evaluate_hough.py",
         "--config",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\comparison_config.json",
+        "<repo>\\outputs\\s310_full_validation\\comparison_config.json",
         "--images",
         "moon_ap16_m132732855l_c01",
         "moon_ap16_m109134835l_c01",
         "moon_ap15_hia_c01",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\evaluation_tuning",
+        "<repo>\\outputs\\s310_full_validation\\evaluation_tuning",
         "--repeats",
         "1"
       ],
@@ -75,15 +75,15 @@
     {
       "name": "experiments_tuning",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\s207_experiments.py",
+        "<repo>\\scripts\\s207_experiments.py",
         "--config",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\game_config.json",
+        "<repo>\\outputs\\s310_full_validation\\game_config.json",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\experiments_tuning.json",
+        "<repo>\\outputs\\s310_full_validation\\experiments_tuning.json",
         "--write"
       ],
       "status": "complete",
@@ -92,16 +92,16 @@
     {
       "name": "evaluation_holdout",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\evaluate_hough.py",
+        "<repo>\\scripts\\evaluate_hough.py",
         "--config",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\comparison_config.json",
+        "<repo>\\outputs\\s310_full_validation\\comparison_config.json",
         "--holdout",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\evaluation_holdout",
+        "<repo>\\outputs\\s310_full_validation\\evaluation_holdout",
         "--repeats",
         "1"
       ],
@@ -111,18 +111,18 @@
     {
       "name": "experiments_holdout",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\s207_experiments.py",
+        "<repo>\\scripts\\s207_experiments.py",
         "--holdout",
         "--config",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\game_config.json",
+        "<repo>\\outputs\\s310_full_validation\\game_config.json",
         "--chosen-config",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\game_config.json",
+        "<repo>\\outputs\\s310_full_validation\\game_config.json",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\experiments_holdout.json",
+        "<repo>\\outputs\\s310_full_validation\\experiments_holdout.json",
         "--write"
       ],
       "status": "complete",
@@ -131,13 +131,13 @@
     {
       "name": "density",
       "command": [
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\.venv\\Scripts\\python.exe",
+        "<venv>\\Scripts\\python.exe",
         "-X",
         "utf8",
         "-B",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\scripts\\s209_density.py",
+        "<repo>\\scripts\\s209_density.py",
         "--output",
-        "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\density"
+        "<repo>\\outputs\\s310_full_validation\\density"
       ],
       "status": "complete",
       "returncode": 0
@@ -319,7 +319,7 @@
     "evaluation_tuning/results.csv": "a874b7d406930278bd8c410277327f0e6c27b09007964f3ff3c00a9b6604a2e6",
     "evaluation_tuning/summary.json": "3b1a63f3b3a937aec764682cb64c05ebeccb0715353d8c1acda46e1587915a8c",
     "evaluation_tuning.log": "0a8da984704a5c295a599df00b98790647b6b1337bc28219840d8fe3179bed66",
-    "experiments_holdout.json": "b53d5c62bd6b293fdb882e060babeb48c3e0632309da92ebb3f434666eceb8ff",
+    "experiments_holdout.json": "d57670d0bfaf57ff71a75479a087f8ac5844a5786cdfbdd52ab411c5bdc3de49",
     "experiments_holdout.log": "6b8a433e81256d58d998e93aeec301ea636320d4c1362f6b6e870f4aaea5e887",
     "experiments_tuning.json": "933e1dc9a60e90d04f5e70f2b8128ebf708c62d1c67da71a340cc84ad07d9052",
     "experiments_tuning.log": "5a7db35881c0a5f2ac8757c0c6a042f9a60f4629c798af4d22a4a22e53184577",
@@ -349,6 +349,6 @@
     "synthetic/s112_20261030T104355599709Z/comparison.png": "533de4cb132b1ce768efc16ed43454752e72ea2bb656c47add937b53baa593b7",
     "synthetic/s112_20261030T104355599709Z/inputs.npz": "9e6fdea9190bcae45bb59efa0b41a74f18c0ff7ed1e7a7dce8f1dd420dc0c119",
     "synthetic/s112_20261030T104355599709Z/report.json": "0686eb116f512528aee5893a552ec4b1139e2d4da6c2f8694f3fd1476568ef19",
-    "synthetic.log": "b0c9644b060cd8bba19507b3d946dc97f3aedd050dd2427df5062559c32f1ee6"
+    "synthetic.log": "f227e007886e2f32e6a8ddd17d1c41a144428838deb158f189a01d7864b6e9d0"
   }
 }

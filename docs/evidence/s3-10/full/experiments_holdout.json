@@ -48,7 +48,7 @@
   "code_version": "210e68d8e4b678a6f464a2f5c29de689a0ef63dc",
   "metric_scope": "reviewed sparse labels; Recall known only",
   "holdout_mode": true,
-  "chosen_config_path": "D:\\Study\\HK1-Nam4\\ImageP\\nasa24-crater-stem\\outputs\\s310_full_validation\\game_config.json",
+  "chosen_config_path": "<repo>\\outputs\\s310_full_validation\\game_config.json",
   "chosen_hough_params": {
     "voting_method": "full_circle",
     "candidate_selection": "score",
