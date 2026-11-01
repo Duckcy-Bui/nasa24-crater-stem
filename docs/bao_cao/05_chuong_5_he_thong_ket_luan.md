@@ -5,7 +5,8 @@ src/contracts.py, src/matching.py, src/scoring.py, src/game_results.py, src/inte
 Ảnh: docs/evidence/s3-08/ chụp lại qua tunnel VPS ngày 01/11/2026 bằng Playwright.
 Mốc main c466c2d do trưởng nhóm cung cấp; cách chụp và kết quả kiểm ở evidence/s3-08/README.md.
 Bảy vòng minh họa giữ như ảnh cũ; kết quả vẫn 60/100, tìm đúng 6/10 nhãn, trùng máy 0.
-Việc còn lại: 5.6 (số test cuối, người điều phối), 5.7 (S3-05, Quốc Anh).
+Số test ở 5.6 đo ngày 01/11/2026 trên main adc31ad ghép PR #39 (S3-16) và nhánh S3-12;
+đúng khi #39 merge. Nếu PR #38 (S3-05) merge trước thì cộng 4 test của #38. Việc còn lại: 5.7 (S3-05, Quốc Anh).
 -->
 
 # Chương 5. Hệ thống, trò chơi và kết luận
@@ -87,7 +88,7 @@ Mọi bãi đáp và rover đã đối chiếu đều nằm ngoài ảnh cắt, 
 
 **Tích hợp.** `src/integration.py` gọi mô-đun thống kê và thẻ, trả `pending` khi chưa cài, `ok` khi đúng định dạng, `error` khi lỗi. Giao diện không tự tạo số liệu khi lỗi; thẻ thiếu nguồn, link không phải `http(s)` hoặc vị trí ngoài ảnh bị ẩn kèm lý do.
 
-**Kiểm thử.** Kho mã có [CHỜ: số test Python và JavaScript ở phiên bản cuối] test tự động trên GitHub Actions: hợp đồng dữ liệu, Hough tính tay, ghép một–một so với vét cạn, luật chấm, luồng Streamlit và thao tác canvas. Test đạt xác nhận hành vi theo thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
+**Kiểm thử.** Kho mã có 333 test Python và 6 bộ test JavaScript tự động trên GitHub Actions: hợp đồng dữ liệu, Hough tính tay, ghép một–một so với vét cạn, luật chấm, luồng Streamlit và thao tác canvas. Test đạt xác nhận hành vi theo thiết kế; độ chính xác phát hiện được đo riêng ở Chương 4.
 
 **Triển khai.** Ứng dụng chạy trên máy chủ, có HTTPS và mật khẩu. Lượt đo trên máy chủ thử nghiệm mất 9,4 s cho lần chấm đầu; ứng viên được giữ trong bộ nhớ đệm tối đa 8 ảnh. Có thể chấm trước các ảnh dùng trình diễn để làm nóng bộ nhớ đệm.
 

@@ -74,7 +74,7 @@ Thư mục mới `outputs/s310_<UTC>/` chứa `frozen_tuning.csv`, hai bảng `e
 
 ## E. Chi tiết thuật toán và bằng chứng bổ sung
 
-Các phần dưới chuyển từ Chương 2–3 khi rút gọn; số liệu thuộc các lần chạy đã ghi, không phải phép đo mới.
+Các phần dưới chuyển từ Chương 2–4 khi rút gọn; số liệu thuộc các lần chạy đã ghi, không phải phép đo mới.
 
 ### E.1. Chi tiết Hough
 
