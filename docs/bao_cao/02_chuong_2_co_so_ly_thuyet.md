@@ -117,7 +117,7 @@ Bỏ phiếu gradient giảm hạng $E_nS$ còn $E_n$ và không đếm theo lô
 
 $$ O(MN+BS+K+E_n+T)\ \text{toàn vòng};\quad O(MN+K+E_n+T)\ \text{gradient}. \qquad (2.16) $$
 
-Một mặt phẳng 512 × 512 int32 tốn 1 MiB; giữ cả 124 bán kính tốn 124 MiB. Chương 3 nêu giả mã và chi phí của các khối còn lại. Chi tiết lượng tử hóa và phép đo lịch sử được giữ trong tài liệu bổ sung ở Phụ lục E.
+Một mặt phẳng 512 × 512 int32 tốn 1 MiB; giữ cả 124 bán kính tốn 124 MiB. Chương 3 nêu giả mã và chi phí của các khối còn lại. Hai ví dụ lượng tử hóa/số phiếu được giữ nguyên ở mục E.9 của tài liệu bổ sung (liên kết Phụ lục E); phép đo tăng tốc lịch sử ở E.3.
 
 ## 2.3. Kiểm tra sáng–tối theo hướng nắng
 

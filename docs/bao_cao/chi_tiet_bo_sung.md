@@ -209,6 +209,16 @@ Dải 20–500 m ở 2 m/px cho $r \in [5, 125]$ px; dải 200–4.000 m ở 20 
 ![Hình E.6. Nguyên lý chấm sáng–tối trên cảnh giả lập, nắng từ phía Tây, góc tới 70°. Hàng trên: hố lõm; hàng dưới: gò nổi cùng bán kính. Cột giữa là bản đồ t; cột phải là độ sáng theo t, cho S = +0,98 (hợp) và S = −0,98 (ngược).](../images/s114/sang_toi_nguyen_ly.png){width=65%}
 
 
+### E.9. Ví dụ lượng tử hóa và số phiếu Hough
+
+Hai đoạn dưới giữ nguyên văn Chương 2 tại mốc `94c17ff`: [mục 2.2.5, dòng 111](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/94c17ff/docs/bao_cao/02_chuong_2_co_so_ly_thuyet.md#L111) và [mục 2.2.6, dòng 125](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/94c17ff/docs/bao_cao/02_chuong_2_co_so_ly_thuyet.md#L125). Ký hiệu theo bản lịch sử: E là số điểm biên, R/R_n là số bán kính, Θ là số góc, N = H × W là số pixel, K là tổng số đỉnh và L là trần vòng giữ. Đây là ví dụ tính toán, không phải phép đo thời gian mới.
+
+Với bước Δr, ví dụ dải [12, 29] bước 4 chỉ quét 12, 16, 20, 24, 28, và sai số bán kính tới Δr/2. Ở bán kính r khác bán kính thật $r_0$, phiếu rải trên vòng nhỏ bán kính khoảng $\left|r - r_0\right|$ quanh tâm nên đỉnh yếu đi. Về góc, hai mẫu liền nhau cách nhau cung $r\,\Delta\varphi$, vượt 1 px khi r > 57,3 px với Δφ = 1°; $S_r$ đạt 360 lần đầu ở r = 62 px, dao động 352–360 tới r = 66 px và giữ 360 từ r = 67 px.
+
+Hạng chính có dạng quen thuộc $O(E \cdot R \cdot \Theta)$, với Θ là số góc: với 24.291 điểm biên của STT 13 quét r = 5…125 bước 1°, tổng số độ lệch là 35.365, tức khoảng 8,6·10⁸ phiếu (r = 5…128 cho 36.445 độ lệch). Bỏ phiếu theo gradient tốn $O(R_n(E + N) + K\log K + K\,L)$; bước xen kẽ nhóm bán kính thêm O(K). Khối tích lũy ba chiều cần $R_n \cdot H \cdot W$ ô, tức 1 MiB mỗi mặt phẳng 512 × 512 số nguyên 4 byte và 124 MiB cho r = 5…128. Cài đặt chỉ giữ một mặt phẳng, nhưng danh sách K đỉnh vẫn gom qua mọi bán kính:
+
+Ở bước góc 1°, điều kiện cung dài hơn 1 px là $r>180/\pi\approx57,3$ px. Số độ lệch đạt 360 từ r = 67 chỉ nói trong dải đã xét đến r = 128. Từ hai số ở đoạn trích, $24.291\times35.365=859.051.215\approx8,6\times10^8$ là số phiếu dự kiến **trước khi bỏ tâm ngoài ảnh**; dải r = 5…128 có tổng 36.445 độ lệch. Nguồn 24.291 điểm biên là STT 13 sau B8 ở mục 3.2.2 của cùng bản lịch sử.
+
 ## F. Chi tiết hồ sơ dữ liệu trước khi sắp lại chương
 
 Số mục dưới đây giữ theo bản 94c17ff để truy nguyên các khoảng cách, kích thước gói và thông số metadata; xem Chương 4 hiện hành để đọc cấu trúc mới.
@@ -280,4 +290,3 @@ Tập điều chỉnh dùng để chọn tham số; tập kiểm tra chỉ dùng
 Tập điều chỉnh gồm 18 ảnh cắt từ bốn vùng: 11 ảnh Apollo 16 ở 2 m/px, cùng Apollo 15 khi Mặt Trời cao, Van de Graaff và Lunokhod 1 ở 20 m/px; có 174 nhãn được tính. Tập kiểm tra gồm 8 ảnh cắt 20 m/px từ ba vùng, với 66 nhãn được tính (Bảng 4.2). Chỉ 8 ảnh Apollo 16 của tập điều chỉnh thỏa điều kiện của bước sáng–tối (Chương 3): có phía nắng đã biết và góc tới từ 30° trở lên. STT 10 (28,38°) và hai ảnh cắt của STT 17 (7,64°) bị loại vì nắng gần đứng.
 
 Cách chia có hai giới hạn. Thứ nhất, cả 8 ảnh kiểm tra đều là mosaic 20 m/px với `sun.quality = none`, nên bước sáng–tối luôn ghi `not_checked` và thí nghiệm E1 không có phép đo ngoài mẫu. Thứ hai, tập kiểm tra không có ảnh 2 m/px, nên kết quả trên Apollo 16 chỉ là kết quả chẩn đoán và được báo riêng. Khắc phục cần một cụm ảnh Apollo 16 mới, không chồng lấp với tập điều chỉnh; bộ dữ liệu hiện chưa có. Ngoài ra, hai vùng so sánh 2A và 2B nằm ở hai tập khác nhau, nên khi so mật độ cần nêu sai số phát hiện của từng vùng. Ảnh `moon_marefrig_loc_c01` của tập kiểm tra đã được dùng làm ảnh đối chứng trong thử nghiệm tiền xử lý trước khi chốt cách chia; thử nghiệm đó giữ nguyên tham số mặc định, nhưng đây vẫn là điểm cần lưu ý.
-

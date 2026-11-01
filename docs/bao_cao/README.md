@@ -105,6 +105,15 @@ Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đ�
 | Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
 | File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số 333 test Python/6 bộ JavaScript thuộc nền đã ghép S3-16; r5 không chạy lại toàn bộ kiểm thử ứng dụng.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 338 test Python và 6 bộ JavaScript, đo ngày 01/11/2026 trên main `59cf4e3` ghép nhánh `s3-16-doi-chieu-de-goc` (thêm 5 test đóng gói) và nhánh này; đúng khi PR S3-16 được merge. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 
 Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 và các xác nhận con người vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
+
+## 6. Hiệu chỉnh bảng chuyển/cắt sau kiểm r5 (r6)
+
+R5-03 phát hiện hai ví dụ số đã bị bỏ khỏi bản r5 dù câu dẫn nói có ở tài liệu bổ sung. r6 khôi phục nguyên văn từ mốc `94c17ff`, không coi chúng đã được giữ trong r5.
+
+| Mục nguồn tại 94c17ff | Đích sau r6 | Nội dung khôi phục và lý do | Chủ phần |
+|---|---|---|---|
+| 2.2.5, dòng 111 | Tài liệu bổ sung E.9; dẫn từ 2.2.4 | Điều kiện góc 180/π ≈ 57,3; 360 độ lệch lần đầu ở r=62, dao động 352–360 tới r=66, ổn định từ r=67 trong dải xét. Khôi phục ví dụ minh họa lượng tử hóa | Tiến |
+| 2.2.6, dòng 125 | Tài liệu bổ sung E.9; dẫn từ 2.2.4 | Tổng 35.365/36.445 độ lệch; 24.291 điểm biên cho 859.051.215 ≈ 8,6×10^8 phiếu trước cắt biên. Khôi phục minh họa chi phí, giữ ký hiệu lịch sử và nguồn | Tiến |

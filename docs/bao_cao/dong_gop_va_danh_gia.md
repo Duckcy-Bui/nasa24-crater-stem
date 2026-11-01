@@ -25,4 +25,3 @@ Bảng 1 ghi đầu việc và sản phẩm trong kho mã. S1–S3 là ba sprint
 | Hoàng Quốc Anh | [CHỜ] | [CHỜ] | [CHỜ] | [CHỜ] |
 
 : Bảng 2. Tỷ lệ đóng góp và đánh giá chéo.
-
