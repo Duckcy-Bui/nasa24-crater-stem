@@ -170,6 +170,6 @@ Hai bài test trong `tests/test_integration.py` (S2-13, Đức) trước đây k
 ## Tài liệu tham khảo
 
 - Crater Analysis Techniques Working Group (1979). Standard techniques for presentation and analysis of crater size-frequency data. *Icarus*, 37(2), 467–474. DOI 10.1016/0019-1035(79)90009-5.
-- Garwood, F. (1936). Fiducial limits for the Poisson distribution. *Biometrika*, 28(3/4), 437–442. DOI 10.2307/2333958.
-- Przyborski, J., & Wilenski, H. (1940). Homogeneity of results in testing samples from Poisson series. *Biometrika*, 31(3/4), 313–323. DOI 10.2307/2332612.
+- Garwood, F. (1936). Fiducial limits for the Poisson distribution. *Biometrika*, 28(3/4), 437–442. DOI 10.1093/biomet/28.3-4.437.
+- Przyborowski, J., & Wilenski, H. (1940). Homogeneity of results in testing samples from Poisson series. *Biometrika*, 31(3/4), 313–323. DOI 10.2307/2332612.
 - Nhóm 2, *S1-06 Hướng dẫn dữ liệu*, `docs/S1-06_HUONG_DAN_DU_LIEU.md`; *S2-03 Tập điều chỉnh*, `docs/S2-03_TAP_DIEU_CHINH.md`.

@@ -1,0 +1,231 @@
+{
+  "comparison_policy": "So đúng khóa ảnh/phương pháp/biến thể/vùng; bỏ thời gian, timestamp, đường dẫn; metadata commit/môi trường tách riêng. CSV khác schema so các cột chung. S2-07 cũ chỉ so phần chung của một ảnh; không coi trường hoặc ảnh thiếu là đã kiểm.",
+  "tables": [
+    {
+      "table": "frozen vs S3-10",
+      "unit": "csv_row",
+      "matched_rows": 18,
+      "different_rows": 0
+    },
+    {
+      "table": "frozen vs S2-15",
+      "unit": "csv_row",
+      "matched_rows": 18,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation tuning vs S3-10",
+      "unit": "csv_row",
+      "matched_rows": 9,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation tuning vs S2-06/S3-02",
+      "unit": "csv_row",
+      "matched_rows": 9,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation tuning detailed summary",
+      "unit": "image_record",
+      "matched_rows": 3,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation holdout vs S3-10",
+      "unit": "csv_row",
+      "matched_rows": 24,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation holdout vs S2-06/S3-02",
+      "unit": "csv_row",
+      "matched_rows": 24,
+      "different_rows": 0
+    },
+    {
+      "table": "evaluation holdout detailed summary",
+      "unit": "image_record",
+      "matched_rows": 8,
+      "different_rows": 0
+    },
+    {
+      "table": "E1.csv",
+      "unit": "csv_row",
+      "matched_rows": 15,
+      "different_rows": 0
+    },
+    {
+      "table": "E2.csv",
+      "unit": "csv_row",
+      "matched_rows": 14,
+      "different_rows": 0
+    },
+    {
+      "table": "E3.csv",
+      "unit": "csv_row",
+      "matched_rows": 10,
+      "different_rows": 0
+    },
+    {
+      "table": "experiments_tuning.json",
+      "unit": "image_record",
+      "matched_rows": 3,
+      "different_rows": 0
+    },
+    {
+      "table": "experiments_holdout.json",
+      "unit": "image_record",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "experiments vs S2-07 legacy (shared fields only)",
+      "unit": "image_record",
+      "matched_rows": 1,
+      "different_rows": 0
+    },
+    {
+      "table": "E1.csv vs S2-07 shared legacy rows",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "E2.csv vs S2-07 shared legacy rows",
+      "unit": "csv_row",
+      "matched_rows": 4,
+      "different_rows": 0
+    },
+    {
+      "table": "E3.csv vs S2-07 shared legacy rows",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "density/bang_dem.csv vs S3-10",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "density/bang_dem.csv vs S2-09",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "density/may_so_voi_tay.csv vs S3-10",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "density/may_so_voi_tay.csv vs S2-09",
+      "unit": "csv_row",
+      "matched_rows": 2,
+      "different_rows": 0
+    },
+    {
+      "table": "frozen detailed rows vs S3-10",
+      "unit": "image_record",
+      "matched_rows": 18,
+      "different_rows": 0
+    },
+    {
+      "table": "frozen detailed rows vs S2-15",
+      "unit": "image_record",
+      "matched_rows": 18,
+      "different_rows": 0
+    },
+    {
+      "table": "frozen machine circles and matching pairs vs S2-15",
+      "unit": "image_record",
+      "matched_rows": 18,
+      "different_rows": 0
+    },
+    {
+      "table": "synthetic/comparison.csv",
+      "unit": "csv_row",
+      "matched_rows": 8,
+      "different_rows": 0
+    }
+  ],
+  "source_input_sha256": {
+    "total_files": 127,
+    "byte_identical_files": 117,
+    "different_files": [
+      {
+        "path": "data/reference_labels/README.md",
+        "old_sha256": "dca18db1d1b2188f514b8d8fca80f54947ead27f609d887d7e425412df83d40b",
+        "new_sha256": "63268c97ae0f4a06572d8652231d37b3a3696574b8aabeb903280c241a311cda",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "requirements-report.txt",
+        "old_sha256": "858a4db44b574ab5df97961aaf6eeef61205d428c9b5e7569636ec3f7435626f",
+        "new_sha256": "2cf6268041ab3d83bbf2a97ca60c70c03eda0ad24e54467e833798bda3551a49",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "requirements-test.txt",
+        "old_sha256": "9d39d634713db9f5de4c641e8944c14911a7036235a623b728663e938fccf0a3",
+        "new_sha256": "feccaed1fa83f84cdebc692ebc39676440582988f4a7cb2694cf43705044eda7",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "requirements.txt",
+        "old_sha256": "0e806d30e3c529185251b8a2c696f6b0ea6a7a23126d4b76c9add5e2ea1c1465",
+        "new_sha256": "82ef1613d70de5856161d8efff23f32be3cbd3d680354c4f4fe7d6c42f5733f7",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "scripts/check_ui_r1.cjs",
+        "old_sha256": "4cfa99f89d695c66255418edc548b10fb323cee84be4ba8143782295796dbe86",
+        "new_sha256": "813ba393e69a43e112c4cb7ee789e18449b4786c9f58f0727637e5fd8193b780",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "scripts/reproduce_s310.py",
+        "old_sha256": "7ad2b05652821999ae6fed997b952e42a6791ff54dee5b78e5a2309ec8ef3a63",
+        "new_sha256": "dbb63847186c5bbd15ac9155489d242e0882566f43b97e74246e4056914fc171",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "7d8a0a9 S3-10: document and reproduce results while preserving S2-15; snapshot full đã chứa file chưa commit trước khi được thêm ở commit S3-10."
+      },
+      {
+        "path": "scripts/s207_experiments.py",
+        "old_sha256": "2ffb3a3849b599d9383395b1fedf24dfafe3477c2e42ece5e694ec0f6f350666",
+        "new_sha256": "bbc41f79a4b125151272708d76dc8d367d194dfc598915780ad70516c5c0e527",
+        "explanation": "Theo verification.json, sau full chỉ sửa trợ giúp CLI/cách in đường dẫn. Hash mới trùng quick cuối và Git blob 7d8a0a9; diff từ 7d8a0a9 đến 13394de trống. Không có toàn văn script trước sửa CLI để đối chiếu trực tiếp.",
+        "git_history": "7d8a0a9 S3-10: document and reproduce results while preserving S2-15"
+      },
+      {
+        "path": "scripts/s209_density.py",
+        "old_sha256": "1a4f9fe185834ab6a2d3fd60f909715dff17b9172e1067069f144a27de41d7be",
+        "new_sha256": "a53fa103f364188f6a11a745f1f1aa233fdabf09c35eddf855dfb4c429f251de",
+        "explanation": "Theo verification.json, sau full chỉ sửa trợ giúp CLI/cách in đường dẫn. Hash mới trùng quick cuối và Git blob 7d8a0a9; diff từ 7d8a0a9 đến 13394de trống. Không có toàn văn script trước sửa CLI để đối chiếu trực tiếp.",
+        "git_history": "7d8a0a9 S3-10: document and reproduce results while preserving S2-15"
+      },
+      {
+        "path": "src/__init__.py",
+        "old_sha256": "59c48246ac8a448a1b0ea52f1c3ac330ce615d49da13cccc6a7921dd2b6bc04f",
+        "new_sha256": "dabc2021cf39cdc622590c7e5244791427f1fd120359b16281e51c02fc4b53df",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      },
+      {
+        "path": "src/contracts.py",
+        "old_sha256": "01baa319d7d74447a227ad7986dc4b0ad1b8e64e241c40a016beebf3591a1766",
+        "new_sha256": "c2c5f9629cc4c3736e343206ab68a0fe38d688f7a7eb6a0e3566f522032db635",
+        "explanation": "Chỉ LF/CRLF: đổi LF hiện tại sang CRLF tái tạo đúng SHA-256 cũ.",
+        "git_history": "Không có commit đổi file trong 210e68d..13394de."
+      }
+    ]
+  }
+}

@@ -68,4 +68,15 @@ for (const value of [NaN, Infinity, -Infinity]) {
   assert.throws(() => geometry.canvasToImage(value, 20, validRect), /không hợp lệ/);
   assert.throws(() => geometry.imageRadius(10, value, validRect), /không hợp lệ/);
 }
-console.log("Canvas geometry acceptance checks passed");
+// Exact farthest-corner tangencies must survive floating-point error without moving the handle off the rim.
+for (const [x, y, cornerX, cornerY] of [[256, 256, 0, 0], [0, 0, 511, 511],
+  [511, 0, 0, 511], [0, 511, 511, 0], [511, 511, 0, 0]]) {
+  const r = Math.hypot(cornerX - x, cornerY - y);
+  const handle = geometry.radiusHandle({x, y, r});
+  assert.ok(handle, `tangent at (${cornerX}, ${cornerY}) has a handle`);
+  near(handle.x, cornerX, "tangent x"); near(handle.y, cornerY, "tangent y");
+  near(Math.hypot(handle.x - x, handle.y - y), r, "handle stays on the rim");
+  assert.ok(handle.x >= -1e-9 && handle.x <= 511 + 1e-9 && handle.y >= -1e-9 && handle.y <= 511 + 1e-9);
+  assert.equal(geometry.radiusHandle({x, y, r: r + 1e-6}), null, "an entirely outside ring has no handle");
+}
+console.log("Canvas geometry acceptance checks passed (5 corner tangencies included)");

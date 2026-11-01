@@ -138,6 +138,15 @@ class TestIntegratedScreen(unittest.TestCase):
         self.assertIn("Apollo 16", text)
         self.assertIn("https://www.nasa.gov/mission/apollo-16/", text)
 
+    def test_manual_comparison_appears_for_each_region_before_scoring(self):
+        at = self.app().run()
+        self.assertEqual(len(at.table), 0)
+        for image_id in ("moon_lunokhod1_loc_c01", "moon_marefrig_loc_c02"):
+            at.selectbox[0].set_value(image_id).run()
+            self.assertEqual(len(at.exception), 0)
+            self.assertEqual(len(at.table), 1, image_id)
+            self.assertEqual(len(at.metric), 0, "Đếm tay không cần chạy máy hay chấm game.")
+
 
 if __name__ == "__main__":
     unittest.main()

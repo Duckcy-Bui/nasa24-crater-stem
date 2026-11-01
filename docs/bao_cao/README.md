@@ -89,17 +89,19 @@ Dựng trên main `13394de` trước sửa: 55 trang, phần chính 45 trang. Sa
 
 Ngân sách đề xuất tổng 37 trang, chừa 3 trang trong mức 40 cho kết quả và hình còn phải cập nhật. Đây là ước lượng biên tập, chưa phải số trang sau sửa Chương 2–4. Số trang đo bằng pypdf trên bản dựng trước và sau sửa; đề xuất cắt chi tiết cho từng chương đã gửi riêng cho người chốt. Chưa sửa Chương 2–4 trong vòng này.
 
+**Sau khi ghép PR #33 (S2-12), đo ngày 01/11/2026:** 58 trang, phần chính 48 trang (trang 5–52). Chương 3 tăng từ 12 lên 17 trang, vượt ngân sách 7 trang; các chương khác giữ số ở cột Sau. Phần chính cần rút thêm 8 trang để về mức 40.
+
 Các dấu chờ và việc còn lại:
 
-- **PR #26:** đã merge tại `d315169`, có trong main `13394de`; S2-16 mục 6 ghi lượt đối chiếu của trưởng nhóm. Đã bỏ dấu chờ ở Bảng 1.1, mục 5.4 và 5.7. Tiến đối chiếu rồi xử lý các dấu còn ở 2.2.3, 3.3.5, 4.3.1 và 4.7 cùng người chốt chương.
+- **PR #26:** đã merge tại `d315169`, có trong main `13394de`; S2-16 mục 6 ghi lượt đối chiếu của trưởng nhóm. Đã bỏ dấu chờ ở Bảng 1.1, mục 5.4 và 5.7. Riêng 3.3.5 đã đối chiếu và xóa trong S2-12 (PR #33). Tiến đối chiếu rồi xử lý các dấu còn ở 2.2.3, 4.3.1 và 4.7 cùng người chốt chương.
 - **S2-15:** đã chốt `configs/s215_frozen.json`, đồng bộ `configs/default.json`, giữ `score`, tập điều chỉnh 10/174. Mục 3.7 đã cập nhật; Quốc Anh và Tiến cần bỏ dấu chờ cũ ở 4.5, mô tả các lượt holdout sau là đánh giá lặp.
 - **Hình 5.1–5.3:** giữ ảnh hiện có. Chính sách game không đổi, nên bỏ lý do chụp lại Hình 5.2 do chuyển sang cân bằng. Chụp lại giao diện ở vòng sau, khi lỗi #10 và #11 đã merge; ảnh hiện tại chưa chứng minh giao diện cuối.
-- **S2-09/S3-03:** Bảng 1.1 và 5.7 đã ghi kết quả đếm tay. Hưng cập nhật 3.6 (vẫn còn dấu chờ cài đặt dù S2-09 đã merge) và 4.1 theo cặp Lunokhod 1 – Mare Frigoris, dải 300–2.000 m. Quốc Anh còn xác nhận S2-09. Nếu quy tắc loại vùng đổi thì đối chiếu lại các số liên quan.
+- **S2-09/S3-03:** Bảng 1.1 và 5.7 đã ghi kết quả đếm tay. Mục 3.6 và câu về cặp vùng ở 4.1 đã cập nhật theo cặp Lunokhod 1 – Mare Frigoris, dải 300–2.000 m (S2-12, PR #33). Quốc Anh còn xác nhận S2-09. Nếu quy tắc loại vùng đổi thì đối chiếu lại các số liên quan.
 - **S3-05 (Quốc Anh):** giữ dấu chờ kết quả ba thí nghiệm ở 4.6 và 5.7.
 - **Thử người chơi và khảo sát:** trưởng nhóm quyết định bỏ ngày 31/10/2026 (phần thử của S2-07, S2-14, S3-01). Bảng 1.1, mục 5.7–5.9 đã ghi yêu cầu khảo sát ít nhất 10 học sinh chưa đạt, không có dữ liệu hứng thú/hiểu bài. Dấu chờ khảo sát đã bỏ trong phần của Đức. Quốc Anh cập nhật 4.8, 4.9 và ghi chú đầu Chương 4 theo quyết định này; đề xuất câu chữ ở `page-budget.md`. Khung phiếu chỉ còn là thiết kế cho hướng tiếp theo.
 - **Số test cuối:** giữ nguyên dấu chờ ở 5.6, điền sau khi merge các PR cuối.
 - **Phụ lục A, D:** giữ các ô chờ đóng góp, đánh giá và khai báo của từng người. Chỉ bổ sung Codex vào dòng của Đức ở Bảng D.1; các thành viên tự xác nhận phần mình.
 
-Số dấu chờ trong phần được ghép (không tính ghi chú HTML): Chương 1 từ 2 xuống 0; Chương 5 từ 4 xuống 2; Chương 2, 3, 4 và Phụ lục lần lượt giữ 1, 2, 6 và 26. Tổng từ 41 xuống 37. Đây vẫn là bản làm việc, chưa phải bản nộp.
+Số dấu chờ trong phần được ghép (không tính ghi chú HTML): Chương 1 từ 2 xuống 0; Chương 5 từ 4 xuống 2; Chương 2, 3, 4 và Phụ lục lần lượt giữ 1, 2, 6 và 26. Tổng từ 41 xuống 37. Sau khi ghép PR #33, Chương 3 còn 0 dấu chờ, tổng còn 35. Đây vẫn là bản làm việc, chưa phải bản nộp.
 
 Còn để người chốt xem lại: tiêu đề ảnh có mã việc ở Hình 3.4–3.5, sơ đồ chữ ở 3.1 chưa có số hình, các công thức hoặc ví dụ lặp giữa Chương 2–4. Ghi chú đầu Chương 2–4 còn nhiều trạng thái cũ về PR #26, nhãn và thống kê; cần đối chiếu nguồn trước khi xóa. Bảng trong `S2-03_TAP_DIEU_CHINH.md` còn ghi `sparse_unreviewed`; `manifest_split.json` ghi `sun_quality=measured` cho ảnh Apollo 16 trong khi metadata ghi `side_only` hoặc `none`.
