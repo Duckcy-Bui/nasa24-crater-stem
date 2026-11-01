@@ -17,7 +17,7 @@ Nhóm thực hiện **Đề 24 — Phát hiện hố va chạm và trò chơi ST
 - **Dữ liệu:** ảnh LRO (Mặt Trăng) và CTX/HiRISE (Sao Hỏa) công khai; ảnh bãi hạ cánh Apollo và rover; danh mục hố va chạm đã công bố để đối chiếu.
 - **Bốn chức năng bắt buộc:**
   1. Tự viết Hough tròn sau bước tăng tương phản và làm mượt; kiểm ứng viên bằng phía sáng, phía bóng và chiều nắng.
-  2. Lập thống kê số lượng/kích thước, rồi dùng mật độ của hai khu vực để bàn về tuổi tương đối.
+  2. Đếm hố, vẽ biểu đồ phân bố kích thước, rồi đối chiếu mật độ hai khu vực để bàn về tuổi tương đối.
   3. Cho học sinh vẽ câu trả lời; phần chấm đối chiếu cả ứng viên tự động lẫn danh mục tham chiếu.
   4. Mở thẻ kiến thức về dấu tích Apollo/rover của NASA khi người chơi tìm đúng vị trí [1].
 - **Đánh giá:** Precision và Recall phát hiện hố so với danh mục, coi là trúng khi sai lệch tâm ≤ 0,5 bán kính; khảo sát thử với ít nhất 10 học sinh về mức độ hứng thú và hiểu bài.
