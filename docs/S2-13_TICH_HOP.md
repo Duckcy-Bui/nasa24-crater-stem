@@ -148,6 +148,8 @@ Trong terminal thứ hai:
 
 `--out` phải chưa tồn tại, kể cả khi chạy lại sau một lượt lỗi; script từ chối ghi đè. Dừng Streamlit bằng Ctrl+C sau khi chụp. `--help` không cần mở browser; `--layout-only` chỉ kiểm nhãn điểm. Đường dẫn Python trên Windows là `.venv\Scripts\python.exe`.
 
+Khi chọn ảnh, script click option có `image_id` khớp đúng trước dấu `·`, rồi assert lại giá trị picker. Cách tìm này dùng được với nhãn ổn định chỉ gồm mã ảnh và tên vùng, không cần số vòng.
+
 `run_identity.json` và `browser_results.json` ghi HEAD, URL yêu cầu, hash source/cấu hình/bằng chứng từ checkout; file kết quả còn ghi URL đã mở. HEAD là danh tính checkout cung cấp kỳ vọng, **không chứng minh** server tại `--url` chạy đúng source đó (`server_source_verified=false`); khi kiểm cục bộ phải tự khởi động server từ checkout cần kiểm. PASS chỉ nói các assertion đã chạy: biên chữ; chuỗi tên/số đếm/diện tích/mật độ và câu kết luận trong bảng; số ứng viên, ô mật độ, một lời chạm trần và không có exception ở từng ảnh; tâm và bán kính hiển thị sau kéo nút. Script chỉ lưu, không assert CI, tỷ lệ, p-value hoặc thẻ khoa học trong vòng bảy ảnh. Mỗi ảnh được mở lại trên trang mới, nên lượt này không chứng minh giữ draft/score khi đổi ảnh trong cùng phiên.
 
 ### 3.4. A-06 — nguyên nhân và sửa picker (r4, 01/11/2026)
