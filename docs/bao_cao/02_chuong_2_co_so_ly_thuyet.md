@@ -1,203 +1,184 @@
-<!-- S3-12, 01/11/2026: rút theo giao việc của Đức trên main c466c2d (đã gồm PR #26, #31, #33–#36).
-Bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12. Chủ phần chưa xác nhận bản rút gọn; bản trước rút là main c466c2d.
--->
+<!-- S3-12 r5: Tiến chốt Hough/đối sánh; Hưng chốt tiền xử lý, sáng–tối và thống kê. -->
 
 # Chương 2. Cơ sở lý thuyết
 
-Chương này trình bày cơ sở toán học của từng bước: tiền xử lý và trích biên, Hough tròn tự cài đặt bằng NumPy, kiểm tra sáng–tối, đối sánh và độ đo, mật độ hố. Tham số và số đo nằm ở Chương 3 và Chương 4.
-
 ## 2.1. Tiền xử lý ảnh và trích biên
 
-### 2.1.1. Mục tiêu và quy ước
+**Quy ước.** Ảnh I có M hàng, N cột; x sang phải, y xuống dưới, tâm pixel có tọa độ nguyên. Mặt nạ V = 1 chỉ pixel hợp lệ. Chuỗi đưa ảnh về [0, 1], tăng tương phản, giảm nhiễu rồi trích biên cho Hough.
 
-Hough cần ảnh biên đủ vành, ít biên rác. Đầu vào có thể là TIF 8 bit, PDS 16 bit hoặc số thực, với góc tới 7,64°–87,78°, nhiễu và kết cấu regolith. Chuỗi đưa ảnh về cùng thang, tăng tương phản, giảm nhiễu rồi trích biên. Ảnh xử lý cỡ 512 × 512 px, giá trị [0, 1]; x sang phải, y xuống dưới, gốc ở góc trên-trái. Tâm pixel nguyên, tâm hố có thể thực; mặt nạ V = 1 chỉ pixel hợp lệ.
+**Thu nhỏ và chuẩn hóa.** Ô cắt cạnh 512k được thu về 512 bằng trung bình khối k × k; khối có pixel lỗi bị loại:
 
-### 2.1.2. Thu nhỏ, ảnh xám và chuẩn hóa
+$$ I'(x,y)=\frac{1}{k^2}\sum_{i,j=0}^{k-1} I(kx+i,ky+j),\qquad V'(x,y)=\bigwedge_{i,j}V(kx+i,ky+j). \qquad (2.1) $$
 
-Ô cắt có cạnh 512·k px, k nguyên ≥ 1, được thu về 512 × 512 bằng trung bình khối k × k; khối chứa pixel không hợp lệ cho pixel không hợp lệ:
+Hệ số nguyên k tránh nội suy, tỷ lệ mới $s=ks_{nguồn}$. Ảnh ba kênh được đổi sang độ sáng $Y=\text{0,299}R+\text{0,587}G+\text{0,114}B$ theo BT.601 [@itu601]; 16 ảnh nguồn thực tế đều một kênh. Với $P_{lo},P_{hi}$ là phân vị 0,5 % và 99,5 % trên pixel hợp lệ:
 
-$$ I'(x,y) = \frac{1}{k^2}\sum_{i=0}^{k-1}\sum_{j=0}^{k-1} I(kx+i,\; ky+j), \qquad V'(x,y) = \bigwedge_{i,j} V(kx+i,\; ky+j) \qquad (2.1) $$
+$$ I_N=\operatorname{clip}\left(\frac{I-P_{lo}}{P_{hi}-P_{lo}},0,1\right). \qquad (2.2) $$
 
-Vì k nguyên nên không cần nội suy, và tỷ lệ ảnh mới là $s = k \cdot s_{\mathrm{nguồn}}$ (m/px). Cả 16 ảnh nguồn đều là ảnh một kênh; ảnh ba kênh, nếu có, được đổi sang độ sáng $Y = \text{0,299}R + \text{0,587}G + \text{0,114}B$ theo ITU-R BT.601 [@itu601]. Sau đó ảnh được chuẩn hóa theo phân vị 0,5 % và 99,5 % của các pixel hợp lệ:
+Phân vị giảm ảnh hưởng điểm bão hòa; nếu hai phân vị bằng nhau nhưng ảnh còn biến thiên thì dùng min–max, còn ảnh phẳng trả 0. Thu hẹp khoảng phân vị làm tăng tương phản nhưng cũng cắt nhiều giá trị cực trị hơn.
 
-$$ I_N = \operatorname{clip}\!\left(\frac{I - P_{\mathrm{lo}}}{P_{\mathrm{hi}} - P_{\mathrm{lo}}},\; 0,\; 1\right) \qquad (2.2) $$
+**Tăng tương phản.** Cân bằng lược đồ mức xám (histogram) thích nghi có giới hạn tương phản (contrast limited adaptive histogram equalization — CLAHE) chia ảnh thành ô, cắt ngọn histogram, phân bố lại phần bị cắt rồi nội suy song tuyến ánh xạ giữa bốn ô [@zuiderveld1994]. Trong OpenCV, với $N_{ô}$ pixel và $N_{bin}$ mức xám:
 
-Phân vị giảm ảnh hưởng của pixel bão hòa hoặc chết. Nếu hai phân vị bằng nhau mà ảnh vẫn biến thiên, dùng min–max để giữ vật thể nhỏ.
+$$ \beta=\max\left(1,\left\lfloor\mathrm{clipLimit}\,N_{ô}/N_{bin}\right\rfloor\right). \qquad (2.3) $$
 
-### 2.1.3. Tăng tương phản cục bộ CLAHE
+Ngưỡng lớn tăng tương phản và khuếch đại nhiễu. Ô 64 × 64, ảnh 8 bit và clipLimit = 2 cho β = 32; với 16 bit và clipLimit < 32 thì β luôn bằng 1. Vì vậy nhóm dùng CLAHE 8 bit, sau đó làm trơn Gauss; không coi tăng tương phản là khôi phục dữ liệu đã bão hòa.
 
-Cân bằng histogram toàn cục làm vùng bóng bão hòa đen và khuếch đại nhiễu ở vùng biển (mare) phẳng. CLAHE khắc phục bằng bốn bước [@zuiderveld1994; @mathworks_adapthisteq]: chia ảnh thành lưới ô (ví dụ 8 × 8 ô cỡ 64 × 64 px) và tính histogram từng ô; cắt ngọn histogram ở ngưỡng β để vùng phẳng màu không bị kéo giãn thành nhiễu; phân bổ đều phần bị cắt cho mọi bin rồi dùng hàm phân bố tích lũy làm ánh xạ độ sáng; nội suy song tuyến giữa bốn ô lân cận để không lộ ranh giới ô. Trong OpenCV [@opencv_clahe; @opencv_clahe_source], ngưỡng cắt mỗi bin là:
+**Gauss và Sobel.** Đặt bán kính mặt nạ lọc (kernel) $R_g=\lceil3\sigma\rceil$, phép tương quan là $\star$:
 
-$$ \beta = \max\!\left(1,\; \left\lfloor \frac{\mathrm{clipLimit} \cdot N_{\mathrm{ô}}}{N_{\mathrm{bin}}} \right\rfloor\right) \qquad (2.3) $$
+$$ g(i)=\frac{e^{-i^2/(2\sigma^2)}}{\sum_{j=-R_g}^{R_g}e^{-j^2/(2\sigma^2)}},\quad i=-R_g,\ldots,R_g;\qquad I_S=(I_N\star g_x)\star g_y. \qquad (2.4) $$
 
-với $N_{\mathrm{ô}}$ là số pixel một ô và $N_{\mathrm{bin}}$ là số mức xám. Ảnh 8 bit, ô 64 × 64, clipLimit = 2 cho β = 32. Ảnh 16 bit cho $2 \cdot 4.096 / 65.536 < 1$; vì phép chia lấy phần nguyên, mọi clipLimit nhỏ hơn 32 đều cho β = 1 và CLAHE mất tác dụng. Vì vậy nhóm chạy CLAHE trên ảnh lượng tử 8 bit, rồi làm trơn Gauss ngay sau để dập phần nhiễu bị khuếch đại.
+Tính tách được giảm từ $(2R_g+1)^2$ xuống $2(2R_g+1)$ phép nhân/pixel: σ = 1,5 cho 22 thay vì 121. Đệm phản chiếu không lặp pixel mép, tương ứng `BORDER_REFLECT_101`. Tăng σ xóa nhiễu nhưng làm mờ hố nhỏ; nhóm giữ σ dưới $r_{min}/3\approx\text{1,67}$ khi $r_{min}=5$.
 
-### 2.1.4. Làm trơn Gauss và gradient Sobel
+$$ K_x=\begin{bmatrix}1\\2\\1\end{bmatrix}\begin{bmatrix}-1&0&1\end{bmatrix},\ K_y=K_x^{\mathsf T};\quad \left\lvert G\right\rvert=\sqrt{g_x^2+g_y^2},\quad\theta=\operatorname{atan2}(g_y,g_x). \qquad (2.5) $$
 
-Kernel Gauss có bán kính $R = \lceil 3\sigma \rceil$ và tách được, nên ảnh được lọc theo hàng rồi theo cột ($\star$ là phép tương quan):
+Ở (2.5), $g_x=I_S\star K_x$, $g_y=I_S\star K_y$. Dấu dương ứng với sáng dần sang phải/xuống dưới. Kernel không chia 8, nên $255\left\lvert G\right\rvert$ cùng thang gradient Canny của OpenCV trên ảnh 8 bit.
 
-$$ g(i) = \frac{e^{-i^2/(2\sigma^2)}}{\sum_{j=-R}^{R} e^{-j^2/(2\sigma^2)}},\ \ i = -R, \dots, R, \qquad I_S = (I \star g_x) \star g_y \qquad (2.4) $$
+**Canny và mặt nạ.** Sau gradient, Canny [@canny1986] triệt tiêu không cực đại (non-maximum suppression — NMS) theo θ rồi nối biên bằng ngưỡng kép. Pixel mạnh vượt $T_{high}$ được giữ; pixel yếu chỉ giữ nếu nối với biên mạnh:
 
-Chi phí giảm từ $(2R+1)^2$ xuống $2(2R+1)$ phép nhân mỗi pixel; với σ = 1,5 là 22 thay cho 121. Mép ảnh được đệm phản chiếu kiểu BORDER_REFLECT_101 của OpenCV. σ cần đủ lớn để xóa vân hạt nhưng không vượt $r_{\min}/3 \approx \text{1,67}$ (với $r_{\min}$ = 5 px) để vành hố nhỏ nhất không bị mờ mất. Gradient được tính bằng Sobel 3 × 3, cũng tách được:
+$$ T_{high}=P_{90}(255\left\lvert G\right\rvert),\qquad T_{low}=\text{0,4}T_{high}. \qquad (2.6) $$
 
-$$ K_x = \begin{bmatrix}1\\2\\1\end{bmatrix}\begin{bmatrix}-1 & 0 & 1\end{bmatrix},\ \ K_y = K_x^{\mathsf{T}}, \qquad \left|G\right| = \sqrt{g_x^2 + g_y^2},\ \ \theta = \operatorname{atan2}(g_y,\, g_x) \qquad (2.5) $$
+Phân vị tính trên vùng hợp lệ đã loại lề; nếu nền phẳng chiếm hơn 90 % thì dùng gradient dương. Ngưỡng cao giảm biên rác nhưng dễ đứt vành. Để loại biên mép, vùng thiếu dữ liệu (nodata) và đường ghép:
 
-với $g_x = I_S \star K_x$, $g_y = I_S \star K_y$; $g_x > 0$ khi ảnh sáng dần sang phải, $g_y > 0$ khi sáng dần xuống dưới. Kernel không chia cho 8, nên $\left|G\right| \cdot 255$ cùng thang với gradient của Canny trong OpenCV trên ảnh 8 bit.
+$$ E(x,y)=E_{Canny}(x,y)\wedge\bigwedge_{\left\lvert i\right\rvert,\left\lvert j\right\rvert\le m}V(x+i,y+j),\quad m=\max(6,R_g+1). \qquad (2.7) $$
 
-### 2.1.5. Biên Canny và mặt nạ biên
-
-Canny [@canny1986; @opencv_canny] có hai bước. Triệt tiêu điểm không cực đại chỉ giữ pixel có $\left|G\right|$ lớn nhất theo hướng θ, nên biên mảnh còn 1 px. Ngưỡng kép giữ pixel $\left|G\right| \ge T_{\mathrm{high}}$, và giữ pixel $T_{\mathrm{low}} \le \left|G\right| < T_{\mathrm{high}}$ chỉ khi nối liền với biên chắc chắn, nên vành hố liền mạch mà ít điểm rác. Vì tương phản thay đổi theo góc tới, ngưỡng được co giãn theo từng ảnh:
-
-$$ T_{\mathrm{high}} = P_{90}\!\left(\left|G\right| \cdot 255\right), \qquad T_{\mathrm{low}} = \text{0,4}\, T_{\mathrm{high}} \qquad (2.6) $$
-
-Phân vị tính trên vùng hợp lệ đã loại lề, hoặc trên các pixel có gradient dương nếu nền phẳng chiếm hơn 90 % ảnh. Cuối cùng, mép ảnh, khoảng trống và đường ghép mosaic tạo biên thẳng giả góp phiếu cho nhiều vòng, nên điểm biên trong lề m px quanh mép ảnh và vùng không hợp lệ bị bỏ bằng phép co mặt nạ:
-
-$$ E(x, y) = E_{\mathrm{Canny}}(x, y) \wedge \bigwedge_{\left|i\right|, \left|j\right| \le m} V(x+i,\, y+j), \qquad m = \max(6,\ R + 1) \qquad (2.7) $$
-
-Gauss lan ảnh hưởng của pixel không hợp lệ ra R px, Sobel thêm 1 px; với σ = 1,5 thì m = 6.
+Lề m bù phạm vi ảnh hưởng của Gauss và Sobel; σ = 1,5 cho m = 6. Lề lớn hơn giảm biên giả nhưng mất vành gần mép.
 
 ## 2.2. Biến đổi Hough tròn
 
-### 2.2.1. Không gian tham số và bỏ phiếu toàn vòng
+### 2.2.1. Dẫn xuất và rời rạc hóa
 
-Cần tìm các bộ (a, b, r) mô tả vành tròn trên ảnh biên E cỡ W × H, với (a, b) là tâm và r là bán kính. Một điểm biên không xác định được đường tròn, nhưng nhiều điểm trên cùng vành cùng ủng hộ một bộ tham số; Hough chuyển việc tìm đường cong thành tìm đỉnh trong không gian tham số [@duda1972]. Từ $(x-a)^2 + (y-b)^2 = r^2$, tập tâm khả dĩ của điểm biên (x, y) là:
+Từ đường tròn $(x-a)^2+(y-b)^2=r^2$, chia hai vế cho $r^2$ và đặt $u=(x-a)/r$, $v=(y-b)/r$ được $u^2+v^2=1$. Chọn $u=\cos\varphi$, $v=\sin\varphi$ rồi chuyển vế cho các tâm khả dĩ [@duda1972]:
 
-$$ a = x - r\cos\varphi, \qquad b = y - r\sin\varphi, \qquad 0 \le \varphi < 2\pi \qquad (2.8) $$
+$$ a=x-r\cos\varphi,\qquad b=y-r\sin\varphi,\qquad0\le\varphi<2\pi. \qquad (2.8) $$
 
-Với r cố định, đó là đường tròn bán kính r quanh điểm biên; các đường tròn này của những điểm trên cùng vành cắt nhau tại tâm thật. Mỗi điểm biên bỏ phiếu cho mọi tâm khả dĩ vào bảng tích lũy (accumulator) A(a, b, r) gồm W × H × $R_n$ ô, với $R_n$ bán kính được thử; cài đặt chỉ giữ lần lượt từng mặt phẳng $A_r[b, a]$. Hình 2.1 cho thấy tại r = 32 px, phiếu của đĩa cùng bán kính hội tụ thành một đỉnh, còn hai đĩa khác chỉ tạo vòng phiếu mờ.
+Với r cố định, mỗi điểm biên bỏ phiếu trên một vòng tâm khả dĩ; các điểm cùng vành hội tụ tại tâm thật. Bảng tích lũy (accumulator) $A_r[b,a]$ có M × N ô; giữ lần lượt từng r thay vì cả khối ba chiều. Hình 2.1 minh họa sự hội tụ.
 
-![Hình 2.1. Hough tròn trên ảnh giả lập ba đĩa sáng, một đĩa bị cắt ở mép trái. Trái: ảnh vào; giữa: ảnh biên và vòng tìm được (đỏ); phải: mặt phẳng tích lũy tại r = 32 px, đỉnh ở tâm (160, 180).](../images/hough_synthetic_demo.png){width=100%}
+![Hình 2.1. Hough trên ba đĩa giả lập: ảnh vào, biên/vòng tìm được và tích lũy tại r = 32 px. Đỉnh ở tâm (160, 180); một đĩa bị cắt mép.](../images/hough_synthetic_demo.png){width=95%}
 
-Cách mặc định lấy T mẫu góc với bước Δφ trên [0°, 360°). Với mỗi bán kính nguyên r, độ lệch được làm tròn trước rồi loại trùng, và mỗi điểm biên bỏ một phiếu cho mỗi tâm nằm trong ảnh:
+Với T góc cách nhau Δφ, làm tròn độ lệch trước rồi khử trùng:
 
-$$ \mathcal{D}_r = \operatorname{unique}\big\{(\operatorname{rint}(r\cos\varphi_k),\ \operatorname{rint}(r\sin\varphi_k))\big\}_{k=0}^{T-1} \qquad (2.9) $$
+$$ \mathcal D_r=\operatorname{unique}\{(\operatorname{rint}(r\cos\varphi_k),\operatorname{rint}(r\sin\varphi_k))\}_{k=0}^{T-1}. \qquad (2.9) $$
 
-$$ A_r[b, a] = \sum_{E(x,y)=1} \sum_{(d_x, d_y) \in \mathcal{D}_r} \mathbf{1}\big[a = x - d_x \,\wedge\, b = y - d_y\big], \qquad 0 \le a < W,\ 0 \le b < H \qquad (2.10) $$
+$$ A_r[b,a]=\sum_{E(x,y)=1}\sum_{(d_x,d_y)\in\mathcal D_r}\mathbf1[a=x-d_x\wedge b=y-d_y],\quad0\le a<N,\ 0\le b<M. \qquad (2.10) $$
 
-rint làm tròn tới số nguyên gần nhất, hòa thì về số chẵn [@numpy_rint]. Vành được phép cắt qua mép ảnh nhưng tâm phải nằm trong ảnh. Phiếu được cộng bằng hàm đếm chỉ số phẳng $b \cdot W + a$ [@numpy_bincount]. Loại trùng tránh việc một điểm biên bỏ nhiều phiếu cho cùng tâm chỉ vì nhiều góc liền nhau rơi vào cùng pixel. Vì vậy $S_r = \left|\mathcal{D}_r\right|$ khác T: với bước 1°, $S_r$ = 40, 80, 144 và 224 khi r = 5, 10, 20 và 32.
+`rint` làm tròn gần nhất, hòa nửa về số chẵn. Khử trùng tránh một điểm biên bỏ nhiều phiếu vào cùng tâm. Với bước 1°, số độ lệch $S_r=\left\lvert \mathcal D_r\right\rvert$ là 40, 80, 144, 224 khi r = 5, 10, 20, 32, không luôn bằng T = 360. Chỉ số phẳng $bN+a$ được đếm bằng `bincount`; vành có thể cắt mép nhưng tâm phải trong ảnh.
 
-### 2.2.2. Bỏ phiếu theo hướng gradient
+### 2.2.2. Gradient, chọn đỉnh và NMS
 
-Gradient của $(x-a)^2 + (y-b)^2 - r^2$ vuông góc với tiếp tuyến của đường tròn. Nếu gradient mức xám tại điểm biên gần pháp tuyến của vành, hướng $\mathbf{n} = (\cos\theta, \sin\theta)$ từ (2.5) chỉ ra hai tâm khả dĩ, ứng với hai khả năng vành chuyển từ sáng sang tối hay ngược lại:
+Gradient hình học của $(x-a)^2+(y-b)^2-r^2$ là $(2(x-a),2(y-b))$, vuông góc tiếp tuyến. Nếu gradient ảnh gần pháp tuyến vành, vector $\mathbf n=(\cos\theta,\sin\theta)$ cho hai tâm:
 
-$$ (a, b) = (x, y) \mp \operatorname{rint}(r\,\mathbf{n}) \qquad (2.11) $$
+$$ (a,b)=(x,y)\mp\operatorname{rint}(r\mathbf n). \qquad (2.11) $$
 
-θ là hướng gradient đo tại điểm biên, khác góc quét φ. Mỗi điểm biên chỉ bỏ tối đa hai phiếu cho mỗi bán kính thay vì $S_r$ phiếu, và mẫu số hỗ trợ là chu vi ước lượng $S_r = \lceil 2\pi r \rceil$. Cách này nhanh hơn trên ảnh nhiều biên, nhưng cần θ và nhạy với gradient nhiễu, mép bóng hay vành không tròn. Các biến thể Hough tìm đường tròn đã được Yuen và cộng sự so sánh [@yuen1990]. Vì trên ảnh thật gradient tại vành có thể không đi qua tâm, bỏ phiếu toàn vòng là mặc định, còn bỏ phiếu theo gradient là tùy chọn thử nghiệm.
+Hai dấu ứng với hai chiều sáng–tối; θ đo tại điểm biên, khác φ đang quét. Cách này chỉ bỏ tối đa hai phiếu/bán kính, dùng $S_r=\lceil2\pi r\rceil$, nhưng nhạy với nhiễu và mép bóng. Nhóm giữ bỏ phiếu toàn vòng làm mặc định, gradient là phương án đối chiếu [@yuen1990].
 
-### 2.2.3. Ngưỡng, chọn đỉnh và khử trùng vòng
+Với số phiếu tối thiểu $v_{min}$ và tỷ lệ hỗ trợ κ:
 
-Với $v_{\min}$ là số phiếu tối thiểu và κ là tỷ lệ hỗ trợ tối thiểu, ngưỡng phiếu và điểm hỗ trợ q của ô (b, a) là:
+$$ \tau_r=\max(v_{min},\lceil\kappa S_r\rceil),\qquad q=A_r[b,a]/S_r. \qquad (2.12) $$
 
-$$ \tau_r = \max\!\big(v_{\min},\ \lceil \kappa\, S_r \rceil\big), \qquad q = \frac{A_r[b, a]}{S_r} \qquad (2.12) $$
+Ô vượt ngưỡng và cực đại 3 × 3 là đỉnh; hòa phiếu ưu tiên trên rồi trái. Tăng ngưỡng giảm ứng viên nhưng có thể mất vành yếu. q dùng xếp hạng, không phải xác suất; nhánh gradient có thể cho q > 1. Các đỉnh xếp theo (−q, −phiếu, y, x, r), tùy chọn xen kẽ nhóm bán kính trước NMS. Một ứng viên bị loại nếu gần vòng đã giữ j ở cả tâm và bán kính:
 
-Ô có ít nhất $\tau_r$ phiếu và là cực đại 3 × 3 trong cùng mặt phẳng $A_r$ là đỉnh; khi hòa phiếu, ô phía trên rồi ô bên trái được ưu tiên. Đỉnh được chọn trong từng mặt phẳng, chưa phải cực đại ba chiều qua r. Chia cho $S_r$ giảm thiên vị cho vòng lớn vốn có nhiều điểm biên. Điểm q chỉ để xếp hạng, không phải xác suất, và với bỏ phiếu theo gradient có thể vượt 1.
+$$ (a-a_j)^2+(b-b_j)^2\le d_{NMS}^2\quad\wedge\quad\left\lvert r-r_j\right\rvert\le\delta_{NMS}. \qquad (2.13) $$
 
-Đỉnh của mọi bán kính được xếp theo q giảm, số phiếu giảm, rồi y, x, r tăng. Ở chế độ cân bằng, thứ tự này còn được xen kẽ giữa các nhóm bán kính để vòng nhỏ không chiếm hết danh sách đầu ra (mục 3.3.5). Sau đó phép triệt tiêu không cực đại cho vòng tròn (NMS), khác bước cùng tên của Canny, loại ứng viên gần một vòng đã giữ ở cả tâm lẫn bán kính, cho tới khi đủ L vòng:
+Dừng khi đủ L vòng. Với ngưỡng tâm 4 px/bán kính 2 px, vòng (352, 311, 21) bị vòng (350, 310, 20) loại; vòng đồng tâm r = 24 vẫn giữ. NMS này không giải quyết mọi vòng lồng nhau; tăng ngưỡng có thể gộp nhầm hố cạnh nhau.
 
-$$ (a - a_j)^2 + (b - b_j)^2 \le d_{\mathrm{NMS}}^2 \quad \wedge \quad \left|r - r_j\right| \le \delta_{\mathrm{NMS}} \qquad (2.13) $$
+### 2.2.3. Ví dụ số 5 × 5 từng bước
 
-Ví dụ với $d_{\mathrm{NMS}}$ = 4 px, $\delta_{\mathrm{NMS}}$ = 2 px và vòng đã giữ (350, 310, 20): vòng (352, 311, 21) bị loại vì $d^2 = 5 \le 16$ và Δr = 1, còn vòng đồng tâm (350, 310, 24) được giữ vì Δr = 4. NMS vì vậy không loại vòng lồng nhau; bước lọc trùng bổ sung ở Chương 3.
+**Bước 1 — Đầu vào.** Đặt bốn điểm $P_1=(2,1)$, $P_2=(1,2)$, $P_3=(3,2)$, $P_4=(2,3)$ trên ảnh biên E dưới đây, r = 1. Ví dụ $P_1$ cách (2,2) một pixel vì $(2-2)^2+(1-2)^2=1$.
 
-### 2.2.4. Ví dụ tính tay
+**Bước 2 — Độ lệch.** Với 360 góc bước 1°, (2.9) cho tám độ lệch $(\pm1,\pm1),(\pm1,0),(0,\pm1)$; $S_1=8$. Độ lệch chéo dài $\sqrt2$ là hệ quả lượng tử hóa, không phải điểm trên đường tròn liên tục r = 1.
 
-Trên ảnh biên 5 × 5, bốn điểm (2, 1), (1, 2), (3, 2), (2, 3) cùng cách tâm (2, 2) một pixel. Với r = 1 và bước góc 1°, 360 mẫu cho 8 độ lệch; tâm nhận 4 phiếu, q = 0,5. Ngưỡng $v_{\min}$ = 3, κ = 0,35 giữ tâm này, còn mặc định $v_{\min}$ = 12 không giữ. Ma trận tích lũy, cách cộng 32 phiếu và đối chiếu gradient ở Phụ lục E.1.
+**Bước 3 — Bỏ phiếu.** Mỗi điểm cộng 1 tại tám tâm $(x-d_x,y-d_y)$; cả 32 tâm trong ảnh. Tại (2,2), P1 dùng (0,−1), P2 dùng (−1,0), P3 dùng (1,0), P4 dùng (0,1); chỉ số phẳng đều là $2\cdot5+2=12$. Các ma trận A1–A4 ghi sau từng điểm:
 
-### 2.2.5. Lượng tử hóa và quy ước tọa độ
+```text
+E             A1            A2            A3            A4
+0 0 0 0 0     0 1 1 1 0     0 1 1 1 0     0 1 1 1 0     0 1 1 1 0
+0 0 1 0 0     0 1 0 1 0     1 2 1 1 0     1 2 2 2 1     1 2 2 2 1
+0 1 0 1 0     0 1 1 1 0     1 1 2 1 0     1 1 3 1 1     1 2 4 2 1
+0 0 1 0 0     0 0 0 0 0     1 1 1 0 0     1 1 2 1 1     1 2 2 2 1
+0 0 0 0 0     0 0 0 0 0     0 0 0 0 0     0 0 0 0 0     0 1 1 1 0
+```
 
-Dải bán kính được suy từ dải đường kính $[D_{\min}, D_{\max}]$ và tỷ lệ s, rồi giao với giới hạn cấu hình; dải rỗng bị báo lỗi:
+**Bước 4 — Lấy đỉnh.** Với $v_{min}=3$, κ = 0,35, ngưỡng là $\max(3,\lceil2,8\rceil)=3$. Chỉ A4[2,2] = 4 vượt ngưỡng và lớn hơn tám ô kề, nên tâm (2,2), r = 1, q = 4/8 = 0,5. Nếu dùng $v_{min}=12$ thì không có đỉnh. Gradient lý tưởng cho 4 phiếu tại tâm, một phiếu ở mỗi ô (2,0), (0,2), (4,2), (2,4), q = $4/\lceil2\pi\rceil=4/7$.
 
-$$ r_{\min} = \max\!\left(5,\ \left\lceil \frac{D_{\min}}{2s} \right\rceil\right), \qquad r_{\max} = \min\!\left(128,\ \left\lfloor \frac{D_{\max}}{2s} \right\rfloor\right) \qquad (2.14) $$
+Ví dụ **đã kiểm chứng bằng NumPy**, dùng chính các hàm Hough nội bộ với lô 1, 2 và 256; mã và lệnh ở Phụ lục B. r = 1 chỉ dùng minh họa, không đổi hợp đồng đầu vào 512 × 512, r ≥ 5.
 
-Với bước Δr, ví dụ dải [12, 29] bước 4 chỉ quét 12, 16, 20, 24, 28, và sai số bán kính tới Δr/2. Ở bán kính r khác bán kính thật $r_0$, phiếu rải trên vòng nhỏ bán kính khoảng $\left|r - r_0\right|$ quanh tâm nên đỉnh yếu đi. Về góc, hai mẫu liền nhau cách nhau cung $r\,\Delta\varphi$, vượt 1 px khi r > 57,3 px với Δφ = 1°; $S_r$ đạt 360 lần đầu ở r = 62 px, dao động 352–360 tới r = 66 px và giữ 360 từ r = 67 px.
+### 2.2.4. Tham số, lượng tử hóa và chi phí
 
-Ô tích lũy (a, b) trùng tâm pixel (a, b), nên tâm Hough trả về là số nguyên theo cùng quy ước với nhãn tham chiếu, sai số lượng tử tối đa 0,5 px mỗi trục (khoảng 0,71 px). HoughCircles của OpenCV (HOUGH_GRADIENT) nhận ảnh xám, tự trích biên, tìm tâm trước rồi mới ước lượng bán kính, và trả tâm ô tích lũy (chỉ số ô + 0,5) × dp [@opencv_hough_tutorial; @opencv_hough_source]. Với dp = 1, hố tâm nguyên (x, y) được trả về (x + 0,5; y + 0,5), nên phải trừ 0,5 trước khi so sánh; với dp = 2 không có hằng số bù cố định.
+Dải đường kính $[D_{min},D_{max}]$ và tỷ lệ s quyết định:
 
-Đối chiếu ba cách trên ảnh giả lập nằm ở Phụ lục E.1; đây không phải bằng chứng xếp hạng trên ảnh Mặt Trăng.
+$$ r_{min}=\max\left(5,\left\lceil\frac{D_{min}}{2s}\right\rceil\right),\qquad r_{max}=\min\left(128,\left\lfloor\frac{D_{max}}{2s}\right\rfloor\right). \qquad (2.14) $$
 
-### 2.2.6. Độ phức tạp
+Dải rỗng báo lỗi. Bước Δr gây sai số tới Δr/2; dải [12,29] bước 4 quét 12,16,20,24,28. Sai r làm phiếu rải quanh tâm thật thay vì hội tụ. Bước góc thưa tăng khoảng cách cung $r\Delta\varphi$; tâm nguyên có sai số tối đa 0,5 px mỗi trục (0,71 px theo đường chéo). OpenCV `HOUGH_GRADIENT` tìm tâm trước, ước r sau, trả tâm ô (chỉ số + 0,5)dp; với dp = 1 phải trừ 0,5 trước đối chiếu, dp = 2 không có bù hằng số [@opencv_hough_source].
 
-Giả mã Hough ở Phụ lục E.1, dùng các công thức (2.9)–(2.13).
+Gọi $E_n$ là số điểm biên, $R_n$ số bán kính, $S\le T$ số độ lệch lớn nhất, B cỡ lô, K tổng đỉnh, L trần vòng và J tổng độ dài các đoạn `bincount`. Thời gian toàn vòng:
 
-Mỗi lô chỉ được đếm trên đoạn chỉ số có phiếu; điểm biên lấy theo thứ tự hàng nên đoạn này thường hẹp, và không phiếu nào thay đổi. Gọi N = H·W, E là số điểm biên, S là số độ lệch lớn nhất ($S \le T$), K là tổng số đỉnh trước NMS và I là tổng độ dài các đoạn đếm. Bỏ phiếu toàn vòng tốn $E \cdot S$ cho phiếu, N cho khởi tạo và dò đỉnh, $T\log T$ cho loại trùng ở mỗi bán kính, cộng sắp xếp và NMS:
+$$ O\big(R_n(E_nS+MN+T\log T)+J+K\log K+KL\big),\quad J\le R_n\lceil E_n/B\rceil MN. \qquad (2.15) $$
 
-$$ O\big(R_n\,(E\,S + N + T\log T) + I + K\log K + K\,L\big), \qquad I \le R_n \left\lceil \tfrac{E}{B} \right\rceil N \qquad (2.15) $$
+Bỏ phiếu gradient giảm hạng $E_nS$ còn $E_n$ và không đếm theo lô. Bộ nhớ phụ:
 
-Hạng chính có dạng quen thuộc $O(E \cdot R \cdot \Theta)$, với Θ là số góc: với 24.291 điểm biên của STT 13 quét r = 5…125 bước 1°, tổng số độ lệch là 35.365, tức khoảng 8,6·10⁸ phiếu (r = 5…128 cho 36.445 độ lệch). Bỏ phiếu theo gradient tốn $O(R_n(E + N) + K\log K + K\,L)$; bước xen kẽ nhóm bán kính thêm O(K). Khối tích lũy ba chiều cần $R_n \cdot H \cdot W$ ô, tức 1 MiB mỗi mặt phẳng 512 × 512 số nguyên 4 byte và 124 MiB cho r = 5…128. Cài đặt chỉ giữ một mặt phẳng, nhưng danh sách K đỉnh vẫn gom qua mọi bán kính:
+$$ O(MN+BS+K+E_n+T)\ \text{toàn vòng};\quad O(MN+K+E_n+T)\ \text{gradient}. \qquad (2.16) $$
 
-$$ O(N + B\,S + K + E + T) \ \ (\text{toàn vòng}), \qquad O(N + K + E + T) \ \ (\text{gradient}) \qquad (2.16) $$
+Một mặt phẳng 512 × 512 int32 tốn 1 MiB; giữ cả 124 bán kính tốn 124 MiB. Chương 3 nêu giả mã và chi phí của các khối còn lại. Chi tiết lượng tử hóa và phép đo lịch sử được giữ trong tài liệu bổ sung ở Phụ lục E.
 
 ## 2.3. Kiểm tra sáng–tối theo hướng nắng
 
-### 2.3.1. Cơ sở vật lý
+Hough không phân biệt hố lõm với gò hoặc biên tình cờ gần tròn. Khi nắng xiên, thành hố phía gần Mặt Trời thường tối, phía xa sáng; gò cho chiều ngược lại. Với phương vị nắng $A_{sun}$ theo chiều kim đồng hồ từ Bắc và hướng Bắc trong ảnh $\alpha_N$, đặt $\varphi=A_{sun}+\alpha_N$:
 
-Hough chỉ dựa vào hình dạng biên, nên không phân biệt hố lõm với gò nổi hay vòng tình cờ khớp các biên rời rạc. Về mặt hình học, khi nắng chiếu xiên, thành hố phía gần Mặt Trời quay lưng với nắng và bị mép hố che nên tối, còn thành phía xa hướng về nắng nên sáng. Gò nổi cho quy luật ngược lại; vòng ở chỗ không có hố thì không có quy luật nào (Hình E.6).
+$$ \mathbf u=(\sin\varphi,-\cos\varphi). \qquad (2.17) $$
 
-Trên cảnh giả lập nắng Tây, góc tới 70°, hố và gò cùng bán kính lần lượt có S = +0,98 và −0,98 (Hình E.6).
+Ví dụ φ = 270° cho nắng Tây, $\mathbf u=(-1,0)$. Trong đĩa tâm c, bán kính r, đặt vị trí theo chiều xa Mặt Trời t và hệ số tương quan Pearson S:
 
-### 2.3.2. Hướng nắng và điểm sáng–tối
+$$ t(\mathbf p)=-\frac{(\mathbf p-\mathbf c)\cdot\mathbf u}{r},\qquad S=\frac{\sum(I_k-\overline{I})(t_k-\overline{t})}{\sqrt{\sum(I_k-\overline{I})^2}\sqrt{\sum(t_k-\overline{t})^2}}. \qquad (2.18) $$
 
-Metadata ghi phương vị Mặt Trời A, đo theo chiều kim đồng hồ từ hướng Bắc, và góc hướng Bắc trong ảnh $\alpha_N$ (bằng 0 khi Bắc ở trên). Với $\varphi = A + \alpha_N$, vector đơn vị chỉ về phía Mặt Trời trong hệ ảnh (y hướng xuống) là:
+S dương hợp chiều hố, S âm hợp gò/vòng sai; phép đổi I thành aI+b với a > 0 không đổi S. Để loại độ dốc nền, khớp mặt phẳng trên vành $1,3r<\left\lvert \mathbf p-\mathbf c\right\rvert\le2r$ rồi trừ trước khi tính S:
 
-$$ \mathbf{u} = (\sin\varphi,\; -\cos\varphi) \qquad (2.17) $$
+$$ \min_{\beta_0,\beta_1,\beta_2}\sum_{\mathbf p\in\text{vành ngoài}}\left[I(\mathbf p)-\beta_0-\beta_1\frac{x-x_c}{r}-\beta_2\frac{y-y_c}{r}\right]^2. \qquad (2.19) $$
 
-Ví dụ φ = 270° (nắng từ phía Tây) cho (−1, 0), tức sang trái. Với ứng viên tâm $\mathbf{c}$, bán kính r, mỗi pixel hợp lệ $\mathbf{p}$ trong đĩa có vị trí chuẩn hóa dọc hướng ra xa Mặt Trời t, âm ở nửa phía Mặt Trời; điểm sáng–tối S là hệ số tương quan Pearson giữa độ sáng I và t:
+Vành ngoài tránh vành nổi; ba hệ số mô tả mức nền và hai độ dốc. Trên giả lập, độ dốc 0,001/pixel cho S = +0,48 hoặc −0,50 dù không có hố; trừ dốc còn −0,03. Nhưng mép bóng có thể làm điểm sau trừ thành +0,90 trong khi điểm gốc −0,01. Vì thế tính cả $S_{raw}$ trên ảnh gốc và S sau trừ; Bảng 2.1 yêu cầu cùng nhãn.
 
-$$ t(\mathbf{p}) = -\frac{(\mathbf{p} - \mathbf{c}) \cdot \mathbf{u}}{r} \in [-1, 1], \qquad S = \frac{\sum_k (I_k - \bar I)(t_k - \bar t)}{\sqrt{\sum_k (I_k - \bar I)^2}\,\sqrt{\sum_k (t_k - \bar t)^2}} \qquad (2.18) $$
+| Điều kiện | Nhãn |
+|---|---|
+| $S\ge\tau$ và $S_{raw}\ge\tau$ | hợp |
+| $S\le-\tau$ và $S_{raw}\le-\tau$ | ngược |
+| Các trường hợp còn lại | không rõ |
 
-S > 0 nghĩa là sáng dần về phía xa Mặt Trời, khớp với hố lõm; S < 0 khớp với gò nổi hoặc vòng sai. Hệ số tương quan không đổi khi nhân hoặc cộng I với hằng số dương, nên cùng ngưỡng dùng được cho ảnh tương phản thấp lẫn cao.
+: Bảng 2.1. Phân loại sáng–tối; nhãn hợp chưa chứng minh là hố thật.
 
-### 2.3.3. Trừ độ dốc địa hình
+Ngưỡng τ = 0,15 khi có phương vị đo, 0,25 khi chỉ biết Đông/Tây. Nếu hướng lệch Δ thì tín hiệu giảm khoảng cos Δ; ngưỡng cao hơn làm kết luận bảo thủ. Chỉ chấm khi nắng có nguồn/xác nhận, biết hướng Bắc, góc tới ≥30° và đã kiểm hướng bằng mắt trên hố tham chiếu không dùng để đánh giá. Sai hướng đảo dấu; ảnh không đủ điều kiện ghi `not_checked` và giữ ứng viên. Cảnh giả lập nắng Tây 70° cho hố/gò S = +0,98/−0,98; hình và bằng chứng ở Phụ lục E.
 
-Vòng trên sườn có độ sáng tăng đều sẽ có S khác 0 dù không có hố: trên cảnh giả lập, độ dốc sáng 0,001 mỗi pixel đã cho S = +0,48 hoặc −0,50 ở một vòng chỗ phẳng. Vì vậy nhóm khớp mặt phẳng độ sáng bằng bình phương tối thiểu trên vành ngoài $\text{1,3}r < \|\mathbf{p} - \mathbf{c}\| \le 2r$ (bỏ qua vành nổi của hố), trừ nó khỏi các pixel trong đĩa rồi mới tính S; với vòng chỗ phẳng nói trên, S sau trừ dốc chỉ còn −0,03 (không rõ):
+## 2.4. Đối sánh một–một và độ đo
 
-$$ \min_{\beta_0, \beta_1, \beta_2} \sum_{\mathbf{p} \in \text{vành ngoài}} \left[ I(\mathbf{p}) - \beta_0 - \beta_1\,\frac{x - x_c}{r} - \beta_2\,\frac{y - y_c}{r} \right]^2 \qquad (2.19) $$
+Dự đoán tâm $\mathbf c_i$ ghép với nhãn tâm $\mathbf q_j$, bán kính $r_j^{ref}$ khi:
 
-Mặt phẳng không mô tả được mép bóng sắc: khi mép bóng lớn nằm sát vòng, phép trừ lại tạo quy luật giả, ví dụ S sau trừ dốc là +0,90 trong khi trên ảnh gốc là −0,01. Vì vậy điểm được tính cả hai cách, S sau trừ dốc và $S_{\mathrm{raw}}$ trên ảnh gốc, và chỉ kết luận khi hai cách cùng nhãn.
+$$ \delta_{ij}=\left\lVert \mathbf c_i-\mathbf q_j\right\rVert/r_j^{ref}\le\text{0,5}. \qquad (2.20) $$
 
-### 2.3.4. Phân loại và điều kiện dùng hướng nắng
+Ngưỡng 0,5 lấy từ đề; tăng ngưỡng tăng cơ hội ghép nhầm. Bán kính dự đoán không là điều kiện ghép nhưng phải báo sai lệch. Mỗi vòng/nhãn dùng tối đa một lần. Với $x_{ij}=1$ chỉ ở cặp hợp lệ:
 
-Bảng 2.1 nêu quy tắc phân loại, với τ = 0,15 khi phương vị được đo bằng số và τ = 0,25 khi chỉ biết nắng từ phía Đông hay Tây. Ngưỡng sau được nới vì nếu phương vị thật lệch Δ, tương phản đo dọc **u** giảm khoảng cos Δ, nhưng dấu của S vẫn đúng khi Δ < 90°.
+$$ \max\sum x_{ij},\quad\text{sau đó}\quad\min\sum\delta_{ij}x_{ij};\qquad\sum_jx_{ij}\le1,\quad\sum_ix_{ij}\le1. \qquad (2.21) $$
 
-| Điều kiện | Nhãn | Ý nghĩa |
-|---|---|---|
-| $S \ge \tau$ và $S_{\mathrm{raw}} \ge \tau$ | hợp | Sáng–tối khớp với hố lõm |
-| $S \le -\tau$ và $S_{\mathrm{raw}} \le -\tau$ | ngược | Gò nổi, mép bóng trong vòng, hoặc vòng sai |
-| Còn lại | không rõ | Không có quy luật, hoặc do địa hình quyết định |
+Ghép tham lam có thể mất cặp: P1 gần Q1 nhưng cũng ghép được Q2, còn P2 chỉ ghép Q1. Hungary [@kuhn1955] giải bài toán trên ma trận $n_1\times m_1$ sau khi bỏ hàng/cột không có cặp. Phạt cặp sai $(k+1)(0,5+1)$ với $k=\min(n_1,m_1)$ lớn hơn tổng chi phí mọi k cặp hợp lệ, nên ưu tiên số cặp trước khoảng cách. Độ phức tạp $O(n_1^2m_1)$ khi $n_1\le m_1$.
 
-: Bảng 2.1. Quy tắc phân loại sáng–tối của một ứng viên.
+Gọi TP là số cặp, $FP=N_{dự\,đoán}-TP$, $FN=N_{nhãn}-TP$. Với nhãn đầy đủ:
 
-Nhãn sáng–tối chỉ là thông tin bổ sung, không xóa vòng nào, và "hợp" chưa đủ để khẳng định là hố. Ghi nhầm hướng nắng sẽ đảo mọi kết luận (đổi Tây thành Đông làm cả ba hố giả lập bị chấm "ngược"), nên một ảnh chỉ được chấm khi (1) phương vị có nguồn hoặc phía nắng đã được xác nhận bằng mắt, và góc hướng Bắc đã biết; (2) góc tới, tức góc giữa tia nắng và phương thẳng đứng, từ 30° trở lên, vì nắng gần đứng làm bóng quá ngắn; (3) hướng nắng và hướng Bắc đã được kiểm tra bằng mắt trên hố tham chiếu, và các hố này không dùng làm ví dụ đánh giá. Ảnh không đạt thì mọi ứng viên được ghi "không chấm" kèm lý do và vẫn được giữ.
+$$ Precision=\frac{TP}{TP+FP},\qquad Recall=\frac{TP}{TP+FN},\qquad F_1=\frac{2TP}{N_{dự\,đoán}+N_{nhãn}}. \qquad (2.22) $$
 
-## 2.4. Đối sánh một–một và các độ đo
+Độ chính xác dương tính (Precision) cần biết vòng nào sai. Nhãn thưa không cho FP vì vòng không khớp vẫn có thể là hố chưa gán. Nhóm chỉ báo độ bao phủ trên nhãn đã biết:
 
-### 2.4.1. Đối sánh một–một
+$$ Recall_{known}=TP_{known}/N_{known},\qquad FN_{known}=N_{known}-TP_{known}. \qquad (2.23) $$
 
-Vòng dự đoán (ứng viên máy hoặc vòng người chơi khoanh) tâm $\mathbf{c}_i$ khớp nhãn tham chiếu tâm $\mathbf{q}_j$, bán kính $r^{\mathrm{ref}}_j$ khi:
+Không tính nhãn `uncertain`; ghép nhãn chắc chắn trước rồi bỏ qua dự đoán rơi vào nhãn chưa chắc. Recall_known luôn kèm mẫu số và dải kích thước; vòng người chơi ngoài nhãn thưa không bị coi là sai.
 
-$$ \delta_{ij} = \frac{\|\mathbf{c}_i - \mathbf{q}_j\|}{r^{\mathrm{ref}}_j} \le \text{0,5} \qquad (2.20) $$
+## 2.5. Mật độ, phân bố và bất định
 
-Với hố nhỏ nhất r = 5 px, ngưỡng là 2,5 px, lớn hơn nhiều sai số lượng tử tâm 0,71 px. Sai số bán kính không phải điều kiện ghép, nên luôn được ghi kèm từng cặp. Mỗi vòng và mỗi nhãn dùng tối đa một lần. Với $x_{ij} \in \{0, 1\}$ chỉ bằng 1 khi cặp thỏa (2.20), hệ thống chọn cách ghép nhiều cặp nhất, rồi tổng khoảng cách chuẩn hóa nhỏ nhất:
+Với đường kính D = 2rs và $N_D$ hố trong dải $D_{min}\le D<D_{max}$:
 
-$$ \max \sum_{i,j} x_{ij}, \quad \text{sau đó} \quad \min \sum_{i,j} \delta_{ij}\, x_{ij}, \qquad \sum_j x_{ij} \le 1,\ \ \sum_i x_{ij} \le 1 \qquad (2.21) $$
+$$ \rho=N_D/A,\qquad A=N_{px\,hợp\,lệ}s^2/10^6\ (\mathrm{km}^2). \qquad (2.24) $$
 
-Ghép tham lam "cặp gần nhất trước" có thể mất cặp: nếu $P_1$ khớp được cả $Q_1$, $Q_2$ nhưng gần $Q_1$ hơn, còn $P_2$ chỉ khớp $Q_1$, thì cách tham lam chỉ được một cặp thay vì hai. Bài toán (2.21) được giải bằng thuật toán Hungary [@kuhn1955] trên ma trận chi phí $n_1 \times m_1$ sau khi bỏ các vòng và nhãn không khớp được với ai. Cặp hợp lệ có chi phí $\delta_{ij}$; cặp không hợp lệ chịu phạt $(k+1)(\text{0,5}+1)$, $k = \min(n_1, m_1)$, lớn hơn tổng chi phí của k cặp hợp lệ bất kỳ, nên lời giải luôn có nhiều cặp hợp lệ nhất. Độ phức tạp là $O(n_1^2 m_1)$ với $n_1 \le m_1$. Cùng phép ghép được dùng cho đánh giá máy và chấm điểm người chơi.
+Diện tích lấy hợp vùng đếm trên ảnh nguồn để tránh lặp. Hai vùng phải cùng s và dải D. Phân bố dùng bin tăng theo $\sqrt2$ và tần suất tích lũy $N(\ge D)/A$ [@catwg1979]. Khoảng tin cậy (confidence interval) 95 % của ρ là cận Poisson chính xác chia cho A [@garwood1936]:
 
-### 2.4.2. Precision, Recall và nhãn thưa
+$$ P_{\mu_L}(X\ge n)=\text{0,025},\quad P_{\mu_U}(X\le n)=\text{0,025},\quad X\sim Poisson(\mu). \qquad (2.25) $$
 
-Gọi TP là số cặp khớp, $N_{\mathrm{dự\,đoán}}$ và $N_{\mathrm{nhãn}}$ là số vòng dự đoán và số nhãn; $\mathrm{FP} = N_{\mathrm{dự\,đoán}} - \mathrm{TP}$, $\mathrm{FN} = N_{\mathrm{nhãn}} - \mathrm{TP}$:
+n là số hố; khi n = 0 đặt cận dưới bằng 0. Hai vùng có cùng mật độ thì, điều kiện trên tổng $N_1+N_2$, số hố vùng 1 có phân phối [@przyborowski1940]:
 
-$$ \mathrm{Precision} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}, \qquad \mathrm{Recall} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}}, \qquad F_1 = \frac{2\,\mathrm{TP}}{N_{\mathrm{dự\,đoán}} + N_{\mathrm{nhãn}}} \qquad (2.22) $$
+$$ N_1\sim Binomial\left(N_1+N_2,\frac{A_1}{A_1+A_2}\right). \qquad (2.26) $$
 
-F1 là trung bình điều hòa của Precision và Recall. Công thức (2.22) chỉ đúng khi nhãn đầy đủ. Nhãn tham chiếu của đề tài là nhãn thưa: chỉ một phần hố được khoanh. Vòng dự đoán không khớp nhãn nào vẫn có thể là hố chưa gán nhãn, nên FP không đo được và Precision, F1 không xác định. Ngược lại, mỗi nhãn đã biết là hố thật đã kiểm chéo, nên vẫn đo được Recall trên nhãn đã biết:
-
-$$ \mathrm{Recall}_{\mathrm{known}} = \frac{\mathrm{TP}_{\mathrm{known}}}{N_{\mathrm{known}}}, \qquad \mathrm{FN}_{\mathrm{known}} = N_{\mathrm{known}} - \mathrm{TP}_{\mathrm{known}} \qquad (2.23) $$
-
-$N_{\mathrm{known}}$ không tính các hố được đánh dấu không chắc chắn; nhãn chắc chắn được ghép trước, và vòng dự đoán rơi vào hố không chắc chắn được bỏ qua. Recall_known luôn được báo kèm số hố và dải kích thước; Precision và F1 chỉ tính khi có nhãn đầy đủ. Tương tự, trong trò chơi với nhãn thưa, vòng khoanh ngoài các nhãn không bị tính là sai.
-
-## 2.5. Mật độ hố và tuổi tương đối
-
-Bề mặt càng tồn tại lâu thì càng chịu nhiều va chạm và tích lũy càng nhiều hố [@neukum2001]. Vì vậy, trong cùng dải đường kính và cùng tỷ lệ ảnh, vùng có mật độ hố cao hơn thường có tuổi tương đối già hơn; phép so sánh này không cho tuổi tuyệt đối. Với D = 2rs và diện tích A tính trên pixel hợp lệ, mật độ của $N_D$ hố có đường kính $D_1 \le D < D_2$ là:
-
-$$ \rho = \frac{N_D}{A}, \qquad A = \frac{N_{\mathrm{px\,hợp\,lệ}} \cdot s^2}{10^6}\ \ (\mathrm{km}^2) \qquad (2.24) $$
-
-Kết luận có nhiều giới hạn: hố bỏ sót, khoanh nhầm hoặc bị đếm hai lần làm mật độ lệch; chiếu sáng khác nhau làm khả năng thấy hố khác nhau; vùng nhỏ ít hố nên vài hố sai đã đổi mật độ đáng kể; cửa sổ cắt từ cùng mosaic có thể chồng lấp nên không phải mẫu độc lập. Vì vậy so sánh mật độ ở đây chỉ mang tính minh họa, chưa đủ để kết luận về tuổi địa chất.
+Giá trị p hai phía cộng xác suất các kết quả không lớn hơn xác suất quan sát. Nhiều hố hơn làm khoảng bất định hẹp hơn; diện tích, nhãn thiếu và điều kiện nắng đều ảnh hưởng mật độ. Chỉ trong điều kiện quan sát tương đồng, mật độ cao mới gợi ý tuổi tương đối [@neukum2001]. Hố thứ cấp, ô chồng lấp, lựa chọn vùng và đếm nhầm có thể phá giả định; kết quả ở đây không cho tuổi tuyệt đối.

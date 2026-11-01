@@ -1,7 +1,7 @@
 """Đức — S3-12: ghép báo cáo từ docs/bao_cao/*.md thành DOCX và PDF.
 
 Định dạng theo yêu cầu môn: A4, Times New Roman 13, giãn dòng 1,3. Lề trái
-3 cm, phải/trên/dưới 2 cm, số trang ở chân trang. Mỗi chương bắt đầu trang mới.
+3 cm, phải 2 cm, trên/dưới 2,5 cm, số trang ở chân trang. Mỗi chương bắt đầu trang mới.
 
 Cách chạy:
     pip install -r requirements-report.txt
@@ -50,8 +50,19 @@ EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\((?:\d+|[A-Z])\.\d+\))\s*(?=\$\$)")
 
 def combined_markdown(files: list[Path]) -> str:
     """Nối các chương thành một văn bản để pandoc đọc một lần, kèm phép đổi số công thức ở trên."""
-    parts = [EQUATION_NUMBER.sub(lambda m: "\\text{" + "\u00a0" * 8 + "}" + m.group(1) + " ", f.read_text(encoding="utf-8"))
-             for f in files]
+    sources = [f.read_text(encoding="utf-8") for f in files]
+    captions = re.findall(r"(?:!\[|^: )(Hình \d+\.\d+|Bảng [\dA-Z]+\.\d+)\. ([^\n]+)",
+                          "\n".join(sources), flags=re.M)
+    rows = ["| Hình/bảng | Nội dung | Trang |", "|---|---|---:|"]
+    for label, caption in captions:
+        title = caption.split("](", 1)[0].split(". ", 1)[0].replace("`", "")
+        title = re.split(r"[;:]", title, maxsplit=1)[0]
+        if len(title) > 58:
+            title = title[:55].rsplit(" ", 1)[0] + "…"
+        rows.append(f"| {label} | {title.rstrip('.')} | 0 |")
+    listing = "\n".join(rows)
+    parts = [EQUATION_NUMBER.sub(lambda m: "\\text{" + "\u00a0" * 8 + "}" + m.group(1) + " ",
+                                text.replace("<!-- REPORT_LISTS -->", listing)) for text in sources]
     return "\n\n".join(parts)
 
 
@@ -173,7 +184,7 @@ def reference_docx(pandoc: str, target: Path) -> Path:
     for section in document.sections:
         section.page_width, section.page_height = Cm(21), Cm(29.7)
         section.left_margin, section.right_margin = Cm(3), Cm(2)
-        section.top_margin, section.bottom_margin = Cm(2), Cm(2)
+        section.top_margin, section.bottom_margin = Cm(2.5), Cm(2.5)
         section.footer_distance = Cm(1)
         _page_number_footer(section)
     document.save(str(target))
@@ -224,7 +235,50 @@ def _postprocess(path: Path, language: str) -> None:
                 spacing = following.get_or_add_pPr().makeelement(qn("w:spacing"), {})
                 following.get_or_add_pPr().append(spacing)
             spacing.set(qn("w:before"), "160")
+    _caption_page_fields(document)
     document.save(str(path))
+
+
+def _caption_page_fields(document) -> None:
+    """Đánh dấu chú thích và tạo PAGEREF cho danh mục hình/bảng; LibreOffice cập nhật khi dựng."""
+    from docx.oxml.ns import qn
+
+    existing = document.element.findall(".//" + qn("w:bookmarkStart"))
+    next_id = max((int(e.get(qn("w:id"))) for e in existing), default=0) + 1
+    targets = {}
+    for paragraph in document.paragraphs:
+        match = re.match(r"^(Hình \d+\.\d+|Bảng [\dA-Z]+\.\d+)\.", paragraph.text)
+        if not match or paragraph.style.name not in ("Image Caption", "Table Caption", "Caption"):
+            continue
+        label = match.group(1)
+        name = "report_caption_" + re.sub(r"[^A-Za-z0-9]", "_", label)
+        start = paragraph._p.makeelement(qn("w:bookmarkStart"), {qn("w:id"): str(next_id), qn("w:name"): name})
+        end = paragraph._p.makeelement(qn("w:bookmarkEnd"), {qn("w:id"): str(next_id)})
+        paragraph._p.insert(1 if paragraph._p.pPr is not None else 0, start)
+        paragraph._p.append(end)
+        targets[label] = name
+        next_id += 1
+    for table in document.tables:
+        if not table.rows or table.cell(0, 0).text != "Hình/bảng":
+            continue
+        for row in table.rows[1:]:
+            label = row.cells[0].text
+            if label not in targets:
+                raise ValueError(f"Không tìm thấy chú thích cho danh mục: {label}")
+            paragraph = row.cells[2].paragraphs[0]
+            paragraph.clear()
+            run = paragraph.add_run()
+            for kind, text in (("begin", None), (None, f" PAGEREF {targets[label]} \\h "),
+                               ("separate", None), (None, "0"), ("end", None)):
+                if kind:
+                    element = run._r.makeelement(qn("w:fldChar"), {qn("w:fldCharType"): kind})
+                elif text == "0":
+                    element = run._r.makeelement(qn("w:t"), {})
+                    element.text = text
+                else:
+                    element = run._r.makeelement(qn("w:instrText"), {qn("xml:space"): "preserve"})
+                    element.text = text
+                run._r.append(element)
 
 
 def _polish_table(table, text_width_cm: float = 16.0) -> None:
@@ -259,6 +313,11 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
         take = sum(short)
         room = sum(widths[i] - floor[i] for i in spare) or 1.0
         widths = [max(w, f) if short[i] else w - take * (w - floor[i]) / room for i, (w, f) in enumerate(zip(widths, floor))]
+    headers = [cell.text for cell in rows[0].cells]
+    if headers == ["Hình/bảng", "Nội dung", "Trang"]:
+        widths = [2.8, 11.4, 1.8]
+    elif headers == ["Thành viên", "Công việc", "File mã chính", "Mục viết", "Tỷ lệ (%)", "Chữ ký"]:
+        widths = [2.2, 2.3, 5.0, 3.7, 1.3, 1.5]
     tbl = table._tbl
     tbl_pr = tbl.tblPr
     for tag, attrs in (("w:tblW", {"w:type": "dxa", "w:w": str(int(text_width_cm * 567))}),

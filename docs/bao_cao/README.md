@@ -6,14 +6,14 @@ Báo cáo cuối được ghép từ các file `NN_*.md` trong thư mục này, 
 
 | File | Nội dung | Bản ghép đầu tiên | Người chốt nội dung (mã việc) |
 |---|---|---|---|
-| `00_mo_dau.md` | Bìa, mục lục, danh mục ký hiệu và chữ viết tắt | Đức | Đức (S3-12). Cả nhóm điền tên trường, mã lớp, MSSV, giảng viên |
-| `01_chuong_1_gioi_thieu.md` | Chương 1. Giới thiệu | Đức, từ `CHUONG_1_NHAP.md` | Đức (S3-08) |
+| `00_mo_dau.md` | Bìa, cam đoan/phân công, mục lục, danh mục hình/bảng/ký hiệu | Đức | Đức (S3-12). Cả nhóm điền tên trường, mã lớp, MSSV, giảng viên |
+| `01_chuong_1_gioi_thieu.md` | Chương 1. Tổng quan bài toán | Đức, từ `CHUONG_1_NHAP.md` | Đức (S3-08) |
 | `02_chuong_2_co_so_ly_thuyet.md` | Chương 2. Cơ sở lý thuyết | Ghép từ S1-14, S1-15, S1-12 | Tiến (S3-06) phần Hough; Hưng (S3-07) phần tiền xử lý và sáng–tối |
-| `03_chuong_3_phuong_phap_cai_dat.md` | Chương 3. Phương pháp và cài đặt | Ghép từ S1-14, S1-11, S1-13, S2-01, S2-02, S2-05 | Hưng (S3-07); Tiến (S3-06) phần cài đặt Hough; thống kê chờ S2-09 |
-| `04_chuong_4_du_lieu_danh_gia.md` | Chương 4. Dữ liệu, đánh giá và khảo sát | Ghép từ S1-16, S1-10, S2-03, S2-07 | Quốc Anh (S3-09); Tiến (S3-02) phần Precision/Recall |
-| `05_chuong_5_he_thong_ket_luan.md` | Chương 5. Hệ thống, trò chơi và kết luận | Đức | Đức (S3-08) |
+| `03_chuong_3_phuong_phap_cai_dat.md` | Chương 3. Thiết kế và cài đặt | Ghép từ S1-14, S1-11, S1-13, S2-01, S2-02, S2-05 | Hưng (S3-07); Tiến (S3-06) phần cài đặt Hough; Hưng phần thống kê; Đức kiến trúc/game |
+| `04_chuong_4_du_lieu_danh_gia.md` | Chương 4. Thực nghiệm và đánh giá | Ghép từ S1-16, S1-10, S2-03, S2-07 | Quốc Anh (S3-09); Tiến (S3-02) phần Precision/Recall |
+| `05_chuong_5_he_thong_ket_luan.md` | Chương 5. Kết luận và hướng phát triển | Đức | Đức (S3-08) |
 | `06_tai_lieu_tham_khao.md` | Tài liệu tham khảo (pandoc tự sinh từ `tai_lieu.bib`) | Đức | — |
-| `07_phu_luc.md` | Phụ lục: phân công, đóng góp, cách chạy lại, khai báo dùng AI | Đức | Cả nhóm xác nhận phần của mình |
+| `07_phu_luc.md` | Phụ lục A–E: cách chạy, mã kiểm, nhật ký, AI, liên kết bổ sung | Đức | Cả nhóm xác nhận phần của mình |
 
 Bản ghép đầu tiên chỉ chuyển nội dung đã có trong repo sang dạng chương, không thêm kết quả mới. Người chốt đọc lại, sửa số liệu theo phiên bản chạy cuối và xóa các ghi chú `<!-- ... -->` khi xong.
 
@@ -35,7 +35,7 @@ Bản ghép đầu tiên chỉ chuyển nội dung đã có trong repo sang dạ
 ![Hình 3.2. Ảnh trước và sau tiền xử lý trên ảnh STT 13.](../images/s114/truoc_sau_stt13.png){width=85%}
 ```
 
-Đường dẫn tính từ thư mục `docs/bao_cao/`. Chỉ dùng ảnh đã có trong repo (`docs/images/`, `docs/evidence/`). Hình phải được nhắc trong văn bản trước khi xuất hiện, ví dụ "Hình 3.2 cho thấy…".
+Đường dẫn tính từ thư mục `docs/bao_cao/`. Dùng PNG, giữ nguồn gốc trong evidence. Chỉ dùng ảnh đã có trong repo (`docs/images/`, `docs/evidence/`). Hình phải được nhắc trong văn bản trước khi xuất hiện, ví dụ "Hình 3.2 cho thấy…".
 
 **Bảng.** Dùng bảng `|...|`. Chú thích đặt ngay dưới bảng, bắt đầu bằng dấu hai chấm. Khi xuất, chú thích hiện phía trên bảng:
 
@@ -47,7 +47,7 @@ Bản ghép đầu tiên chỉ chuyển nội dung đã có trong repo sang dạ
 : Bảng 3.1. Phần tự viết và phần dùng thư viện.
 ```
 
-**Trích dẫn.** Viết `[@duda1972]` hoặc `[@duda1972; @yuen1990]`. Khóa phải có trong `tai_lieu.bib`. Pandoc tự đánh số [1], [2]… theo thứ tự xuất hiện, và tự tạo danh mục ở `06_tai_lieu_tham_khao.md` theo chuẩn IEEE (`ieee.csl`). Thêm nguồn mới thì thêm mục vào `tai_lieu.bib` kèm DOI hoặc URL và ngày truy cập. Không trích file nội bộ của repo như một tài liệu tham khảo; chỉ ghi tên file trong văn bản khi mô tả cài đặt.
+**Trích dẫn.** Viết `[@duda1972]` hoặc `[@duda1972; @yuen1990]`. Khóa phải có trong `tai_lieu.bib`. Pandoc tự đánh số [1], [2]… theo thứ tự xuất hiện, và tự tạo danh mục ở `06_tai_lieu_tham_khao.md` theo chuẩn IEEE (`ieee.csl`). Thêm nguồn mới thì thêm mục vào `tai_lieu.bib` kèm DOI hoặc URL và ngày truy cập. Hai nguồn học phần chỉ ghi tên “Quy định BTL Xử lý ảnh” và “Danh sách đề tài NASA, Đề 24”; diễn giải ngắn bằng lời của nhóm, không chép dài nội dung đề. Không trích file nội bộ của repo như một tài liệu tham khảo; chỉ ghi tên file trong văn bản khi mô tả cài đặt.
 
 **Thuật ngữ thống nhất.** Dùng: ứng viên máy (vòng Hough trả về, chưa kiểm chứng); nhãn tham chiếu (vòng do người gán và kiểm chéo); Recall trên nhãn đã biết (Recall_known); tập điều chỉnh / tập kiểm tra; tâm pixel có tọa độ nguyên; Hough tròn tự cài đặt bằng NumPy.
 
@@ -62,9 +62,9 @@ python scripts/build_report.py --only 03 --no-pdf --out /tmp/ch3   # thử riên
 
 Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice và Python có module `uno` (trên Ubuntu: gói `python3-uno`; nơi khác đặt biến `REPORT_UNO_PYTHON` trỏ tới python của LibreOffice). Script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang, lưu DOCX qua bộ lọc `Office Open XML Text`, mở lại để ổn định dàn trang, cập nhật/lưu trường lần nữa rồi xuất PDF. `--no-pdf` chỉ tạo bản nháp, chưa cập nhật mục lục; không dùng bản đó để nộp. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
 
-Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoảng trắng không ngắt, vì LibreOffice bỏ khoảng trắng TeX và làm số công thức dính vào công thức. Trang bìa hiện vẫn mang số trang 1.
+Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoảng trắng không ngắt, vì LibreOffice bỏ khoảng trắng TeX và làm số công thức dính vào công thức. Trang bìa hiện vẫn mang số trang 1. Danh mục hình/bảng sinh từ chú thích, số trang dùng trường PAGEREF được cập nhật cùng mục lục. PDF xuất ảnh bằng nén không mất dữ liệu, không giảm độ phân giải; DOCX giữ ảnh PNG. Thân bài dùng Times New Roman; công thức có thể dùng font toán thay thế.
 
-Định dạng do script đặt: A4, Times New Roman 13, giãn dòng 1,3; lề trái 3 cm, các lề còn lại 2 cm; số trang ở giữa chân trang; mỗi chương bắt đầu trang mới.
+Định dạng do script đặt: A4, Times New Roman 13, giãn dòng 1,3; lề trái 3 cm, phải 2 cm, trên/dưới 2,5 cm; số trang ở giữa chân trang; mỗi chương bắt đầu trang mới.
 
 ## 4. Kiểm tra trước khi nộp (theo yêu cầu học phần)
 
@@ -75,32 +75,36 @@ Khi ghép, script đổi `\qquad (2.1)` ở cuối công thức thành 8 khoản
 - [ ] Bìa đủ tên trường, mã lớp, MSSV, giảng viên.
 - [ ] Phụ lục có bảng đóng góp đã được cả bốn người xác nhận và phần khai báo dùng AI.
 
-## 5. Trạng thái bản ghép (cập nhật 01/11/2026, S3-12)
+## 5. Đối chiếu quy định học phần (01/11/2026, S3-12 r5)
 
-Nền `c466c2d`, nhánh `s3-12-rut-gon-bao-cao`, đã có PR #33–#36. Trưởng nhóm cho phép rút Chương 2–4; bản sửa chưa được chủ phần xác nhận. Bản nền dựng lại có 58 trang, phần chính 48 trang (5–52). Bản rút gọn có **56 trang tổng, 37 trang phần chính (5–41)**, đạt mục tiêu ≤39 và ngân sách dưới đây. Số trang được đếm bằng pypdf; bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12.
+Nền `94c17ff`, nhánh `s3-12-doi-chieu-de-goc`, đã gồm PR #40. Ngân sách dưới đây theo **Quy định BTL Xử lý ảnh** (tài liệu học phần), thay bảng ngân sách cũ. Bản nền dựng lại có 56 trang, 37 trang chính; bản đối chiếu có **44 trang, phần chính 33 trang (7–39)**. Chương 3+4 có 21/33 trang (63,6 %). Số trang đo từ PDF bằng pypdf, có thể đổi khi điền kết quả còn thiếu hoặc đổi môi trường dựng.
 
-| Chương | Nền | Rút gọn | Ngân sách | Chủ phần kiểm bản rút gọn |
+| Phần | Nền 94c17ff | Bản r5 | Ngân sách | Người chốt |
 |---|---:|---:|---:|---|
-| 1 | 3 | 3 | 3 | Đức |
-| 2 | 11 | 9 | 9 | Tiến (Hough), Hưng (tiền xử lý/sáng–tối) |
-| 3 | 17 | 10 | 10 | Hưng; Tiến mục 3.3 và phần Hough |
-| 4 | 11 | 9 | 9 | Quốc Anh; Hưng mục 4.1; Tiến phần đánh giá |
-| 5 | 6 | 6 | 6 | Đức |
+| Mở đầu | 4 | 6 | 4–6 | Đức; cả nhóm ký và chốt tỷ lệ |
+| Chương 1 | 3 | 3 | 3–4 | Đức |
+| Chương 2 | 9 | 7 | 5–8 | Tiến; Hưng tiền xử lý/sáng–tối |
+| Chương 3 | 10 | 9 | 6–10 | Tiến Hough; Hưng hậu xử lý/thống kê; Đức kiến trúc/game |
+| Chương 4 | 9 | 12 | 7–12 | Quốc Anh; Hưng dữ liệu/thống kê; Tiến Hough |
+| Chương 5 | 6 | 2 | 1–2 | Đức |
+| Tài liệu tham khảo | 3 | 2 | 1–2 | Cả nhóm |
+| Phụ lục | 12 | 3 | Không giới hạn, ưu tiên liên kết GitHub | Cả nhóm |
 
-Giữ giả mã `dedupe_circles` và ví dụ M32/M8 trong Chương 3. Phụ lục E chứa các giả mã phụ, bảng cấu hình, bằng chứng lịch sử và quy đổi tọa độ được chuyển khỏi phần chính. Không thay số liệu đánh giá; hai số thời gian 24 ms/28 ms bị bỏ vì không tìm thấy bằng chứng trong repo. Mục 3.6.4 khớp app sau PR #34: ứng viên thô ≥ `max_circles` thì ẩn mật độ và cảnh báo; ảnh Lunokhod 1/Mare Frigoris hiện bảng đếm tay độc lập.
+Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã đánh số dòng, đầu vào/đầu ra, độ phức tạp, bảng sai số số học mới trên 26 ảnh. Giữ `dedupe_circles` và ví dụ M32/M8. Thiết kế ứng dụng chuyển từ Chương 5 về Chương 3; hình và kết quả sang Chương 4. Hình 5.1–5.3 cũ nay là Hình 4.5–4.7, PNG cùng pixel giải mã từ bằng chứng JPEG S3-08; không coi chuyển định dạng là khôi phục chi tiết đã mất hay một lượt chụp mới.
 
-Dấu chờ trong tám file ghép, không tính comment HTML: **35 → 28**.
+Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Liên kết `main` tới file mới chỉ có hiệu lực sau khi tích hợp.
 
-| Phần | Nền | Rút gọn | Người cần làm |
-|---|---:|---:|---|
-| Chương 2 | 1 | 0 | Đã đối chiếu PR #26 trên nền |
-| Chương 4 | 6 | 1 | Quốc Anh điền kết quả S3-05 ở 4.6 |
-| Chương 5 | 2 | 1 | Quốc Anh: S3-05 ở 5.7. Số test 5.6 đã điền: 333 test Python, 6 bộ test JavaScript (đúng khi PR #39 merge) |
-| Phụ lục A | 17 | 17 | Cả nhóm đối chiếu sản phẩm sprint 3; từng người điền tỷ lệ, tự đánh giá, nhận đánh giá chéo và xác nhận |
-| Phụ lục D | 9 | 9 | Tiến, Hưng, Quốc Anh tự khai công cụ AI, việc sử dụng và cách kiểm soát (mỗi người 3 ô) |
+Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
 
-Các phần khác không còn dấu chờ. PR #26 và S2-15 đã có nguồn; cấu hình cuối giữ `score`, tuning 10/174, mọi lượt holdout sau lần đầu là đánh giá lặp. Khảo sát/thử người chơi đã bỏ theo quyết định 31/10: yêu cầu ít nhất 10 học sinh chưa đạt, không có số liệu hứng thú/hiểu bài. Chương 4 chỉ giữ thiết kế dự kiến và giới hạn.
+| Nơi | Số dấu | Ai cần bổ sung |
+|---|---:|---|
+| Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
+| Chương 4 | 2 | Tiến: tên CPU/RAM đúng máy Windows 27/10; Quốc Anh: kết quả S3-05 sau PR #38 |
+| Chương 5 | 1 | Quốc Anh: kết luận S3-05 theo kết quả đã tích hợp |
+| Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
+| Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
+| File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Hình 5.1–5.3 chụp lại ngày 01/11/2026 qua tunnel VPS bằng Playwright; xem `docs/evidence/s3-08/README.md`. Bảy vòng minh họa cho 60/100, tìm đúng 6/10 nhãn, trùng máy 0; đây không phải khảo sát người thật. Commit VPS do trưởng nhóm cung cấp; không coi ảnh chụp là phép kiểm hash mã trên máy chủ.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số 333 test Python/6 bộ JavaScript thuộc nền đã ghép S3-16; r5 không chạy lại toàn bộ kiểm thử ứng dụng.
 
-Bản dựng đầy đủ lưu mục lục vào cả DOCX và PDF. Kiểm cuối đối chiếu từng dòng mục lục DOCX với trang tiêu đề PDF và kiểm không còn lời nhắc F9. Vẫn là **bản làm việc** vì còn các ô cá nhân, S3-05 và xác nhận của chủ phần. Mức 25–40 trang chính/30–60 trang tổng lấy từ mục 4; chưa tìm thấy bản quy định học phần gốc trong repo. Số trang có thể đổi khi điền các phần này hoặc dựng trên máy có font khác.
+Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 và các xác nhận con người vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.

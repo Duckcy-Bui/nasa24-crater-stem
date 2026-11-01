@@ -79,7 +79,13 @@ def convert(source: Path, target: Path) -> None:
                             source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),))
                         if document is None:
                             raise SystemExit(f"LibreOffice không mở lại được {source}.")
-                document.storeToURL(target.resolve().as_uri(), (_prop("FilterName", "writer_pdf_Export"),))
+                document.storeToURL(target.resolve().as_uri(), (
+                    _prop("FilterName", "writer_pdf_Export"),
+                    _prop("FilterData", uno.Any("[]com.sun.star.beans.PropertyValue", (
+                        _prop("UseLosslessCompression", True),
+                        _prop("ReduceImageResolution", False),
+                    ))),
+                ))
             finally:
                 if document is not None:
                     document.close(True)
