@@ -6,10 +6,12 @@ import copy
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from streamlit.testing.v1 import AppTest
 
 from scripts.install_s106_dataset import install_dataset
+from src.contracts import read_json
 
 
 class PlayerRerunStateTests(unittest.TestCase):
@@ -43,6 +45,45 @@ class PlayerRerunStateTests(unittest.TestCase):
             "circles": [{"crater_id": "U9", "x": 300.5, "y": 99.25, "r": 30.75}],
             **changes,
         }
+
+    def test_fast_delete_undo_save_keeps_image_with_delayed_picker_wire_value(self):
+        app = self.open_app()
+        image_id = "moon_lunokhod1_loc_c01"
+        app.selectbox[0].set_value(image_id).run()
+        circle = {"crater_id": "U1", "x": 200.0, "y": 200.0, "r": 40.0}
+        event = {"image_id": image_id, "session_token": app.session_state["player_session_token"],
+                 "revision": 1, "circles": [circle]}
+
+        def picker_wire():
+            return app.selectbox[0]._widget_state.string_value
+
+        def deliver(value, wire):
+            app.session_state[f"player_canvas_{image_id}"] = value
+            # Replay the browser's serialized label, rather than selecting by Python image_id.
+            states = app._tree.get_widget_states()
+            next(w for w in states.widgets if w.id == app.selectbox[0].id).string_value = wire
+            app._run(states)
+            self.assertEqual(len(app.exception), 0)
+            self.assertEqual(len(app.error), 0)
+
+        deliver(event, picker_wire())
+        deliver(dict(event, revision=2, circles=[]), picker_wire())
+        delayed_wire = picker_wire()
+        deliver(dict(event, revision=3), delayed_wire)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch("app.PLAYER_OUTPUT_DIR", Path(tmp)):
+            deliver(dict(event, revision=3, save_nonce="fast-save"), delayed_wire)
+            self.assertEqual(app.selectbox[0].value, image_id)
+            self.assertEqual(app.session_state["player_active_metadata"]["image_id"], image_id)
+            self.assertEqual(app.session_state["player_drafts"][image_id]["revision"], 3)
+            result = app.session_state["player_save_states"][image_id]["result"]
+            self.assertTrue(result["ok"])
+            self.assertEqual(result["nonce"], "fast-save")
+            self.assertEqual(result["image_id"], image_id)
+            saved = list(Path(tmp).glob("*/craters.json"))
+            self.assertEqual(len(saved), 1)
+            answer = read_json(saved[0])
+            self.assertEqual(answer["image_id"], image_id)
+            self.assertEqual(answer["circles"][0], {**circle, "confidence": None, "votes": None})
 
     def test_image_switch_drains_pending_previous_image_event_before_widget_cleanup(self):
         app = self.open_app()
