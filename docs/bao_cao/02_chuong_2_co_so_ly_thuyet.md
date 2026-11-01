@@ -1,49 +1,5 @@
-<!--
-CHƯƠNG 2 – BẢN GHÉP ĐẦU TIÊN (S3-12).
-Người chốt: Tiến (S3-06) cho mục 2.2 Hough; Hưng (S3-07) cho mục 2.1 tiền xử lý và 2.3 sáng–tối.
-Mục 2.4 lấy từ mã đối sánh/chấm điểm của Đức (S2-04) và mục 5 của S2-11/S3-06; nên nhờ Đức và Tiến (S3-02) đọc lại.
-Mục 2.5 lấy từ mô tả thống kê của Hưng (S2-09); Hưng đọc lại cùng mục 4.5.
-
-MỤC 2.2 BÁM THEO PR #26 (CHƯA GỘP): nguồn chính là docs/S2-11_S3-06_HOUGH_HOAN_THIEN.md và src/hough.py trên ref pr26.
-Sau khi PR #26 gộp phải đối chiếu lại 2.2 (dẫn xuất, ví dụ, giả mã, độ phức tạp (2.15)–(2.16), dải bán kính (2.14)),
-câu nhắc chế độ chọn cân bằng theo bán kính ở 2.2.3 và dòng "chế độ cân bằng" của giả mã, và câu về nhãn không chắc chắn ở 2.4.2.
-
-Nguồn đã dùng:
-  pr26: docs/S2-11_S3-06_HOUGH_HOAN_THIEN.md, docs/TAI_LIEU_THAM_KHAO_HOUGH.md (mục 5), src/hough.py;
-  docs/S1-15_LY_THUYET_HOUGH.md; docs/S1-12_VI_DU_VA_DOI_CHIEU_HOUGH.md; docs/HOUGH.md; docs/S2-01_HOUGH_CAI_THIEN.md;
-  docs/S1-14_NHAP_CHUONG_2_3.md (Chương 2, mục 2.1.x và 2.3.x); docs/TIEN_XU_LY.md;
-  docs/S1-11_SANG_TOI.md; docs/S2-02_RA_SOAT_SANG_TOI.md; docs/S2-05_LOC_TRUNG.md;
-  docs/S2-04_CHAM_DIEM.md; docs/S2-03_TAP_DIEU_CHINH.md (mục 3.3); docs/S2-07_THI_NGHIEM_VA_THU_GAME.md;
-  docs/S1-16_HO_SO_DU_LIEU.md, docs/DINH_DANG_DU_LIEU.md (quy ước tọa độ);
-  docs/S1-06_HUONG_DAN_DU_LIEU.md, docs/S1-16_KHAO_SAT.md, docs/S1-16_CHUONG_4_NHAP.md, docs/CHUONG_1_NHAP.md (mật độ, tuổi tương đối);
-  src/preprocessing.py, src/hough.py, src/postprocessing.py, src/matching.py, src/scoring.py, src/statistics.py, configs/default.json.
-
-Việc người chốt cần kiểm tra:
- 1. CLAHE (2.1.3): bốn ý chia ô / cắt ngọn / phân bổ lại / nội suy song tuyến mới đối chiếu qua nguồn thứ cấp MathWorks;
-    cần đọc bản gốc Zuiderveld 1994 (Graphics Gems IV) và xác nhận nhà xuất bản trên trang bìa.
- 2. Công thức ngưỡng cắt (2.3): người ghép đã đối chiếu clahe.cpp tag 4.14.0 dòng 397–402 (clip = max(1, int(clipLimit·N_ô/256)))
-    và thêm mục bib opencv_clahe_source (27/10/2026).
- 3. Cơ sở vật lý sáng–tối (2.3.1) viết thành lập luận hình học, minh họa bằng Hình 2.3 (cảnh giả lập); nếu muốn trích nguồn
-    khoa học, thêm mục bib và trích ở câu này.
- 4. Ba DOI (Duda–Hart 1972, Yuen 1990, Canny 1986) đã đối chiếu Crossref ngày 27/10/2026 ở mức thư mục (PR #26),
-    nhưng chưa đọc toàn văn. Không mở rộng nội dung trích dẫn vượt mức đã đọc.
- 5. Quy ước tâm ô +0,5 px của OpenCV (2.2.5) đã kiểm bằng thực nghiệm (OpenCV 4.14.0 và 5.0.0, S1-12);
-    nên chỉ ra dòng tương ứng trong hough.cpp tag 4.14.0. Mã tag 4.14.0 không chứng minh nội bộ bản 5.0.0.
- 6. Độ phức tạp (2.15)–(2.16) theo ký hiệu của S2-11 mục 4 (I, K, L). Mục 2.8 của S1-15 (hạng ⌈E/B⌉·N cho mỗi lô) đã cũ
-    sau S2-01; nay chỉ còn là cận trên của I.
- 7. Các số S_r = 40 (r = 5), S_r = 360 từ r = 62, tổng 36.445 độ lệch trên r = 5…128 và 8,9·10^8 phiếu được tính lại
-    bằng đúng quy tắc _circle_offsets (bước góc 1°) khi ghép chương; 48, 80, 144, 168, 224 có sẵn trong S1-12/S2-05.
-    Chưa có script lưu trong repo cho các số mới: chạy lại hoặc bỏ.
- 8. Câu "vòng dự đoán rơi vào hố không chắc chắn được bỏ qua" (2.4.2) theo S2-11 mục 5; trong nhánh này
-    src/evaluation.py chưa cài, src/scoring.py chỉ loại hố uncertain khỏi tập nhãn. Kiểm tra lại với mã đánh giá của PR #26.
- 9. Các ngưỡng 30°, τ = 0,15/0,25, vành [1,3r; 2r], Canny P90 và 0,4, σ = 1,5 là giá trị ban đầu; sửa nếu bản chạy cuối đổi.
-10. Công thức mật độ (2.24) theo docstring src/statistics.py; hàm summarize chưa cài. Đối chiếu khi S2-09 xong.
-11. Hình 2.1 có tiêu đề tiếng Anh, mã "S1-07" và thời gian chạy; Hình 2.3 có "(S1-04 mục 6.3)" trong tiêu đề.
-    Cân nhắc vẽ lại không có mã nội bộ (scripts/demo_hough.py, scripts/s114_figures.py). Hình 2.2 chạy bằng mã trước PR #26.
-12. Chương 3 không lặp lại: bảng tham số, số đo CLAHE 8/16 bit, ảnh trước/sau, histogram STT 13/17, sơ đồ B0–B8.
-    Công thức đổi tọa độ ảnh cắt về ảnh nguồn của S1-14 mục 2.1.2 không đưa vào đây vì Chương 4 đã có (4.1).
-13. Để giữ khoảng 9–10 trang, đã bỏ bảng so sánh hai cách bỏ phiếu và hình trừ độ dốc (docs/images/s114/tru_doc_dia_hinh.png);
-    nếu còn chỗ có thể đưa lại hình này vào 2.3.3.
+<!-- S3-12, 01/11/2026: rút theo giao việc của Đức trên main c466c2d (đã gồm PR #26, #31, #33–#36).
+Bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12. Chủ phần chưa xác nhận bản rút gọn; bản trước rút là main c466c2d.
 -->
 
 # Chương 2. Cơ sở lý thuyết
@@ -54,7 +10,7 @@ Chương này trình bày cơ sở toán học của từng bước: tiền xử
 
 ### 2.1.1. Mục tiêu và quy ước
 
-Hough tròn làm việc trên ảnh biên nhị phân: thiếu điểm biên trên vành thì vòng nhận ít phiếu, thừa điểm biên rác thì Hough chậm và sinh nhiều ứng viên sai. Ảnh đầu vào có thể khác nhau về định dạng (TIF 8 bit, PDS 16 bit, số thực), có góc tới của Mặt Trời từ 7,64° đến 87,78°, và có nhiễu cùng kết cấu hạt của lớp regolith. Vì vậy ảnh được đưa về cùng thang, tăng tương phản cục bộ, giảm nhiễu rồi mới trích biên. Quy ước chung: ảnh xử lý cỡ 512 × 512 px; x là cột, tăng sang phải; y là hàng, tăng xuống dưới; gốc ở góc trên trái. Tâm pixel có tọa độ nguyên, còn tâm hố có thể là số thực. Giá trị pixel nằm trong [0, 1]. Pixel không có dữ liệu được đánh dấu bằng mặt nạ hợp lệ V (V = 1 là hợp lệ).
+Hough cần ảnh biên đủ vành, ít biên rác. Đầu vào có thể là TIF 8 bit, PDS 16 bit hoặc số thực, với góc tới 7,64°–87,78°, nhiễu và kết cấu regolith. Chuỗi đưa ảnh về cùng thang, tăng tương phản, giảm nhiễu rồi trích biên. Ảnh xử lý cỡ 512 × 512 px, giá trị [0, 1]; x sang phải, y xuống dưới, gốc ở góc trên-trái. Tâm pixel nguyên, tâm hố có thể thực; mặt nạ V = 1 chỉ pixel hợp lệ.
 
 ### 2.1.2. Thu nhỏ, ảnh xám và chuẩn hóa
 
@@ -66,7 +22,7 @@ Vì k nguyên nên không cần nội suy, và tỷ lệ ảnh mới là $s = k 
 
 $$ I_N = \operatorname{clip}\!\left(\frac{I - P_{\mathrm{lo}}}{P_{\mathrm{hi}} - P_{\mathrm{lo}}},\; 0,\; 1\right) \qquad (2.2) $$
 
-Dùng phân vị thay cho giá trị nhỏ nhất và lớn nhất để vài pixel bão hòa hoặc pixel chết không quyết định cả thang. Nhờ vậy ngưỡng của các bước sau có cùng ý nghĩa trên mọi ảnh. Nếu hai phân vị bằng nhau mà ảnh vẫn có biến thiên, giá trị nhỏ nhất và lớn nhất được dùng thay để không xóa mất vật thể nhỏ.
+Phân vị giảm ảnh hưởng của pixel bão hòa hoặc chết. Nếu hai phân vị bằng nhau mà ảnh vẫn biến thiên, dùng min–max để giữ vật thể nhỏ.
 
 ### 2.1.3. Tăng tương phản cục bộ CLAHE
 
@@ -136,7 +92,7 @@ $$ \tau_r = \max\!\big(v_{\min},\ \lceil \kappa\, S_r \rceil\big), \qquad q = \f
 
 Ô có ít nhất $\tau_r$ phiếu và là cực đại 3 × 3 trong cùng mặt phẳng $A_r$ là đỉnh; khi hòa phiếu, ô phía trên rồi ô bên trái được ưu tiên. Đỉnh được chọn trong từng mặt phẳng, chưa phải cực đại ba chiều qua r. Chia cho $S_r$ giảm thiên vị cho vòng lớn vốn có nhiều điểm biên. Điểm q chỉ để xếp hạng, không phải xác suất, và với bỏ phiếu theo gradient có thể vượt 1.
 
-Đỉnh của mọi bán kính được xếp theo q giảm, số phiếu giảm, rồi y, x, r tăng. Ở chế độ cân bằng, thứ tự này còn được xen kẽ giữa các nhóm bán kính để vòng nhỏ không chiếm hết danh sách đầu ra (mục 3.3.5) [CHỜ PR #26 được merge: chế độ cân bằng]. Sau đó phép triệt tiêu không cực đại cho vòng tròn (NMS), khác bước cùng tên của Canny, loại ứng viên gần một vòng đã giữ ở cả tâm lẫn bán kính, cho tới khi đủ L vòng:
+Đỉnh của mọi bán kính được xếp theo q giảm, số phiếu giảm, rồi y, x, r tăng. Ở chế độ cân bằng, thứ tự này còn được xen kẽ giữa các nhóm bán kính để vòng nhỏ không chiếm hết danh sách đầu ra (mục 3.3.5). Sau đó phép triệt tiêu không cực đại cho vòng tròn (NMS), khác bước cùng tên của Canny, loại ứng viên gần một vòng đã giữ ở cả tâm lẫn bán kính, cho tới khi đủ L vòng:
 
 $$ (a - a_j)^2 + (b - b_j)^2 \le d_{\mathrm{NMS}}^2 \quad \wedge \quad \left|r - r_j\right| \le \delta_{\mathrm{NMS}} \qquad (2.13) $$
 
@@ -144,18 +100,7 @@ Ví dụ với $d_{\mathrm{NMS}}$ = 4 px, $\delta_{\mathrm{NMS}}$ = 2 px và vò
 
 ### 2.2.4. Ví dụ tính tay
 
-Ví dụ dùng đúng các hàm nội bộ của bước Hough, trên ảnh biên 5 × 5, r = 1; bán kính và ngưỡng nhỏ chỉ để minh họa. Bốn điểm biên $P_1 = (2, 1)$, $P_2 = (1, 2)$, $P_3 = (3, 2)$, $P_4 = (2, 3)$ đều cách (2, 2) đúng 1 px. Với bước 1°, 360 góc chỉ cho 8 độ lệch (±1, ±1), (±1, 0), (0, ±1), nên $S_1 = 8$. Mỗi điểm bỏ 8 phiếu tại $(x - d_x,\ y - d_y)$, tổng 32 phiếu, đều trong ảnh. Bốn phiếu rơi vào (2, 2), chỉ số phẳng 2·5 + 2 = 12: $P_1$ với (0, −1), $P_2$ với (−1, 0), $P_3$ với (1, 0), $P_4$ với (0, 1). Mảng tích lũy sau $P_1$ và sau cả bốn điểm:
-
-```text
-sau P1:        sau P1..P4:
-0 1 1 1 0      0 1 1 1 0
-0 1 0 1 0      1 2 2 2 1
-0 1 1 1 0      1 2 4 2 1
-0 0 0 0 0      1 2 2 2 1
-0 0 0 0 0      0 1 1 1 0
-```
-
-Với $v_{\min} = 3$ và κ = 0,35, (2.12) cho $\tau_1 = \max(3, \lceil \text{2,8} \rceil) = 3$. Chỉ ô (2, 2) vượt ngưỡng và lớn hơn tám ô kề, nên kết quả là tâm (2, 2), r = 1, q = 4/8 = 0,5; với $v_{\min}$ mặc định bằng 12 thì không có đỉnh. Nếu gradient lý tưởng hướng ra ngoài, (2.11) cho 4 phiếu tại tâm và 1 phiếu ở mỗi ô (2, 0), (0, 2), (4, 2), (2, 4); $S_1 = \lceil 2\pi \rceil = 7$ nên q = 4/7 ≈ 0,571. Cả hai kết quả được kiểm chứng tự động bằng mã.
+Trên ảnh biên 5 × 5, bốn điểm (2, 1), (1, 2), (3, 2), (2, 3) cùng cách tâm (2, 2) một pixel. Với r = 1 và bước góc 1°, 360 mẫu cho 8 độ lệch; tâm nhận 4 phiếu, q = 0,5. Ngưỡng $v_{\min}$ = 3, κ = 0,35 giữ tâm này, còn mặc định $v_{\min}$ = 12 không giữ. Ma trận tích lũy, cách cộng 32 phiếu và đối chiếu gradient ở Phụ lục E.1.
 
 ### 2.2.5. Lượng tử hóa và quy ước tọa độ
 
@@ -167,32 +112,11 @@ Với bước Δr, ví dụ dải [12, 29] bước 4 chỉ quét 12, 16, 20, 24,
 
 Ô tích lũy (a, b) trùng tâm pixel (a, b), nên tâm Hough trả về là số nguyên theo cùng quy ước với nhãn tham chiếu, sai số lượng tử tối đa 0,5 px mỗi trục (khoảng 0,71 px). HoughCircles của OpenCV (HOUGH_GRADIENT) nhận ảnh xám, tự trích biên, tìm tâm trước rồi mới ước lượng bán kính, và trả tâm ô tích lũy (chỉ số ô + 0,5) × dp [@opencv_hough_tutorial; @opencv_hough_source]. Với dp = 1, hố tâm nguyên (x, y) được trả về (x + 0,5; y + 0,5), nên phải trừ 0,5 trước khi so sánh; với dp = 2 không có hằng số bù cố định.
 
-Hình 2.2 so sánh ba cách trên cùng ảnh giả lập, dải bán kính 18–36 px. Bỏ phiếu toàn vòng tìm đúng ba đĩa. Bỏ phiếu theo gradient chỉ giữ đĩa r = 20, vì tại tâm hai đĩa kia số phiếu (40 và 27) thấp hơn ngưỡng (71 và 53). OpenCV trả bốn vòng: sau khi trừ 0,5 px, ba vòng trùng tâm thật, bán kính lệch dưới 1 px; vòng thứ tư lệch 5,39 px gần đĩa bị cắt mép. Đây chỉ là minh họa thuật toán, không chứng minh cách nào tốt hơn trên ảnh Mặt Trăng.
+Đối chiếu ba cách trên ảnh giả lập nằm ở Phụ lục E.1; đây không phải bằng chứng xếp hạng trên ảnh Mặt Trăng.
 
-![Hình 2.2. Đối chiếu trên ảnh giả lập, dải bán kính 18–36 px (xanh lá: vòng thật; đỏ: vòng phát hiện). Từ trái sang: ảnh vào, bỏ phiếu toàn vòng, bỏ phiếu theo gradient, OpenCV HOUGH_GRADIENT.](../images/s112_hough_comparison.png){width=100%}
+### 2.2.6. Độ phức tạp
 
-### 2.2.6. Giả mã và độ phức tạp
-
-Giả mã dưới đây bám theo cài đặt; B là số điểm biên mỗi lô.
-
-```text
-(ys, xs) ← các điểm biên; nếu không có: trả []
-U ← []
-với r = r_min, r_min + Δr, ... ≤ r_max:
-    A ← mảng H×W toàn 0
-    nếu toàn vòng: D ← (2.9); S ← |D|
-        với mỗi lô B điểm biên: cộng phiếu (2.10) bằng
-            bincount trên đoạn [min i, max i], i = b·W + a
-    ngược lại: S ← ⌈2πr⌉; cộng phiếu hai tâm (2.11)
-    τ ← max(v_min, ⌈κ·S⌉)
-    thêm (A/S, A, b, a, r) của mọi cực đại 3×3 có A ≥ τ vào U
-sắp U: điểm giảm, phiếu giảm, rồi y, x, r tăng
-chế độ cân bằng: xen kẽ U giữa các nhóm bán kính
-G ← []
-với mỗi u trong U: nếu không g ∈ G nào thỏa (2.13) thì thêm u
-    vào G; dừng khi |G| = L
-trả G
-```
+Giả mã Hough ở Phụ lục E.1, dùng các công thức (2.9)–(2.13).
 
 Mỗi lô chỉ được đếm trên đoạn chỉ số có phiếu; điểm biên lấy theo thứ tự hàng nên đoạn này thường hẹp, và không phiếu nào thay đổi. Gọi N = H·W, E là số điểm biên, S là số độ lệch lớn nhất ($S \le T$), K là tổng số đỉnh trước NMS và I là tổng độ dài các đoạn đếm. Bỏ phiếu toàn vòng tốn $E \cdot S$ cho phiếu, N cho khởi tạo và dò đỉnh, $T\log T$ cho loại trùng ở mỗi bán kính, cộng sắp xếp và NMS:
 
@@ -206,9 +130,9 @@ $$ O(N + B\,S + K + E + T) \ \ (\text{toàn vòng}), \qquad O(N + K + E + T) \ \
 
 ### 2.3.1. Cơ sở vật lý
 
-Hough chỉ dựa vào hình dạng biên, nên không phân biệt hố lõm với gò nổi hay vòng tình cờ khớp các biên rời rạc. Về mặt hình học, khi nắng chiếu xiên, thành hố phía gần Mặt Trời quay lưng với nắng và bị mép hố che nên tối, còn thành phía xa hướng về nắng nên sáng. Gò nổi cho quy luật ngược lại; vòng ở chỗ không có hố thì không có quy luật nào (Hình 2.3).
+Hough chỉ dựa vào hình dạng biên, nên không phân biệt hố lõm với gò nổi hay vòng tình cờ khớp các biên rời rạc. Về mặt hình học, khi nắng chiếu xiên, thành hố phía gần Mặt Trời quay lưng với nắng và bị mép hố che nên tối, còn thành phía xa hướng về nắng nên sáng. Gò nổi cho quy luật ngược lại; vòng ở chỗ không có hố thì không có quy luật nào (Hình E.6).
 
-![Hình 2.3. Nguyên lý chấm sáng–tối trên cảnh giả lập, nắng từ phía Tây, góc tới 70°. Hàng trên: hố lõm; hàng dưới: gò nổi cùng bán kính. Cột giữa là bản đồ t; cột phải là độ sáng theo t, cho S = +0,98 (hợp) và S = −0,98 (ngược).](../images/s114/sang_toi_nguyen_ly.png){width=65%}
+Trên cảnh giả lập nắng Tây, góc tới 70°, hố và gò cùng bán kính lần lượt có S = +0,98 và −0,98 (Hình E.6).
 
 ### 2.3.2. Hướng nắng và điểm sáng–tối
 

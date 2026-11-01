@@ -1,0 +1,67 @@
+{
+  "url": "http://127.0.0.1:18601",
+  "captured_utc": "2026-11-01T09:13:24.143697+00:00",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "device_scale_factor": 1.1111111111111112,
+  "image_id": "moon_ap16_m109134835l_c01",
+  "circles": [
+    [
+      370,
+      360,
+      21
+    ],
+    [
+      320,
+      446,
+      15
+    ],
+    [
+      434,
+      410,
+      12
+    ],
+    [
+      276,
+      200,
+      17
+    ],
+    [
+      195,
+      211,
+      11
+    ],
+    [
+      251,
+      390,
+      14
+    ],
+    [
+      90,
+      120,
+      16
+    ]
+  ],
+  "server_commit_provided_by_owner": "c466c2d",
+  "server_commit_independently_verified": false,
+  "method": "Playwright mouse draw + numeric edit; seven illustration circles copied from old Figure 5.1; no learner data",
+  "metrics": [
+    "Điểm theo nhãn đã kiểm chéo\n\n60/100",
+    "Trùng máy\n\n0",
+    "Chỉ bạn khoanh\n\n7",
+    "Chỉ máy có\n\n100",
+    "Số ứng viên\n\n100",
+    "Diện tích hợp lệ\n\n1.05 km²",
+    "Mật độ\n\n—"
+  ],
+  "card_capture_bottom_padding_px": 60,
+  "page_errors": [],
+  "status": "PASS",
+  "files_sha256": {
+    "giao_dien_khoanh_ho.jpg": "61ad13e4456ad3a33fa8b9efefbd68ef1e4cf3d75936f7d5adf659b5d0e55b2a",
+    "ket_qua_cham_bai.jpg": "9c44abe23f1e699f7ec68f2b5df3b084a7f36e089fb6668f0754fb93d69b6ed1",
+    "the_khoa_hoc.jpg": "af5424c7c5ac5c5a516e3acf6ad0bb68969591a34ef83b355c530f11e5cc1fb5"
+  }
+}

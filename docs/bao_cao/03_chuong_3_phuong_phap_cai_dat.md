@@ -1,51 +1,10 @@
-<!--
-CHƯƠNG 3 — bản ghép đầu tiên (S3-12, 27/10/2026). Pandoc bỏ ghi chú này khi dựng báo cáo.
-
-Người chốt nội dung:
-- Hưng — S3-07: toàn chương (3.1, 3.2, 3.4, 3.5, 3.6, 3.7).
-- Tiến — S3-06: mục 3.3 (cài đặt Hough tròn NumPy) và các ý về Hough trong 3.7.
-
-Nguồn đã dùng:
-- docs/S1-13_CHAY_TU_DAU_DEN_CUOI.md; docs/evidence/s1-13/ (e2e_26_anh.csv, summary/params/overlay ảnh STT 10).
-- docs/S1-14_NHAP_CHUONG_2_3.md (phần "Chương 3", mục 3.2.x và 3.4.x); docs/TIEN_XU_LY.md; docs/evidence/s1-14/.
-- docs/HOUGH.md; docs/S2-01_HOUGH_CAI_THIEN.md; docs/evidence/s2-01/ (README.md, timings.csv, report.json, regression.log).
-- docs/S1-11_SANG_TOI.md; docs/evidence/s1-11/ (s111_tong_hop.csv, vi_du_stt13/).
-- docs/S2-02_RA_SOAT_SANG_TOI.md; docs/evidence/s2-02/<ảnh>/report.json và candidates.csv.
-- docs/S2-05_LOC_TRUNG.md; docs/evidence/s2-05/ (tong_hop.csv, <ảnh>.csv); data/examples/s205_dedupe_cases.json.
-- docs/S2-13_TICH_HOP.md mục 1 (hợp đồng thống kê); docs/S2-07_THI_NGHIEM_VA_THU_GAME.md; docs/evidence/s2-07/results.json;
-  data/reference_labels/moon_ap16_m109134835l_c01_craters_catalogue.json (bán kính 10 nhãn: 8–22 px).
-- PR #26 (chưa merge, đọc qua git ref pr26): docs/S2-01_HOUGH_CAI_THIEN.md (mục "Sửa lỗi ứng viên hố lớn ngày 27/10/2026"),
-  docs/S2-11_S3-06_HOUGH_HOAN_THIEN.md, docs/S2-06_S3-02_KIEM_CHUNG.md, configs/s201_large_craters.json, diff src/hough.py → mục 3.3.5.
-- Mã: src/pipeline.py, src/preprocessing.py, src/hough.py, src/postprocessing.py, src/statistics.py, src/contracts.py,
-  scripts/run_end_to_end.py, configs/default.json, configs/s201_hough.json.
-
-Việc còn mở cho người chốt:
-1. Số mục Chương 2 đang theo đề xuất S1-14: 2.1 tiền xử lý, 2.2 Hough, 2.3 sáng–tối. Ghép độ đo/ghép một–một và mật độ chỉ ghi "Chương 2". Sửa khi Chương 2 chốt.
-2. Recall_known ở 3.3.5 và 3.7: S2-07 mục 1 yêu cầu chưa đưa Recall_known vào báo cáo chính thức tới khi Tiến xác nhận kiểm chéo.
-   S2-03 mục 3.1 ghi đã kiểm chéo ngày 26/10 nhưng bảng trong S2-03 vẫn ghi `sparse_unreviewed`; file nhãn ghi "reviewed by Nguyen Manh Tien".
-   S2-06_S3-02 (trong PR #26) ghi Tiến xác nhận kiểm bằng mắt đủ 26 overlay ngày 27/10. Khi PR #26 merge, sửa bảng S2-03 cho khớp.
-3. Thời gian chạy lấy từ nhiều máy và nhiều lần: S1-13 (Hough 5,1–8,3 s, trước tối ưu), S2-01 (trung vị 9,1–26,1 s sau tối ưu, máy Windows khác), S2-02 (8–40 s), S2-07 (9,1 s). Nếu muốn báo thời gian chính thức, đo lại một lần trên cùng máy với mã cuối.
-4. Số đối chiếu OpenCV trên STT 13 (mục 3.2.2) và phép đo ảnh hưởng lượng tử 8 bit là đo một lần, chưa có script trong repo (S1-14 mục 3.2.5–3.2.6).
-5. Hình 3.1 lấy từ lần chạy 15/10/2026: chú giải ghi nhãn "chưa kiểm chéo" và lúc đó bước sáng–tối chưa có. Cân nhắc tạo lại bằng mã cuối.
-6. Phiếu kiểm tra hướng nắng 8 ảnh do một người kiểm; S1-11 đề nghị người thứ hai kiểm chéo STT 11, 15, 16; STT 16 cần xem lại.
-7. 3.4.3 trích opencv_components (người ghép thêm mục bib 27/10/2026).
-8. Nhóm chưa quyết định bật lọc `texture` (S2-02) và lọc trùng (S2-05) trong pipeline. Nếu bật, sửa 3.1, 3.4.3, 3.5 và 3.7.
-9. Mục 3.3.5 mô tả PR #26 (chọn ứng viên `radius_balanced`, đã merge 28/10). Số liệu đã đối chiếu với S2-06_S3-02 và S2-15 ngày 31/10/2026; đã xóa dấu chờ.
-   Nếu sau này `radius_balanced` thành mặc định thì sửa Bảng 3.2 (thêm `candidate_selection`), sơ đồ 3.1 và đoạn 3.7; kiểm lại mọi số trong 3.3.5.
-   Dấu [CHỜ S2-01 ...] ban đầu ở 3.7 đã được thay bằng dấu PR #26 này. Cập nhật số liệu nếu S2-15 (chốt tham số) thay kết quả.
-10. Baseline phép đo tăng tốc: commit eb8278cc82901cc28dbbc6509b0ff0b6bfefa0cc; bản tối ưu đo trên working tree nhánh s2-01-hough-performance. Ghi ở Phụ lục nếu cần.
-11. configs/default.json mục "preprocess" không được scripts/run_end_to_end.py đọc; pipeline dùng DEFAULT_PARAMS trong src/preprocessing.py (cùng giá trị; gauss_kernel_size null → tự tính 11).
-12. Để giữ 9–10 trang, chương chỉ dùng 5 hình; đã bỏ ../images/s114/truoc_sau_stt17.png (số liệu STT 17 vẫn ở 3.2.2). Thêm lại nếu còn chỗ.
-13. S2-12 (Hưng, 29/10/2026): viết lại 3.4–3.6 theo mã trên main (postprocessing s202-1, statistics S2-09): thêm giả mã và độ phức tạp cho
-    score_one, review_candidates, dedupe_circles, region_count; ví dụ tính tay lọc trùng (M32/M8); 3.6 thay dấu CHỜ bằng cách chọn khoảng bán kính,
-    công thức (3.3)–(3.6), Bảng 3.6–3.7, Hình 3.6 (docs/evidence/s2-09/tich_luy.png). Rút 3.4.2 (so với vòng ngẫu nhiên) còn một câu.
-    Thêm 3 mục bib: catwg1979, garwood1936, przyborowski1940 (đã xác nhận qua doi.org ngày 31/10/2026). Mục 4.1 đã đổi theo 3.6.3; Quốc Anh đọc lại.
-    Chương có thể dài hơn mức 9 trang đề xuất khoảng 1–1,5 trang; nếu cần rút, ưu tiên bỏ Hình 3.1 hoặc Bảng 3.3.
+<!-- S3-12, 01/11/2026: rút theo giao việc của Đức trên main c466c2d (đã gồm PR #26, #31, #33–#36).
+Bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12. Chủ phần chưa xác nhận bản rút gọn; bản trước rút là main c466c2d.
 -->
 
 # Chương 3. Phương pháp và cài đặt
 
-Chương này mô tả cách nhóm cài đặt chuỗi phát hiện hố va chạm và kết quả chuỗi đó tạo ra trên bộ ảnh thật. Lý thuyết nằm ở Chương 2, đánh giá ở Chương 4, hợp đồng dữ liệu và trò chơi ở Chương 5. "STT" là số thứ tự ảnh nguồn trong bảng dữ liệu. Hai ảnh được nhắc nhiều nhất là STT 13 (`moon_ap16_m132732855l_c01`, nắng rất xiên, góc tới 87,7°) và STT 17 (`moon_ap16_m109134835l_c01`, nắng gần đứng, góc tới 7,64°), cùng là ảnh Apollo 16 ở 2 m/px.
+Chuỗi phát hiện dùng lý thuyết ở Chương 2 và được đánh giá ở Chương 4. STT 13 (`moon_ap16_m132732855l_c01`, góc tới 87,7°) và STT 17 (`moon_ap16_m109134835l_c01`, 7,64°) là hai ảnh Apollo 16 ở 2 m/px.
 
 ## 3.1. Tổng quan chuỗi phát hiện
 
@@ -65,9 +24,7 @@ Hai mô-đun phân lớp ứng viên (mục 3.4.3) và lọc vòng trùng (mục
 
 Mỗi lần chạy tạo một thư mục mới, gồm danh sách vòng, metadata, tham số đã dùng, mã commit, thời gian từng bước và ảnh overlay. Nếu một bước lỗi, cả thư mục bị xóa.
 
-Lần chạy cả bộ 26 ảnh ngày 15/10/2026 không gặp lỗi. Tiền xử lý mất 0,025–0,071 s mỗi ảnh, Hough mất 5,1–8,3 s trên máy phát triển. Cả 26 ảnh đều trả đúng 100 ứng viên, tức chạm giới hạn `max_circles`. Hình 3.1 là overlay của một lần chạy: vòng máy rải khắp ảnh, phần lớn là vòng nhỏ trên biên kết cấu (mục 3.7).
-
-![Hình 3.1. Overlay một lần chạy trên ảnh STT 10 (`moon_ap16_m106777343r_c01`, 2 m/px). Trái: 100 ứng viên máy (cyan, nét đứt) và 4 nhãn thủ công tại thời điểm chạy (đỏ cam, chấm). Phải: 26.883 pixel biên đưa vào Hough.](../evidence/s1-13/moon_ap16_m106777343r_c01_overlay.png){width=75%}
+Lần chạy 26 ảnh ngày 15/10/2026 không lỗi nhưng đều chạm trần 100 ứng viên; thời gian và overlay lịch sử ở Phụ lục E.2.
 
 ## 3.2. Cài đặt tiền xử lý
 
@@ -93,13 +50,11 @@ Chuỗi B0–B8 nằm trong `src/preprocessing.py`; nguyên lý ở mục 2.1. B
 
 ### 3.2.2. Kết quả và kiểm chứng
 
-Hình 3.2 cho thấy từng bước trên STT 13. Ngưỡng Canny tự co theo độ tương phản: STT 13 có $T_{low}$ = 63,6 và $T_{high}$ = 159,0, còn STT 17 có 46,3 và 115,8, thấp hơn khoảng 27 %. Số pixel biên sau B8 là 24.291 ở STT 13 và 26.642 ở STT 17, khoảng 9–10 % diện tích ảnh. Trên 26 ảnh, số này từ 20.949 đến 35.590. Phần lớn là biên kết cấu, không phải vành hố.
+Hình 3.1 cho thấy từng bước trên STT 13. Ngưỡng Canny tự co theo độ tương phản: STT 13 có $T_{low}$ = 63,6 và $T_{high}$ = 159,0, còn STT 17 có 46,3 và 115,8, thấp hơn khoảng 27 %. Số pixel biên sau B8 là 24.291 ở STT 13 và 26.642 ở STT 17, khoảng 9–10 % diện tích ảnh. Trên 26 ảnh, số này từ 20.949 đến 35.590. Phần lớn là biên kết cấu, không phải vành hố.
 
-![Hình 3.2. Các bước tiền xử lý trên ảnh STT 13 (nắng Tây, góc tới 87,7°). Tiêu đề xanh: bước tự viết; đỏ: bước dùng thư viện. Canny giữ 25.203 pixel biên, còn 24.291 pixel sau B8.](../images/s114/truoc_sau_stt13.png){width=75%}
+![Hình 3.1. Các bước tiền xử lý trên ảnh STT 13 (nắng Tây, góc tới 87,7°). Tiêu đề xanh: bước tự viết; đỏ: bước dùng thư viện. Canny giữ 25.203 pixel biên, còn 24.291 pixel sau B8.](../images/s114/truoc_sau_stt13.png){width=75%}
 
-Bộ kiểm thử `tests/test_preprocessing.py` (33 bài) so phần tự viết với `cv2.resize(INTER_AREA)`, `cv2.GaussianBlur` và `cv2.Sobel`, theo tiêu chí sai khác nhỏ hơn $10^{-5}$. Đo một lần trên STT 13, sai khác lớn nhất là $\text{6,0} \cdot 10^{-8}$ (thu nhỏ khối), $\text{1,8} \cdot 10^{-7}$ (Gauss) và $\text{3,6} \cdot 10^{-7}$ (Sobel).
-
-Khác đặc tả ban đầu, CLAHE chạy trên ảnh 8 bit thay vì 16 bit. Với 16 bit, ô 64 × 64 px và các `clipLimit` thường dùng, ngưỡng cắt mỗi bin của OpenCV luôn bằng 1 nên `clipLimit` mất tác dụng (mục 2.1): trên vùng phẳng có nhiễu, độ lệch chuẩn 0,020 tăng lên 0,188 với mọi `clipLimit` 1, 2, 4, còn bản 8 bit cho 0,038; 0,056 và 0,090. Riêng phép lượng tử về 8 bit ảnh hưởng không đáng kể: hướng gradient lệch trung vị 0,05–0,08°, biên Canny trùng 93–96 %.
+Phần tự viết được so với OpenCV trong 33 bài kiểm thử. CLAHE dùng 8 bit để tránh ngưỡng cắt luôn bằng 1 ở 16 bit. Số đo sai khác và ảnh hưởng lượng tử ở Phụ lục E.2; các phép đo phụ này chưa có script trong repo.
 
 ### 3.2.3. Hạn chế
 
@@ -113,16 +68,7 @@ Hough tròn tự cài đặt bằng NumPy nằm trong `src/hough.py`, không g�
 
 ### 3.3.1. Cấu trúc dữ liệu và vector hóa
 
-Tọa độ điểm biên được lấy một lần bằng `np.nonzero`. Ở mỗi bán kính r, với 360 mẫu góc, bảng độ lệch $(\mathrm{rint}(r\cos\varphi), \mathrm{rint}(r\sin\varphi))$ được làm tròn bằng `np.rint` [@numpy_rint] rồi khử trùng bằng `np.unique`, để mỗi pixel lệch chỉ bỏ phiếu một lần. Số độ lệch khác nhau $S_r$ là số điểm hỗ trợ, ví dụ 48 với r = 6 và 80 với r = 10. Mỗi bán kính dùng một accumulator int32 cỡ 512 × 512 (1 MiB); mã không giữ khối ba chiều mà chỉ lưu các đỉnh. Điểm biên được bỏ phiếu theo lô 256 điểm: phép trừ có broadcast tạo ma trận tâm 256 × $S_r$, tâm ngoài ảnh bị loại, chỉ số phẳng được đếm bằng `np.bincount` [@numpy_bincount]. Đoạn mã rút gọn từ hàm `_accumulate` (đổi tên biến cho ngắn):
-
-```python
-cx = xs[s:s + B, None] - dx     # a = x - r*cos(phi)
-cy = ys[s:s + B, None] - dy     # b = y - r*sin(phi)
-ok = (cx >= 0) & (cx < W) & (cy >= 0) & (cy < H)
-idx = cy[ok] * W + cx[ok]
-lo, hi = int(idx.min()), int(idx.max()) + 1
-acc[lo:hi] += np.bincount(idx - lo, minlength=hi - lo)
-```
+Mỗi bán kính dùng một accumulator int32 cỡ 512 × 512 (1 MiB); chỉ các đỉnh được giữ qua các bán kính. Điểm biên được xử lý theo lô 256, tạo tâm bằng broadcast, loại tâm ngoài ảnh rồi đếm chỉ số phẳng bằng `np.bincount`. Bảng độ lệch được khử trùng như (2.9). Mã rút gọn ở Phụ lục E.3.
 
 ### 3.3.2. Cách bỏ phiếu và dải bán kính
 
@@ -132,98 +78,37 @@ Dải quét là giao giữa dải của ảnh và giới hạn cấu hình: $r_{
 
 ### 3.3.3. Chọn đỉnh và giới hạn số vòng
 
-Ở mỗi bán kính, ngưỡng phiếu và tỷ lệ phiếu là
+Ngưỡng phiếu và điểm q theo (2.12), cực đại trong cửa sổ 3 × 3; ví dụ r = 10 cần 28 phiếu. Sắp theo (−q, −phiếu, y, x, r), rồi NMS theo (2.13), dừng ở `max_circles`. q là điểm xếp hạng, không phải xác suất. Tham số ở Bảng E.2.
 
-$$ \tau_r = \max\left(v_{\min},\ \lceil \kappa\, S_r \rceil\right), \qquad q = \frac{A(x, y, r)}{S_r} \qquad (3.1) $$
-
-với $v_{\min}$ = `min_votes`, $\kappa$ = `min_vote_ratio` (ký hiệu như công thức (2.12)). Ví dụ r = 10 cho $\tau_r = \max(12, \lceil \text{0,35} \cdot 80 \rceil) = 28$ phiếu. Hàm `_local_peaks` giữ các ô đạt ngưỡng và là cực đại 3 × 3. Ứng viên được sắp theo (−q, −phiếu, y, x, r). NMS duyệt tham lam, bỏ ứng viên có tâm cách một vòng đã giữ không quá 4 px **và** bán kính lệch không quá 2 px, và dừng khi đủ `max_circles`. Tỷ lệ phiếu chỉ dùng xếp hạng, không phải xác suất. Bảng 3.2 liệt kê tham số.
-
-| Tham số | Giá trị | Vai trò |
-|---|---|---|
-| `voting_method` | `full_circle` | Cách bỏ phiếu |
-| `radius_step_px` | 1 | Bước bán kính (px) |
-| `r_min_limit_px` ; `r_max_limit_px` | 5 ; 128 | Giới hạn bán kính (px) |
-| `angle_step_deg` | 1,0 | Bước góc của bảng độ lệch |
-| `min_votes` ; `min_vote_ratio` | 12 ; 0,35 | $v_{\min}$ và $\kappa$ trong công thức (3.1) |
-| `nms_center_px` ; `nms_radius_px` | 4,0 ; 2 | Ngưỡng tâm và bán kính của NMS (px) |
-| `max_circles` | 100 | Số vòng tối đa mỗi ảnh |
-| `edge_batch_size` | 256 | Số điểm biên mỗi lô |
-
-: Bảng 3.2. Tham số Hough trong `configs/s201_hough.json`.
+Cấu hình dùng `full_circle`, bước r = 1 px, bước góc 1°, tối thiểu 12 phiếu và tỷ lệ 0,35; NMS tâm 4 px/bán kính 2 px, tối đa 100 vòng. Bảng đủ khóa cấu hình ở Phụ lục E.3.
 
 ### 3.3.4. Tăng tốc bỏ phiếu
 
-Bản đầu gọi `np.bincount` dài 512 × 512 cho mỗi lô, dù lô điểm biên lấy theo hàng thường chỉ bỏ phiếu vào một dải hẹp. Bản tối ưu chỉ đếm trong đoạn chỉ số có phiếu (dòng cuối đoạn mã trên), không đổi phiếu, ngưỡng hay NMS. Phép đo ngày 24/10/2026 trên một máy Windows 11 (Python 3.12.10, NumPy 2.5.4) dùng cùng ảnh biên, cấu hình và dải bán kính, đo 5 lần mỗi bản sau một lần khởi động (Bảng 3.3). Ở mọi lần đo, hai bản cho danh sách vòng giống hệt nhau.
-
-| Ảnh | Pixel biên | r quét (px) | Bản cũ (s) | Bản tối ưu (s) | Tăng tốc |
-|---|---:|---|---:|---:|---:|
-| STT 10 | 26.883 | 5–125 | 21,77 | 9,06 | 2,40× |
-| STT 13 | 24.291 | 5–125 | 58,98 | 26,11 | 2,26× |
-| STT 1, ảnh cắt c01 (20 m/px) | 27.996 | 5–100 | 51,52 | 24,51 | 2,10× |
-
-: Bảng 3.3. Trung vị thời gian Hough trước và sau tối ưu (5 lần đo mỗi bản).
-
-Hệ số 2,10–2,40 lần chỉ đúng cho ba ảnh và máy đo này; cùng ảnh STT 10, bản cũ chỉ mất 7,1 s trên máy phát triển ngày 15/10/2026. Năm bài kiểm thử so phiếu với một vòng lặp vô hướng độc lập, và lần kiểm tra hồi quy cho 209/209 bài kiểm thử Python đạt.
+Chỉ đếm đoạn chỉ số có phiếu giúp tăng tốc 2,10–2,40 lần trên ba ảnh đo ngày 24/10/2026; danh sách vòng không đổi. Bảng đo, môi trường và giới hạn so sánh ở Phụ lục E.3.
 
 ### 3.3.5. Bản sửa chọn ứng viên theo nhóm bán kính
 
-Các mục trên mô tả bản cài đặt gốc, chọn ứng viên theo tỷ lệ phiếu (`candidate_selection = score`). Với cách này, 100 vòng giữ lại trên STT 13 đều có r ≤ 10 px; nâng trần lên 1.000 vòng cũng chỉ có 8 vòng r > 16 px. Bản sửa thêm cách chọn `radius_balanced` (cấu hình `configs/s201_large_craters.json`). Sau khi sắp xếp, ứng viên được chia nhóm theo octave bán kính $k = \lfloor \log_2(r/5) \rfloor$, tức [5, 10), [10, 20), [20, 40), [40, 80), [80, 160) px. Danh sách mới lấy luân phiên phần tử đầu của từng nhóm, từ nhỏ tới lớn, rồi mới qua NMS và giới hạn 100 vòng. Ngưỡng và phiếu không đổi. Trên STT 13, 100 vòng mới có 29 vòng r > 16 px, lớn nhất 31 px. Với cấu hình cố định trước khi đánh giá, Recall_known gộp theo số hố trên tập điều chỉnh (3 ảnh) là 0/28 (0,00 %) với `score` và 2/28 (7,14 %) với `radius_balanced`; trên tập kiểm tra (8 ảnh) là 4/66 (6,06 %) và 5/66 (7,58 %). Để tham khảo, `cv2.HoughCircles` [@opencv_hough_tutorial] đạt 96,43 % và 98,48 % trên hai tập, nhưng sinh 7.112–9.086 vòng mỗi ảnh; với nhãn thưa, Recall cao đó không chứng minh Precision cao. Bản sửa chỉ gỡ một nguyên nhân bỏ sót: Recall_known vẫn rất thấp, STT 17 vẫn 0/10, và `moon_marefrig_loc_c02` giảm từ 1/7 xuống 0/7. Vì chênh lệch này chưa đủ để đổi mặc định, bước chốt tham số vẫn giữ `score`, và `radius_balanced` chỉ bật tường minh trong cấu hình thử nghiệm. Bảng chi tiết ở Chương 4.
-
+Các mục trên mô tả bản cài đặt gốc, chọn ứng viên theo tỷ lệ phiếu (`candidate_selection = score`). Với cách này, 100 vòng giữ lại trên STT 13 đều có r ≤ 10 px; nâng trần lên 1.000 vòng cũng chỉ có 8 vòng r > 16 px. Bản sửa thêm cách chọn `radius_balanced` (cấu hình `configs/s201_large_craters.json`). Sau khi sắp xếp, ứng viên được chia nhóm theo octave bán kính $k = \lfloor \log_2(r/5) \rfloor$, tức [5, 10), [10, 20), [20, 40), [40, 80), [80, 160) px. Danh sách mới lấy luân phiên phần tử đầu của từng nhóm, từ nhỏ tới lớn, rồi mới qua NMS và giới hạn 100 vòng. Ngưỡng và phiếu không đổi. Trên STT 13, 100 vòng mới có 29 vòng r > 16 px, lớn nhất 31 px. Kết quả đối chiếu và các ca vẫn bỏ sót ở mục 4.7: cải thiện còn nhỏ, không chứng minh Precision cao. S2-15 chọn `score` trên tập điều chỉnh; `radius_balanced` chỉ bật tường minh khi thử nghiệm.
 
 ## 3.4. Cài đặt kiểm tra sáng–tối và phân lớp ứng viên
 
 ### 3.4.1. Gắn nhãn sáng–tối
 
-Bước sáng–tối trong `src/postprocessing.py` được tự viết bằng NumPy; công thức ở mục 2.3. Hàm `resolve_sun` chỉ cho chấm ảnh có hướng nắng (từ trang nguồn hoặc đã xác nhận bằng mắt), góc tới từ 30° trở lên và đã kiểm tra hướng nắng bằng mắt; ảnh khác ghi `not_checked` kèm lý do. Với từng vòng, `score_one` tính điểm $S_{raw}$ trên ảnh gốc và điểm $S$ sau khi trừ mặt phẳng độ sáng khớp bằng `np.linalg.lstsq` trên vành [1,3r; 2r]. Vòng được gán `consistent` (hợp) hoặc `inverted` (ngược) chỉ khi hai điểm cùng vượt ngưỡng τ cùng dấu; còn lại là `unclear`. τ = 0,15 khi phương vị đo bằng số và 0,25 khi chỉ biết Đông/Tây. Bước này **chỉ gắn nhãn, không xóa vòng nào**.
+Bước sáng–tối trong `src/postprocessing.py` tự viết bằng NumPy, theo mục 2.3. `resolve_sun` chỉ cho chấm khi hướng nắng có nguồn hoặc được xác nhận, góc tới ≥ 30° và hướng đã kiểm bằng mắt; ảnh khác ghi `not_checked` kèm lý do. `score_one` so điểm trên ảnh gốc với điểm sau trừ mặt phẳng; chỉ gán hợp/ngược khi cả hai cùng vượt ngưỡng theo Bảng 2.1. Bước này **chỉ gắn nhãn, không xóa vòng**.
 
-```text
-score_one(I, V, (x_c, y_c, r), u):
-    P ← pixel hợp lệ trong đĩa |p − c| ≤ r
-    nếu |P| < 30 hoặc |P| < 0,8 · (số pixel của đĩa): trả not_checked
-    t_k ← −((p_k − c) · u) / r                với mọi p_k ∈ P
-    S_raw ← tương quan Pearson giữa I(P) và t
-    Q ← pixel hợp lệ trong vành 1,3r < |p − c| ≤ 2r
-    nếu |Q| < 30 hoặc |Q| < 0,5 · (số pixel của vành): trả not_checked
-    (a, b, e) ← bình phương tối thiểu trên Q:
-                I ≈ a + b (x − x_c)/r + e (y − y_c)/r
-    S ← tương quan Pearson giữa I(P) − mặt phẳng(P) và t
-    nếu nhãn(S_raw) ≠ nhãn(S): trả unclear
-    trả nhãn(S)                               hợp / ngược / không rõ
-```
-
-Gọi n là số vòng và $r_{\max}$ là bán kính lớn nhất. Mỗi vòng duyệt $O(r^2)$ pixel trong đĩa và vành; bài toán bình phương tối thiểu chỉ có 3 ẩn nên cũng $O(r^2)$. Cả bước tốn $O\big(\sum_i r_i^2\big) \le O(n\, r_{\max}^2)$ thời gian và $O(r_{\max}^2)$ bộ nhớ phụ; với 100 vòng có r ≤ 12 px, bước này mất khoảng 24 ms trên máy phát triển (trung vị 20 lần đo).
+Giả mã `score_one` và độ phức tạp ở Phụ lục E.4; mỗi đĩa cần ít nhất 30 pixel và đủ 80 % diện tích, vành ngoài cần ít nhất 30 pixel và đủ 50 %.
 
 Hướng nắng sai sẽ đảo ngược mọi kết luận, nên mỗi ảnh có hướng nắng và đủ góc tới được lập một phiếu kiểm tra bằng mắt: mũi tên chỉ về phía Mặt Trời và các hố tham chiếu phóng to, chọn theo số phiếu Hough để tránh lập luận vòng tròn. Ngày 18/10/2026, cả 8 phiếu đều cho kết quả `consistent`.
 
 ### 3.4.2. Kết quả trên 26 ảnh
 
-Chỉ 8/26 ảnh được chấm: năm ảnh nắng Tây (STT 8, 9, 13, 14, 18) và ba ảnh nắng Đông (STT 11, 15, 16). Ba ảnh có góc tới dưới 30° và 15 ảnh cắt từ mosaic không có hướng nắng ghi `not_checked`; ứng viên của chúng vẫn được giữ. Trên mỗi ảnh được chấm, 100 ứng viên chia thành 17–31 vòng hợp, 18–27 vòng ngược và 44–56 vòng không rõ. So với vòng đặt ngẫu nhiên, vòng Hough nhiều hơn ở **cả hai** nhãn hợp và ngược, nên điểm sáng–tối chủ yếu cho biết vòng nằm trên vùng có dải sáng–tối rõ, chưa tách được hố thật với ứng viên sai. Hình 3.3 minh họa trên STT 13: trong 4 vòng điểm cao nhất chỉ M9 (+0,75) là hố thật, còn 4 vòng điểm thấp nhất (−0,72 đến −0,79) đều là mép bóng hoặc địa hình nhiễu.
-
-![Hình 3.3. Bốn ứng viên điểm sáng–tối cao nhất (hàng trên) và thấp nhất (hàng dưới) trên ảnh STT 13. Mũi tên vàng chỉ về phía Mặt Trời. Chỉ M9 là hố thật.](../evidence/s1-11/vi_du_stt13/examples.png){width=75%}
+Chỉ 8/26 ảnh được chấm: năm ảnh nắng Tây (STT 8, 9, 13, 14, 18) và ba ảnh nắng Đông (STT 11, 15, 16). Ba ảnh có góc tới dưới 30° và 15 ảnh cắt từ mosaic không có hướng nắng ghi `not_checked`; ứng viên của chúng vẫn được giữ. Trên mỗi ảnh được chấm, 100 ứng viên chia thành 17–31 vòng hợp, 18–27 vòng ngược và 44–56 vòng không rõ. So với vòng đặt ngẫu nhiên, vòng Hough nhiều hơn ở **cả hai** nhãn hợp và ngược, nên điểm sáng–tối chủ yếu cho biết vòng nằm trên vùng có dải sáng–tối rõ, chưa tách được hố thật với ứng viên sai. Hình E.3 minh họa trên STT 13: trong 4 vòng điểm cao nhất chỉ M9 (+0,75) là hố thật, còn 4 vòng điểm thấp nhất (−0,72 đến −0,79) đều là mép bóng hoặc địa hình nhiễu.
 
 ### 3.4.3. Phân lớp ứng viên và thử lọc
 
-Hàm `review_candidates` xếp mỗi vòng vào lớp `rim` (vành hố), `shadow_edge` (ranh giới bóng), `texture` (kết cấu) hoặc `unclear`. Vùng bóng lớn là vùng liền khối có độ sáng B3 dưới 0,06 và diện tích từ 1.500 px, tìm bằng hàm `connectedComponentsWithStats` của OpenCV [@opencv_components]. Phần còn lại tự viết:
+Hàm `review_candidates` xếp mỗi vòng vào lớp `rim` (vành hố), `shadow_edge` (ranh giới bóng), `texture` (kết cấu) hoặc `unclear`. Vùng bóng lớn là vùng liền khối có độ sáng B3 dưới 0,06 và diện tích từ 1.500 px, tìm bằng hàm `connectedComponentsWithStats` của OpenCV [@opencv_components]. Phần còn lại tự viết; luật dùng độ phủ vành, độ nổi biên và tỷ lệ bóng, không dùng điểm sáng–tối. `apply_filter` mới loại vòng và ghi lý do, đồng thời từ chối tên lớp/nhãn sai. Giả mã, ngưỡng và độ phức tạp ở Phụ lục E.4.
 
-```text
-review_candidates(các vòng, gray, |G|, θ, E, V):
-    B ← vùng liền khối {gray < 0,06} có diện tích ≥ 1.500 px     (OpenCV)
-    E_bóng ← E ∧ giãn(B, 2 px)            (giãn = co phần bù, tự viết)
-    với mỗi vòng (c, r):
-        Z ← điểm biên trong dải |d − r| ≤ 1,5 px
-        phủ ← (số cung 10° có điểm biên xuyên tâm) / 36
-              điểm xuyên tâm: |cos(θ − góc từ tâm)| ≥ cos 30°
-        nổi ← trung bình |G| trên Z xuyên tâm
-              / trung vị |G| trên vành [1,3r; 2r]
-        bóng ← tỷ lệ điểm của Z thuộc E_bóng
-        nếu bóng ≥ 0,5:                          lớp ← shadow_edge
-        ngược lại nếu phủ < 0,5 hoặc nổi < 1,5:  lớp ← texture
-        ngược lại:                               lớp ← rim
-```
-
-Với ảnh N = H·W pixel, tìm vùng liền khối và giãn 2 px tốn O(N); mỗi vòng duyệt $O(r)$ pixel trên dải và $O(r^2)$ pixel trên vành ngoài, nên cả bước tốn $O\big(N + \sum_i r_i^2\big)$. Luật không dùng điểm sáng–tối, để hai bằng chứng độc lập nhau. Hàm riêng `apply_filter` mới thực sự loại vòng và ghi lý do; hàm báo lỗi khi tên lớp hoặc tên nhãn sáng–tối sai, thay vì im lặng không loại gì.
-
-Để đo tác dụng, một thành viên gán nhãn mù (không thấy lớp do máy xếp) cho 100 ứng viên của STT 13, một thành viên khác kiểm chéo: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. STT 13 thuộc tập điều chỉnh. Trên 94 vòng có nhãn rõ, lớp `texture` của máy chứa 47/48 vòng kết cấu và không hố thật nào, còn lớp `rim` lẫn 24/33 vòng kết cấu. STT 17 được gán nhãn theo cùng cách (17 `rim`, 66 `texture`, 17 `unclear`). Bảng 3.4 so các cách lọc.
+Để đo tác dụng, một thành viên gán nhãn mù (không thấy lớp do máy xếp) cho 100 ứng viên của STT 13, một thành viên khác kiểm chéo: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear`. STT 13 thuộc tập điều chỉnh. Trên 94 vòng có nhãn rõ, lớp `texture` của máy chứa 47/48 vòng kết cấu và không hố thật nào, còn lớp `rim` lẫn 24/33 vòng kết cấu. STT 17 được gán nhãn theo cùng cách (17 `rim`, 66 `texture`, 17 `unclear`). Bảng 3.2 so các cách lọc.
 
 | Cách lọc | STT 13: loại / mất hố thật | STT 13: tỷ lệ hố thật | STT 17: loại / mất hố thật | STT 17: tỷ lệ hố thật |
 |---|---:|---:|---:|---:|
@@ -232,17 +117,15 @@ Với ảnh N = H·W pixel, tìm vùng liền khối và giãn 2 px tốn O(N); 
 | Bỏ `shadow_edge` + `texture` | 61 / 1 | 21,2 % | 35 / 0 | 35,4 % |
 | Bỏ sáng–tối `inverted` | 23 / 2 | 8,5 % | không chấm | 20,5 % |
 
-: Bảng 3.4. Kết quả lọc trên ứng viên có nhãn: STT 13 (94 vòng, 8 hố thật) và STT 17 (83 vòng, 17 hố thật).
+: Bảng 3.2. Kết quả lọc trên ứng viên có nhãn: STT 13 (94 vòng, 8 hố thật) và STT 17 (83 vòng, 17 hố thật).
 
-Bỏ lớp `texture` không mất hố thật nào và tăng gần gấp đôi tỷ lệ hố thật trên cả hai ảnh. Bỏ thêm `shadow_edge` mất hố M7, nằm sát vùng bóng lớn (Hình 3.4). Lọc theo nhãn `inverted` có hại: nó loại nhầm M8 và M19, hai vòng nhỏ lệch tâm nằm trong hố thật M32 và M15, chỉ bao lòng hố tối và vách sáng nên bị đảo dấu (mục 3.5). Chuỗi mặc định chưa bật bộ lọc vì mới có hai ảnh có nhãn, cùng là Apollo 16 ở 2 m/px; STT 13 đã dùng để thiết kế luật; và các ngưỡng là giá trị ban đầu.
-
-![Hình 3.4. Ảnh STT 13 trước (trái, 100 ứng viên máy) và sau khi bỏ hai lớp máy `shadow_edge` và `texture` (phải, còn 35 vòng). Màu là nhãn người: xanh lá là hố thật, đỏ là ranh giới bóng, vàng là kết cấu. Mũi tên chỉ hố thật bị loại nhầm (M7).](../evidence/s2-02/moon_ap16_m132732855l_c01/loc_truoc_sau.png){width=75%}
+Bỏ lớp `texture` không mất hố thật nào và tăng gần gấp đôi tỷ lệ hố thật trên cả hai ảnh. Bỏ thêm `shadow_edge` mất hố M7, nằm sát vùng bóng lớn (Hình E.4). Lọc theo nhãn `inverted` có hại: nó loại nhầm M8 và M19, hai vòng nhỏ lệch tâm nằm trong hố thật M32 và M15, chỉ bao lòng hố tối và vách sáng nên bị đảo dấu (mục 3.5). Chuỗi mặc định chưa bật bộ lọc vì mới có hai ảnh có nhãn, cùng là Apollo 16 ở 2 m/px; STT 13 đã dùng để thiết kế luật; và các ngưỡng là giá trị ban đầu.
 
 ## 3.5. Lọc vòng tròn trùng
 
-NMS của Hough chỉ gộp hai đỉnh khi tâm lệch ≤ 4 px **và** bán kính lệch ≤ 2 px. Hai dạng trùng lọt qua: vòng nhỏ lồng trong vành thật (STT 13: M8, r = 6, trong M32, r = 9; M19, r = 6, trong M15, r = 10) và hai vòng cùng cỡ lệch tâm (STT 17: M66 và M67, r = 7, tâm cách 5 px). Vòng trùng làm một hố bị đếm hai lần và gây nhãn sáng–tối "ngược" giả. Hàm tự viết `dedupe_circles` coi hai vòng là một hố khi thỏa công thức (3.2):
+NMS của Hough chỉ gộp hai đỉnh khi tâm lệch ≤ 4 px **và** bán kính lệch ≤ 2 px. Hai dạng trùng lọt qua: vòng nhỏ lồng trong vành thật (STT 13: M8, r = 6, trong M32, r = 9; M19, r = 6, trong M15, r = 10) và hai vòng cùng cỡ lệch tâm (STT 17: M66 và M67, r = 7, tâm cách 5 px). Vòng trùng làm một hố bị đếm hai lần và gây nhãn sáng–tối "ngược" giả. Hàm tự viết `dedupe_circles` coi hai vòng là một hố khi thỏa công thức (3.1):
 
-$$ \frac{d}{R} \le \text{0,75} \quad \text{và} \quad \frac{r}{R} \ge \text{0,5} \qquad (3.2) $$
+$$ \frac{d}{R} \le \text{0,75} \quad \text{và} \quad \frac{r}{R} \ge \text{0,5} \qquad (3.1) $$
 
 với R, r là bán kính vòng lớn, vòng nhỏ và d là khoảng cách tâm. Điều kiện thứ hai giữ lại hố nhỏ thật nằm trong hố lớn. Điều kiện thứ nhất giữ lại hai hố cạnh nhau, vì khi hai vành chạm hoặc chồng một phần thì d thường từ R trở lên. Ba cặp trùng thật có d/R = 0,33; 0,45; 0,71, nên ngưỡng 0,5 sẽ bỏ sót M66/M67.
 
@@ -255,30 +138,15 @@ dedupe_circles(C):
     sắp C theo (không đủ_tin, −r, −q, −phiếu, crater_id)
     G ← [], L ← []
     với mỗi c theo thứ tự đó:
-        nếu ∃ g ∈ G mà cặp (c, g) thỏa (3.2):
+        nếu ∃ g ∈ G mà cặp (c, g) thỏa (3.1):
             duplicate_of(c) ← g; thêm c vào L
         ngược lại: thêm c vào G
     trả G (giữ thứ tự đầu vào), L
 ```
 
-Ví dụ tính tay với cặp M32/M8 trên STT 13. M32 có tâm (52, 372), r = 9, 39 phiếu; M8 có tâm (49, 372), r = 6, 28 phiếu. Ta có d = 3, R = 9, r = 6, nên d/R = 0,33 ≤ 0,75 và r/R = 0,67 ≥ 0,5: hai vòng là một hố. Số độ lệch là 72 với r = 9 và 48 với r = 6, nên q(M32) = 39/72 = 0,542 và q(M8) = 28/48 = 0,583. Cả hai đủ tin; M32 lớn hơn nên đứng trước và được giữ, M8 bị loại với `duplicate_of = M32`. Nếu chọn theo tỷ lệ phiếu thì M8 sẽ được giữ nhầm, vì vòng nhỏ có ít điểm chu vi nên dễ đạt tỷ lệ cao. Bảng 3.5 liệt kê bộ ví dụ kiểm tra.
+Ví dụ tính tay với cặp M32/M8 trên STT 13. M32 có tâm (52, 372), r = 9, 39 phiếu; M8 có tâm (49, 372), r = 6, 28 phiếu. Ta có d = 3, R = 9, r = 6, nên d/R = 0,33 ≤ 0,75 và r/R = 0,67 ≥ 0,5: hai vòng là một hố. Số độ lệch là 72 với r = 9 và 48 với r = 6, nên q(M32) = 39/72 = 0,542 và q(M8) = 28/48 = 0,583. Cả hai đủ tin; M32 lớn hơn nên đứng trước và được giữ, M8 bị loại với `duplicate_of = M32`. Nếu chọn theo tỷ lệ phiếu thì M8 sẽ được giữ nhầm, vì vòng nhỏ có ít điểm chu vi nên dễ đạt tỷ lệ cao. Bộ 10 ca và độ phức tạp ở Phụ lục E.5.
 
-| # | Trường hợp | Mong đợi |
-|---:|---|---|
-| 1–2 | STT 13: M8 trong M32; M19 trong M15 | Giữ M32; giữ M15 |
-| 3 | STT 17: M66/M67, cùng r = 7, tâm cách 5 px | Giữ 1 vòng |
-| 4 | Ba vòng cùng một hố (r = 12, 9, 7) | Giữ r = 12 |
-| 5–6 | Vòng ngoài thuộc lớp `texture`; vòng ngoài ít phiếu (tỷ lệ 0,25) | Giữ vòng trong |
-| 7 | Hai hố chạm mép (d = R + r) | Giữ cả hai |
-| 8 | Hai hố chồng mép (d = 14, R = 10, r = 8) | Giữ cả hai |
-| 9 | Hố nhỏ trong hố lớn (r/R = 0,3) | Giữ cả hai |
-| 10 | Cụm 4 hố gần nhau | Giữ cả bốn |
-
-: Bảng 3.5. Bộ ví dụ kiểm tra lọc trùng; bốn ca cuối không được xóa vòng nào. Cả 10 ca đều đạt.
-
-Với n vòng và k vòng giữ lại, tính tỷ lệ phiếu tốn $O(n\,T\log T)$ với T = 360 mẫu góc (khử trùng độ lệch bằng sắp xếp), sắp xếp tốn $O(n \log n)$, vòng lặp so mỗi vòng với các vòng đã giữ tốn $O(n\,k) \le O(n^2)$. Với n = 100, bước này mất khoảng 28 ms trên máy phát triển (trung vị 20 lần đo). Bộ kiểm thử `tests/test_dedupe.py` (8 bài) chạy cả 10 ca, kiểm tra thêm việc đảo thứ tự đầu vào không đổi kết quả và hai ngưỡng biên. Trên ảnh thật, STT 13 giảm từ 100 xuống 96 vòng, gộp đúng 2/2 cặp trùng thật; STT 17 giảm từ 100 xuống 97, gộp đúng 1/1 cặp; cả hai không mất hố thật nào (Hình 3.5). Bốn vòng bị loại còn lại thuộc các cặp có nhãn người `texture` hoặc `unclear`.
-
-![Hình 3.5. Bốn cặp vòng trùng bị gộp trên ảnh STT 13. Xanh: vòng giữ; đỏ nét đứt: vòng bị loại; trong ngoặc là nhãn người. Hai cặp đầu là mép bóng lòng hố lồng trong vành thật.](../evidence/s2-05/moon_ap16_m132732855l_c01_cap_trung.png){width=75%}
+Bộ kiểm thử `tests/test_dedupe.py` (8 bài) chạy cả 10 ca, kiểm tra thêm việc đảo thứ tự đầu vào không đổi kết quả và hai ngưỡng biên. Trên ảnh thật, STT 13 giảm từ 100 xuống 96 vòng, gộp đúng 2/2 cặp trùng thật; STT 17 giảm từ 100 xuống 97, gộp đúng 1/1 cặp; cả hai không mất hố thật nào (Hình E.5). Bốn vòng bị loại còn lại thuộc các cặp có nhãn người `texture` hoặc `unclear`.
 
 Ngưỡng 0,75 mới chọn theo 3 cặp trên hai ảnh 2 m/px, và hai hố thật chồng gần hết sẽ bị gộp. Lọc trùng không đưa thêm hố mới và chưa được bật trong chuỗi mặc định.
 
@@ -288,88 +156,60 @@ Mô-đun `src/statistics.py` tự viết bằng Python và NumPy, không dùng t
 
 ### 3.6.1. Chọn khoảng bán kính
 
-Mọi khoảng kích thước được khai báo theo đường kính vật lý $[D_{\min}, D_{\max}]$ (m) rồi quy đổi sang pixel theo tỷ lệ s (m/px) của từng ảnh. Hàm `radius_range_px` trong `src/contracts.py` cho dải tìm của Hough:
-
-$$ r_{\min} = \max\left(5,\ \left\lceil \frac{D_{\min}}{2s} \right\rceil\right), \qquad r_{\max} = \min\left(128,\ \left\lfloor \frac{D_{\max}}{2s} \right\rfloor\right) \qquad (3.3) $$
-
-Cận 5 px vì vòng nhỏ hơn quá thô sau khi rời rạc hóa và đã bị Gauss làm mờ; cận 128 px vì hố lớn hơn nửa cạnh ảnh thường bị mép ảnh cắt mất phần lớn vành. Với ảnh 20 m/px và D = 200–4.000 m, dải tìm là 5–100 px.
+Dải tìm Hough được tính theo (2.14): cận 5 px tránh vòng quá thô sau rời rạc hóa và Gauss; cận 128 px hạn chế hố bị cắt mất phần lớn vành. Ở 20 m/px, D = 200–4.000 m cho r = 5–100 px.
 
 Để so mật độ, hai vùng phải **cùng tỷ lệ ảnh và cùng khoảng đường kính**; `region_count` và `compare_regions` báo lỗi nếu không thỏa. Nhóm chọn D = 300–2.000 m, tức r = 7,5–50 px ở 20 m/px. Cận dưới 300 m cao hơn dải tìm vì hố có r < 7,5 px khó nhận chắc chắn, và khả năng nhìn thấy hố nhỏ phụ thuộc mạnh vào góc nắng. Cận trên 2.000 m vì hố lớn hơn quá hiếm trong 100–200 km². Một hố được đếm khi D = 2rs thỏa $D_{\min} \le D < D_{\max}$ và tâm nằm trong vùng đếm.
 
 ### 3.6.2. Mật độ, khoảng tin cậy và so sánh
 
-Diện tích A tính trên **hợp** các vùng đếm hợp lệ, đặt trên hệ tọa độ ảnh nguồn để hai ảnh cắt chồng nhau không bị tính hai lần. Mật độ theo công thức (2.24):
-
-$$ A = \frac{N_{\mathrm{px}} \cdot s^2}{10^6}\ \ (\mathrm{km}^2), \qquad \rho = \frac{N}{A} \qquad (3.4) $$
+Diện tích tính trên **hợp** các vùng đếm hợp lệ trong hệ ảnh nguồn, tránh tính hai lần phần chồng lấp. Mật độ và diện tích theo (2.24).
 
 Khoảng tin cậy 95 % của ρ là khoảng Poisson chính xác [@garwood1936] chia cho A. Với n hố quan sát, cận dưới $\mu_L$ và cận trên $\mu_U$ là nghiệm của:
 
-$$ P(X \ge n \mid \mu_L) = \text{0,025}, \qquad P(X \le n \mid \mu_U) = \text{0,025}, \qquad X \sim \mathrm{Poisson}(\mu) \qquad (3.5) $$
+$$ P_{\mu_L}(X \ge n) = \text{0,025}, \qquad P_{\mu_U}(X \le n) = \text{0,025}, \qquad X \sim \mathrm{Poisson}(\mu) \qquad (3.2) $$
 
-Hai nghiệm được tìm bằng chia đôi 200 lần; kết quả khớp bảng tra, ví dụ n = 0 cho [0; 3,689] và n = 10 cho [4,795; 18,39]. Hai vùng được so bằng kiểm định nhị thức có điều kiện [@przyborowski1940]: nếu hai mật độ bằng nhau thì, với tổng $N_1 + N_2$ cố định,
+Ở đây $P_\mu$ là xác suất theo phân phối Poisson có trung bình μ. Hai nghiệm được tìm bằng chia đôi 200 lần; kết quả khớp bảng tra, ví dụ n = 0 cho [0; 3,689] và n = 10 cho [4,795; 18,39]. Hai vùng được so bằng kiểm định nhị thức có điều kiện [@przyborowski1940]: nếu hai mật độ bằng nhau thì, với tổng $N_1 + N_2$ cố định,
 
-$$ N_1 \sim \mathrm{Binomial}\left(N_1 + N_2,\ \frac{A_1}{A_1 + A_2}\right) \qquad (3.6) $$
+$$ N_1 \sim \mathrm{Binomial}\left(N_1 + N_2,\ \frac{A_1}{A_1 + A_2}\right) \qquad (3.3) $$
 
 và p-value hai phía là tổng xác suất các kết quả không lớn hơn xác suất của $N_1$ quan sát được. Phân bố kích thước dùng bin √2 bắt đầu tại $D_{\min}$, theo cách trình bày chuẩn [@catwg1979], kèm tần suất tích lũy $N(\ge D)/A$.
 
-```text
-region_count(các ô, D_min, D_max):
-    kiểm tra mọi ô cùng tỷ lệ s và cùng ảnh nguồn
-    U ← hợp các mặt nạ (vùng đếm ∧ hợp lệ) trên tọa độ ảnh nguồn
-    H ← []
-    với mỗi ô, mỗi vòng (x, y, r):
-        D ← 2rs
-        nếu D ∉ [D_min, D_max) hoặc tâm ∉ vùng đếm: bỏ qua
-        nếu ∃ h ∈ H cùng hố (tâm lệch ≤ 0,5R, r/R ≥ 0,7): gộp vào h
-        ngược lại: thêm vòng vào H
-    A ← |U| · s² / 10⁶;  ρ ← |H| / A;  khoảng tin cậy theo (3.5)
-```
-
-Với M pixel trong các ô và n vòng, dựng mặt nạ hợp tốn O(M), gộp hố trùng giữa các ô tốn $O(n^2)$ trong trường hợp xấu nhất, histogram với b bin tốn $O(n\,b)$. Mỗi khoảng tin cậy tốn O(200·n) vì mỗi bước chia đôi tính hàm phân phối Poisson trong O(n); kiểm định nhị thức tính $N_1 + N_2 + 1$ xác suất. Bộ kiểm thử `tests/test_statistics.py` (12 bài) kiểm tra mật độ trên diện tích, dải D theo mét, chỉ đếm tâm trong vùng, ô chồng nhau chỉ đếm một lần, từ chối khác tỷ lệ hoặc khác dải D, và khoảng tin cậy khớp bảng tra.
+Giả mã `region_count`, độ phức tạp và 12 bài kiểm thử thống kê ở Phụ lục E.6.
 
 ### 3.6.3. Kết quả so hai vùng
 
 Nhóm so Lunokhod 1 (Mare Imbrium) với Mare Frigoris: cả hai là biển bazan, cùng 20 m/px và cùng chụp lúc Mặt Trời thấp (góc tới của các ảnh thành phần 60–79° và 61–84°). Cặp Van de Graaff – Mare Frigoris dự kiến ban đầu không dùng được: Van de Graaff chụp lúc Mặt Trời cao (27–45°) nên hố nhỏ gần như không thấy, và chênh lệch số đếm sẽ chủ yếu do ánh sáng. Vùng đếm Mare Frigoris chỉ lấy mặt biển, bỏ hố lớn 6–8 km, vùng bóng và dải ghép; các vùng đếm không chồng nhau trên ảnh nguồn.
 
-Mật độ chỉ có nghĩa khi đếm đủ mọi hố trong dải trên toàn diện tích, nên nhóm không dùng nhãn tham chiếu thưa mà đếm tay đầy đủ trên bốn ảnh cắt; một thành viên đếm, một thành viên khác kiểm chéo. Bảng 3.6 và Hình 3.6 cho kết quả.
+Mật độ chỉ có nghĩa khi đếm đủ mọi hố trong dải trên toàn diện tích, nên nhóm không dùng nhãn tham chiếu thưa mà đếm tay đầy đủ trên bốn ảnh cắt; một thành viên đếm, một thành viên khác kiểm chéo. Bảng 3.3 và Hình 3.2 cho kết quả.
 
-| Vùng | Diện tích (km²) | 300–424 | 424–600 | 600–849 | 849–1.200 | 1.200–2.000 | N | ρ (hố/km²) | Khoảng tin cậy 95 % |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| Lunokhod 1 | 184,7 | 22 | 15 | 7 | 1 | 2 | 47 | 0,254 | 0,187–0,338 |
-| Mare Frigoris | 99,2 | 26 | 4 | 2 | 0 | 0 | 32 | 0,322 | 0,221–0,455 |
+| Vùng | Diện tích (km²) | N | ρ (hố/km²) | Khoảng tin cậy 95 % |
+|---|---:|---:|---:|---|
+| Lunokhod 1 | 184,7 | 47 | 0,254 | 0,187–0,338 |
+| Mare Frigoris | 99,2 | 32 | 0,322 | 0,221–0,455 |
 
-: Bảng 3.6. Số hố theo bin đường kính (m) và mật độ hai vùng, cùng 20 m/px, D = 300–2.000 m, đếm tay đầy đủ.
+: Bảng 3.3. Mật độ đếm tay đầy đủ, cùng 20 m/px, D = 300–2.000 m.
 
-![Hình 3.6. Tần suất tích lũy N(≥ D)/km² của hai vùng; dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s2-09/tich_luy.png){width=65%}
+Theo các bin 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, số hố của Lunokhod 1 lần lượt là 22; 15; 7; 1; 2; của Mare Frigoris là 26; 4; 2; 0; 0.
 
-Tổng mật độ **không khác nhau có ý nghĩa thống kê**: tỷ số 0,79 và p = 0,35 theo công thức (3.6). Hai đường tích lũy cắt nhau: Mare Frigoris có nhiều hố 300–424 m hơn, còn Lunokhod 1 có nhiều hố từ 424 m trở lên (tỷ số 2,24; p = 0,09). Theo mục 2.5, điều này chỉ gợi ý yếu rằng bề mặt Lunokhod 1 có tuổi tương đối già hơn, chưa đủ để kết luận. Giới hạn chính: số hố nhỏ nên khoảng tin cậy rộng; vùng đếm nhỏ và được chọn để tránh hố lớn, nên không phải mẫu ngẫu nhiên; metadata không có phương vị Mặt Trời, nên khả năng thấy hố nhỏ có thể khác nhau giữa hai vùng; cụm hố liền nhau ở Lunokhod 1 có thể là hố thứ cấp; đếm tay có sai số khoảng ±2 px ở bán kính. Phép so sánh không cho tuổi tuyệt đối.
+![Hình 3.2. Tần suất tích lũy N(≥ D)/km² của hai vùng; dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s2-09/tich_luy.png){width=65%}
+
+Tổng mật độ **không khác nhau có ý nghĩa thống kê**: tỷ số 0,79 và p = 0,35 theo công thức (3.3). Hai đường tích lũy cắt nhau: Mare Frigoris có nhiều hố 300–424 m hơn, còn Lunokhod 1 có nhiều hố từ 424 m trở lên (tỷ số 2,24; p = 0,09). Theo mục 2.5, điều này chỉ gợi ý yếu rằng bề mặt Lunokhod 1 có tuổi tương đối già hơn, chưa đủ để kết luận. Giới hạn chính: số hố nhỏ nên khoảng tin cậy rộng; vùng đếm nhỏ và được chọn để tránh hố lớn, nên không phải mẫu ngẫu nhiên; metadata không có phương vị Mặt Trời, nên khả năng thấy hố nhỏ có thể khác nhau giữa hai vùng; cụm hố liền nhau ở Lunokhod 1 có thể là hố thứ cấp; đếm tay có sai số khoảng ±2 px ở bán kính. Phép so sánh không cho tuổi tuyệt đối.
 
 Trên cùng vùng đếm và dải D, ứng viên máy (Hough mặc định, rồi bỏ lớp `texture` và lọc trùng) chỉ có 11 vòng ở Lunokhod 1 và 0 vòng ở Mare Frigoris, vì Hough chỉ trả vòng có r ≤ 13 px. Mật độ tính từ ứng viên máy vì vậy chưa dùng được (mục 3.7).
 
 ### 3.6.4. Thống kê trên màn hình trò chơi
 
-Hàm `summarize(crater_set, metadata, valid_pixel_count)` trả đầu ra theo Bảng 3.7. Giao diện gọi hàm này cho ứng viên máy trên ảnh đang mở; sai hợp đồng thì giao diện báo lỗi và không hiện số. Vì ứng viên máy chưa kiểm chứng, trường `limitations` ghi rõ đây là số ứng viên, không phải mật độ hố. Hàm tốn $O(n\,b)$ với n vòng và b bin.
+`summarize` trả số vòng, diện tích, mật độ, histogram và giới hạn (hợp đồng ở Phụ lục E.6). Sai hợp đồng thì app báo lỗi và không hiện số. Khi số ứng viên **thô ≥ `max_circles`**, `statistics_presentation_view` ẩn giá trị mật độ bằng dấu “—” và hiện cảnh báo không dùng để so tuổi hay so vùng; số vòng, diện tích và histogram vẫn hiện. Lớp này bỏ đúng câu cảnh báo chạm trần vô điều kiện cũ, giữ các hạn chế khác.
 
-| Khóa | Kiểu | Ý nghĩa |
-|---|---|---|
-| `count` | số nguyên ≥ 0 | Số vòng trong danh sách |
-| `valid_area_km2` | số ≥ 0 hoặc `null` | Diện tích hợp lệ A theo công thức (3.4) |
-| `density_per_km2` | số ≥ 0 hoặc `null` | Mật độ ρ; `null` khi diện tích bằng 0 |
-| `histogram` | `bin_edges_m`, `counts` | Bin √2 bắt đầu tại $D_{\min}$ của ảnh |
-| `limitations` | danh sách chuỗi | Hiện nguyên văn dưới biểu đồ |
-| `density_ci95_per_km2` | hai số | Khoảng tin cậy 95 %; giao diện bỏ qua |
-
-: Bảng 3.7. Đầu ra của hàm `summarize`.
+Khi mở ảnh Lunokhod 1 hoặc Mare Frigoris có metadata phù hợp, app hiện riêng bảng so sánh **đếm tay** từ `docs/evidence/s2-09/so_sanh.json` và `data/s209_counts/regions.json`, độc lập với lượt chấm. Ảnh cùng nguồn nhưng ngoài ô đếm có lời giải thích; bảng không đại diện riêng ảnh đang mở. Cách hiển thị khớp `docs/S2-13_TICH_HOP.md` mục 3.2, `src/integration.py` và `app.py`.
 
 ## 3.7. Hạn chế của chuỗi phát hiện
 
-**Danh sách máy luôn chạm trần.** Cả 26 ảnh đều trả đúng 100 ứng viên. Trên 4 ảnh đo ở bước rà biên (mục 3.4.3), 80–94 vòng có r = 5–6 px và không vòng nào có r > 12 px, dù dải tìm lên tới 100–125 px. Không thể đọc số 100 thành số hố.
-
-**Hố lớn bị bỏ sót dù nằm trong dải tìm.** STT 17 có 10 nhãn tham chiếu thưa, bán kính 8–22 px, đều nằm trong dải tìm 5–125 px. Hough dừng ở 100 vòng bán kính 5–10 px, nên Recall_known = 0/10. Đổi `min_vote_ratio` (0,30; 0,40) hay `radius_step_px` (2) vẫn cho 0/10, và đổi từng tham số tiền xử lý chỉ đưa bán kính lớn nhất lên 8–16 px. Nút thắt vì vậy nằm ở cách xếp hạng theo tỷ lệ phiếu và cắt ở 100 đỉnh. Bản sửa ở mục 3.3.5 đưa được vòng lớn hơn vào danh sách, nhưng Recall_known vẫn thấp.
+**Chạm trần và bỏ sót hố.** Cả 26 ảnh trả 100 ứng viên; trên bốn ảnh rà biên, 80–94 vòng có r = 5–6 px, không vòng nào r > 12 px. STT 17 vẫn bỏ sót cả 10 nhãn dù thay ngưỡng phiếu hoặc bước bán kính (mục 4.6). Chi tiết ảnh hưởng tiền xử lý ở E.2. Chọn theo nhóm bán kính chỉ gỡ một phần nguyên nhân, như kết quả ở mục 4.7.
 
 **Bộ lọc chưa bật, sáng–tối phạm vi hẹp.** Đầu ra mặc định chưa qua phân lớp và lọc trùng. Chỉ 8/26 ảnh được chấm sáng–tối, phiếu hướng nắng do một người kiểm, và STT 16 là ảnh duy nhất có nhãn ngược (27) nhiều hơn hợp (17), chưa đủ căn cứ để kết luận hướng nắng sai.
 
-**Tham số đã chốt, độ nhạy còn thấp.** Ngày 29/10/2026, S2-15 khóa `configs/s215_frozen.json`, đồng bộ với `configs/default.json` cho tuần 3. Giữ tiền xử lý ở phân vị 0,5–99,5; CLAHE clip 2, grid 8, 8 bit; Gauss σ = 1,5, kernel 11; Canny phân vị cao 90, tỷ lệ thấp 0,4, bỏ mép 6 px. Hough dùng `full_circle`, `candidate_selection=score`, r = 5–128 px kẹp theo metadata, bước r = 1 px, bước góc 1°, tối thiểu 12 phiếu và tỷ lệ 0,35; NMS tâm 4 px/bán kính 2 px, tối đa 100 vòng. Sáng–tối chỉ gắn nhãn; phân lớp và lọc trùng giữ tắt.
+**Tham số đã chốt, độ nhạy còn thấp.** Ngày 29/10/2026, S2-15 khóa `configs/s215_frozen.json`, đồng bộ với `configs/default.json` cho tuần 3. Các giá trị tiền xử lý và Hough ở Bảng 3.1 và Bảng E.2; chọn `score`, sáng–tối chỉ gắn nhãn, phân lớp và lọc trùng tắt.
 
 Trên đủ 18 ảnh điều chỉnh, cấu hình này tìm lại 10/174 hố đã biết (Recall_known = 5,75%). Nhãn thưa nên không tính Precision/F1 toàn ảnh. Đây là mốc so sánh cố định, chưa phải cấu hình tối ưu. Quyết định giữ `score` dựa trên tuning; không dùng kết quả tập kiểm tra để chọn tham số. Tập kiểm tra đã được xem ở S2-06, nên những lần đánh giá lại phải ghi rõ là đánh giá lặp. Cấu hình, bằng chứng và điều kiện đánh giá lại nằm trong `docs/S2-15_CHOT_THAM_SO.md` và `docs/evidence/s2-15/`.
 
