@@ -8,14 +8,30 @@ from unittest import mock
 
 from streamlit.testing.v1 import AppTest
 
+from scripts.install_s106_dataset import install_dataset
 from src import integration, statistics
 from src.contracts import read_json
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = read_json(ROOT / "docs/evidence/s2-09/so_sanh.json")
 REGIONS = read_json(ROOT / "data/s209_counts/regions.json")
-META = read_json(ROOT / "data/processed/moon_lunokhod1_loc_c01.json")
+# Cài bộ ảnh từ bundle vào thư mục tạm như tests/test_integration.py; CI không có data/processed.
+_TMP = None
+DATA = None
+META = None
 EXPECTED_LEGACY_HOUGH_LIMITATION = "Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu."
+
+
+def setUpModule():
+    global _TMP, DATA, META
+    _TMP = tempfile.TemporaryDirectory()
+    DATA = Path(_TMP.name) / "images"
+    install_dataset(DATA)
+    META = read_json(DATA / "moon_lunokhod1_loc_c01.json")
+
+
+def tearDownModule():
+    _TMP.cleanup()
 
 
 class TestDensityLimit(unittest.TestCase):
@@ -77,13 +93,13 @@ class TestDensityComparison(unittest.TestCase):
     def test_counted_crops_and_uncounted_same_source_crop(self):
         for key, region in EVIDENCE["regions"].items():
             for image_id in region["crops"]:
-                meta = read_json(ROOT / "data/processed" / f"{image_id}.json")
+                meta = read_json(DATA / f"{image_id}.json")
                 view = integration.density_comparison_view(meta)
                 self.assertEqual(view["status"], "ok")
                 self.assertEqual(view["region"], key)
                 self.assertTrue(view["counted_crop"])
                 self.assertEqual(view["data"], EVIDENCE)
-        meta = read_json(ROOT / "data/processed/moon_marefrig_loc_c01.json")
+        meta = read_json(DATA / "moon_marefrig_loc_c01.json")
         view = integration.density_comparison_view(meta)
         self.assertEqual(view["status"], "ok")
         self.assertEqual(view["region"], "marefrig")
@@ -92,7 +108,7 @@ class TestDensityComparison(unittest.TestCase):
     def test_all_images_are_resolved_by_metadata_not_filename(self):
         manifest = read_json(ROOT / "data/s106_bundle/manifest.json")
         for image_id in manifest["image_ids"]:
-            meta = read_json(ROOT / "data/processed" / f"{image_id}.json")
+            meta = read_json(DATA / f"{image_id}.json")
             products = {r["product_id"] for r in EVIDENCE["regions"].values()}
             view = integration.density_comparison_view(meta)
             self.assertEqual(view["status"], "ok" if meta["product_id"] in products else "hidden", image_id)
