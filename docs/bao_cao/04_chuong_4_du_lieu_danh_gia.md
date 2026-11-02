@@ -27,7 +27,7 @@ Bộ `s106_lroc_browse_v2` gồm 26 ảnh 512 × 512 từ 16 sản phẩm camera
 
 : Bảng 4.1. Nhóm ảnh nguồn và số ảnh cắt. (\*) Dải góc tới của các ảnh thành phần trong mosaic, không phải số đo tại cửa sổ cắt.
 
-**Giấy phép/nguồn.** Sản phẩm PDS của LROC thuộc phạm vi công cộng (public domain), ghi công NASA/GSFC/Arizona State University [@lroc_terms]; không suy rộng sang mọi hình trên website. URL/SHA-256 từng TIFF ở `data/s106_bundle/sources.json`; siêu dữ liệu (metadata) giữ nguồn, cách cắt và ghi công. Hình giao diện, biểu đồ, ảnh chồng vòng do nhóm tạo từ bộ này.
+**Giấy phép/nguồn.** Sản phẩm PDS (kho dữ liệu hành tinh của NASA) của LROC thuộc phạm vi công cộng (public domain), ghi công NASA/GSFC/Arizona State University [@lroc_terms]; không suy rộng sang mọi hình trên website. URL/SHA-256 từng TIFF ở `data/s106_bundle/sources.json`; siêu dữ liệu (metadata) giữ nguồn, cách cắt và ghi công. Hình giao diện, biểu đồ, ảnh chồng vòng do nhóm tạo từ bộ này.
 
 `generate_s106_crops.py` cắt tại $(x_0,y_0)$, k = 1, tránh đường ghép; cả 26 ô có tỷ lệ pixel hợp lệ 1,0, pixel 0 vẫn hợp lệ. Chuẩn hóa phân vị 0,5–99,5 %. Metadata ghi tỷ lệ, tâm, chiếu sáng, phép chiếu và biến đổi tuyến tính kèm tịnh tiến (affine); không ảnh nào có phương vị nắng đo được. Sau kiểm bằng mắt, chỉ tám ảnh Apollo 16 đủ hướng/góc tới để chấm sáng–tối. Gói dữ liệu (bundle) ngoại tuyến 12.861.130 byte có kiểm SHA-256; tổng 16 TIFF nguồn 503.640.706 byte. Chi tiết dữ liệu giữ ở liên kết Phụ lục E.
 
@@ -80,7 +80,7 @@ Bảng 4.3 nêu ba câu hỏi (a/b/c). S3-05 chạy ngày 01/11/2026, Python 3.1
 |:--------------------|:--------------------|:----------------------|
 | E1. Bước sáng–tối thay đổi gì so với Hough cơ bản? | Apollo 16, tập điều chỉnh, có hướng nắng dùng được | Hough cơ bản; thêm nhãn sáng–tối; thử bỏ vòng "ngược" |
 | E2. Tham số Hough ảnh hưởng thế nào? | Ảnh đại diện của tập điều chỉnh | `min_vote_ratio` 0,30 / 0,35 / 0,40; `radius_step` 1 / 2 px; mỗi lượt đổi một tham số |
-| E3. Ảnh khó được xử lý ra sao? | STT 13 (bóng mạnh), STT 17 (nắng gần đứng), Mare Frigoris | Phân lớp vành / bóng / kết cấu; bỏ lớp kết cấu; lọc vòng trùng |
+| E3. Ảnh khó được xử lý ra sao? | STT 13 (bóng mạnh), STT 9, STT 17 (nắng gần đứng); Mare Frigoris chỉ mô tả | Phân lớp vành / bóng / kết cấu; bỏ lớp kết cấu; lọc vòng trùng |
 
 : Bảng 4.3. Thiết kế ba thí nghiệm.
 

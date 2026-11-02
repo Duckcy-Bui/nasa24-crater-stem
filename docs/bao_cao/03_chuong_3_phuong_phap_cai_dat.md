@@ -4,7 +4,7 @@
 
 ## 3.1. Kiến trúc và cấu trúc mã nguồn
 
-Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON, phân biệt `source` của vòng máy, nhãn và người chơi.
+Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON (tệp dữ liệu văn bản có cấu trúc), phân biệt `source` của vòng máy, nhãn và người chơi.
 
 ![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=100%}
 
@@ -155,8 +155,8 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 01 Kiểm các ô cùng s và cùng ảnh nguồn; U = hợp mặt nạ ở hệ ảnh nguồn.
 02 H = []; với mỗi vòng (x,y,r) của mỗi ô: D = 2rs.
 03 Bỏ D ngoài [D_min,D_max) hoặc tâm làm tròn nằm ngoài mặt nạ đếm.
-04 Đổi tâm về ảnh nguồn, tìm h∈H lệch tâm ≤0,5R và r/R≥0,7.
-05 Nếu có h: gộp; nếu không: thêm vòng vào H.
+04 Đổi tâm về ảnh nguồn, tìm hố đã có trong H lệch tâm ≤0,5R và r/R≥0,7.
+05 Nếu tìm thấy hố: gộp; nếu không: thêm vòng vào H.
 06 A = |U|s²/10⁶; ρ = |H|/A; A=0 thì mật độ không xác định.
 07 Trả H, A, ρ và khoảng Poisson theo (2.25) chia A.
 ```
@@ -165,7 +165,7 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 
 ```text
 01 Tạo biên bin D_min×(√2)^j, kết thúc tại D_max; đếm và cộng dồn.
-02 Tính Poisson CDF: term=exp(−μ); lặp term*=μ/i, cộng đến n.
+02 Tính Poisson CDF (hàm phân phối tích lũy): term=exp(−μ); lặp term*=μ/i, cộng đến n.
 03 Chia đôi 200 lần tìm hai nghiệm (2.25); n=0 có cận dưới 0.
 04 Kiểm cùng s/dải D; tính xác suất Binomial của 0…N1+N2 theo (2.26).
 05 Cộng xác suất không lớn hơn xác suất N1 quan sát để có p hai phía.
