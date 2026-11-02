@@ -6,7 +6,7 @@ Bản thiết kế để lead/Codex tự triển khai. Tài liệu này không s
 |---|---|
 | `mockup.html` | Mockup offline chạy được, mở thẳng bằng trình duyệt. Thêm `#empty`, `#one` hoặc `#many` vào URL để xem từng trạng thái. Thu cửa sổ ≤ 720 px để xem bản mobile. CSS trong tệp này có thể chép gần như nguyên văn vào component. |
 | `tokens.css` | Toàn bộ màu, chữ, khoảng cách, bo góc và kích thước. |
-| Canvas Claude Design (private) | https://claude.ai/artifact/E9sMU8tAmqwVqFBwh2tY7v có 6 artboard: Desktop (nhiều vòng, có tương tác), Desktop (1 vòng + lỗi nhập), Desktop (trống), Mobile 390 (nhiều vòng), Mobile 390 (trống), Token & trạng thái. Chủ sở hữu phải chia sẻ link thì người khác mới mở được. |
+| Canvas Claude Design | Canvas thiết kế riêng, không công khai; bản bàn giao là các file trong `docs/ui-design/`. Có 6 artboard: Desktop (nhiều vòng, có tương tác), Desktop (1 vòng + lỗi nhập), Desktop (trống), Mobile 390 (nhiều vòng), Mobile 390 (trống), Token & trạng thái. |
 
 Ảnh trong mockup lấy từ `../../data/processed/moon_ap16_m113853974r_c01.png`. Thư mục này nằm trong gitignore, nên cần chạy `python scripts/install_s106_dataset.py` trước. Nếu thiếu ảnh, khung ảnh hiện nền tối.
 

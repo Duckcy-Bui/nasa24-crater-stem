@@ -4,9 +4,9 @@ Ngày kiểm tra: 14/10/2026. Nhánh: `s1-09-interface`. Bản này tiếp nối
 
 ## Thiết kế và phân vai
 
-Claude chạy trong pane `nasa24-design` của Herdr, dùng Claude Design để dựng các trạng thái desktop/mobile và xuất bàn giao. Mở [canvas thiết kế](https://claude.ai/artifact/E9sMU8tAmqwVqFBwh2tY7v) bằng tài khoản được cấp quyền, hoặc xem [mẫu HTML ngoại tuyến](ui-design/mockup.html) sau khi chuẩn bị bộ ảnh. Các hash `#empty`, `#one`, `#many` đổi trạng thái mẫu; đây là mẫu bố cục, không phải ứng dụng lưu dữ liệu.
+Claude Design được dùng để dựng các trạng thái desktop/mobile. Đây là canvas thiết kế riêng, không công khai; bản bàn giao là các file trong `docs/ui-design/`. Xem [mẫu HTML ngoại tuyến](ui-design/mockup.html) sau khi chuẩn bị bộ ảnh. Các hash `#empty`, `#one`, `#many` đổi trạng thái mẫu; đây là mẫu bố cục, không phải ứng dụng lưu dữ liệu.
 
-Codex triển khai ứng dụng thật; agent `nasa24-qa` viết riêng và kiểm định 16 test backend, 8 AppTest và 9 kịch bản JS về nút lưu. Root chạy bộ Python cùng thử nghiệm trình duyệt trên server local mới khởi động. Agent QA kiểm nguồn và đọc bằng chứng sau đó; [review cuối](evidence/s1-09-ui-v2/independent_review.md) không còn finding cần sửa trong phạm vi nghiệm thu.
+Codex triển khai ứng dụng thật; người kiểm độc lập viết riêng và kiểm định 16 test backend, 8 AppTest và 9 kịch bản JS về nút lưu. Root chạy bộ Python cùng thử nghiệm trình duyệt trên server local mới khởi động. Người kiểm độc lập kiểm nguồn và đọc bằng chứng sau đó; [review cuối](evidence/s1-09-ui-v2/independent_review.md) không còn finding cần sửa trong phạm vi nghiệm thu.
 
 Người dùng đã chọn cách A: nút lưu nằm trong component, gửi `save_nonce`. `SPEC.md`, `tokens.css` và `CODEX_HANDOFF.md` giữ vai trò tài liệu thiết kế. Những khác biệt triển khai có chủ ý: theme trang được áp dụng bằng CSS cục bộ; ảnh desktop giới hạn 620 px để nút lưu vừa màn hình 1440×900; nhãn chọn ảnh giữ **Chọn ảnh để mở**; bảng vòng hiển thị 2 chữ số thập phân. Chưa thêm điều hướng ảnh bằng nút trước/sau, tọa độ con trỏ, nhãn bán kính trong lúc kéo hoặc canvas HiDPI; các phần này không ảnh hưởng hợp đồng S1-09.
 
