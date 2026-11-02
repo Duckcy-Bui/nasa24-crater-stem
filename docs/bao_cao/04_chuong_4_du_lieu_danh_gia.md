@@ -1,16 +1,18 @@
-<!-- S3-12, 01/11/2026: rút theo giao việc của Đức trên main c466c2d (đã gồm PR #26, #31, #33–#36).
-Bảng mọi chỗ cắt, kèm lý do và chủ phần, ở mô tả PR S3-12. Chủ phần chưa xác nhận bản rút gọn; bản trước rút là main c466c2d.
--->
+<!-- S3-12 r5: Quốc Anh chốt thực nghiệm; Hưng chốt dữ liệu/thống kê; Tiến chốt đánh giá Hough. S3-05 chờ PR #38. -->
 
-# Chương 4. Dữ liệu, đánh giá và khảo sát
+# Chương 4. Thực nghiệm và đánh giá
 
-Chương này trình bày dữ liệu, nhãn tham chiếu, cách chia tập, phương pháp đánh giá, ba thí nghiệm và khảo sát người chơi. Chuỗi phát hiện ở Chương 3; quy tắc ghép hố và các độ đo ở mục 2.4; trò chơi và cách chấm điểm người chơi ở Chương 5.
+## 4.1. Môi trường và khả năng tái tạo
 
-## 4.1. Nguồn ảnh và bộ dữ liệu
+**Phép đo Hough ngày 27/10/2026.** Hồ sơ `docs/evidence/s2-06-s3-02/summary.json` ghi Windows 11 (build 26200), Python 3.12.10, NumPy 2.5.4, OpenCV 5.0.0, một luồng OpenCV; mã CPU `Intel64 Family 6 Model 154 Stepping 4, GenuineIntel`. [CHỜ Tiến: tên CPU và dung lượng RAM của đúng máy đo ngày 27/10/2026]. Thời gian ở mục 4.7 là trung vị ba lượt sau một lượt làm nóng (warm-up), không gán cấu hình máy khác cho phép đo này.
 
-Nhóm dùng ảnh Mặt Trăng của camera góc hẹp (NAC) trên tàu Lunar Reconnaissance Orbiter, lấy từ kho PDS của LROC [@lroc_pds] ngày 14/10/2026, ghi công NASA/GSFC/Arizona State University. Có hai loại sản phẩm: mosaic `NAC_ROI` ở 20 m/px [@robinson2012] và ảnh NAC đơn `NAC_PHO` ở 2 m/px thuộc chuỗi E090S0155 quanh bãi đáp Apollo 16 [@martin2018]. Cả hai đều là TIFF browse 8 bit, loại ảnh dùng để xem chứ không dùng cho đo đạc định lượng [@lroc_rdrsis]. Vì vậy dữ liệu chỉ phục vụ bài toán hình học ảnh: tìm vòng tròn, đếm và so sánh.
+**Lượt tái tạo độc lập ngày 31/10/2026.** Hồ sơ `docs/evidence/s3-10/kiem_doc_lap_linux/` ghi Intel i5-12450HX, Linux 7.0.0-38 x86_64/glibc 2.39, Python 3.12.3, nền mã `13394de`; RAM không được ghi. Lệnh đầy đủ dùng seed 0, ba lượt đo, hoàn thành tám bước trong 807,232 s. So dòng chung khớp 18/18 tập điều chỉnh (tuning) đóng băng, 9/9 đối chiếu tuning, 24/24 tập kiểm tra (holdout); E1/E2/E3 khớp 15/15, 14/14, 10/10; mỗi bảng mật độ 2/2, giả lập 8/8. Đây là xác nhận tái tạo, không phải phép so tốc độ Windows/Linux hay kết quả S3-05 mới.
 
-Bộ dữ liệu `s106_lroc_browse_v2` gồm 26 ảnh cắt 512 × 512 px lấy từ 16 ảnh nguồn: 15 ảnh cắt 20 m/px từ 6 mosaic và 11 ảnh cắt 2 m/px từ 10 ảnh Apollo 16 (Bảng 4.1). STT là mã ảnh nguồn trong danh sách của nhóm.
+**Kiểm số học ngày 01/11/2026 ở Bảng 3.4.** Intel i5-12450HX, RAM hệ điều hành ghi 24.304.916 KiB (khoảng 23,18 GiB), Linux 7.0.0-38/glibc 2.39, Python 3.12.3, NumPy 2.5.4, OpenCV 5.0.0; cấu hình này chỉ áp dụng lượt kiểm mới. Các phép số học xác định, không lấy mẫu ngẫu nhiên. Một lệnh tái tạo bảng thí nghiệm hiện có là `python -X utf8 -B scripts/reproduce_s310.py`; chỉ nhận `status=complete, mode=full`, không dùng chế độ nhanh làm bằng chứng tốc độ. Mã kiểm bảng sai số và ví dụ số ở Phụ lục B.
+
+## 4.2. Dữ liệu và điều kiện sử dụng
+
+Bộ `s106_lroc_browse_v2` gồm 26 ảnh 512 × 512 từ 16 sản phẩm camera góc hẹp (Narrow Angle Camera — NAC) của LROC, tải ngày 14/10/2026. Bảng 4.1 phân nhóm: 15 ô 20 m/px từ 6 mosaic `NAC_ROI`, 11 ô 2 m/px từ 10 ảnh Apollo 16 `NAC_PHO` [@lroc_pds; @robinson2012]. Ảnh TIFF browse 8 bit chỉ phục vụ hình học, không phải đo quang học đã hiệu chỉnh [@lroc_rdrsis].
 
 | STT | Vùng | Tỷ lệ | Góc tới (°) | Ảnh nguồn | Ảnh cắt |
 |:---------:|:----------------------------|:---------:|:------------:|:--------:|:--------:|
@@ -25,25 +27,15 @@ Bộ dữ liệu `s106_lroc_browse_v2` gồm 26 ảnh cắt 512 × 512 px lấy 
 
 : Bảng 4.1. Nhóm ảnh nguồn và số ảnh cắt. (\*) Dải góc tới của các ảnh thành phần trong mosaic, không phải số đo tại cửa sổ cắt.
 
-Script `scripts/generate_s106_crops.py` cắt mỗi cửa sổ theo góc trên-trái $(x_0, y_0)$, nằm trọn trong ảnh nguồn và tránh đường ghép mosaic; ảnh không bị thu nhỏ ($k = 1$). Mặt nạ hợp lệ là giao của mặt nạ raster và điều kiện giá trị hữu hạn; pixel bằng 0 vẫn hợp lệ, và cả 26 ảnh có tỷ lệ pixel hợp lệ bằng 1,0. Giá trị pixel được chuẩn hóa về [0, 1] theo phân vị 0,5 % và 99,5 %. Metadata của mỗi ảnh ghi mã nguồn, vị trí cắt, tỷ lệ, tọa độ tâm, hướng Bắc, chiếu sáng, dải bán kính, CRS và affine của ảnh nguồn, cùng mã băm SHA-256 của script và cấu hình. Chiếu sáng có mức tin cậy `measured`, `side_only` hoặc `none`, và không ảnh nào có phương vị đo được. Tám ảnh Apollo 16 ghi `side_only` (nắng phía Tây, phương vị 270° chỉ là quy ước); STT 11, 15, 16 và 15 ảnh mosaic ghi `none`.
+**Giấy phép/nguồn.** Theo chính sách LROC, sản phẩm phát hành qua kho PDS thuộc phạm vi công cộng (public domain); ghi công NASA/GSFC/Arizona State University [@lroc_terms]. Không áp dụng kết luận này cho mọi hình biên tập trên website LROC. Bộ này lưu URL và SHA-256 của từng TIFF trong `data/s106_bundle/sources.json`; nguồn/cách cắt và ghi công giữ trong metadata. Các hình giao diện, biểu đồ và ảnh chồng vòng do nhóm tạo từ bộ dữ liệu đó.
 
-Toàn bộ ảnh được đóng thành một gói ngoại tuyến 12.861.130 byte, có kiểm tra SHA-256 khi cài. File `sources.json` lưu URL, kích thước và SHA-256 của 16 TIFF nguồn (503.640.706 byte), nên có thể tải lại và tái tạo ảnh cắt.
+`generate_s106_crops.py` cắt tại $(x_0,y_0)$, k = 1, tránh đường ghép; cả 26 ô có tỷ lệ pixel hợp lệ 1,0, pixel 0 vẫn hợp lệ. Chuẩn hóa phân vị 0,5–99,5 %. Metadata ghi tỷ lệ, tâm, chiếu sáng, phép chiếu và biến đổi tuyến tính kèm tịnh tiến (affine); không ảnh nào có phương vị nắng đo được. Sau kiểm bằng mắt, chỉ tám ảnh Apollo 16 đủ hướng/góc tới để chấm sáng–tối. Bundle ngoại tuyến 12.861.130 byte có kiểm SHA-256; tổng 16 TIFF nguồn 503.640.706 byte. Chi tiết dữ liệu giữ ở liên kết Phụ lục E.
 
-Dữ liệu phục vụ ba kiểu so sánh. Vùng 1 gồm Apollo 15 khi Mặt Trời cao (1A) và thấp (1B), ở hai tọa độ khác nhau, nên chỉ là hai nhóm điều kiện chụp. Cặp so mật độ gồm Lunokhod 1 và Mare Frigoris, cùng là biển bazan, cùng 20 m/px, cùng Mặt Trời thấp và cùng dải đường kính 300–2.000 m (mục 3.6). Cặp dự kiến ban đầu Van de Graaff – Mare Frigoris không dùng vì hai ảnh chụp ở góc nắng rất khác nhau; mật độ hố chỉ gợi ý tuổi tương đối [@neukum2001]. Cặp STT 9 (góc tới 81,08°) và STT 17 (7,64°) có cùng cửa sổ (1190, 2750), dùng để minh họa ảnh hưởng của chiếu sáng. Các ảnh cắt cùng mosaic có thể chồng lấp, nên không phải mẫu độc lập.
-
-## 4.2. Quy đổi tọa độ ảnh cắt và ảnh nguồn
-
-Tâm pixel ảnh cắt có tọa độ nguyên, x là cột, y là hàng, gốc ở góc trên-trái. `source_coordinates` trong `src/contracts.py` đổi sang ảnh nguồn bằng vị trí cửa sổ và hệ số thu nhỏ, có bù tâm pixel khi k khác 1. Khi áp dụng affine của rasterio phải cộng 0,5 vì affine dùng góc pixel. Công thức và ví dụ tọa độ địa lý ở Phụ lục E.7.
-
-Đường kính $D = 2rs$ và dải bán kính theo (2.14): D = 20–500 m ở 2 m/px cho r = 5–125 px; D = 200–4.000 m ở 20 m/px cho r = 5–100 px. `scripts/verify_s116_coords.py` kiểm cả 26 ảnh: 26/26 khớp metadata, sai khác lớn nhất khoảng $6 \cdot 10^{-14}$ độ.
+Quy đổi tâm về ảnh nguồn dùng `src/contracts.py`, bù tâm pixel khi k ≠1 và cộng 0,5 trước affine của rasterio. `verify_s116_coords.py` khớp 26/26 tâm metadata, sai khác lớn nhất khoảng $6\cdot10^{-14}$ độ; công thức đầy đủ và ví dụ số ở tài liệu bổ sung. Dải r vẫn theo (2.14).
 
 ## 4.3. Nhãn tham chiếu
 
-### 4.3.1. Gán nhãn và kiểm chéo
-
-Nhãn tham chiếu được gán bằng `scripts/label_craters.py`: người gán nhấp vào tâm hố rồi vào một điểm trên vành, công cụ tính bán kính, kiểm tra cấu trúc dữ liệu và ghi kèm một ảnh overlay để kiểm chéo. Hố chưa chắc chắn, chẳng hạn vành xói mòn không khép kín hay nằm trong bóng sâu, có hậu tố `_uncertain` trong mã. Nhãn của nhóm là nhãn thưa: mỗi ảnh chỉ có một số hố được gán, và thiếu nhãn không có nghĩa là không có hố.
-
-Cả 26 ảnh cắt có file nhãn, tổng cộng 241 nhãn, mỗi ảnh từ 4 đến 13 nhãn. Chỉ có 1 nhãn chưa chắc chắn (`C4_uncertain` trên `moon_ap16_m106777343r_c01`), nên 240 nhãn được dùng khi tính độ đo. Mọi nhãn nằm trong dải bán kính tìm kiếm (Bảng 4.2).
+Người gán dùng `scripts/label_craters.py`, nhấp tâm và vành; công cụ kiểm hợp đồng, lưu vòng và overlay để kiểm chéo. Nhãn không chắc có hậu tố `_uncertain`. Tổng 241 nhãn, 4–13/ảnh; loại `C4_uncertain` ở `moon_ap16_m106777343r_c01` còn 240 nhãn dùng tính độ đo. Bảng 4.2 cho phân bố.
 
 | Vùng mặt đất | Tập | Ảnh cắt | Nhãn | Chưa chắc | $r$ (px) | $D$ (m) |
 |:------------------------|:-----------|:-------:|:------:|:-------:|:----------:|:-----------:|
@@ -58,31 +50,31 @@ Cả 26 ảnh cắt có file nhãn, tổng cộng 241 nhãn, mỗi ảnh từ 4 
 
 : Bảng 4.2. Nhãn tham chiếu theo vùng mặt đất. Các vùng ngoài Apollo 16 có tỷ lệ 20 m/px.
 
-Cả 26 file ghi nguồn `manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien`. Theo xác nhận của người kiểm ngày 27/10/2026, Nguyễn Mạnh Tiến đã đối chiếu bằng mắt từng vòng trên đủ 26 ảnh overlay. Kiểm tra tự động cho thấy 26/26 file khớp với manifest, chỉ mục nhãn và ảnh overlay, nhưng kiểm tra này chỉ xác nhận định dạng, không xác nhận vị trí hố.
+Cả 26 file có nguồn nhãn tay thưa và ghi người kiểm chéo Nguyễn Mạnh Tiến; xác nhận ngày 27/10 ghi đã xem đủ 26 overlay. Manifest/chỉ mục khớp 26/26 xác nhận định dạng, không tự chứng minh đúng vị trí hố. Danh mục Robbins đầy đủ khoảng 1–2 km [@robbins2019], không bao trọn hố nhỏ Apollo 16; nhóm **chưa chiếu danh mục** lên ảnh 20 m/px và hiện chỉ dùng nhãn tay.
 
-### 4.3.2. Danh mục Robbins và nhãn mù
+Nhãn mù (blind labels) riêng cho ứng viên máy không hiện lớp máy khi gán. STT 13: 8 `rim`, 7 `shadow_edge`, 79 `texture`, 6 `unclear` (Hưng gán, Quốc Anh kiểm chéo 23/10); STT 17: 17 `rim`, 66 `texture`, 17 `unclear` (25/10). Nhãn này không chứa hố máy bỏ sót, nên chỉ dùng phân tích chất lượng ứng viên, không tính Recall_known.
 
-Danh mục hố của Robbins chỉ đầy đủ cho hố từ khoảng 1–2 km trở lên [@robbins2019]. Dải 20–500 m của ảnh 2 m/px nằm hoàn toàn dưới ngưỡng này; với ảnh 20 m/px, chỉ phần trên của dải 200–4.000 m nằm trong phạm vi đầy đủ. Nhóm chưa chiếu danh mục lên ảnh 20 m/px, vì việc đó cần quy đổi ngược theo mục 4.2, đối chiếu bằng mắt từng hố và chỉ cho một tập con hố lớn. Mọi nhãn tham chiếu hiện có đều là nhãn tay.
+## 4.4. Chia tập và giới hạn suy rộng
 
-Bước rà biên ở Chương 3 dùng thêm nhãn mù gán trực tiếp cho ứng viên máy. Trên STT 13 (`moon_ap16_m132732855l_c01`, góc tới 87,7°), 100 ứng viên của cấu hình mặc định được đưa lên một phiếu không hiện lớp do máy xếp. Kết quả: 8 vành hố thật, 7 ranh giới bóng, 79 biên kết cấu, 6 không chắc (Đinh Quang Hưng gán, Hoàng Quốc Anh kiểm chéo, 23/10/2026). Trên STT 17, kết quả là 17 vành hố thật, 66 biên kết cấu và 17 không chắc (25/10/2026). Nhãn mù không chứa các hố máy bỏ sót, nên không dùng để tính Recall_known.
+Manifest chia tập phiên bản 3 gom ảnh cùng mặt đất/chồng lấp vào một tập. Tập điều chỉnh (tuning) có 18 ảnh, 174 nhãn: toàn bộ 11 Apollo 16, Apollo 15 nắng cao, Van de Graaff, Lunokhod 1. Tập kiểm tra (holdout) có 8 ảnh 20 m/px, 66 nhãn: Apollo 15 nắng thấp, Lunokhod 2, Mare Frigoris. Trong 55 cặp Apollo 16 có 24 cặp chồng mặt đất; STT 9,11,17,18 dùng cùng cửa sổ. Không tách chúng để tránh rò rỉ dữ liệu (data leakage).
 
-## 4.4. Tập điều chỉnh và tập kiểm tra
+Tám ảnh đủ điều kiện sáng–tối đều thuộc tuning; STT 10 (28,38°) và hai ô STT 17 (7,64°) không đủ góc tới. Holdout toàn mosaic, không có hướng nắng, nên E1 không có phép đo ngoài mẫu và kết quả holdout không đại diện ảnh 2 m/px. Cần cụm Apollo 16 mới không chồng tuning để khắc phục. Ảnh `moon_marefrig_loc_c01` từng dùng làm đối chứng tiền xử lý trước khi chốt chia tập, dù không đổi tham số; đây vẫn là hạn chế.
 
-Tập điều chỉnh dùng để chọn tham số; tập kiểm tra chỉ dùng để báo cáo kết quả cuối. Cách chia hiện hành (phiên bản 3, `data/s203_split/manifest_split.json`) theo quy tắc: các ảnh cắt chồng lấp nhau, hoặc cùng mặt đất chụp dưới điều kiện nắng khác nhau, phải nằm cùng một tập. Vì vậy cả 11 ảnh Apollo 16 thuộc tập điều chỉnh. Các ảnh này thuộc cùng chuỗi ảnh quanh bãi đáp Apollo 16, tâm cách nhau từ 0 đến 8,06 km, trong khi mỗi ảnh cắt rộng 1.024 m: 24 trong 55 cặp chồng lấp mặt đất, với khoảng cách tâm 340–680 m tương ứng mức chồng lấp 33–67 %. Bốn ảnh STT 9, 11, 17 và 18 còn dùng chung cửa sổ (1190, 2750), và STT 13 đã được dùng để chọn cách lọc ở bước rà biên. Tập kiểm tra gồm ba vùng độc lập: Apollo 15 khi Mặt Trời thấp (cách tập điều chỉnh 50,1–62,8 km), Lunokhod 2 (721,4–726,9 km) và Mare Frigoris (1.095–1.106 km).
+Cấu hình cuối chốt trên 18 tuning, không dùng holdout để chọn. Holdout đã được xem trong lần đánh giá 27/10; mọi lượt sau là **đánh giá lặp**, không gọi tập hoàn toàn chưa thấy. `s207_experiments.py` đòi `--holdout --chosen-config` và không quét biến thể ở chế độ đó.
 
-Tập điều chỉnh gồm 18 ảnh cắt từ bốn vùng: 11 ảnh Apollo 16 ở 2 m/px, cùng Apollo 15 khi Mặt Trời cao, Van de Graaff và Lunokhod 1 ở 20 m/px; có 174 nhãn được tính. Tập kiểm tra gồm 8 ảnh cắt 20 m/px từ ba vùng, với 66 nhãn được tính (Bảng 4.2). Chỉ 8 ảnh Apollo 16 của tập điều chỉnh thỏa điều kiện của bước sáng–tối (Chương 3): có phía nắng đã biết và góc tới từ 30° trở lên. STT 10 (28,38°) và hai ảnh cắt của STT 17 (7,64°) bị loại vì nắng gần đứng.
+## 4.5. Chỉ số và cách tổng hợp
 
-Cách chia có hai giới hạn. Thứ nhất, cả 8 ảnh kiểm tra đều là mosaic 20 m/px với `sun.quality = none`, nên bước sáng–tối luôn ghi `not_checked` và thí nghiệm E1 không có phép đo ngoài mẫu. Thứ hai, tập kiểm tra không có ảnh 2 m/px, nên kết quả trên Apollo 16 chỉ là kết quả chẩn đoán và được báo riêng. Khắc phục cần một cụm ảnh Apollo 16 mới, không chồng lấp với tập điều chỉnh; bộ dữ liệu hiện chưa có. Ngoài ra, hai vùng so sánh 2A và 2B nằm ở hai tập khác nhau, nên khi so mật độ cần nêu sai số phát hiện của từng vùng. Ảnh `moon_marefrig_loc_c01` của tập kiểm tra đã được dùng làm ảnh đối chứng trong thử nghiệm tiền xử lý trước khi chốt cách chia; thử nghiệm đó giữ nguyên tham số mặc định, nhưng đây vẫn là điểm cần lưu ý.
+Ghép một–một theo (2.20)–(2.21); sai lệch tâm chuẩn hóa $\delta=d/r_{ref}$ phải ≤0,5, sai lệch bán kính $e_r=r_{dự\,đoán}-r_{ref}$ báo riêng. Dùng các công thức (2.22)–(2.23): $TP_{known}$ là số cặp, $FN_{known}=N_{known}-TP_{known}$, $R_i=TP_i/N_i$. Nhãn thưa không đo FP nên Precision/F1 là `null`, không phải 0. Mọi Recall đi kèm số nhãn, số vòng và trạng thái chạm trần.
 
-## 4.5. Phương pháp đánh giá
+Với m ảnh, Recall gộp, trung bình theo ảnh và độ lệch chuẩn mẫu (standard deviation — SD) là:
 
-**Ghép và độ đo.** Dùng quy tắc một–một và Recall_known ở mục 2.4: tâm lệch không quá 0,5 bán kính nhãn, tối đa số cặp rồi tối thiểu tổng khoảng cách bằng Hungary tự viết. Máy chỉ so với nhãn tham chiếu; so người chơi với máy không sinh điểm. Nhãn thưa không cho Precision/F1 toàn ảnh; nhãn chưa chắc chắn thuộc tập bỏ qua. Chỉ tính Precision/F1 khi `catalogue_coverage = "complete"`, hiện chưa file nào đạt. Recall_known luôn đi kèm số nhãn, số ứng viên và trạng thái chạm trần.
+$$ R_{gộp}=\frac{\sum_i TP_i}{\sum_i N_i},\quad\overline{R}=\frac1m\sum_iR_i,\quad s_R=\sqrt{\frac{\sum_i(R_i-\overline{R})^2}{m-1}}. \qquad (4.1) $$
 
-**Chạy tập kiểm tra.** Tham số chỉ được chọn trên tập điều chỉnh; tập kiểm tra chạy một lần với cấu hình đã đóng băng. Lần đánh giá ở mục 4.7 đã dùng tập kiểm tra một lần cho hai chế độ chọn ứng viên được cố định từ trước, trước khi S2-15 chốt tham số ngày 29/10/2026; cấu hình cuối `configs/s215_frozen.json` giữ `score` dựa trên 18 ảnh điều chỉnh; mọi lần chạy lại trên tập kiểm tra sau đó phải được ghi rõ trong báo cáo. Script `scripts/s207_experiments.py` từ chối ảnh kiểm tra nếu thiếu cờ `--holdout`, cờ này bắt buộc kèm `--chosen-config` (file tham số đã chốt), và ở chế độ đó script chỉ chạy đúng cấu hình đã chốt, không quét biến thể.
+Báo $100\overline{R}\pm100s_R$ theo %, không nhầm với khoảng tin cậy. Mật độ, tần suất tích lũy, cận Poisson và giá trị p theo (2.24)–(2.26). Tỷ lệ hố thật trên nhãn mù là số `rim` còn giữ chia số vòng có nhãn rõ còn giữ; số loại và mất hố báo kèm. Điểm game theo (3.3), sai số số học theo mục 3.8. Thời gian trung vị ba lượt là giá trị giữa sau sắp xếp; tăng tốc là trung vị bản cũ chia bản mới. Không biến một lượt đo thành trung bình ± SD.
 
-## 4.6. Thiết kế ba thí nghiệm
+## 4.6. Ba thí nghiệm và kiểm tra kỹ thuật đã có
 
-Ba thí nghiệm dùng chung quy tắc ở mục 4.5 và được tái tạo bằng `scripts/s207_experiments.py` (Bảng 4.3).
+Bảng 4.3 nêu ba câu hỏi tương ứng (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. Kết quả S3-05 vẫn chờ chủ phần; các số dưới đây là kiểm kỹ thuật/chẩn đoán đã có.
 
 | Thí nghiệm và câu hỏi | Ảnh | Biến thể |
 |:--------------------|:--------------------|:----------------------|
@@ -92,9 +84,13 @@ Ba thí nghiệm dùng chung quy tắc ở mục 4.5 và được tái tạo b�
 
 : Bảng 4.3. Thiết kế ba thí nghiệm.
 
-Ở E1, bước sáng–tối chỉ gắn nhãn mà không xóa vòng, nên hai nhánh đầu có cùng Recall_known; phần đáng so là phân bố nhãn sáng–tối của vòng khớp và không khớp nhãn. Nhánh bỏ vòng "ngược" đo rủi ro mất hố; trên STT 13, lọc này đã loại nhầm 2 trong 8 hố thật (Chương 3). Ở E2, mặc định là `min_vote_ratio = 0,35`, `radius_step = 1` px, tối đa 100 vòng; tiêu chí chọn là không làm giảm Recall_known, rồi ưu tiên ít vòng hoặc nhanh hơn. Ở E3, bỏ lớp kết cấu và lọc vòng trùng được báo riêng, không tự bật trong chuỗi chính; Mare Frigoris thuộc tập kiểm tra nên chỉ được mô tả.
+E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; ưu tiên không giảm Recall_known rồi mới xét ít vòng/nhanh hơn. E3 báo phân lớp và lọc trùng riêng; Mare Frigoris thuộc holdout chỉ được mô tả. [CHỜ S3-05 — Quốc Anh: kết quả ba thí nghiệm (a/b/c), trung bình ± SD khi có, sau khi PR #38 được tích hợp].
 
-Ngày 26/10/2026, nhóm chạy kiểm tra luồng trên `moon_ap16_m109134835l_c01` (STT 17, 10 nhãn bán kính 8–22 px). Đây là kiểm tra kỹ thuật, không phải kết quả thí nghiệm. Với E1, góc tới 7,64° nhỏ hơn 30° nên 100/100 ứng viên ghi `not_checked`, đúng quy tắc. Với E2, cả bốn biến thể chạm trần 100 ứng viên và cho Recall_known 0/10 (Bảng 4.4), nên chưa đủ căn cứ chọn tham số. Với E3, bước phân lớp cho 61 vành hố và 39 biên kết cấu, lọc vòng trùng bỏ 3 vòng, Recall_known vẫn 0/10. Trong khi đó, nhãn mù trên ứng viên của cấu hình mặc định ở cùng ảnh ghi 17/100 vành hố thật: máy có tìm được hố, nhưng không tìm lại được 10 hố đã gán nhãn.
+**Tiền xử lý và trường hợp khó.** Hình 4.1 giữ cùng ảnh/thang cho các bước STT 13. Canny có 25.203 pixel biên, sau B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh nằm trong 20.949–35.590. Ngưỡng thấp/cao STT 13 là 63,6/159,0, STT 17 là 46,3/115,8 (thấp hơn khoảng 27 %). P90 tự co ngưỡng nhưng biên kết cấu vẫn nhiều; mép bóng nắng xiên mạnh hơn vành hố. Ảnh nguồn STT 17 và 13 có 11,1 % và 3,2 % pixel bão hòa, không khôi phục được bằng CLAHE.
+
+![Hình 4.1. Các bước tiền xử lý STT 13; xanh là bước tự viết, đỏ là thư viện. Cùng ảnh để thấy biên kết cấu còn lại sau B8.](../images/s114/truoc_sau_stt13.png){width=85%}
+
+**Kiểm luồng E2 ngày 26/10.** Trên STT 17 (`moon_ap16_m109134835l_c01`, 10 nhãn r = 8–22), E1 ghi 100/100 `not_checked` vì góc tới 7,64°. Bảng 4.4 cho E2; E3 xếp 61 vành/39 kết cấu, gộp 3 vòng, Recall vẫn 0/10. Đây không phải kết quả S3-05 hay căn cứ chọn tham số.
 
 | Biến thể | Ứng viên | Thời gian Hough (s) | Recall_known |
 |:----------------------------------|:---:|:---:|:---:|
@@ -105,28 +101,43 @@ Ngày 26/10/2026, nhóm chạy kiểm tra luồng trên `moon_ap16_m109134835l_c
 
 : Bảng 4.4. Chạy kiểm tra luồng E2 trên STT 17 (một lần đo, không phải kết quả cuối).
 
-[CHỜ S3-05: kết quả ba thí nghiệm trên tập điều chỉnh và tập kiểm tra]
+Bốn biến thể đều 0/10 dù thời gian khác nhau, phù hợp cơ chế trần 100 vòng ưu tiên r nhỏ (mục 3.3); máy có tìm vành khác nhưng không tìm lại nhãn đã biết. Nhãn mù cùng ảnh ghi 17/100 hố thật, nên 0/10 không đồng nghĩa ảnh không có vòng đúng.
 
-## 4.7. Kết quả phát hiện
+**Thử lọc trên hai ảnh.** Bảng 4.5 chỉ dùng 94 vòng có nhãn rõ ở STT 13 và 83 ở STT 17; đây là độ tinh khiết ứng viên, không phải Precision toàn ảnh.
 
-Đánh giá phát hiện được chạy ngày 27/10/2026 bằng `scripts/evaluate_hough.py` trên ba ảnh của tập điều chỉnh (STT 13, STT 17, `moon_ap15_hia_c01`) và đủ 8 ảnh của tập kiểm tra. Hough tròn tự cài đặt bằng NumPy được đối chiếu với `HoughCircles` của OpenCV [@opencv_hough_tutorial].
+| Cách lọc | STT 13: loại / mất hố thật | STT 13: tỷ lệ hố thật | STT 17: loại / mất hố thật | STT 17: tỷ lệ hố thật |
+|---|---:|---:|---:|---:|
+| Không lọc | 0 / 0 | 8,5 % | 0 / 0 | 20,5 % |
+| **Bỏ `texture`** | **48 / 0** | **17,4 %** | **35 / 0** | **35,4 %** |
+| Bỏ `shadow_edge` + `texture` | 61 / 1 | 21,2 % | 35 / 0 | 35,4 % |
+| Bỏ sáng–tối `inverted` | 23 / 2 | 8,5 % | không chấm | 20,5 % |
 
-**Điều kiện đánh giá.** Cấu hình Hough được cố định trong `configs/s201_large_craters.json` trước khi đánh giá: bỏ phiếu toàn vòng, bán kính 5–128 px kẹp theo metadata, bước bán kính 1 px, bước góc 1°, `min_votes = 12`, `min_vote_ratio = 0,35`, NMS 4 px cho tâm và 2 px cho bán kính, tối đa 100 vòng. Hough NumPy có hai chế độ chọn đỉnh: `numpy_score` chọn theo số phiếu, `numpy_balanced` chọn luân phiên giữa các nhóm bán kính để vòng nhỏ không chiếm hết 100 chỗ (Chương 3). Hai chế độ được xác định trước khi đọc kết quả tập kiểm tra, và không tham số nào được chỉnh theo kết quả đó. OpenCV dùng `HOUGH_GRADIENT` với `dp = 1`, `minDist = 4`, `param1 = 100`, `param2 = 12`, cùng tiền xử lý và dải bán kính, nhưng tự trích biên và không giới hạn 100 vòng; hai cài đặt vì vậy không tương đương. Thời gian là trung vị của 3 lần đo; với NumPy chỉ gồm bước Hough, với OpenCV gồm cả trích biên.
+: Bảng 4.5. Kết quả lọc trên ứng viên có nhãn: STT 13 (94 vòng, 8 hố thật) và STT 17 (83 vòng, 17 hố thật).
 
-Bảng 4.5 tóm tắt kết quả. Cột gộp cộng số hố của mọi ảnh; cột theo ảnh là trung bình Recall_known từng ảnh kèm độ lệch chuẩn mẫu, không phải khoảng tin cậy.
+Bỏ `texture` tăng tỷ lệ hố thật, không mất hố trong hai mẫu; lớp `texture` STT 13 gồm 47/48 vòng kết cấu, nhưng lớp `rim` lẫn 24/33 vòng kết cấu. Bỏ thêm `shadow_edge` mất M7 sát bóng. Bỏ `inverted` mất M8/M19, là mép bóng nằm trong M32/M15 (mục 3.5). Hình 4.2 phóng chi tiết để thấy vòng lồng; không chọn ảnh này làm bằng chứng tổng quát vì STT 13 đã dùng thiết kế luật.
+
+![Hình 4.2. Bốn cặp vòng trùng STT 13 ở các ô phóng chi tiết cùng cách hiển thị: xanh giữ, đỏ nét đứt loại; nhãn người trong ngoặc. Hai cặp đầu là mép bóng lồng trong vành.](../evidence/s2-05/moon_ap16_m132732855l_c01_cap_trung.png){width=100%}
+
+## 4.7. Đối chiếu Hough và kết quả phát hiện
+
+**Ảnh giả lập.** Hình 4.3 đối chiếu ba phương pháp trên cùng đầu vào, r = 18–36. Toàn vòng tìm đủ ba đĩa; gradient chỉ giữ đĩa r = 20 vì hai tâm khác có 40/27 phiếu, dưới ngưỡng 71/53. OpenCV có bốn vòng: sau bù 0,5 px, ba tâm khớp thật, lệch r dưới 1 px; vòng thừa cách 5,39 px gần đĩa cắt mép. Do biên/ngưỡng khác nhau, đây là đối chiếu hành vi, không phải phép chứng minh hai thuật toán tương đương.
+
+![Hình 4.3. Ảnh giả lập và ba cách Hough, cùng kích thước/thang: xanh là vòng thật, đỏ là phát hiện; toàn vòng, gradient, OpenCV từ trái sang phải sau ảnh đầu vào.](../images/s112_hough_comparison.png){width=100%}
+
+**Ảnh Mặt Trăng, ngày 27/10.** `evaluate_hough.py` chạy ba ảnh tuning (STT 13, STT 17, `moon_ap15_hia_c01`) và đủ tám holdout, cấu hình `configs/s201_large_craters.json` được định trước. Hai nhánh NumPy chỉ khác `score/radius_balanced`; tham số như mục 3.3. OpenCV dùng `HOUGH_GRADIENT`, dp = 1, minDist = 4, param1 = 100, param2 = 12, cùng ảnh trơn/dải r nhưng tự trích biên và không có trần 100. Thời gian NumPy chỉ tính Hough, OpenCV gồm trích biên; không dùng để xếp hạng tốc độ. Bảng 4.6 báo gộp và theo ảnh.
 
 | Tập | Phương pháp | TP | FN | Recall_known gộp (%) | Trung bình theo ảnh ± SD (%) |
 |:------------|:----------------|:----------:|:----------:|:-----------:|:--------------:|
 | Điều chỉnh | numpy_score | 0 | 28 | 0,00 | 0,00 ± 0,00 |
 | Điều chỉnh | numpy_balanced | 2 | 26 | 7,14 | 7,41 ± 6,42 |
-| Điều chỉnh | opencv | 27 | 1 | 96,43 | 96,67 ± 5,77 |
+| Điều chỉnh | opencv | **27** | **1** | **96,43** | **96,67 ± 5,77** |
 | Kiểm tra | numpy_score | 4 | 62 | 6,06 | 5,95 ± 8,77 |
 | Kiểm tra | numpy_balanced | 5 | 61 | 7,58 | 7,64 ± 8,88 |
-| Kiểm tra | opencv | 65 | 1 | 98,48 | 98,21 ± 5,05 |
+| Kiểm tra | opencv | **65** | **1** | **98,48** | **98,21 ± 5,05** |
 
-: Bảng 4.5. Recall trên nhãn đã biết theo tập (điều chỉnh: 3 ảnh; kiểm tra: 8 ảnh) và phương pháp. TP và FN đếm trên nhãn đã biết (TP_known, FN_known); không tính Precision và F1.
+: Bảng 4.6. Recall trên nhãn đã biết theo tập (điều chỉnh: 3 ảnh; kiểm tra: 8 ảnh) và phương pháp. TP và FN đếm trên nhãn đã biết (TP_known, FN_known); không tính Precision và F1. In đậm Recall cao nhất, không hàm ý Precision tốt nhất.
 
-Bảng 4.6 cho kết quả từng ảnh của tập kiểm tra. Trên tập kiểm tra, thời gian trung vị mỗi ảnh là 6,056–22,250 s với `numpy_score`, 6,332–25,497 s với `numpy_balanced` và 3,153–6,970 s với `opencv`. Trên ba ảnh của tập điều chỉnh, `numpy_score` cho 0/9, 0/10, 0/9 và `numpy_balanced` cho 1/9, 0/10, 1/9.
+Bảng 4.7 giữ kết quả từng ảnh. Trên holdout, trung vị thời gian từng ảnh là 6,056–22,250 s (`score`), 6,332–25,497 s (`balanced`), 3,153–6,970 s (OpenCV). Ba ảnh tuning cho score 0/9,0/10,0/9 và balanced 1/9,0/10,1/9.
 
 | Ảnh | Nhãn | score | balanced | opencv | Số vòng opencv |
 |:--------------------------|:-------:|:--------:|:----------:|:--------:|:----------:|
@@ -140,26 +151,43 @@ Bảng 4.6 cho kết quả từng ảnh của tập kiểm tra. Trên tập ki�
 | moon_marefrig_loc_c03 | 9 | 2/7 | 2/7 | 9/0 | 8.866 |
 | **Tổng** | **66** | **4/62** | **5/61** | **65/1** |  |
 
-: Bảng 4.6. Kết quả từng ảnh trên tập kiểm tra, ghi TP/FN cho từng phương pháp. Hai chế độ NumPy trả đúng 100 vòng trên mọi ảnh.
+: Bảng 4.7. Kết quả từng ảnh trên tập kiểm tra, ghi TP/FN cho từng phương pháp. Hai chế độ NumPy trả đúng 100 vòng trên mọi ảnh.
 
-**Diễn giải.** Recall_known của Hough NumPy rất thấp: 6,06 % (`numpy_score`) và 7,58 % (`numpy_balanced`) trên tập kiểm tra. Chế độ cân bằng chỉ gỡ được một nguyên nhân bỏ sót: trên STT 13, `numpy_score` giữ 100 vòng đều có bán kính không quá 10 px, còn `numpy_balanced` giữ 29 vòng có bán kính trên 16 px, lớn nhất 31 px. Trên `moon_marefrig_loc_c02`, kết quả còn giảm từ 1/7 xuống 0/7, và cấu hình không được chỉnh lại sau đó. Vành lớn hơn 128 px, vành đứt hoặc không tròn, và đỉnh chưa đủ ngưỡng phiếu vẫn có thể bị bỏ sót.
+Cân bằng bán kính chỉ gỡ một nguyên nhân bỏ sót: holdout tăng 4/66 lên 5/66, nhưng riêng `moon_marefrig_loc_c02` giảm 1/7→0/7; cấu hình không được chỉnh lại theo holdout. Vành đứt/không tròn, ngoài dải r hoặc phiếu dưới ngưỡng vẫn mất. OpenCV có 8.195–9.086 vòng/ảnh holdout (7.112–8.984 trên tuning), nên Recall 98,48 % không chứng minh Precision cao. Lọc trùng đo riêng còn làm mất cặp đúng duy nhất của balanced trên STT 13; không bật trong game. Không so trực tiếp các tỷ lệ này với kết quả công bố của Yuen vì bộ ảnh/lỗi quan sát khác; Robbins là danh mục chứ không phải kết quả bộ phát hiện trên tập này.
 
-OpenCV đạt 98,48 % nhưng tạo 8.195–9.086 vòng mỗi ảnh kiểm tra (7.112–8.984 trên tập điều chỉnh), so với 100 vòng của NumPy. Vì không đếm được dương tính giả, Recall cao này không nói gì về Precision, và nhãn hiện có không đủ để kết luận phương pháp nào chính xác hơn. Các số thời gian này cũng không dùng để xếp hạng tốc độ, vì hai bên đo phạm vi khác nhau. Lọc vòng trùng, đo riêng và không bật trong trò chơi, làm mất cặp ghép đúng duy nhất của `numpy_balanced` trên STT 13.
+## 4.8. So sánh mật độ hai vùng
 
-## 4.8. Khảo sát người chơi
+Chọn Lunokhod 1 (Mare Imbrium) và Mare Frigoris: cùng biển bazan, 20 m/px, nắng thấp (góc tới ảnh thành phần 60–79° và 61–84°), D = 300–2.000 m. Van de Graaff nắng cao 27–45° khó thấy hố nhỏ nên không dùng. Mare Frigoris chỉ lấy mặt biển, bỏ hố 6–8 km, bóng và dải ghép; vùng không chồng trên ảnh nguồn. Hưng đếm đủ hố trên bốn ô, Quốc Anh kiểm chéo; không dùng nhãn thưa. Bảng 4.8 và Hình 4.4 cho kết quả.
 
-Đề bài yêu cầu khảo sát ít nhất 10 học sinh về hứng thú và hiểu bài [@debai_nasa]. Ngày 31/10/2026, trưởng nhóm quyết định bỏ thử người chơi thật và khảo sát để ưu tiên hoàn thành dự án. Nhóm chưa thực hiện thử nhỏ S2-07 hay khảo sát S3-01; chưa có dữ liệu để kết luận sản phẩm làm tăng hứng thú hoặc hiểu bài. Đây là yêu cầu chưa đạt.
+| Vùng | Diện tích (km²) | N | ρ (hố/km²) | Khoảng tin cậy 95 % |
+|---|---:|---:|---:|---|
+| Lunokhod 1 | 184,7 | 47 | 0,254 | 0,187–0,338 |
+| Mare Frigoris | 99,2 | 32 | 0,322 | 0,221–0,455 |
 
-Thiết kế dự kiến được giữ trong `docs/S1-16_KHAO_SAT.md` và `docs/S2-07_THI_NGHIEM_VA_THU_GAME.md`: thử thao tác với 1–2 người; khảo sát 10–15 sinh viên chọn thuận tiện, mục tiêu ít nhất 10 phiếu hoàn chỉnh, với bốn câu hứng thú Likert 1–5, năm câu hiểu bài trước/sau và phản hồi mở. Khảo sát tự nguyện, ẩn danh. Đối tượng sinh viên khác học sinh mà đề bài yêu cầu; mẫu nhỏ, hỏi lại cùng câu và không có nhóm đối chứng nên chỉ dùng thống kê mô tả, không suy ra quan hệ nhân quả. Đây là kế hoạch chưa thực hiện.
+: Bảng 4.8. Mật độ đếm tay đầy đủ, cùng 20 m/px, D = 300–2.000 m.
 
-## 4.9. Thảo luận và hạn chế
+Theo bin 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, Lunokhod 1 có 22;15;7;1;2 hố, Mare Frigoris có 26;4;2;0;0. Tỷ số tổng mật độ 0,79, p = 0,35: **chưa khác biệt có ý nghĩa**, không kết luận vùng nào già hơn. Từ 424 m trở lên, tỷ số 2,24 và p = 0,09 chỉ là gợi ý yếu; hai đường tích lũy cắt nhau.
 
-**Nhãn thưa.** Recall_known chỉ đo khả năng tìm lại 4–13 hố đã gán mỗi ảnh và không cho phép tính Precision. Trên STT 17, Recall_known bằng 0/10 trong khi nhãn mù ghi 17/100 vành hố thật; còn Recall_known gần 100 % của OpenCV đi kèm hàng nghìn vòng mỗi ảnh. Vì vậy Recall_known cần được đọc cùng số ứng viên và nhãn mù.
+![Hình 4.4. Tần suất tích lũy N(≥D)/km²; trục D theo mét, dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s2-09/tich_luy.png){width=65%}
 
-**Dữ liệu browse 8 bit.** Ảnh chưa hiệu chỉnh bức xạ, được chuẩn hóa riêng từng ảnh cắt, và hướng nắng chỉ có ở mức Đông/Tây. Dữ liệu phù hợp cho bài toán hình học, không cho kết luận định lượng.
+Bất định lớn do ít hố, vùng được chọn tránh hố lớn không phải mẫu ngẫu nhiên, thiếu phương vị nắng và có thể có cụm hố thứ cấp; sai số r đếm tay khoảng ±2 px. Máy (Hough mặc định, bỏ texture rồi lọc trùng) chỉ có 11/0 vòng trong cùng dải/vùng vì chỉ trả r ≤13 px. Mật độ ứng viên chưa dùng được; app hiện bảng đếm tay riêng và ẩn mật độ máy khi chạm trần.
 
-**Tập kiểm tra không có thông tin nắng.** Tác động của bước sáng–tối chỉ đo được trên tập điều chỉnh, và kết quả kiểm tra chỉ đại diện cho mosaic 20 m/px.
+## 4.9. Kết quả ứng dụng minh họa
 
-**Trần 100 ứng viên.** Chế độ `numpy_balanced` đưa được vòng lớn hơn vào danh sách, nhưng Recall_known trên tập kiểm tra chỉ tăng từ 6,06 % lên 7,58 %. Giới hạn 100 vòng là một nguyên nhân bỏ sót, không phải nguyên nhân duy nhất.
+Hình 4.5–4.7 dùng cùng lượt thao tác Playwright ngày 01/11/2026, khung nhìn 1.440 × 900 và tỷ lệ điểm ảnh 10/9. Bảy vòng lấy theo minh họa cũ, không phải câu trả lời của học sinh. Ảnh chèn PNG giữ nguyên pixel giải mã từ JPEG bằng chứng; không khôi phục được chi tiết đã mất do lần nén gốc.
 
-**Mẫu nhỏ.** Bộ dữ liệu có 26 ảnh cắt từ 7 vùng mặt đất, và các ảnh cùng vùng không độc lập. Khảo sát chưa thực hiện, nên chưa có bằng chứng về hiệu quả giáo dục.
+![Hình 4.5. Giao diện khoanh hố: bản đồ ảnh, danh sách vòng và ô sửa tọa độ.](../images/report/giao_dien_khoanh_ho.png){width=85%}
+
+![Hình 4.6. Kết quả chấm bài ở STT 17. Ảnh `moon_ap16_m109134835l_c01`: người chơi xanh, máy tím, nhãn cam; 60/100 do tìm đúng 6/10 nhãn.](../images/report/ket_qua_cham_bai.png){width=85%}
+
+Lượt này trùng máy 0, cho thấy điểm theo nhãn và mức trùng máy khác nhau. Hình 4.7 có nguồn thẻ Apollo 16; thẻ 21/26 ảnh theo vùng, không phải phần thưởng khi tìm thấy thiết bị.
+
+![Hình 4.7. Thẻ khoa học Apollo 16 với nguồn; chưa có ghim vị trí trong ô cắt.](../images/report/the_khoa_hoc.png){width=100%}
+
+Ứng dụng có HTTPS/mật khẩu; lượt chấm đầu trên máy chủ từng mất 9,4 s, cache tối đa 8 ảnh giúp lượt sau. Số đo này tách khỏi môi trường Hough ở mục 4.1; không có cấu hình CPU/RAM máy chủ trong hồ sơ nên không suy benchmark.
+
+## 4.10. Khảo sát và hạn chế thực nghiệm
+
+Theo quyết định 31/10, thử người chơi và khảo sát **chưa thực hiện**; tiêu chí ít nhất 10 học sinh chưa đạt. Khung dự kiến có bốn câu hứng thú thang Likert 1–5, năm câu hiểu bài trước/sau và phản hồi mở; thử thao tác 1–2 người trước khi khảo sát. Kế hoạch cũ chọn 10–15 sinh viên khác đối tượng học sinh của đề, cần thống nhất lại với giảng viên; mẫu thuận tiện, hỏi lặp và không có đối chứng không cho kết luận nhân quả.
+
+Giới hạn phát hiện gồm nhãn thưa không đo FP, ảnh browse bão hòa, chỉ tám ảnh có hướng nắng, holdout toàn 20 m/px và đã được xem trước. Bộ 26 ô từ bảy vùng không phải 26 mẫu mặt đất độc lập. Trần 100 ưu tiên hố nhỏ; bộ lọc có thể làm mất hố đúng. Vì vậy không suy chất lượng giáo dục, Precision toàn ảnh hay tuổi địa chất từ các minh họa này.
