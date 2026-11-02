@@ -21,12 +21,25 @@ COVERAGES = ("sparse", "complete")
 
 
 def reference_is_reviewed(reference: dict[str, Any] | None) -> bool:
-    """Nhãn thủ công chỉ được coi là đã kiểm chéo khi nguồn ghi "reviewed by"."""
+    """Nhận biết nguồn nhãn có ghi dấu kiểm chéo.
+
+    Đầu vào: reference là dict danh mục hoặc None; xét chuỗi
+    reference_source, không phân biệt hoa/thường.
+    Đầu ra: bool, True khi có "reviewed by" và không có "unreviewed";
+    đây là kiểm quy ước nguồn, không tự xác minh người kiểm. Xem mục 3.7.
+    """
     source = (reference or {}).get("reference_source") or ""
     return "reviewed by" in source.lower() and "unreviewed" not in source.lower()
 
 
 def _check(data: dict[str, Any] | None, source: str, metadata: dict[str, Any]) -> None:
+    """Kiểm tra hợp đồng và nguồn của một bộ vòng tùy chọn.
+
+    Đầu vào: data là dict vòng hoặc None; source là tên nguồn cần có;
+    metadata là dict ảnh dùng kiểm định dạng và image_id/data_kind.
+    Đầu ra: None, bỏ qua khi data là None; phát sinh ContractError nếu
+    bộ vòng hiện có vi phạm hợp đồng hoặc không đúng source.
+    """
     if data is None:
         return
     validate_crater_set(data, metadata)
@@ -35,33 +48,66 @@ def _check(data: dict[str, Any] | None, source: str, metadata: dict[str, Any]) -
 
 
 def _ids(circles: list[dict[str, Any]], used: set[str]) -> list[str]:
+    """Lấy các mã vòng chưa được sử dụng, giữ thứ tự đầu vào.
+
+    Đầu vào: circles là list dict có crater_id; used là set mã đã dùng.
+    Đầu ra: list[str] chứa crater_id không có trong used; không sửa dữ liệu.
+    """
     return [c["crater_id"] for c in circles if c["crater_id"] not in used]
 
 
-def compare_with_machine(player: dict[str, Any], machine: dict[str, Any], tolerance: float) -> dict[str, Any]:
+def compare_with_machine(
+    player: dict[str, Any], machine: dict[str, Any], tolerance: float
+) -> dict[str, Any]:
+    """So mức trùng giữa vòng người chơi và ứng viên máy.
+
+    Đầu vào: player, machine là dict chứa circles với x/y/r theo pixel;
+    tolerance là tỷ lệ sai lệch tâm cho phép so với bán kính vòng máy.
+    Đầu ra: dict số cặp, cặp ghép, ID chỉ người chơi/chỉ máy và chú thích;
+    không sinh điểm hay coi máy là đáp án. Ghép theo (2.20), (2.21) và
+    nhánh so máy của Thuật toán 3.9, mục 3.7 báo cáo.
+    """
     pairs = match_one_to_one(player["circles"], machine["circles"], tolerance)
-    return {"kind": "agreement_with_machine", "matched": len(pairs),
-            "player_only_ids": _ids(player["circles"], {p["prediction_id"] for p in pairs}),
-            "machine_only_ids": _ids(machine["circles"], {p["reference_id"] for p in pairs}),
-            "pairs": pairs,
-            "note": "Mức trùng với ứng viên của máy, không phải độ chính xác: máy không phải đáp án."}
+    return {
+        "kind": "agreement_with_machine", "matched": len(pairs),
+        "player_only_ids": _ids(player["circles"], {p["prediction_id"] for p in pairs}),
+        "machine_only_ids": _ids(machine["circles"], {p["reference_id"] for p in pairs}),
+        "pairs": pairs,
+        "note": "Mức trùng với ứng viên của máy, không phải độ chính xác: máy không phải đáp án.",
+    }
 
 
 def compare_with_catalogue(player: dict[str, Any], catalogue: dict[str, Any] | None,
                            tolerance: float, coverage: str) -> dict[str, Any]:
-    result: dict[str, Any] = {"kind": "catalogue", "status": "unavailable", "reason": None,
-                              "coverage": coverage, "reviewed": reference_is_reviewed(catalogue),
-                              "reference_source": catalogue["reference_source"] if catalogue else None,
-                              "excluded_ids": [], "correct": None, "missed_ids": [], "wrong_ids": None,
-                              "unmatched_player_ids": [], "recall": None, "precision": None, "score": None,
-                              "pairs": []}
+    """Chấm vòng người chơi theo mức đầy đủ của nhãn kiểm chéo.
+
+    Đầu vào: player là dict vòng pixel; catalogue là dict nhãn hoặc None;
+    tolerance là tỷ lệ khoảng cách tâm/bán kính nhãn; coverage là sparse
+    hoặc complete (được kiểm ở score_player).
+    Đầu ra: dict trạng thái, nguồn, cặp/ID vòng, recall, precision và
+    score trên thang 0–100. Không có nhãn kiểm chéo hoặc không còn nhãn
+    chắc chắn thì unavailable, score=None. Bỏ nhãn có ID uncertain;
+    nhãn thưa không tính vòng ngoài nhãn là sai, điểm bằng 100 × recall.
+    Nhãn đầy đủ tính precision và điểm F1 × 100; precision=None nếu
+    người chơi không vẽ vòng. Xem (2.22), (2.23) và (3.3), mục 3.7 báo cáo.
+    """
+    result: dict[str, Any] = {
+        "kind": "catalogue", "status": "unavailable", "reason": None,
+        "coverage": coverage, "reviewed": reference_is_reviewed(catalogue),
+        "reference_source": catalogue["reference_source"] if catalogue else None,
+        "excluded_ids": [], "correct": None, "missed_ids": [], "wrong_ids": None,
+        "unmatched_player_ids": [], "recall": None, "precision": None, "score": None,
+        "pairs": [],
+    }
     if catalogue is None:
         result["reason"] = "Ảnh chưa có danh mục hoặc nhãn tham chiếu."
         return result
     if not result["reviewed"]:
         result["reason"] = "Nhãn chưa được kiểm chéo (cần \"reviewed by <tên>\"); chưa chấm."
         return result
-    excluded = {c["crater_id"] for c in catalogue["circles"] if "uncertain" in c["crater_id"].lower()}
+    excluded = {
+        c["crater_id"] for c in catalogue["circles"] if "uncertain" in c["crater_id"].lower()
+    }
     references = [c for c in catalogue["circles"] if c["crater_id"] not in excluded]
     result["excluded_ids"] = sorted(excluded)
     if not references:
@@ -87,7 +133,17 @@ def compare_with_catalogue(player: dict[str, Any], catalogue: dict[str, Any] | N
 
 def score_player(player: dict, machine: dict | None, catalogue: dict | None, params: dict, *,
                  metadata: dict) -> dict:
-    """Cùng image_id; trả riêng so máy và so danh mục, ghép hố một-một."""
+    """Tách kết quả so máy và điểm theo nhãn của một lượt chơi.
+
+    Đầu vào: player là dict vòng; machine, catalogue là dict hoặc None;
+    metadata là dict ảnh chung. params chứa matching=one_to_one,
+    center_tolerance_fraction theo bán kính nhãn (mặc định 0,5) và
+    catalogue_coverage (mặc định sparse); tâm/bán kính đều theo pixel.
+    Đầu ra: dict thông tin ảnh, quy tắc, số vòng, vs_machine, vs_catalogue
+    và score 0–100 hoặc None. So máy chỉ đo mức trùng; điểm chỉ lấy từ
+    nhãn kiểm chéo theo (3.3), mục 3.7 báo cáo. Không ghi file; phát sinh
+    ContractError khi hợp đồng, kiểu nguồn hoặc tham số không hợp lệ.
+    """
     if not isinstance(params, dict):
         raise ContractError("params phải là dict.")
     tolerance = params.get("center_tolerance_fraction", CENTER_TOLERANCE)
@@ -100,9 +156,13 @@ def score_player(player: dict, machine: dict | None, catalogue: dict | None, par
     _check(machine, "machine", metadata)
     _check(catalogue, "catalogue", metadata)
     vs_catalogue = compare_with_catalogue(player, catalogue, tolerance, coverage)
-    return {"image_id": player["image_id"], "data_kind": player["data_kind"],
-            "rule": {"matching": "one_to_one", "center_tolerance_fraction": tolerance},
-            "player_circles": len(player["circles"]),
-            "vs_machine": compare_with_machine(player, machine, tolerance) if machine is not None else None,
-            "vs_catalogue": vs_catalogue,
-            "score": vs_catalogue["score"]}
+    return {
+        "image_id": player["image_id"], "data_kind": player["data_kind"],
+        "rule": {"matching": "one_to_one", "center_tolerance_fraction": tolerance},
+        "player_circles": len(player["circles"]),
+        "vs_machine": (
+            compare_with_machine(player, machine, tolerance) if machine is not None else None
+        ),
+        "vs_catalogue": vs_catalogue,
+        "score": vs_catalogue["score"],
+    }

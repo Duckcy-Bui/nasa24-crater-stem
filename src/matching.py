@@ -19,7 +19,14 @@ CENTER_TOLERANCE = 0.5
 
 
 def _assignment(cost: np.ndarray) -> list[tuple[int, int]]:
-    """Gán chi phí nhỏ nhất (thuật toán Hungary, thế vị u/v) cho ma trận n×m."""
+    """Tìm phép gán chi phí nhỏ nhất bằng Hungary với thế vị u/v.
+
+    Vào: cost là ma trận số hữu hạn n×m, chi phí không có đơn vị.
+    Ra: list cặp chỉ số (hàng, cột) theo ma trận gốc, mỗi chỉ số dùng
+    tối đa một lần; không sửa cost. Tự chuyển vị khi n > m.
+    Tham chiếu: phần giải bài toán gán ở mục 2.4; chi phí phạt của (2.21)
+    do hàm gọi thiết lập, không do hàm này tự tạo.
+    """
     transposed = cost.shape[0] > cost.shape[1]
     if transposed:
         cost = cost.T
@@ -57,12 +64,21 @@ def _assignment(cost: np.ndarray) -> list[tuple[int, int]]:
 
 def match_one_to_one(predictions: list[dict[str, Any]], references: list[dict[str, Any]],
                      tolerance: float = CENTER_TOLERANCE) -> list[dict[str, Any]]:
-    """Trả các cặp khớp, sắp theo thứ tự vòng dự đoán.
+    """Ghép nhiều cặp hợp lệ nhất rồi tối thiểu hóa tổng lệch tâm chuẩn hóa.
 
-    Mỗi cặp gồm prediction_id, reference_id, center_distance_px,
-    normalized_center_distance (chia bán kính tham chiếu) và radius_error_px.
+    Vào: predictions/references là list vòng đã kiểm hợp đồng, có crater_id
+    và x/y/r (px); tolerance dương hữu hạn là tỷ lệ khoảng cách tâm trên
+    bán kính tham chiếu, mặc định 0,5. Bán kính dự đoán không quyết định ghép.
+    Ra: list cặp theo thứ tự dự đoán, mỗi vòng dùng tối đa một lần, gồm
+    prediction_id, reference_id, center_distance_px, normalized_center_distance
+    (không đơn vị) và radius_error_px. Không sửa các list; tolerance sai
+    gây ContractError, không có cặp thì trả []. Tham chiếu: (2.20)–(2.21).
     """
-    if isinstance(tolerance, bool) or not isinstance(tolerance, (int, float)) or not 0 < tolerance < math.inf:
+    if (
+        isinstance(tolerance, bool)
+        or not isinstance(tolerance, (int, float))
+        or not 0 < tolerance < math.inf
+    ):
         raise ContractError("Ngưỡng tâm phải là số dương.")
     if not predictions or not references:
         return []
@@ -84,8 +100,11 @@ def match_one_to_one(predictions: list[dict[str, Any]], references: list[dict[st
         if not sub[i, j]:
             continue
         a, b = rows[i], cols[j]
-        result.append({"prediction_id": predictions[a]["crater_id"], "reference_id": references[b]["crater_id"],
-                       "center_distance_px": round(float(distance[a, b]), 3),
-                       "normalized_center_distance": round(float(normalized[a, b]), 4),
-                       "radius_error_px": round(float(predictions[a]["r"] - references[b]["r"]), 3)})
+        result.append({
+            "prediction_id": predictions[a]["crater_id"],
+            "reference_id": references[b]["crater_id"],
+            "center_distance_px": round(float(distance[a, b]), 3),
+            "normalized_center_distance": round(float(normalized[a, b]), 4),
+            "radius_error_px": round(float(predictions[a]["r"] - references[b]["r"]), 3),
+        })
     return result
