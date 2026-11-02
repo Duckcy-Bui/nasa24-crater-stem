@@ -1,4 +1,4 @@
-<!-- S3-12 r5: Đức chốt kết luận; Quốc Anh bổ sung kết quả S3-05 sau tích hợp PR #38. -->
+<!-- S3-12 r5: Đức chốt kết luận; PR #38 đã merge, Quốc Anh còn ghép và diễn giải S3-05. -->
 
 # Chương 5. Kết luận và hướng phát triển
 
@@ -18,7 +18,7 @@ Bảng 5.1 đối chiếu đúng các mã ở Bảng 1.1. Test đạt xác nhậ
 
 : Bảng 5.1. Mức đáp ứng các mục tiêu Chương 1.
 
-[CHỜ S3-05 — Quốc Anh: bổ sung kết luận ba thí nghiệm sau khi kết quả được tích hợp ở mục 4.6]. Tham số game đã chốt theo tuning 10/174; các lượt holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo và phạm vi số đo ở Phụ lục A–B.
+[CHỜ S3-05 — Quốc Anh: ghép, diễn giải kết quả đã có trong repo ở mục 4.6 rồi bổ sung kết luận]. Tham số game đã chốt theo tuning 10/174; các lượt holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo và phạm vi số đo ở Phụ lục A–B.
 
 ## 5.2. Hạn chế
 

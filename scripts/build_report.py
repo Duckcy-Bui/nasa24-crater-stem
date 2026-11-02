@@ -202,7 +202,9 @@ def build_docx(pandoc: str, output: Path, files: list[Path]) -> Path:
         "--reference-doc", str(reference),
         "--resource-path", os.pathsep.join(str(p) for p in (SOURCE, ROOT / "docs", ROOT)),
         "--no-highlight",  # mã in đen trắng; tùy chọn này có cả ở pandoc 2.x lẫn 3.x
-        "--citeproc", "--bibliography", str(SOURCE / "tai_lieu.bib"), "--csl", str(SOURCE / "ieee.csl"),
+        # Đường dẫn tương đối theo cwd=SOURCE: Pandoc ghi giá trị này vào docProps/custom.xml của DOCX,
+        # nên không truyền đường dẫn tuyệt đối của máy dựng.
+        "--citeproc", "--bibliography", "tai_lieu.bib", "--csl", "ieee.csl",
         # Danh mục tài liệu theo IEEE bằng tiếng Anh (vol., no., pp.); ngôn ngữ văn bản đặt lại vi-VN bên dưới.
         "--metadata", "lang=en-US", "--metadata", "link-citations=true",
         "--output", str(output),

@@ -11,3 +11,4 @@
 
 # Preserve archived evidence bytes so SHA-256 survives checkout.
 docs/evidence/s3-10/** -text whitespace=cr-at-eol
+docs/evidence/s3-05/** -text whitespace=cr-at-eol

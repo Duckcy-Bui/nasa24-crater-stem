@@ -57,7 +57,7 @@ Bản ghép đầu tiên chỉ chuyển nội dung đã có trong repo sang dạ
 pip install -r requirements-report.txt        # pypandoc_binary (kèm pandoc), python-docx
 python scripts/build_report.py                # outputs/report/BaoCao_Nhom2_NASA24.docx và .pdf
 python scripts/build_report.py --no-pdf       # chỉ DOCX
-python scripts/build_report.py --only 03 --no-pdf --out /tmp/ch3   # thử riêng một chương
+python scripts/build_report.py --only 03 --no-pdf --out outputs/ch3   # thử riêng một chương
 ```
 
 Script in số chữ và số dấu `[CHỜ]` của từng file. Bản PDF cần LibreOffice và Python có module `uno` (trên Ubuntu: gói `python3-uno`; nơi khác đặt biến `REPORT_UNO_PYTHON` trỏ tới python của LibreOffice). Script tự gọi `scripts/report_to_pdf.py` để cập nhật mục lục và số trang, lưu DOCX qua bộ lọc `Office Open XML Text`, mở lại để ổn định dàn trang, cập nhật/lưu trường lần nữa rồi xuất PDF. `--no-pdf` chỉ tạo bản nháp, chưa cập nhật mục lục; không dùng bản đó để nộp. Nếu không có LibreOffice, mở DOCX bằng Word, nhấn Ctrl+A rồi F9 để cập nhật mục lục, sau đó lưu PDF.
@@ -92,22 +92,22 @@ Nền `94c17ff`, nhánh `s3-12-doi-chieu-de-goc`, đã gồm PR #40. Ngân sách
 
 Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã đánh số dòng, đầu vào/đầu ra, độ phức tạp, bảng sai số số học mới trên 26 ảnh. Giữ `dedupe_circles` và ví dụ M32/M8. Thiết kế ứng dụng chuyển từ Chương 5 về Chương 3; hình và kết quả sang Chương 4. Hình 5.1–5.3 cũ nay là Hình 4.5–4.7, PNG cùng pixel giải mã từ bằng chứng JPEG S3-08; không coi chuyển định dạng là khôi phục chi tiết đã mất hay một lượt chụp mới.
 
-Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Liên kết `main` tới file mới chỉ có hiệu lực sau khi tích hợp.
+Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Các file mới đã vào `main` qua PR #43.
 
 Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
 | Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
-| Chương 4 | 2 | Tiến: tên CPU/RAM đúng máy Windows 27/10; Quốc Anh: kết quả S3-05 sau PR #38 |
+| Chương 4 | 2 | Tiến: tên CPU/RAM đúng máy Windows 27/10; Quốc Anh: ghép và diễn giải kết quả S3-05 đã có trong repo |
 | Chương 5 | 1 | Quốc Anh: kết luận S3-05 theo kết quả đã tích hợp |
 | Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
 | Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
 | File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 338 test Python và 6 bộ JavaScript, đo ngày 01/11/2026 trên main `59cf4e3` ghép nhánh `s3-16-doi-chieu-de-goc` (thêm 5 test đóng gói) và nhánh này; đúng khi PR S3-16 được merge. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 342 test Python và 6 bộ JavaScript, đo ngày 02/11/2026 trên main `23f0b3a`, sau khi merge PR S3-16 (thêm 5 test đóng gói) và PR S3-05 (thêm 4 test). r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 
-Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 và các xác nhận con người vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
+Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 đã có kết quả trong repo, còn chờ chủ phần ghép và diễn giải; các xác nhận cá nhân vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
 
 ## 6. Hiệu chỉnh bảng chuyển/cắt sau kiểm r5 (r6)
 

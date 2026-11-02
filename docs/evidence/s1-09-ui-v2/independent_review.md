@@ -1,6 +1,6 @@
 # Kiểm định độc lập UI v2
 
-Agent: `nasa24-qa` (Codex), phiên `01a13a65-ce1c-7323-b75f-3e0a61abf82f`, pane Herdr `w1:p12`. Kết luận ngày 14/10/2026, sau vòng sửa cuối. Agent viết bộ kiểm thử lưu riêng, không sửa production hoặc thao tác Git.
+Người kiểm: một phiên Codex kiểm thử độc lập. Kết luận ngày 14/10/2026, sau vòng sửa cuối. Agent viết bộ kiểm thử lưu riêng, không sửa production hoặc thao tác Git.
 
 ## Những điểm đã tìm và đóng
 
