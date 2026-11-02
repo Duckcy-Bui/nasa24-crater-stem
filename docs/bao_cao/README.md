@@ -105,7 +105,7 @@ Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đ�
 | Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
 | File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 338 test Python và 6 bộ JavaScript, đo ngày 01/11/2026 trên main `59cf4e3` ghép nhánh `s3-16-doi-chieu-de-goc` (thêm 5 test đóng gói) và nhánh này; đúng khi PR S3-16 được merge. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 342 test Python và 6 bộ JavaScript, đo ngày 02/11/2026 trên main `23f0b3a`, sau khi merge PR S3-16 (thêm 5 test đóng gói) và PR S3-05 (thêm 4 test). r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 
 Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 và các xác nhận con người vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
 
