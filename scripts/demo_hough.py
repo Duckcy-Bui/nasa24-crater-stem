@@ -16,8 +16,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json, save_run, validate_crater_set  # noqa: E402 (sys.path trước import nội bộ)
-from src.hough import (  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json, save_run, validate_crater_set  # noqa: E402
+from src.hough import (  # noqa: E402
     _accumulate,
     _accumulate_gradient,
     _circle_offsets,

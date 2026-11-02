@@ -17,6 +17,7 @@ import numpy as np
 import matplotlib
 
 matplotlib.use("Agg")
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.patches as mpatches  # noqa: E402
 

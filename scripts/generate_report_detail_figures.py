@@ -23,10 +23,11 @@ import tempfile
 
 os.environ.setdefault("MPLBACKEND", "Agg")
 
-import matplotlib.pyplot as plt  # noqa: E402 (chọn backend Agg trước pyplot)
-from matplotlib.colors import hsv_to_rgb  # noqa: E402 (chọn backend Agg trước pyplot)
-from matplotlib.patches import Circle, Rectangle  # noqa: E402 (chọn backend Agg trước pyplot)
-import numpy as np  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.colors import hsv_to_rgb  # noqa: E402
+from matplotlib.patches import Circle, Rectangle  # noqa: E402
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))

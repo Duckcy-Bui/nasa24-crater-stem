@@ -12,7 +12,8 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-from src.contracts import read_json, save_run, validate_crater_set, validate_metadata  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json, save_run, validate_crater_set, validate_metadata  # noqa: E402
 
 
 def main() -> None:

@@ -24,9 +24,10 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.hough import detect_circles, resolve_hough_params  # noqa: E402 (sys.path trước import nội bộ)
-from src.pipeline import load_image, radius_range  # noqa: E402 (sys.path trước import nội bộ)
-from src.preprocessing import preprocess  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.hough import detect_circles, resolve_hough_params  # noqa: E402
+from src.pipeline import load_image, radius_range  # noqa: E402
+from src.preprocessing import preprocess  # noqa: E402
 
 BASELINE_REF = 'eb8278cc82901cc28dbbc6509b0ff0b6bfefa0cc'
 
@@ -66,7 +67,8 @@ def measure(edges, theta, lo, hi, params, baseline, repeats, warmups):
 
     Vào: edges/theta, lo/hi, params, hàm baseline và số repeats/warmups.
     Ra: thời gian, vòng, độ ổn định, mức trùng và speedup; không ghi file.
-    Mục 3.3: speedup là trung vị thời gian cũ chia trung vị thời gian mới.
+    Speedup là trung vị thời gian cũ chia trung vị thời gian mới (định nghĩa ở mục 4.5;
+    kết quả tăng tốc nêu ở mục 3.3).
     """
     if params['candidate_selection'] != 'score':
         raise ValueError('Historical equivalence benchmark requires candidate_selection=score.')

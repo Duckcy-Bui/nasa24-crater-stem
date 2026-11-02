@@ -24,7 +24,8 @@ import sys
 from pathlib import Path
 
 os.environ.setdefault("MPLBACKEND", "Agg")
-import numpy as np  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))

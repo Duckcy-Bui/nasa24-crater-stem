@@ -28,7 +28,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 os.environ.setdefault("MPLBACKEND", "Agg")
-import numpy as np  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -82,7 +83,8 @@ def run_one(
     """Phát hiện và chấm sáng–tối cho một ảnh.
 
     Vào: image_id, thư mục dữ liệu, phiếu kiểm tra và cờ xem trước. Ra: vòng đã chấm, báo cáo, ảnh
-    xám và metadata; đánh dấu vòng gần tham chiếu theo mục 2.3, công thức (2.18)–(2.19).
+    xám và metadata. Chấm sáng–tối theo mục 2.3, công thức (2.18)–(2.19); đánh dấu vòng gần
+    tham chiếu khi khoảng cách tâm không quá bán kính lớn hơn.
     """
     metadata, image, valid = load_image(image_id, processed)
     pre = preprocess(image, metadata, None, valid_mask=valid)

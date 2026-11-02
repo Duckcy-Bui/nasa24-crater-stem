@@ -22,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 from src.contracts import radius_range_px, source_coordinates  # noqa: E402
 
 BUNDLE = ROOT / "data" / "s106_bundle" / "s106_lroc_browse_v2.zip"

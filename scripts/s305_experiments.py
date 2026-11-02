@@ -19,16 +19,17 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import cv2  # noqa: E402 - cần ROOT trước các mô-đun dự án
-import matplotlib  # noqa: E402 - giữ thứ tự khởi tạo sau ROOT
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import cv2  # noqa: E402
+import matplotlib  # noqa: E402
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402 - chọn backend trước pyplot
-from matplotlib.lines import Line2D  # noqa: E402 - sau thiết lập backend
-from matplotlib.patches import Circle  # noqa: E402 - sau thiết lập backend
-import numpy as np  # noqa: E402 - giữ thứ tự sau ROOT/backend
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.lines import Line2D  # noqa: E402
+from matplotlib.patches import Circle  # noqa: E402
+import numpy as np  # noqa: E402
 
-from scripts.s207_experiments import (  # noqa: E402 - cần ROOT
+from scripts.s207_experiments import (  # noqa: E402
     DEFAULT_IMAGES,
     PARAMETER_VARIANTS,
     e1_status,
@@ -36,17 +37,17 @@ from scripts.s207_experiments import (  # noqa: E402 - cần ROOT
     shading_match_distribution,
     split_by_image,
 )
-from src.contracts import read_json  # noqa: E402 - cần ROOT
-from src.evaluation import evaluate  # noqa: E402 - cần ROOT
-from src.hough import resolve_hough_params  # noqa: E402 - cần ROOT
-from src.pipeline import detect_machine, load_image  # noqa: E402 - cần ROOT
-from src.postprocessing import (  # noqa: E402 - cần ROOT
+from src.contracts import read_json  # noqa: E402
+from src.evaluation import evaluate  # noqa: E402
+from src.hough import resolve_hough_params  # noqa: E402
+from src.pipeline import detect_machine, load_image  # noqa: E402
+from src.postprocessing import (  # noqa: E402
     DEFAULT_PARAMS as SHADING_DEFAULTS,
     apply_filter,
     dedupe_circles,
     review_candidates,
 )
-from src.scoring import reference_is_reviewed  # noqa: E402 - cần ROOT
+from src.scoring import reference_is_reviewed  # noqa: E402
 
 TUNING = tuple(DEFAULT_IMAGES)
 MARE = "moon_marefrig_loc_c01"

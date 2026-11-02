@@ -20,14 +20,15 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json, validate_crater_set  # noqa: E402 (sys.path trước import nội bộ)
-from src.evaluation import evaluate  # noqa: E402 (sys.path trước import nội bộ)
-from src.hough import detect_circles, resolve_hough_params  # noqa: E402 (sys.path trước import nội bộ)
-from src.pipeline import load_image, radius_range  # noqa: E402 (sys.path trước import nội bộ)
-from src.preprocessing import preprocess  # noqa: E402 (sys.path trước import nội bộ)
-from src.postprocessing import dedupe_circles  # noqa: E402 (sys.path trước import nội bộ)
-from src.scoring import reference_is_reviewed  # noqa: E402 (sys.path trước import nội bộ)
-from scripts.verify_hough_examples import tiny_example  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json, validate_crater_set  # noqa: E402
+from src.evaluation import evaluate  # noqa: E402
+from src.hough import detect_circles, resolve_hough_params  # noqa: E402
+from src.pipeline import load_image, radius_range  # noqa: E402
+from src.preprocessing import preprocess  # noqa: E402
+from src.postprocessing import dedupe_circles  # noqa: E402
+from src.scoring import reference_is_reviewed  # noqa: E402
+from scripts.verify_hough_examples import tiny_example  # noqa: E402
 
 
 def digest(path):

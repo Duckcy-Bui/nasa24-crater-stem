@@ -16,7 +16,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.contracts import validate_metadata  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import validate_metadata  # noqa: E402
 
 BUNDLE_DIR = ROOT / "data" / "s106_bundle"
 

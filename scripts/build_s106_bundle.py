@@ -11,8 +11,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.generate_s106_crops import BUNDLE_DIR, CROPS_CONFIG, sha256_file  # noqa: E402 (sys.path trước import nội bộ)
-from scripts.install_s106_dataset import verified_bundle  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from scripts.generate_s106_crops import BUNDLE_DIR, CROPS_CONFIG, sha256_file  # noqa: E402
+from scripts.install_s106_dataset import verified_bundle  # noqa: E402
 
 
 def build_bundle(processed_dir: Path, bundle_dir: Path = BUNDLE_DIR) -> dict:

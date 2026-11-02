@@ -39,6 +39,7 @@ from src.contracts import (
     read_json,
     validate_crater_set,
     validate_metadata,
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 )  # noqa: E402
 from src.preprocessing import STEPS, preprocess, read_window  # noqa: E402
 

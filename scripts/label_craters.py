@@ -64,7 +64,8 @@ import matplotlib.patches as mpatches
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json, validate_crater_set, validate_metadata  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json, validate_crater_set, validate_metadata  # noqa: E402
 
 # Màu sắc hố theo loại nhãn
 COLOR_CERTAIN = "#00e5ff"  # Xanh cyan = nhãn chắc chắn

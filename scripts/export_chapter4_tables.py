@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.ch4_mean_sd import summarize  # noqa: E402 - cần ROOT trước khi import
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from scripts.ch4_mean_sd import summarize  # noqa: E402
 
 BLIND_IMAGES = (
     "moon_ap16_m132732855l_c01",

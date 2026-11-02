@@ -8,8 +8,10 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.generate_s106_crops import BUNDLE_DIR, CROPS_CONFIG, make_crop, sha256_file  # noqa: E402 (sys.path trước import nội bộ)
-import json  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from scripts.generate_s106_crops import (  # noqa: E402
+    BUNDLE_DIR, CROPS_CONFIG, make_crop, sha256_file)
+import json  # noqa: E402
 
 
 def make_sample_crop(

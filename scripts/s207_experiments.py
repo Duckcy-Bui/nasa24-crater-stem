@@ -26,11 +26,12 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-from src.contracts import read_json  # noqa: E402 - cần ROOT trước khi import
-from src.hough import resolve_hough_params  # noqa: E402 - cần ROOT
-from src.matching import CENTER_TOLERANCE, match_one_to_one  # noqa: E402 - cần ROOT
-from src.pipeline import detect_machine, load_image  # noqa: E402 - cần ROOT
-from src.postprocessing import (  # noqa: E402 - cần ROOT
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json  # noqa: E402
+from src.hough import resolve_hough_params  # noqa: E402
+from src.matching import CENTER_TOLERANCE, match_one_to_one  # noqa: E402
+from src.pipeline import detect_machine, load_image  # noqa: E402
+from src.postprocessing import (  # noqa: E402
     apply_filter,
     dedupe_circles,
     review_candidates,

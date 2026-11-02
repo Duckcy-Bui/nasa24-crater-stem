@@ -21,13 +21,14 @@ import time
 from pathlib import Path
 
 os.environ.setdefault("MPLBACKEND", "Agg")
-import numpy as np  # noqa: E402 - đặt backend trước các thư viện ảnh
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json  # noqa: E402 - cần ROOT trước khi import
-from src.statistics import (  # noqa: E402 - cần ROOT
+from src.contracts import read_json  # noqa: E402
+from src.statistics import (  # noqa: E402
     compare_regions,
     count_mask,
     region_count,

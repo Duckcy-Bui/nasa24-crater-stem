@@ -14,14 +14,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import cv2  # noqa: E402 (sys.path trước import nội bộ)
-import numpy as np  # noqa: E402 (sys.path trước import nội bộ)
-from src.contracts import read_json  # noqa: E402 (sys.path trước import nội bộ)
-from src.evaluation import evaluate  # noqa: E402 (sys.path trước import nội bộ)
-from src.hough import resolve_hough_params  # noqa: E402 (sys.path trước import nội bộ)
-from src.pipeline import detect_machine, load_image  # noqa: E402 (sys.path trước import nội bộ)
-from src.postprocessing import DEFAULT_PARAMS as SHADING_DEFAULTS  # noqa: E402 (sys.path trước import nội bộ)
-from src.preprocessing import DEFAULT_PARAMS as PRE_DEFAULTS  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import cv2  # noqa: E402
+import numpy as np  # noqa: E402
+from src.contracts import read_json  # noqa: E402
+from src.evaluation import evaluate  # noqa: E402
+from src.hough import resolve_hough_params  # noqa: E402
+from src.pipeline import detect_machine, load_image  # noqa: E402
+from src.postprocessing import DEFAULT_PARAMS as SHADING_DEFAULTS  # noqa: E402
+from src.preprocessing import DEFAULT_PARAMS as PRE_DEFAULTS  # noqa: E402
 
 
 def digest(path):

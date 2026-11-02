@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 from src.contracts import read_json  # noqa: E402
 from src.pipeline import find_player_answer, run_end_to_end  # noqa: E402
 from src.hough import resolve_hough_params  # noqa: E402

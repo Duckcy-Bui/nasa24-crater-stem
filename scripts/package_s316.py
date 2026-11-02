@@ -114,7 +114,8 @@ def verify_bundle(source: Path) -> dict:
 
     Vào: source là gốc mã đã trích. Ra: dict đường dẫn bundle/hash/số file sau kiểm CRC, kích
     thước/hash.
-    Không giải nén hoặc kiểm lại số học ảnh; dữ liệu mục 4.2, không có công thức mới.
+    Đọc thành phần ZIP vào bộ nhớ để kiểm SHA, không trích file ra đĩa và không kiểm lại số
+    học ảnh; dữ liệu mục 4.2, không có công thức mới.
     """
     directory = source / "data/s106_bundle"
     manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))

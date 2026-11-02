@@ -26,14 +26,15 @@ import time
 from pathlib import Path
 
 os.environ.setdefault("MPLBACKEND", "Agg")
-import numpy as np  # noqa: E402 - đặt backend trước các thư viện ảnh
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.hough import detect_circles, resolve_hough_params  # noqa: E402 - cần ROOT
-from src.pipeline import load_image, radius_range  # noqa: E402 - cần ROOT
-from src.postprocessing import (  # noqa: E402 - cần ROOT
+from src.hough import detect_circles, resolve_hough_params  # noqa: E402
+from src.pipeline import load_image, radius_range  # noqa: E402
+from src.postprocessing import (  # noqa: E402
     REVIEW_CLASSES,
     apply_filter,
     resolve_review_params,
@@ -42,7 +43,7 @@ from src.postprocessing import (  # noqa: E402 - cần ROOT
     shadow_regions,
     sun_vector,
 )
-from src.preprocessing import preprocess  # noqa: E402 - cần ROOT
+from src.preprocessing import preprocess  # noqa: E402
 
 EVIDENCE = ROOT / "docs" / "evidence" / "s2-02"
 LABELS = ROOT / "data" / "s202_labels"

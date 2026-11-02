@@ -21,7 +21,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.hough import (  # noqa: E402 (sys.path trước import nội bộ)
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.hough import (  # noqa: E402
     _accumulate,
     _accumulate_gradient,
     _circle_offsets,
@@ -29,7 +30,7 @@ from src.hough import (  # noqa: E402 (sys.path trước import nội bộ)
     detect_circles,
     resolve_hough_params,
 )
-from src.preprocessing import gaussian_blur  # noqa: E402 (sys.path trước import nội bộ)
+from src.preprocessing import gaussian_blur  # noqa: E402
 
 
 def tiny_example() -> dict:
