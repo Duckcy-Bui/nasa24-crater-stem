@@ -202,6 +202,9 @@ def run_one(image_id: str, processed_dir: Path, split: str, *,
 
 
 def main(argv: list[str] | None = None) -> int:
+    import cv2
+
+    cv2.setNumThreads(1)
     parser = argparse.ArgumentParser(description="S2-07: ba kịch bản thí nghiệm")
     parser.add_argument("--images", nargs="*", help="mặc định là ba ảnh tuning")
     parser.add_argument("--holdout", action="store_true", help="chỉ báo cáo holdout bằng một cấu hình đã chốt")

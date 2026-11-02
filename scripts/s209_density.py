@@ -123,6 +123,9 @@ def figures(regions: dict, sfd: dict, R: dict, processed: Path) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    import cv2
+
+    cv2.setNumThreads(1)
     global OUT
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))

@@ -1,4 +1,4 @@
-"""S3-10: one command to recompute the implemented result tables, offline."""
+"""S3-10: one offline command to export Chapter 4 result Tables 4.4–4.8."""
 from __future__ import annotations
 
 import argparse
@@ -36,6 +36,7 @@ def identities():
                    "data/reference_labels", "data/s209_counts"):
         paths += [p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts]
     paths += list((ROOT / "data").glob("*.json"))
+    paths += list((ROOT / "docs/evidence/s2-02").glob("*/report.json"))
     return {p.relative_to(ROOT).as_posix(): sha(p) for p in sorted(set(paths))}
 
 
@@ -100,6 +101,8 @@ def main(argv=None):
               "created_at_utc": datetime.now(timezone.utc).isoformat(), "base_commit": git("rev-parse", "HEAD"),
               "git_status": git("status", "--short"), "python": platform.python_version(),
               "platform": platform.platform(), "seed": SEED, "repeats": args.repeats, "stages": [],
+              "seed_policy": {"python_hash_seed": SEED, "algorithm_rng": "not used",
+                              "opencv_threads_requested": 1},
               "limitations": ["Sparse labels: only Recall_known; FP/Precision/F1 unavailable.",
                               "Holdout was previously inspected; this is repeated evaluation, not model selection.",
                               "Timing is machine dependent; experiments use single diagnostic timings.",
@@ -161,6 +164,13 @@ def main(argv=None):
             {"image_id": row["image_id"], "tp_known": row["metrics"]["tp"], "fn_known": row["metrics"]["fn"],
              "recall_known": row["metrics"]["recall"], "precision": None, "f1": None}
             for row in frozen["images"]])
+        if not args.quick:
+            run("s305", "s305_experiments.py", "--output", out / "s305")
+            run("blind_filter", "export_chapter4_tables.py", "blind-labels",
+                "--output", out / "blind_filter")
+            run("chapter4_tables", "export_chapter4_tables.py", "tables",
+                "--run-dir", out)
+            report["chapter4_tables"] = read(out / "chapter4_tables/index.json")
         if identities() != report["source_input_sha256"]:
             raise ValueError("Code/config/input changed during reproduction")
         report["artifacts_sha256"] = {p.relative_to(out).as_posix(): sha(p) for p in sorted(out.rglob("*"))
