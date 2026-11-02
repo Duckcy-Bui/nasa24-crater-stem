@@ -1,0 +1,44 @@
+COMMAND: D:\Project\XLA\nasa24-crater-stem\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p test_s305_experiments.py -v
+test_each_sweep_changes_one_factor_from_frozen_baseline (test_s305_experiments.TestS305Protocol.test_each_sweep_changes_one_factor_from_frozen_baseline) ... ok
+test_holdout_cannot_be_parameter_sweep (test_s305_experiments.TestS305Protocol.test_holdout_cannot_be_parameter_sweep) ... ok
+test_reject_changed_production_configuration (test_s305_experiments.TestS305Protocol.test_reject_changed_production_configuration) ... ok
+test_reject_reclassified_experimental_image (test_s305_experiments.TestS305Protocol.test_reject_reclassified_experimental_image) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+
+COMMAND: D:\Project\XLA\nasa24-crater-stem\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p test_s207_experiments.py -v
+test_e1_holdout_is_never_evaluable (test_s207_experiments.TestS207Experiments.test_e1_holdout_is_never_evaluable) ... ok
+test_holdout_mode_rejects_tuning_only_images (test_s207_experiments.TestS207Experiments.test_holdout_mode_rejects_tuning_only_images) ... ok
+test_holdout_requires_explicit_mode_and_chosen_config (test_s207_experiments.TestS207Experiments.test_holdout_requires_explicit_mode_and_chosen_config) ... ok
+test_recall_reports_search_and_machine_diagnostics (test_s207_experiments.TestS207Experiments.test_recall_reports_search_and_machine_diagnostics) ... ok
+test_uncertain_label_is_excluded_from_recall (test_s207_experiments.TestS207Experiments.test_uncertain_label_is_excluded_from_recall) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+
+COMMAND: D:\Project\XLA\nasa24-crater-stem\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p test_evaluation.py -v
+test_complete_duplicates_and_boundary (test_evaluation.EvaluationTests.test_complete_duplicates_and_boundary) ... ok
+test_empty_and_unreviewed (test_evaluation.EvaluationTests.test_empty_and_unreviewed) ... ok
+test_invalid_inputs (test_evaluation.EvaluationTests.test_invalid_inputs) ... ok
+test_maximum_cardinality_matching_and_permutation (test_evaluation.EvaluationTests.test_maximum_cardinality_matching_and_permutation) ... ok
+test_sparse_never_counts_unknown_regions_as_false_positives (test_evaluation.EvaluationTests.test_sparse_never_counts_unknown_regions_as_false_positives) ... ok
+test_uncertain_region_ignores_all_remaining_predictions (test_evaluation.EvaluationTests.test_uncertain_region_ignores_all_remaining_predictions) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+OK
+
+COMMAND: D:\Project\XLA\nasa24-crater-stem\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests -p test_s215.py -v
+test_active_config_matches_snapshot_and_drift_rejected (test_s215.FreezeGuards.test_active_config_matches_snapshot_and_drift_rejected) ... ok
+test_holdout_unknown_and_duplicates_rejected (test_s215.FreezeGuards.test_holdout_unknown_and_duplicates_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK

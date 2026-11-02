@@ -1,0 +1,11 @@
+image_id,split,variant,scope,configuration,candidates,removed,tp_known,fn_known,known_labels,recall_known,precision,f1,seconds_hough,r_min_px,r_max_px,radius_step_px,input_hit_max_circles,known_labels_outside_search
+moon_ap16_m132732855l_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,0,9,9,0.0,,,9.946153299999423,5,125,1,True,0
+moon_ap16_m132732855l_c01,tuning,remove_texture,tuning_diagnostic,baseline,48,52,0,9,9,0.0,,,9.946153299999423,5,125,1,True,0
+moon_ap16_m132732855l_c01,tuning,dedupe,tuning_diagnostic,baseline,96,4,0,9,9,0.0,,,9.946153299999423,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,1,10,11,0.09090909090909091,,,9.679079099994851,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,remove_texture,tuning_diagnostic,baseline,46,54,1,10,11,0.09090909090909091,,,9.679079099994851,5,125,1,True,0
+moon_ap16_m102064759r_c01,tuning,dedupe,tuning_diagnostic,baseline,91,9,1,10,11,0.09090909090909091,,,9.679079099994851,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,baseline,tuning_diagnostic,baseline,100,0,0,10,10,0.0,,,9.361846699990565,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,remove_texture,tuning_diagnostic,baseline,61,39,0,10,10,0.0,,,9.361846699990565,5,125,1,True,0
+moon_ap16_m109134835l_c01,tuning,dedupe,tuning_diagnostic,baseline,97,3,0,10,10,0.0,,,9.361846699990565,5,125,1,True,0
+moon_marefrig_loc_c01,holdout,baseline,holdout_descriptive_only,baseline,100,0,0,6,6,0.0,,,5.9758617999905255,5,100,1,True,0

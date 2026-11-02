@@ -1,0 +1,2907 @@
+{
+  "image_id": "moon_ap16_m109134835l_c01",
+  "split": "tuning",
+  "variant": "dedupe",
+  "scope": "tuning_diagnostic",
+  "configuration": "baseline",
+  "candidates": 97,
+  "removed": 3,
+  "tp_known": 0,
+  "fn_known": 10,
+  "known_labels": 10,
+  "recall_known": 0.0,
+  "precision": null,
+  "f1": null,
+  "seconds_hough": 9.361846699990565,
+  "r_min_px": 5,
+  "r_max_px": 125,
+  "radius_step_px": 1,
+  "input_hit_max_circles": true,
+  "known_labels_outside_search": 0,
+  "machine": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_ap16_m109134835l_c01",
+    "source": "machine",
+    "reference_source": null,
+    "circles": [
+      {
+        "crater_id": "M1",
+        "x": 231.0,
+        "y": 122.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 75% chu vi, vành nổi 2.9× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.75,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.929
+          }
+        }
+      },
+      {
+        "crater_id": "M2",
+        "x": 407.0,
+        "y": 340.0,
+        "r": 10.0,
+        "confidence": null,
+        "votes": 52,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 92% chu vi, vành nổi 2.7× nền",
+          "features": {
+            "edge_px": 72,
+            "radial_coverage": 0.917,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.745
+          }
+        }
+      },
+      {
+        "crater_id": "M3",
+        "x": 225.0,
+        "y": 72.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 83% chu vi, vành nổi 2.2× nền",
+          "features": {
+            "edge_px": 39,
+            "radial_coverage": 0.833,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.191
+          }
+        }
+      },
+      {
+        "crater_id": "M4",
+        "x": 200.0,
+        "y": 488.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 86% chu vi, vành nổi 2.1× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.861,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.08
+          }
+        }
+      },
+      {
+        "crater_id": "M5",
+        "x": 201.0,
+        "y": 436.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 72% chu vi, vành nổi 2.7× nền",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.722,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.692
+          }
+        }
+      },
+      {
+        "crater_id": "M6",
+        "x": 291.0,
+        "y": 393.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 30,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 86% chu vi, vành nổi 3.0× nền",
+          "features": {
+            "edge_px": 47,
+            "radial_coverage": 0.861,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 3.036
+          }
+        }
+      },
+      {
+        "crater_id": "M7",
+        "x": 492.0,
+        "y": 474.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 30,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 92% chu vi, vành nổi 3.0× nền",
+          "features": {
+            "edge_px": 45,
+            "radial_coverage": 0.917,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 3.006
+          }
+        }
+      },
+      {
+        "crater_id": "M8",
+        "x": 208.0,
+        "y": 16.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 3.1× nền",
+          "features": {
+            "edge_px": 29,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 3.121
+          }
+        }
+      },
+      {
+        "crater_id": "M9",
+        "x": 370.0,
+        "y": 86.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.746
+          }
+        }
+      },
+      {
+        "crater_id": "M10",
+        "x": 461.0,
+        "y": 115.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.715
+          }
+        }
+      },
+      {
+        "crater_id": "M11",
+        "x": 367.0,
+        "y": 283.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "vành không nổi hơn nền (|G| vành / nền = 1.45)",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.454
+          }
+        }
+      },
+      {
+        "crater_id": "M12",
+        "x": 159.0,
+        "y": 300.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 83% chu vi, vành nổi 2.2× nền",
+          "features": {
+            "edge_px": 38,
+            "radial_coverage": 0.833,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.222
+          }
+        }
+      },
+      {
+        "crater_id": "M13",
+        "x": 353.0,
+        "y": 39.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 67% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.667,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.862
+          }
+        }
+      },
+      {
+        "crater_id": "M14",
+        "x": 429.0,
+        "y": 413.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 72% chu vi, vành nổi 1.8× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.722,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.752
+          }
+        }
+      },
+      {
+        "crater_id": "M15",
+        "x": 348.0,
+        "y": 186.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 86% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 36,
+            "radial_coverage": 0.861,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.339
+          }
+        }
+      },
+      {
+        "crater_id": "M16",
+        "x": 272.0,
+        "y": 221.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.688
+          }
+        }
+      },
+      {
+        "crater_id": "M17",
+        "x": 330.0,
+        "y": 252.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.676
+          }
+        }
+      },
+      {
+        "crater_id": "M18",
+        "x": 222.0,
+        "y": 481.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 81% chu vi, vành nổi 2.5× nền",
+          "features": {
+            "edge_px": 41,
+            "radial_coverage": 0.806,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.477
+          }
+        }
+      },
+      {
+        "crater_id": "M19",
+        "x": 75.0,
+        "y": 136.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.853
+          }
+        }
+      },
+      {
+        "crater_id": "M20",
+        "x": 135.0,
+        "y": 266.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.618
+          }
+        }
+      },
+      {
+        "crater_id": "M21",
+        "x": 119.0,
+        "y": 390.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.62
+          }
+        }
+      },
+      {
+        "crater_id": "M22",
+        "x": 226.0,
+        "y": 460.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 2.5× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.464
+          }
+        }
+      },
+      {
+        "crater_id": "M23",
+        "x": 279.0,
+        "y": 474.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 86% chu vi, vành nổi 2.1× nền",
+          "features": {
+            "edge_px": 36,
+            "radial_coverage": 0.861,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.131
+          }
+        }
+      },
+      {
+        "crater_id": "M24",
+        "x": 474.0,
+        "y": 497.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 23,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.257
+          }
+        }
+      },
+      {
+        "crater_id": "M25",
+        "x": 363.0,
+        "y": 34.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 36,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.528
+          }
+        }
+      },
+      {
+        "crater_id": "M26",
+        "x": 148.0,
+        "y": 395.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 27,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 2.4× nền",
+          "features": {
+            "edge_px": 37,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.447
+          }
+        }
+      },
+      {
+        "crater_id": "M27",
+        "x": 201.0,
+        "y": 145.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.5× nền",
+          "features": {
+            "edge_px": 46,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.526
+          }
+        }
+      },
+      {
+        "crater_id": "M28",
+        "x": 413.0,
+        "y": 216.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.876
+          }
+        }
+      },
+      {
+        "crater_id": "M29",
+        "x": 218.0,
+        "y": 223.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 56% chu vi, vành nổi 2.5× nền",
+          "features": {
+            "edge_px": 44,
+            "radial_coverage": 0.556,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.496
+          }
+        }
+      },
+      {
+        "crater_id": "M30",
+        "x": 447.0,
+        "y": 395.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 31,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 94% chu vi, vành nổi 2.8× nền",
+          "features": {
+            "edge_px": 50,
+            "radial_coverage": 0.944,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.76
+          }
+        }
+      },
+      {
+        "crater_id": "M31",
+        "x": 218.0,
+        "y": 80.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.968
+          }
+        }
+      },
+      {
+        "crater_id": "M32",
+        "x": 177.0,
+        "y": 82.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 38,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.263
+          }
+        }
+      },
+      {
+        "crater_id": "M33",
+        "x": 410.0,
+        "y": 227.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.304
+          }
+        }
+      },
+      {
+        "crater_id": "M34",
+        "x": 401.0,
+        "y": 229.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.01
+          }
+        }
+      },
+      {
+        "crater_id": "M35",
+        "x": 217.0,
+        "y": 265.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.414
+          }
+        }
+      },
+      {
+        "crater_id": "M36",
+        "x": 346.0,
+        "y": 270.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 39% chu vi",
+          "features": {
+            "edge_px": 29,
+            "radial_coverage": 0.389,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 0.941
+          }
+        }
+      },
+      {
+        "crater_id": "M37",
+        "x": 175.0,
+        "y": 282.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.8× nền",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.779
+          }
+        }
+      },
+      {
+        "crater_id": "M38",
+        "x": 172.0,
+        "y": 389.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 36,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.932
+          }
+        }
+      },
+      {
+        "crater_id": "M39",
+        "x": 176.0,
+        "y": 403.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 67% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.667,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.0
+          }
+        }
+      },
+      {
+        "crater_id": "M40",
+        "x": 197.0,
+        "y": 429.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 22,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 31% chu vi",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.306,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.339
+          }
+        }
+      },
+      {
+        "crater_id": "M41",
+        "x": 202.0,
+        "y": 154.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 2.2× nền",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.192
+          }
+        }
+      },
+      {
+        "crater_id": "M42",
+        "x": 47.0,
+        "y": 457.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 26,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 50% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 41,
+            "radial_coverage": 0.5,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.971
+          }
+        }
+      },
+      {
+        "crater_id": "M43",
+        "x": 381.0,
+        "y": 471.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 30,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 3.5× nền",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 3.462
+          }
+        }
+      },
+      {
+        "crater_id": "M44",
+        "x": 121.0,
+        "y": 288.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 34,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 3.0× nền",
+          "features": {
+            "edge_px": 41,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.998
+          }
+        }
+      },
+      {
+        "crater_id": "M45",
+        "x": 253.0,
+        "y": 267.0,
+        "r": 9.0,
+        "confidence": null,
+        "votes": 38,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 67% chu vi, vành nổi 2.5× nền",
+          "features": {
+            "edge_px": 56,
+            "radial_coverage": 0.667,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.536
+          }
+        }
+      },
+      {
+        "crater_id": "M46",
+        "x": 161.0,
+        "y": 422.0,
+        "r": 9.0,
+        "confidence": null,
+        "votes": 38,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 56% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 60,
+            "radial_coverage": 0.556,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.961
+          }
+        }
+      },
+      {
+        "crater_id": "M47",
+        "x": 65.0,
+        "y": 11.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.148
+          }
+        }
+      },
+      {
+        "crater_id": "M48",
+        "x": 255.0,
+        "y": 125.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.341
+          }
+        }
+      },
+      {
+        "crater_id": "M49",
+        "x": 51.0,
+        "y": 144.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 39% chu vi",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.389,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.871
+          }
+        }
+      },
+      {
+        "crater_id": "M50",
+        "x": 194.0,
+        "y": 147.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.635
+          }
+        }
+      },
+      {
+        "crater_id": "M51",
+        "x": 160.0,
+        "y": 154.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.037
+          }
+        }
+      },
+      {
+        "crater_id": "M52",
+        "x": 149.0,
+        "y": 166.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 31% chu vi",
+          "features": {
+            "edge_px": 31,
+            "radial_coverage": 0.306,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.558
+          }
+        }
+      },
+      {
+        "crater_id": "M54",
+        "x": 183.0,
+        "y": 295.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 50% chu vi, vành nổi 1.6× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.5,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.64
+          }
+        }
+      },
+      {
+        "crater_id": "M55",
+        "x": 133.0,
+        "y": 405.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.03
+          }
+        }
+      },
+      {
+        "crater_id": "M56",
+        "x": 382.0,
+        "y": 406.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 31% chu vi",
+          "features": {
+            "edge_px": 34,
+            "radial_coverage": 0.306,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.746
+          }
+        }
+      },
+      {
+        "crater_id": "M57",
+        "x": 64.0,
+        "y": 456.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.354
+          }
+        }
+      },
+      {
+        "crater_id": "M58",
+        "x": 229.0,
+        "y": 476.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.116
+          }
+        }
+      },
+      {
+        "crater_id": "M59",
+        "x": 447.0,
+        "y": 479.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 39% chu vi",
+          "features": {
+            "edge_px": 34,
+            "radial_coverage": 0.389,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.879
+          }
+        }
+      },
+      {
+        "crater_id": "M60",
+        "x": 157.0,
+        "y": 487.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 21,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 36,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.256
+          }
+        }
+      },
+      {
+        "crater_id": "M61",
+        "x": 100.0,
+        "y": 420.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 25,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 50% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 39,
+            "radial_coverage": 0.5,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.29
+          }
+        }
+      },
+      {
+        "crater_id": "M62",
+        "x": 200.0,
+        "y": 402.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 29,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 78% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 46,
+            "radial_coverage": 0.778,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.264
+          }
+        }
+      },
+      {
+        "crater_id": "M63",
+        "x": 392.0,
+        "y": 366.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": 33,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 89% chu vi, vành nổi 2.8× nền",
+          "features": {
+            "edge_px": 53,
+            "radial_coverage": 0.889,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.794
+          }
+        }
+      },
+      {
+        "crater_id": "M64",
+        "x": 83.0,
+        "y": 66.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 45,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.738
+          }
+        }
+      },
+      {
+        "crater_id": "M65",
+        "x": 271.0,
+        "y": 119.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 45,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.225
+          }
+        }
+      },
+      {
+        "crater_id": "M66",
+        "x": 240.0,
+        "y": 179.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 1.8× nền",
+          "features": {
+            "edge_px": 44,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.788
+          }
+        }
+      },
+      {
+        "crater_id": "M68",
+        "x": 135.0,
+        "y": 286.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 2.4× nền",
+          "features": {
+            "edge_px": 42,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.436
+          }
+        }
+      },
+      {
+        "crater_id": "M70",
+        "x": 141.0,
+        "y": 439.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 72% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 40,
+            "radial_coverage": 0.722,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.277
+          }
+        }
+      },
+      {
+        "crater_id": "M71",
+        "x": 484.0,
+        "y": 461.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 56% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.556,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.876
+          }
+        }
+      },
+      {
+        "crater_id": "M72",
+        "x": 478.0,
+        "y": 487.0,
+        "r": 7.0,
+        "confidence": null,
+        "votes": 28,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 43,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.812
+          }
+        }
+      },
+      {
+        "crater_id": "M73",
+        "x": 287.0,
+        "y": 12.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 39,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.676
+          }
+        }
+      },
+      {
+        "crater_id": "M74",
+        "x": 193.0,
+        "y": 47.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 37,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.924
+          }
+        }
+      },
+      {
+        "crater_id": "M75",
+        "x": 68.0,
+        "y": 69.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.377
+          }
+        }
+      },
+      {
+        "crater_id": "M76",
+        "x": 110.0,
+        "y": 115.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 44% chu vi",
+          "features": {
+            "edge_px": 41,
+            "radial_coverage": 0.444,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.026
+          }
+        }
+      },
+      {
+        "crater_id": "M77",
+        "x": 302.0,
+        "y": 133.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 38,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.722
+          }
+        }
+      },
+      {
+        "crater_id": "M78",
+        "x": 362.0,
+        "y": 159.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 37,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.638
+          }
+        }
+      },
+      {
+        "crater_id": "M79",
+        "x": 471.0,
+        "y": 195.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 42% chu vi",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.417,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.559
+          }
+        }
+      },
+      {
+        "crater_id": "M80",
+        "x": 151.0,
+        "y": 272.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.943
+          }
+        }
+      },
+      {
+        "crater_id": "M81",
+        "x": 340.0,
+        "y": 303.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 69% chu vi, vành nổi 2.4× nền",
+          "features": {
+            "edge_px": 39,
+            "radial_coverage": 0.694,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.356
+          }
+        }
+      },
+      {
+        "crater_id": "M82",
+        "x": 212.0,
+        "y": 308.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.919
+          }
+        }
+      },
+      {
+        "crater_id": "M83",
+        "x": 178.0,
+        "y": 441.0,
+        "r": 6.0,
+        "confidence": null,
+        "votes": 24,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "vành không nổi hơn nền (|G| vành / nền = 1.37)",
+          "features": {
+            "edge_px": 37,
+            "radial_coverage": 0.5,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.367
+          }
+        }
+      },
+      {
+        "crater_id": "M84",
+        "x": 303.0,
+        "y": 14.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.636
+          }
+        }
+      },
+      {
+        "crater_id": "M85",
+        "x": 372.0,
+        "y": 48.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.8× nền",
+          "features": {
+            "edge_px": 34,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.829
+          }
+        }
+      },
+      {
+        "crater_id": "M86",
+        "x": 249.0,
+        "y": 52.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 67% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 31,
+            "radial_coverage": 0.667,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.295
+          }
+        }
+      },
+      {
+        "crater_id": "M87",
+        "x": 66.0,
+        "y": 59.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 39% chu vi",
+          "features": {
+            "edge_px": 34,
+            "radial_coverage": 0.389,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.474
+          }
+        }
+      },
+      {
+        "crater_id": "M88",
+        "x": 189.0,
+        "y": 63.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 2.3× nền",
+          "features": {
+            "edge_px": 38,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.331
+          }
+        }
+      },
+      {
+        "crater_id": "M89",
+        "x": 388.0,
+        "y": 103.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 25% chu vi",
+          "features": {
+            "edge_px": 29,
+            "radial_coverage": 0.25,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.37
+          }
+        }
+      },
+      {
+        "crater_id": "M90",
+        "x": 368.0,
+        "y": 125.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 58% chu vi, vành nổi 1.9× nền",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.583,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.868
+          }
+        }
+      },
+      {
+        "crater_id": "M91",
+        "x": 133.0,
+        "y": 126.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 61% chu vi, vành nổi 1.7× nền",
+          "features": {
+            "edge_px": 37,
+            "radial_coverage": 0.611,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.733
+          }
+        }
+      },
+      {
+        "crater_id": "M92",
+        "x": 398.0,
+        "y": 127.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 64% chu vi, vành nổi 1.8× nền",
+          "features": {
+            "edge_px": 35,
+            "radial_coverage": 0.639,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.753
+          }
+        }
+      },
+      {
+        "crater_id": "M93",
+        "x": 65.0,
+        "y": 138.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 33% chu vi",
+          "features": {
+            "edge_px": 34,
+            "radial_coverage": 0.333,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.515
+          }
+        }
+      },
+      {
+        "crater_id": "M94",
+        "x": 187.0,
+        "y": 141.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "rim",
+          "reason": "biên xuyên tâm phủ 53% chu vi, vành nổi 2.0× nền",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.528,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.961
+          }
+        }
+      },
+      {
+        "crater_id": "M95",
+        "x": 315.0,
+        "y": 178.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.814
+          }
+        }
+      },
+      {
+        "crater_id": "M96",
+        "x": 397.0,
+        "y": 178.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 31% chu vi",
+          "features": {
+            "edge_px": 30,
+            "radial_coverage": 0.306,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.344
+          }
+        }
+      },
+      {
+        "crater_id": "M97",
+        "x": 131.0,
+        "y": 271.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 32,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 1.492
+          }
+        }
+      },
+      {
+        "crater_id": "M98",
+        "x": 412.0,
+        "y": 302.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 47% chu vi",
+          "features": {
+            "edge_px": 28,
+            "radial_coverage": 0.472,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.095
+          }
+        }
+      },
+      {
+        "crater_id": "M99",
+        "x": 192.0,
+        "y": 322.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 39% chu vi",
+          "features": {
+            "edge_px": 29,
+            "radial_coverage": 0.389,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.438
+          }
+        }
+      },
+      {
+        "crater_id": "M100",
+        "x": 195.0,
+        "y": 350.0,
+        "r": 5.0,
+        "confidence": null,
+        "votes": 20,
+        "shading": {
+          "status": "not_checked",
+          "score": null,
+          "score_raw": null,
+          "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+        },
+        "review": {
+          "class": "texture",
+          "reason": "biên xuyên tâm chỉ phủ 36% chu vi",
+          "features": {
+            "edge_px": 33,
+            "radial_coverage": 0.361,
+            "shadow_edge_fraction": 0.0,
+            "rim_contrast": 2.093
+          }
+        }
+      }
+    ]
+  },
+  "removed_circles": [
+    {
+      "crater_id": "M67",
+      "x": 244.0,
+      "y": 182.0,
+      "r": 7.0,
+      "confidence": null,
+      "votes": 28,
+      "shading": {
+        "status": "not_checked",
+        "score": null,
+        "score_raw": null,
+        "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+      },
+      "review": {
+        "class": "rim",
+        "reason": "biên xuyên tâm phủ 50% chu vi, vành nổi 2.0× nền",
+        "features": {
+          "edge_px": 43,
+          "radial_coverage": 0.5,
+          "shadow_edge_fraction": 0.0,
+          "rim_contrast": 2.01
+        }
+      },
+      "duplicate_of": "M66",
+      "dedupe_reason": "trùng M66: tâm lệch 0.71R, r/R = 1.00; giữ M66 vì cùng cỡ, tỉ lệ phiếu không thấp hơn"
+    },
+    {
+      "crater_id": "M53",
+      "x": 250.0,
+      "y": 269.0,
+      "r": 5.0,
+      "confidence": null,
+      "votes": 21,
+      "shading": {
+        "status": "not_checked",
+        "score": null,
+        "score_raw": null,
+        "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+      },
+      "review": {
+        "class": "rim",
+        "reason": "biên xuyên tâm phủ 72% chu vi, vành nổi 2.4× nền",
+        "features": {
+          "edge_px": 37,
+          "radial_coverage": 0.722,
+          "shadow_edge_fraction": 0.0,
+          "rim_contrast": 2.379
+        }
+      },
+      "duplicate_of": "M45",
+      "dedupe_reason": "trùng M45: tâm lệch 0.40R, r/R = 0.56; giữ M45 vì vòng kia lớn hơn"
+    },
+    {
+      "crater_id": "M69",
+      "x": 165.0,
+      "y": 426.0,
+      "r": 7.0,
+      "confidence": null,
+      "votes": 28,
+      "shading": {
+        "status": "not_checked",
+        "score": null,
+        "score_raw": null,
+        "reason": "góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn"
+      },
+      "review": {
+        "class": "texture",
+        "reason": "biên xuyên tâm chỉ phủ 31% chu vi",
+        "features": {
+          "edge_px": 39,
+          "radial_coverage": 0.306,
+          "shadow_edge_fraction": 0.0,
+          "rim_contrast": 1.712
+        }
+      },
+      "duplicate_of": "M46",
+      "dedupe_reason": "trùng M46: tâm lệch 0.63R, r/R = 0.78; giữ M46 vì vòng kia đủ tin còn vòng này không"
+    }
+  ],
+  "reference": {
+    "schema_version": "1.0",
+    "data_kind": "real",
+    "image_id": "moon_ap16_m109134835l_c01",
+    "source": "catalogue",
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "circles": [
+      {
+        "crater_id": "C1",
+        "x": 370.0,
+        "y": 360.0,
+        "r": 22.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C2",
+        "x": 320.0,
+        "y": 445.0,
+        "r": 15.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C3",
+        "x": 435.0,
+        "y": 410.0,
+        "r": 12.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C4",
+        "x": 275.0,
+        "y": 200.0,
+        "r": 18.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C5",
+        "x": 195.0,
+        "y": 210.0,
+        "r": 11.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C6",
+        "x": 250.0,
+        "y": 390.0,
+        "r": 14.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C7",
+        "x": 480.0,
+        "y": 305.0,
+        "r": 9.0,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C8",
+        "x": 430.0,
+        "y": 155.0,
+        "r": 10.5,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C9",
+        "x": 125.0,
+        "y": 355.0,
+        "r": 8.5,
+        "confidence": null,
+        "votes": null
+      },
+      {
+        "crater_id": "C10",
+        "x": 375.0,
+        "y": 475.0,
+        "r": 8.0,
+        "confidence": null,
+        "votes": null
+      }
+    ]
+  },
+  "metrics": {
+    "image_id": "moon_ap16_m109134835l_c01",
+    "status": "evaluated",
+    "coverage": "sparse",
+    "tp": 0,
+    "fp": null,
+    "fn": 10,
+    "precision": null,
+    "recall": 0.0,
+    "f1": null,
+    "pairs": [],
+    "ignored_prediction_ids": [],
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C10"
+    ],
+    "unmatched_prediction_ids": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "M14",
+      "M15",
+      "M16",
+      "M17",
+      "M18",
+      "M19",
+      "M20",
+      "M21",
+      "M22",
+      "M23",
+      "M24",
+      "M25",
+      "M26",
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34",
+      "M35",
+      "M36",
+      "M37",
+      "M38",
+      "M39",
+      "M40",
+      "M41",
+      "M42",
+      "M43",
+      "M44",
+      "M45",
+      "M46",
+      "M47",
+      "M48",
+      "M49",
+      "M50",
+      "M51",
+      "M52",
+      "M54",
+      "M55",
+      "M56",
+      "M57",
+      "M58",
+      "M59",
+      "M60",
+      "M61",
+      "M62",
+      "M63",
+      "M64",
+      "M65",
+      "M66",
+      "M68",
+      "M70",
+      "M71",
+      "M72",
+      "M73",
+      "M74",
+      "M75",
+      "M76",
+      "M77",
+      "M78",
+      "M79",
+      "M80",
+      "M81",
+      "M82",
+      "M83",
+      "M84",
+      "M85",
+      "M86",
+      "M87",
+      "M88",
+      "M89",
+      "M90",
+      "M91",
+      "M92",
+      "M93",
+      "M94",
+      "M95",
+      "M96",
+      "M97",
+      "M98",
+      "M99",
+      "M100"
+    ],
+    "reference_source": "manual_label_s110; sparse manual labels, reviewed by Nguyen Manh Tien",
+    "rule": {
+      "matching": "one_to_one",
+      "center_tolerance_fraction": 0.5
+    },
+    "known_references": 10,
+    "reason": "Chỉ tính Recall trên nhãn đã biết."
+  },
+  "diagnostics": {
+    "known_labels": 10,
+    "true_positive_known": 0,
+    "missed_reference_ids": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C10"
+    ],
+    "recall_known": 0.0,
+    "precision": null,
+    "f1": null,
+    "reference_radius_in_search": 10,
+    "reference_radius_outside_search": 0,
+    "search_radius_px": [
+      5,
+      125
+    ],
+    "hit_max_circles": false,
+    "machine_radius_px": [
+      5.0,
+      10.0
+    ],
+    "metric_note": "Nhãn sparse: chỉ Recall trên hố đã biết; không suy Precision/F1 toàn ảnh."
+  },
+  "preprocess": {
+    "version": "s108-2",
+    "module_version": "s108-2",
+    "p_lo": 0.5,
+    "p_hi": 99.5,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8,
+    "clahe_bits": 8,
+    "gauss_sigma": 1.5,
+    "gauss_kernel_size": 11,
+    "border_mode": "reflect_101",
+    "canny_high_pct": 90.0,
+    "canny_low_ratio": 0.4,
+    "edge_margin_px": 6,
+    "edge_margin_requested_px": 6,
+    "downsample_k": 1,
+    "b1_applied": false,
+    "input_shape": [
+      512,
+      512
+    ],
+    "p_lo_value": 0.0,
+    "p_hi_value": 1.0,
+    "normalization_strategy": "valid_percentile",
+    "canny_high": 115.78955505788326,
+    "canny_low": 46.31582202315331,
+    "canny_threshold_strategy": "valid_percentile",
+    "canny_threshold_valid_px": 250000,
+    "canny_aperture": 3,
+    "canny_l2gradient": true,
+    "valid_ratio": 1.0,
+    "edge_px_canny": 27517,
+    "edge_px_final": 26642,
+    "steps": [
+      {
+        "id": "B0",
+        "name": "Đọc file và cắt cửa sổ",
+        "impl": "THƯ VIỆN: rasterio (GDAL)"
+      },
+      {
+        "id": "B1",
+        "name": "Thu nhỏ trung bình khối k×k",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B2",
+        "name": "Ảnh xám BT.601",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B3",
+        "name": "Chuẩn hóa theo phân vị",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B4",
+        "name": "Tăng tương phản CLAHE",
+        "impl": "THƯ VIỆN: OpenCV createCLAHE"
+      },
+      {
+        "id": "B5",
+        "name": "Làm trơn Gaussian tách hai chiều",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B6",
+        "name": "Gradient Sobel 3×3",
+        "impl": "TỰ VIẾT: NumPy"
+      },
+      {
+        "id": "B7",
+        "name": "Biên Canny",
+        "impl": "THƯ VIỆN: OpenCV Canny"
+      },
+      {
+        "id": "B8",
+        "name": "Mặt nạ biên",
+        "impl": "TỰ VIẾT: NumPy"
+      }
+    ]
+  },
+  "hough": {
+    "voting_method": "full_circle",
+    "candidate_selection": "score",
+    "radius_step_px": 1,
+    "r_min_limit_px": 5,
+    "r_max_limit_px": 128,
+    "angle_step_deg": 1.0,
+    "min_votes": 12,
+    "min_vote_ratio": 0.35,
+    "nms_center_px": 4.0,
+    "nms_radius_px": 2,
+    "max_circles": 100,
+    "edge_batch_size": 256
+  },
+  "radius_grid_px": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125
+  ]
+}
