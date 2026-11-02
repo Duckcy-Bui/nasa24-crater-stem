@@ -1,6 +1,6 @@
 # UI R1 — Bản local chờ duyệt
 
-Ngày kiểm tra: 15/10/2026. Worktree `nasa24-crater-stem-s1-09`, nhánh `s1-09-interface`, nền `3b4a977`. Yêu cầu gốc: [UI_FIX_R1.md](ui-design/UI_FIX_R1.md). Các thay đổi chưa commit, push hoặc merge.
+Ngày kiểm tra: 15/10/2026. Nhánh `s1-09-interface`, nền `3b4a977`. Yêu cầu gốc: [UI_FIX_R1.md](ui-design/UI_FIX_R1.md). Các thay đổi chưa commit, push hoặc merge.
 
 Đã làm nhóm P2 trước, sau đó P3. [SPEC §8](ui-design/SPEC.md) và hợp đồng `save_nonce` giữ nguyên. `geometry.js`, `contracts.py`, `player_annotations.py`, `player_ui.py` không đổi; không thêm vòng mặc định hay dùng vòng minh họa làm ground truth.
 

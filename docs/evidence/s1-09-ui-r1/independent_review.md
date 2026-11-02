@@ -1,6 +1,6 @@
 # Review độc lập UI R1
 
-Ngày 15/10/2026. Reviewer: agent `ui_r1_audit`, chỉ đọc nguồn, report và ảnh; không sửa file/Git. Agent khác `ui_r1_precision_tests` chỉ thêm test hồi quy số thực. Root triển khai và chạy Chromium.
+Ngày 15/10/2026. Người kiểm: một phiên kiểm độc lập, chỉ đọc nguồn, report và ảnh; không sửa file/Git. Một phiên khác chỉ thêm test hồi quy số thực. Phiên chính triển khai và chạy Chromium.
 
 ## Kết luận ghi lại từ reviewer
 
