@@ -94,12 +94,12 @@ Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã
 
 Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Các file mới đã vào `main` qua PR #43.
 
-Còn **13 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
+Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
 | Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
-| Chương 4 | 1 | Quốc Anh duyệt bản ghép S3-05 ở mục 4.6; tên CPU/RAM máy Windows 27/10 vẫn chưa được Tiến xác nhận, ghi rõ tại 4.1 |
+| Chương 4 | 2 | Quốc Anh duyệt bản ghép S3-05 ở mục 4.6; Tiến: tên CPU/RAM máy Windows 27/10 ở mục 4.1 |
 | Chương 5 | 1 | Quốc Anh duyệt kết luận S3-05 đã soạn theo Bảng 4.4; chưa xác nhận thay chủ phần |
 | Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
 | Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |

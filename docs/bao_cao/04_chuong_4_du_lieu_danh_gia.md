@@ -4,7 +4,7 @@
 
 ## 4.1. Môi trường và khả năng tái tạo
 
-**Phép đo Hough ngày 27/10/2026.** [Hồ sơ phép đo](../evidence/s2-06-s3-02/summary.json) ghi Windows 11 (build 26200), Python 3.12.10, NumPy 2.5.4, OpenCV 5.0.0, một luồng OpenCV; mã CPU `Intel64 Family 6 Model 154 Stepping 4, GenuineIntel`. Tiến chưa xác nhận tên CPU/RAM đúng máy đo. Mục 4.7 báo trung vị ba lượt sau một lượt làm nóng (warm-up).
+**Phép đo Hough ngày 27/10/2026.** [Hồ sơ phép đo](../evidence/s2-06-s3-02/summary.json) ghi Windows 11 (build 26200), Python 3.12.10, NumPy 2.5.4, OpenCV 5.0.0, một luồng OpenCV; mã CPU `Intel64 Family 6 Model 154 Stepping 4, GenuineIntel`. [CHỜ Tiến: tên CPU/RAM đúng máy đo.] Mục 4.7 báo trung vị ba lượt sau một lượt làm nóng (warm-up).
 
 **Tái tạo độc lập ngày 31/10/2026.** [Hồ sơ Linux](../evidence/s3-10/kiem_doc_lap_linux/README.md): Intel i5-12450HX, Linux 7.0.0-38 x86_64/glibc 2.39, Python 3.12.3, mã `13394de`; không ghi RAM. Giá trị khởi tạo (seed) 0, ba lượt đo, tám bước mất 807,232 s. Dòng chung khớp 18/18 tập điều chỉnh (tuning) đóng băng, 9/9 đối chiếu tuning, 24/24 tập kiểm tra (holdout); E1/E2/E3: 15/15, 14/14, 10/10; mỗi bảng mật độ 2/2, giả lập 8/8. Không dùng so tốc độ Windows/Linux hoặc làm kết quả S3-05.
 
