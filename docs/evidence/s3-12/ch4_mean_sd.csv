@@ -1,0 +1,8 @@
+source,split,method,n_images,recall_mean,recall_sd,tp,labels,recall_pooled,seconds_mean,seconds_sd
+s2-15,tuning,numpy_score,18,0.0812,0.1606,10,174,0.0575,9.37,2.1
+s2-06-s3-02,tuning,numpy_score,3,0.0,0.0,0,28,0.0,15.13,12.12
+s2-06-s3-02,tuning,numpy_balanced,3,0.0741,0.0642,2,28,0.0714,13.02,8.28
+s2-06-s3-02,tuning,opencv,3,0.9667,0.0577,27,28,0.9643,4.47,1.5
+s2-06-s3-02,holdout,numpy_score,8,0.0595,0.0877,4,66,0.0606,12.26,7.3
+s2-06-s3-02,holdout,numpy_balanced,8,0.0764,0.0888,5,66,0.0758,14.92,8.5
+s2-06-s3-02,holdout,opencv,8,0.9821,0.0505,65,66,0.9848,4.76,1.49
