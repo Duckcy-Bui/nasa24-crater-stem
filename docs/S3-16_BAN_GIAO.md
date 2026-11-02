@@ -51,7 +51,7 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; đề xuất giảng viên chấp nhận bảng ánh xạ, hoặc mở lượt chuyển cấu trúc riêng. Không tạo thư mục rỗng để coi là đạt |
 | Một lệnh tái tạo **toàn bộ bảng kết quả Chương 4**, seed cố định (Q, Mã nguồn) | [README, S3-10](../README.md) và [runner](../scripts/reproduce_s310.py) cố định seed 0; danh mục và đầu ra từng bảng ở dưới | **Đạt** nguồn/đầu ra cho Bảng 4.5–4.6; **chưa biết** mức bao phủ bản cuối khi chủ Chương 4 chốt bảng lịch sử 4.4 và kết quả E1–E3. Không dùng bảng mô tả/thiết kế để kết luận thiếu bảng kết quả |
 | PEP 8; mỗi hàm có docstring nêu vào/ra/công thức (Q, Mã nguồn) | Ví dụ `sha256`, `inventory` trong [script đóng gói](../scripts/package_s316.py) chưa có docstring; chưa có kết quả lint PEP 8 toàn repo | **Lệch** docstring; PEP 8 **chưa biết**. Đề xuất lượt audit riêng, không định dạng lại mã trong vòng này |
-| Commit trải đều 8 tuần từ tài khoản từng thành viên (Q, Mã nguồn) | `git log 94c17ff` có 135 commit, từ 12/10 đến 01/11/2026, khoảng 20 ngày; tài khoản GitHub từng người chưa được đối chiếu độc lập. Mở đầu Q lại ghi BTL trong 3 tuần | **Lệch** 8 tuần; Đức hỏi giảng viên cách áp dụng hai mốc. Không tạo lại hoặc lùi ngày commit |
+| Commit trải đều 8 tuần từ tài khoản từng thành viên (Q, Mã nguồn) | Lịch sử main có commit từ 12/10 đến 02/11/2026; cả bốn thành viên có trong mục Contributors của repo. Mở đầu Q ghi BTL trong 3 tuần | **Đạt theo quyết định của Đức** ngày 02/11/2026: giữ lịch sử commit hiện tại theo thời lượng 3 tuần. Không tạo lại hoặc lùi ngày commit |
 | Mỗi thành viên có commit riêng và tham gia phân tích kết quả Chương 4 (Q, Cơ cấu 5 vai trò) | Từng người ghi đoạn phân tích/bảng liên quan và link commit/PR ở mục 3; đối chiếu với Phụ lục A và nhật ký nhóm | **Chưa biết** phần phân tích của từng người; chờ chính tác giả xác nhận, không thay bằng việc chỉ đọc chéo hoặc tập vấn đáp |
 | Ghi nguồn mã, hình, dữ liệu trong mã và báo cáo (Q, Liêm chính) | [Nguồn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md), [bib](bao_cao/tai_lieu.bib), nguồn thẻ khoa học; cần rà toàn bộ bản cuối | **Chưa biết** mức bao phủ đầy đủ; từng chủ phần xác nhận |
 | Phụ lục “Sử dụng công cụ AI”: tên công cụ, phần dùng, cách kiểm; tự giải thích mã (Q, Liêm chính) | [Phụ lục D](bao_cao/07_phu_luc.md) có dòng Đức, ba người còn ô chờ; cần khai đúng phạm vi thực tế | **Lệch** khai báo chưa đủ. Các thành viên tự hoàn thiện và chuẩn bị giải thích mã |
@@ -158,7 +158,7 @@ Manifest schema `s316-package-2` ghi số dấu chờ, sản phẩm còn thiếu
 
 ## 5. Kiểm tra cuối
 
-- [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người và cách áp dụng yêu cầu 8 tuần.
+- [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người.
 - [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên.
 - [ ] Mã/config/bundle và báo cáo cùng SHA đã chốt; phần đánh giá bị ảnh hưởng bởi thay đổi đã kiểm lại.
 - [ ] PDF cuối 30–60 trang, mở được và được người phụ trách báo cáo kiểm chương/lề/định dạng; DOCX kèm theo; hết dấu chờ chưa giải quyết, các tác giả xác nhận bản sau rút gọn và bằng chứng từng người tham gia phân tích kết quả Chương 4.
