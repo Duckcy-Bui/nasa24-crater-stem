@@ -103,7 +103,7 @@ STT 13/9/17 có 9/11/10 nhãn; E1 chỉ so STT 13/9 đủ hướng nắng. Bản
 
 **Tiền xử lý.** Hình 4.1 giữ cùng ảnh/thang STT 13: Canny có 25.203 pixel biên, B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh: 20.949–35.590. Ngưỡng thấp/cao 63,6/159,0 (STT 13), 46,3/115,8 (STT 17), thấp hơn khoảng 27 %. P90 co ngưỡng nhưng vẫn nhiều kết cấu; mép bóng mạnh hơn vành. Pixel bão hòa STT 17/13: 11,1 %/3,2 %; cân bằng lược đồ thích nghi giới hạn tương phản (contrast limited adaptive histogram equalization — CLAHE) không phục hồi được.
 
-![Hình 4.1. Cùng ảnh STT 13: xanh tự viết, đỏ thư viện; B8 vẫn còn biên kết cấu.](../images/s114/truoc_sau_stt13.png){width=85%}
+![Hình 4.1. Cùng ảnh STT 13: xanh tự viết, đỏ thư viện; khung vàng và ô phóng 4× cùng vùng cho thấy biên kết cấu còn sau B8.](../images/report/tien_xu_ly_stt13_phong_to.png){width=85%}
 
 **Nhãn mù.** Bảng 4.5 dùng 94/83 vòng nhãn rõ ở STT 13/17; không đo Precision toàn ảnh.
 
@@ -124,7 +124,7 @@ Bỏ `texture` tăng tỷ lệ hố thật, không mất hố trong hai mẫu; l
 
 **Ảnh giả lập.** Hình 4.3 đối chiếu ba phương pháp trên cùng đầu vào, r = 18–36. Toàn vòng tìm đủ ba đĩa; dùng hướng biến thiên độ sáng (gradient) chỉ giữ đĩa r = 20 vì hai tâm khác có 40/27 phiếu, dưới ngưỡng 71/53. OpenCV có bốn vòng: sau bù 0,5 px, ba tâm khớp thật, lệch r dưới 1 px; vòng thừa cách 5,39 px gần đĩa cắt mép. Do biên/ngưỡng khác nhau, đây là đối chiếu hành vi, không phải phép chứng minh hai thuật toán tương đương.
 
-![Hình 4.3. Ảnh giả lập và ba cách Hough, cùng kích thước/thang: xanh là vòng thật, đỏ là phát hiện; toàn vòng, gradient, OpenCV từ trái sang phải sau ảnh đầu vào.](../images/s112_hough_comparison.png){width=100%}
+![Hình 4.3. Ảnh vào, Hough toàn vòng, gradient, OpenCV, cùng kích thước/thang; xanh liền: vòng thật, đỏ đứt: phát hiện. Ô phóng 4× cùng đĩa cắt mép.](../images/report/hough_gia_lap_phong_to.png){width=100%}
 
 **Ảnh Mặt Trăng, ngày 27/10.** `evaluate_hough.py` chạy ba ảnh tuning (STT 13, STT 17, `moon_ap15_hia_c01`) và đủ tám holdout, cấu hình `configs/s201_large_craters.json` được định trước. Hai nhánh NumPy chỉ khác `score/radius_balanced`; tham số như mục 3.3. OpenCV dùng `HOUGH_GRADIENT`, dp = 1, minDist = 4, param1 = 100, param2 = 12, cùng ảnh trơn/dải r nhưng tự trích biên và không có trần 100. Thời gian NumPy chỉ tính Hough, OpenCV gồm trích biên; không dùng để xếp hạng tốc độ. Bảng 4.6 báo gộp và theo ảnh.
 

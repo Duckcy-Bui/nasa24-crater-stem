@@ -88,7 +88,7 @@ Vector hóa (vectorization) tạo tâm cả lô bằng phép mở rộng mảng 
 
 Mỗi r chỉ giữ một mặt phẳng 1 MiB; danh sách đỉnh vẫn tích lũy qua r. Đếm đoạn có phiếu giữ nguyên kết quả và từng tăng tốc 2,10–2,40 lần trên ba ảnh đo cùng máy; bảng lịch sử giữ ở Phụ lục E.
 
-Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,20), [20,40), [40,80), [80,160), xen kẽ trước NMS. STT 13 đổi từ 100 vòng r ≤10 sang 29 vòng r >16, lớn nhất 31; nâng trần kiểu `score` lên 1.000 chỉ có 8 vòng r >16. Phân bổ suất ứng viên (quota) theo dải r nhằm giảm thiên lệch xếp hạng, không chứng minh Precision cao. Cấu hình cuối vẫn `score`, chọn trên 18 ảnh điều chỉnh (tuning) cho 10/174 nhãn (5,75 %), không dựa vào tập kiểm tra (holdout). Gradient từng chỉ cho 0–2 vòng/ảnh ở kiểm ghép 14/10; vì vậy không dùng mặc định.
+Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,20), [20,40), [40,80), [80,160), xen kẽ trước NMS. STT 13 đổi từ 100 vòng r ≤10 sang 29 vòng r >16, lớn nhất 31; nâng trần kiểu `score` lên 1.000 chỉ có 8 vòng r >16. Phân bổ suất ứng viên (quota) theo dải r nhằm giảm thiên lệch xếp hạng, không chứng minh Precision cao. Cấu hình cuối vẫn `score`, chọn trên 18 ảnh điều chỉnh (tuning) cho 10/174 nhãn (5,75 %; trung bình theo ảnh 8,12 ± 16,06 %), không dựa vào tập kiểm tra (holdout). Gradient từng chỉ cho 0–2 vòng/ảnh ở kiểm ghép 14/10; vì vậy không dùng mặc định.
 
 ## 3.4. Sáng–tối và phân lớp ứng viên
 
