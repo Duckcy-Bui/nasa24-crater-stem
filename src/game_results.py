@@ -66,8 +66,9 @@ def save_round(output_root: str | Path, metadata: dict[str, Any], scored: dict[s
     """Lưu lượt chấm vào thư mục mới, không ghi đè lượt cũ.
 
     Vào: output_root (str/Path), metadata/scored/config (dict), code_version (str).
-    Ra: Path thư mục đã ghi metadata, tham số, vòng và điểm; lỗi giữa chừng
-    thì xóa thư mục dở và phát lại lỗi.
+    Ra: Path thư mục đã ghi metadata, tham số, vòng và điểm.
+    Lỗi sau khi save_run trả về thì thử xóa thư mục dở rồi phát lại lỗi;
+    lỗi ngay trong save_run không được dọn ở đây.
     Tham chiếu: báo cáo mục 3.1 và 3.7."""
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
     run_id = f"score_{metadata['image_id']}_{stamp}_{uuid4().hex[:8]}"

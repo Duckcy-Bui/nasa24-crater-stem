@@ -96,9 +96,11 @@ def count_mask(rects: list[list[int]], exclude: list[list[int]] | None = None,
     """Tạo mặt nạ vùng đếm dùng trong Thuật toán 3.7.
 
     rects/exclude là list hình chữ nhật pixel [x0, y0, x1, y1) giữ/bỏ;
-    exclude có thể None. size là cạnh ảnh theo px, mặc định 512.
-    Trả mảng bool (size, size): hợp vùng giữ rồi trừ vùng bỏ, cắt ở mép ảnh;
-    không sửa các danh sách đầu vào.
+    tọa độ nguyên cần chuẩn hóa với 0 <= x0 <= x1 <= size và
+    0 <= y0 <= y1 <= size. exclude có thể None; size là cạnh ảnh (px),
+    mặc định 512. Trả mảng bool (size, size): hợp vùng giữ rồi trừ vùng bỏ;
+    không sửa các danh sách đầu vào. Hàm chỉ chặn một phần cận, không
+    cung cấp phép cắt ở mép tổng quát cho tọa độ ngoài ảnh.
     """
     mask = np.zeros((size, size), dtype=bool)
     for x0, y0, x1, y1 in rects:

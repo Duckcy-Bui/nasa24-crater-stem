@@ -141,8 +141,11 @@ def score_player(player: dict, machine: dict | None, catalogue: dict | None, par
     catalogue_coverage (mặc định sparse); tâm/bán kính đều theo pixel.
     Đầu ra: dict thông tin ảnh, quy tắc, số vòng, vs_machine, vs_catalogue
     và score 0–100 hoặc None. So máy chỉ đo mức trùng; điểm chỉ lấy từ
-    nhãn kiểm chéo theo (3.3), mục 3.7 báo cáo. Không ghi file; phát sinh
-    ContractError khi hợp đồng, kiểu nguồn hoặc tham số không hợp lệ.
+    nhãn kiểm chéo theo (3.3), mục 3.7 báo cáo. Không ghi file.
+    Kiểm params là dict, matching và catalogue_coverage; các bộ vòng khác
+    None được kiểm hợp đồng và nguồn. Các lỗi kiểm này gây ContractError.
+    center_tolerance_fraction chỉ được match_one_to_one kiểm khi hàm đó
+    được gọi; nếu không có lời gọi này, rule có thể chứa giá trị chưa kiểm.
     """
     if not isinstance(params, dict):
         raise ContractError("params phải là dict.")

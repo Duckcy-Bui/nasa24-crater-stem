@@ -577,8 +577,11 @@ def resolve_dedupe_params(params: dict | None) -> dict:
 
     params là dict ghi đè hoặc None: ngưỡng d/R, r/R và tỷ lệ phiếu không
     đơn vị, unreliable_classes là tập tên lớp, angle_step_deg theo độ.
-    Trả dict mới với DEDUPE_DEFAULTS; khóa/tên lớp hoặc miền ngưỡng sai
-    gây ValueError. Không sửa dict đầu vào.
+    Trả dict mới với DEDUPE_DEFAULTS, không sửa dict đầu vào.
+    Kiểm khóa và tên lớp; kiểm 0 < max_center_frac <= 2 và
+    0 < min_radius_ratio <= 1, các lỗi này gây ValueError.
+    Không kiểm miền min_outer_vote_ratio/angle_step_deg tại đây;
+    người gọi phải bảo đảm hai giá trị này phù hợp.
     """
     params = dict(params or {})
     unknown = set(params) - set(DEDUPE_DEFAULTS)

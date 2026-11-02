@@ -39,9 +39,13 @@ def _finite(value: Any) -> bool:
 
 
 def _check_statistics(data: Any) -> str | None:
-    """Kiểm data (bất kỳ) theo schema thống kê ở mục 3.6 báo cáo.
+    """Kiểm data theo các trường thống kê ở mục 3.6 báo cáo.
 
-    Trả str lý do nếu sai count/diện tích/mật độ/histogram, hoặc None nếu hợp lệ."""
+    Nhận data bất kỳ; trả str lý do khi một kiểm tra thất bại, hoặc None
+    khi các kiểm tra hiện có đều qua. Nếu có histogram, người gọi cần
+    truyền dict hoặc None; kiểu khác chưa được chặn đầy đủ và có thể
+    phát sinh AttributeError thay vì chuỗi lý do.
+    """
     if not isinstance(data, dict):
         return "summarize phải trả dict."
     count = data.get("count")
@@ -205,7 +209,10 @@ def density_comparison_view(metadata: dict[str, Any], *, comparison_path: Path =
 def _check_card(card: Any) -> str | None:
     """Nhận card (bất kỳ); kiểm nội dung, nguồn http(s) và vị trí px trên ảnh.
 
-    Trả str lý do sai hoặc None nếu hợp lệ, theo thẻ khoa học ở mục 3.7 báo cáo."""
+    Trả str lý do cho các lỗi đã kiểm hoặc None khi các kiểm tra đều qua,
+    theo mục 3.7 báo cáo. URL phải phân tích được bằng urlparse;
+    ValueError từ bộ phân tích URL được truyền ra, không đổi thành chuỗi.
+    """
     if not isinstance(card, dict):
         return "thẻ phải là object"
     missing = [
