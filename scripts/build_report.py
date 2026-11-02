@@ -59,27 +59,43 @@ EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\((?:\d+|[A-Z])\.\d+\))\s*(?=\$\$)")
 
 
 REPO_BLOB = "https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/"
-RELATIVE_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\((\.\./[^)\s]+)\)")
+INLINE_LINK = re.compile(r'(?<!!)\[([^\]]+)\]\((\.\./[^)\s]+)((?:\s+"[^"]*")?)\)')
+REFERENCE_LINK = re.compile(r"^( {0,3}\[[^\]]+\]:\s*)(\.\./\S+)", re.M)
+CODE_SPLIT = re.compile(r"(^```.*?^```[^\n]*$|`[^`\n]*`)", re.M | re.S)
+
+
+def _repo_url(relative: str) -> str:
+    """Đổi đường dẫn tương đối tính từ docs/bao_cao/ thành URL blob/main trên GitHub.
+
+    Vào: relative như ../evidence/x.csv. Ra: URL công khai. Phát ValueError nếu đường dẫn
+    đi ra ngoài gốc repo.
+    """
+    parts: list[str] = []
+    for piece in ("docs/bao_cao/" + relative).split("/"):
+        if piece == "..":
+            if not parts:
+                raise ValueError(f"Liên kết ra ngoài repo: {relative}")
+            parts.pop()
+        elif piece not in ("", "."):
+            parts.append(piece)
+    return REPO_BLOB + "/".join(parts)
 
 
 def public_links(text: str) -> str:
     """Đổi liên kết tương đối ra ngoài docs/bao_cao thành URL GitHub công khai.
 
-    Vào: text Markdown của một chương nằm trong docs/bao_cao/. Ra: chuỗi đã đổi; ảnh (![...])
-    giữ nguyên. Liên kết như ../evidence/x.csv thành REPO_BLOB + docs/evidence/x.csv. Nếu để
-    tương đối, LibreOffice ghi URI file:// tuyệt đối của máy dựng vào PDF.
+    Vào: text Markdown của một chương trong docs/bao_cao/. Ra: chuỗi đã đổi. Đổi liên kết
+    inline (kể cả có tiêu đề) và định nghĩa liên kết tham chiếu; giữ nguyên ảnh (![...]),
+    inline code và khối code. Nếu để tương đối, LibreOffice ghi URI file:// tuyệt đối của
+    máy dựng vào PDF.
     """
-    def repl(match: re.Match) -> str:
-        target = (Path("docs/bao_cao") / match.group(2)).as_posix()
-        parts: list[str] = []
-        for piece in target.split("/"):
-            if piece == "..":
-                parts.pop()
-            elif piece != ".":
-                parts.append(piece)
-        return f"[{match.group(1)}]({REPO_BLOB}{'/'.join(parts)})"
+    def convert(segment: str) -> str:
+        segment = INLINE_LINK.sub(
+            lambda m: f"[{m.group(1)}]({_repo_url(m.group(2))}{m.group(3)})", segment)
+        return REFERENCE_LINK.sub(lambda m: m.group(1) + _repo_url(m.group(2)), segment)
 
-    return RELATIVE_LINK.sub(repl, text)
+    pieces = CODE_SPLIT.split(text)
+    return "".join(piece if i % 2 else convert(piece) for i, piece in enumerate(pieces))
 
 
 def combined_markdown(files: list[Path]) -> str:
