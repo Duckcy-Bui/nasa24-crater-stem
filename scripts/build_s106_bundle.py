@@ -1,4 +1,5 @@
 """Build the deterministic, versioned S1-06 offline ZIP after crop generation."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,11 +11,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.generate_s106_crops import BUNDLE_DIR, CROPS_CONFIG, sha256_file
-from scripts.install_s106_dataset import verified_bundle
+from scripts.generate_s106_crops import BUNDLE_DIR, CROPS_CONFIG, sha256_file  # noqa: E402 (sys.path trước import nội bộ)
+from scripts.install_s106_dataset import verified_bundle  # noqa: E402 (sys.path trước import nội bộ)
 
 
 def build_bundle(processed_dir: Path, bundle_dir: Path = BUNDLE_DIR) -> dict:
+    """Đóng gói ngoại tuyến 26 ảnh đã cắt với hash từng file.
+
+    Vào: processed_dir chứa ảnh/mask/metadata, bundle_dir chứa cấu hình và nguồn.
+    Ra: manifest; ghi s106_lroc_browse_v2.zip và manifest.json rồi kiểm bundle.
+    Không đóng gói catalogue cũ; công thức không áp dụng, dữ liệu ở mục 4.2.
+    """
     image_ids = [c["image_id"] for c in CROPS_CONFIG]
     if len(image_ids) != 26 or len(set(image_ids)) != 26:
         raise ValueError("Cấu hình phải có đúng 26 image_id duy nhất.")
@@ -34,16 +41,28 @@ def build_bundle(processed_dir: Path, bundle_dir: Path = BUNDLE_DIR) -> dict:
             info.external_attr = 0o100644 << 16
             zf.writestr(info, payloads[name])
     manifest = {
-        "schema_version": "s106-bundle-1", "dataset_id": "s106_lroc_browse_v2",
-        "total_images": len(image_ids), "image_ids": image_ids,
-        "archive": {"filename": filename, "bytes": archive.stat().st_size, "sha256": sha256_file(archive)},
+        "schema_version": "s106-bundle-1",
+        "dataset_id": "s106_lroc_browse_v2",
+        "total_images": len(image_ids),
+        "image_ids": image_ids,
+        "archive": {
+            "filename": filename,
+            "bytes": archive.stat().st_size,
+            "sha256": sha256_file(archive),
+        },
         "generator_sha256": sha256_file(ROOT / "scripts" / "generate_s106_crops.py"),
         "sources_sha256": sha256_file(bundle_dir / "sources.json"),
         "crops_sha256": sha256_file(bundle_dir / "crops.json"),
-        "reference_status": "unavailable", "source_product_level": "browse",
-        "files": {name: {"bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()} for name, payload in sorted(payloads.items())},
+        "reference_status": "unavailable",
+        "source_product_level": "browse",
+        "files": {
+            name: {"bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+            for name, payload in sorted(payloads.items())
+        },
     }
-    (bundle_dir / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (bundle_dir / "manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     verified_bundle(bundle_dir)
     return manifest
 
@@ -53,4 +72,7 @@ if __name__ == "__main__":
     parser.add_argument("--processed-dir", type=Path, default=ROOT / "data" / "processed")
     args = parser.parse_args()
     manifest = build_bundle(args.processed_dir)
-    print(f"Bundle {manifest['archive']['bytes'] / 1024**2:.2f} MiB; SHA256 {manifest['archive']['sha256']}")
+    print(
+        f"Bundle {manifest['archive']['bytes'] / 1024 ** 2:.2f} MiB; SHA256 "
+        f"{manifest['archive']['sha256']}"
+    )

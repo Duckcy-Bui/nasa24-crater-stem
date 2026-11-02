@@ -14,17 +14,37 @@ import numpy as np
 
 
 def _smooth_noise(rng: np.random.Generator, size: int, scale_px: float) -> np.ndarray:
-    """Nhiễu trơn bằng lọc thông thấp Gaussian trong miền tần số, chuẩn hóa độ lệch 1."""
+    """Tạo nền nhiễu trơn bằng lọc Gauss trong miền tần số.
+
+    Vào: rng, cạnh size và thang scale_px. Ra: mảng nhiễu chia cho độ lệch chuẩn của nó.
+    Dùng nhân phổ với exp(-2(π scale_px)²(fx²+fy²)); cảnh thử ở mục 2.3, không có số công thức
+    riêng.
+    """
     f = np.fft.fftfreq(size)
     fx, fy = np.meshgrid(f, f)
-    spectrum = np.fft.fft2(rng.normal(size=(size, size))) * np.exp(-2 * (math.pi * scale_px) ** 2 * (fx ** 2 + fy ** 2))
+    spectrum = np.fft.fft2(rng.normal(size=(size, size))) * np.exp(
+        -2 * (math.pi * scale_px) ** 2 * (fx**2 + fy**2)
+    )
     out = np.fft.ifft2(spectrum).real
     return out / out.std()
 
 
-def make_scene(azimuth_deg: float, incidence_deg: float, *, size: int = 1024, n_craters: int = 45,
-               r_range: tuple[float, float] = (14, 190), nodata_corner: bool = False, seed: int = 0):
-    """Trả (ảnh float32 thang 12 bit, NaN ở vùng nodata; danh sách hố [(x, y, r)] theo px ô cắt)."""
+def make_scene(
+    azimuth_deg: float,
+    incidence_deg: float,
+    *,
+    size: int = 1024,
+    n_craters: int = 45,
+    r_range: tuple[float, float] = (14, 190),
+    nodata_corner: bool = False,
+    seed: int = 0,
+):
+    """Dựng ảnh hố giả lập có địa hình, chiếu sáng và nhiễu cố định theo seed.
+
+    Vào: azimuth_deg/incidence_deg, size, n_craters, r_range, nodata_corner và seed.
+    Ra: ảnh float32 trong [0,4095] có NaN nếu bật nodata, kèm danh sách (x,y,r) hố đã tạo.
+    Mô phỏng phục vụ mục 2.3; không dùng như dữ liệu địa chất thật hay điểm Pearson (2.18).
+    """
     rng = np.random.default_rng(seed)
     yy, xx = np.mgrid[:size, :size].astype(np.float64)
     dem = 6 * _smooth_noise(rng, size, 40) + 0.15 * _smooth_noise(rng, size, 2)
@@ -37,7 +57,7 @@ def make_scene(azimuth_deg: float, incidence_deg: float, *, size: int = 1024, n_
         cx, cy = rng.uniform(-0.05, 1.05, 2) * size
         d = np.hypot(xx - cx, yy - cy) / r
         depth, rim = 0.2 * r, 0.04 * r
-        inside = depth * (d ** 2 - 1) + rim
+        inside = depth * (d**2 - 1) + rim
         outside = rim / np.maximum(d, 1) ** 3
         dem += np.where(d < 1, inside, outside)
         craters.append((float(cx), float(cy), float(r)))
@@ -46,7 +66,7 @@ def make_scene(azimuth_deg: float, incidence_deg: float, *, size: int = 1024, n_
     inc = math.radians(incidence_deg)
     sun = (math.sin(inc) * math.sin(phi), -math.sin(inc) * math.cos(phi), math.cos(inc))
     fy, fx = np.gradient(dem)
-    norm = np.sqrt(fx ** 2 + fy ** 2 + 1)
+    norm = np.sqrt(fx**2 + fy**2 + 1)
     shade = np.clip((-fx * sun[0] - fy * sun[1] + sun[2]) / norm, 0, None)
 
     albedo = 1 + 0.08 * _smooth_noise(rng, size, 60)

@@ -20,21 +20,30 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json, validate_crater_set
-from src.evaluation import evaluate
-from src.hough import detect_circles, resolve_hough_params
-from src.pipeline import load_image, radius_range
-from src.preprocessing import preprocess
-from src.postprocessing import dedupe_circles
-from src.scoring import reference_is_reviewed
-from scripts.verify_hough_examples import tiny_example
+from src.contracts import read_json, validate_crater_set  # noqa: E402 (sys.path trước import nội bộ)
+from src.evaluation import evaluate  # noqa: E402 (sys.path trước import nội bộ)
+from src.hough import detect_circles, resolve_hough_params  # noqa: E402 (sys.path trước import nội bộ)
+from src.pipeline import load_image, radius_range  # noqa: E402 (sys.path trước import nội bộ)
+from src.preprocessing import preprocess  # noqa: E402 (sys.path trước import nội bộ)
+from src.postprocessing import dedupe_circles  # noqa: E402 (sys.path trước import nội bộ)
+from src.scoring import reference_is_reviewed  # noqa: E402 (sys.path trước import nội bộ)
+from scripts.verify_hough_examples import tiny_example  # noqa: E402 (sys.path trước import nội bộ)
 
 
 def digest(path):
+    """Băm một file đầu vào hoặc nguồn của phép đánh giá.
+
+    Vào: path. Ra: SHA-256 dạng hex; không ghi file, không có công thức báo cáo.
+    """
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def save(path, data):
+    """Ghi dữ liệu đánh giá thành JSON UTF-8 không nhận NaN.
+
+    Vào: path đích và data cần tuần tự hóa. Ra: None; ghi file path với newline cuối.
+    Công thức báo cáo: không áp dụng cho thao tác I/O.
+    """
     path.write_text(
         json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False) + "\n",
         encoding="utf-8",
@@ -42,7 +51,11 @@ def save(path, data):
 
 
 def code_version(repo=ROOT):
-    """Return HEAD, marking it only when Git reports working-tree changes."""
+    """Lấy HEAD cùng dấu working tree thay đổi tại repo được chọn.
+
+    Vào: repo, mặc định ROOT. Ra: chuỗi phiên bản hoặc unknown khi không đọc được Git.
+    Không ghi file; công thức báo cáo không áp dụng.
+    """
     try:
         revision = subprocess.run(
             ["git", "rev-parse", "HEAD"],
@@ -64,7 +77,13 @@ def code_version(repo=ROOT):
 
 
 def summarize_report(report):
-    """Keep provenance and per-image results without predictions or pair lists."""
+    """Rút gọn báo cáo nhưng giữ nguồn, số liệu từng ảnh và tổng hợp.
+
+    Vào: report đầy đủ có label_audit, images/methods và aggregate.
+    Ra: dict summary không có vòng dự đoán/danh sách cặp, có số vòng và độ đo sau lọc; không ghi
+    file.
+    Chỉ trích số đã tính ở mục 4.7, không tính lại độ đo.
+    """
     keys = (
         "status",
         "created_at_utc",
@@ -116,8 +135,7 @@ def summarize_report(report):
                 ),
                 radii_gt16=method["radii_gt16"],
                 after_dedupe={
-                    key: method["dedupe"]["metrics"][key]
-                    for key in ("tp", "fn", "recall")
+                    key: method["dedupe"]["metrics"][key] for key in ("tp", "fn", "recall")
                 },
             )
         summary["images"].append(row)
@@ -125,6 +143,13 @@ def summarize_report(report):
 
 
 def audit_labels(manifest, processed):
+    """Kiểm nhất quán các file nhãn, metadata và chỉ mục chia tập.
+
+    Vào: manifest và thư mục processed; đọc label_index, nhãn/overlay và review_confirmation của
+    repo.
+    Ra: dict trạng thái, dòng kiểm từng ảnh và lời xác nhận đã lưu; không ghi file.
+    Mục 4.3/4.4: kiểm file không thay kiểm vị trí nhãn bằng mắt.
+    """
     index = read_json(ROOT / "data/s203_split/label_index.json")
     rows = []
     for item in manifest["images"]:
@@ -135,12 +160,8 @@ def audit_labels(manifest, processed):
         validate_crater_set(ref, meta)
         uncertain = sum("uncertain" in c["crater_id"].lower() for c in ref["circles"])
         checks = dict(
-            file_count=item["n_labels"]
-            == len(ref["circles"])
-            == index[ident]["n_circles"],
-            uncertain_count=item["n_uncertain"]
-            == uncertain
-            == index[ident]["n_uncertain"],
+            file_count=item["n_labels"] == len(ref["circles"]) == index[ident]["n_circles"],
+            uncertain_count=item["n_uncertain"] == uncertain == index[ident]["n_uncertain"],
             review_marker=reference_is_reviewed(ref),
             split=item["split"] == index[ident]["split"],
             overlay_exists=path.with_name(ident + "_overlay.png").exists(),
@@ -155,9 +176,7 @@ def audit_labels(manifest, processed):
                 outside_search_ids=[
                     c["crater_id"]
                     for c in ref["circles"]
-                    if not meta["radius"]["r_min_px"]
-                    <= c["r"]
-                    <= meta["radius"]["r_max_px"]
+                    if not meta["radius"]["r_min_px"] <= c["r"] <= meta["radius"]["r_max_px"]
                 ],
             )
         )
@@ -171,6 +190,12 @@ def audit_labels(manifest, processed):
 
 
 def measure(function, repeats):
+    """Đo callable sau một lượt làm nóng không tính vào thống kê.
+
+    Vào: function không tham số và repeats dương. Ra: kết quả lượt cuối cùng dict mẫu thời
+    gian/trung vị/min/max.
+    Gọi function 1+repeats lần; trung vị thời gian theo mục 4.5, không ghi file riêng.
+    """
     function()  # warm-up excluded
     timings = []
     result = None
@@ -187,22 +212,29 @@ def measure(function, repeats):
 
 
 def run_one(ident, params, processed, repeats):
+    """Đối chiếu ba phương pháp Hough và đo riêng tác động lọc trùng trên một ảnh.
+
+    Vào: ident, params, thư mục processed và repeats; đọc nhãn ảnh trong repo.
+    Ra: dict tiền xử lý, hash, vòng, thời gian, độ đo và kết quả dedupe; không ghi file tại đây.
+    Hough mục 2.2, ghép/Recall (2.20)–(2.23), lọc trùng (3.1), đối chiếu mục 4.7.
+    """
     import cv2
 
     meta, image, valid = load_image(ident, processed)
-    ref = read_json(
-        ROOT / "data/reference_labels" / (ident + "_craters_catalogue.json")
-    )
+    ref = read_json(ROOT / "data/reference_labels" / (ident + "_craters_catalogue.json"))
     start = time.perf_counter()
     pre = preprocess(image, meta, valid_mask=valid)
     pre_seconds = time.perf_counter() - start
     lo, hi = radius_range(meta, params)
     gray = np.rint(np.clip(pre["smooth"], 0, 1) * 255).astype(np.uint8)
-    cvparams = dict(
-        dp=1.0, minDist=4.0, param1=100.0, param2=12.0, minRadius=lo, maxRadius=hi
-    )
+    cvparams = dict(dp=1.0, minDist=4.0, param1=100.0, param2=12.0, minRadius=lo, maxRadius=hi)
 
     def opencv():
+        """Gọi Hough thư viện và chỉ giữ tâm trong hợp đồng [0,511].
+
+        Vào: gray và cvparams của hàm ngoài. Ra: list dict vòng OpenCV, rỗng nếu không phát hiện.
+        Giữ tọa độ thực trả từ thư viện; nhánh đối chiếu mục 4.7, không ghi file.
+        """
         raw = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, **cvparams)
         return (
             []
@@ -243,12 +275,8 @@ def run_one(ident, params, processed, repeats):
         radius_px=[lo, hi],
         preprocess_params=pre["params"],
         seconds_preprocess=pre_seconds,
-        input_sha256={
-            name: digest(processed / (ident + name)) for name in (".json", ".npy")
-        },
-        label_sha256=digest(
-            ROOT / "data/reference_labels" / (ident + "_craters_catalogue.json")
-        ),
+        input_sha256={name: digest(processed / (ident + name)) for name in (".json", ".npy")},
+        label_sha256=digest(ROOT / "data/reference_labels" / (ident + "_craters_catalogue.json")),
         opencv_params=cvparams,
         methods={},
     )
@@ -276,6 +304,13 @@ def run_one(ident, params, processed, repeats):
 
 
 def main():
+    """Đánh giá cấu hình cố định trên tập tuning hoặc holdout đã chọn.
+
+    Vào: CLI config, processed-dir, output mới, holdout/images và repeats; đọc split/nhãn của repo.
+    Ra: None; ghi report.json, JSON từng ảnh, results.csv và summary.json khi hoàn thành, in kết
+    quả.
+    Tổng hợp Recall theo (2.23)/(4.1), thời gian là trung vị; không tìm lại tham số trên holdout.
+    """
     import cv2
 
     parser = argparse.ArgumentParser(description=__doc__)
@@ -296,9 +331,7 @@ def main():
         for i in manifest["images"]
         if i["split"] == split and (not args.images or i["image_id"] in args.images)
     ]
-    if not selected or (
-        args.images and set(args.images) != {i["image_id"] for i in selected}
-    ):
+    if not selected or (args.images and set(args.images) != {i["image_id"] for i in selected}):
         parser.error("Ảnh không tồn tại hoặc nằm ngoài tập đã chọn.")
     cv2.setNumThreads(1)
     # Freeze all configuration/source identities before touching holdout images.
@@ -334,7 +367,8 @@ def main():
         images=[],
         limitations=[
             "Sparse labels: FP/Precision/F1 unknown; only recall on known labels.",
-            "Reviewer statement is recorded in label_audit; file checks are not independent visual review.",
+            'Reviewer statement is recorded in label_audit; file checks are '
+            'not independent visual review.',
             "NumPy timing excludes preprocessing; OpenCV includes internal edge detection.",
             "Common smoothed gray and radius bounds; edges/thresholds/NMS differ.",
             "OpenCV centers outside [0,511] are excluded to match the public NumPy contract.",
@@ -392,9 +426,7 @@ def main():
             "median_seconds",
             "radii_gt16",
         ]
-        with (args.output / "results.csv").open(
-            "w", encoding="utf-8", newline=""
-        ) as stream:
+        with (args.output / "results.csv").open("w", encoding="utf-8", newline="") as stream:
             writer = csv.DictWriter(stream, fieldnames=fields)
             writer.writeheader()
             for image in report["images"]:

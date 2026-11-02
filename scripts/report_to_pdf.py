@@ -6,6 +6,7 @@ Chạy bằng Python có module uno (python3 hệ thống trên Linux, hoặc
 
 scripts/build_report.py tự gọi script này khi tìm thấy LibreOffice.
 """
+
 from __future__ import annotations
 
 import shutil
@@ -21,14 +22,27 @@ from com.sun.star.connection import NoConnectException
 
 
 def _prop(name: str, value) -> PropertyValue:
+    """Tạo một thuộc tính để truyền cho LibreOffice UNO.
+
+    Vào: name và value của thuộc tính. Ra: PropertyValue đã gán tên/giá trị.
+    Công thức báo cáo: không áp dụng cho bộ nối I/O.
+    """
     prop = PropertyValue()
     prop.Name, prop.Value = name, value
     return prop
 
 
 def _soffice() -> str:
-    for candidate in ("soffice", r"C:\Program Files\LibreOffice\program\soffice.exe",
-                      "/Applications/LibreOffice.app/Contents/MacOS/soffice"):
+    """Tìm chương trình LibreOffice trên máy hiện tại.
+
+    Vào: PATH hệ thống và các vị trí ứng viên cố định. Ra: chuỗi đường dẫn hoặc SystemExit.
+    Không chạy LibreOffice tại bước này; công thức không áp dụng.
+    """
+    for candidate in (
+        "soffice",
+        r"C:\Program Files\LibreOffice\program\soffice.exe",
+        "/Applications/LibreOffice.app/Contents/MacOS/soffice",
+    ):
         found = shutil.which(candidate) or (candidate if Path(candidate).exists() else None)
         if found:
             return found
@@ -36,27 +50,49 @@ def _soffice() -> str:
 
 
 def convert(source: Path, target: Path) -> None:
+    """Cập nhật trường DOCX và xuất PDF bằng LibreOffice riêng.
+
+    Vào: source là DOCX, target là PDF đích. Ra: None; ghi lại DOCX và ghi PDF.
+    Dùng profile/tiến trình tạm riêng, đóng tài liệu và dọn profile; Phụ lục A, không có công thức.
+    """
     pipe = f"nasa24_report_{int(time.time() * 1000)}"
     profile = tempfile.mkdtemp(prefix="nasa24_lo_")
     try:
         # Hồ sơ riêng để không đụng LibreOffice đang mở của người dùng.
-        office = subprocess.Popen([_soffice(), "--headless", "--invisible", "--norestore", "--nologo",
-                                   f"-env:UserInstallation={Path(profile).as_uri()}",
-                                   f"--accept=pipe,name={pipe};urp;StarOffice.ComponentContext"],
-                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        office = subprocess.Popen(
+            [
+                _soffice(),
+                "--headless",
+                "--invisible",
+                "--norestore",
+                "--nologo",
+                f"-env:UserInstallation={Path(profile).as_uri()}",
+                f"--accept=pipe,name={pipe};urp;StarOffice.ComponentContext",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
         try:
             local = uno.getComponentContext()
-            resolver = local.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", local)
+            resolver = local.ServiceManager.createInstanceWithContext(
+                "com.sun.star.bridge.UnoUrlResolver", local
+            )
             for _ in range(120):
                 try:
-                    context = resolver.resolve(f"uno:pipe,name={pipe};urp;StarOffice.ComponentContext")
+                    context = resolver.resolve(
+                        f"uno:pipe,name={pipe};urp;StarOffice.ComponentContext"
+                    )
                     break
                 except NoConnectException:
                     time.sleep(0.5)
             else:
                 raise SystemExit("LibreOffice không khởi động được.")
-            desktop = context.ServiceManager.createInstanceWithContext("com.sun.star.frame.Desktop", context)
-            document = desktop.loadComponentFromURL(source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),))
+            desktop = context.ServiceManager.createInstanceWithContext(
+                "com.sun.star.frame.Desktop", context
+            )
+            document = desktop.loadComponentFromURL(
+                source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),)
+            )
             if document is None:
                 raise SystemExit(f"LibreOffice không mở được {source}.")
             try:
@@ -70,22 +106,36 @@ def convert(source: Path, target: Path) -> None:
                             indexes.getByIndex(i).update()
                         document.getTextFields().refresh()
                         document.refresh()
-                    document.storeAsURL(source.resolve().as_uri(), (
-                        _prop("FilterName", "Office Open XML Text"), _prop("Overwrite", True),
-                    ))
+                    document.storeAsURL(
+                        source.resolve().as_uri(),
+                        (
+                            _prop("FilterName", "Office Open XML Text"),
+                            _prop("Overwrite", True),
+                        ),
+                    )
                     if roundtrip == 0:
                         document.close(True)
                         document = desktop.loadComponentFromURL(
-                            source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),))
+                            source.resolve().as_uri(), "_blank", 0, (_prop("Hidden", True),)
+                        )
                         if document is None:
                             raise SystemExit(f"LibreOffice không mở lại được {source}.")
-                document.storeToURL(target.resolve().as_uri(), (
-                    _prop("FilterName", "writer_pdf_Export"),
-                    _prop("FilterData", uno.Any("[]com.sun.star.beans.PropertyValue", (
-                        _prop("UseLosslessCompression", True),
-                        _prop("ReduceImageResolution", False),
-                    ))),
-                ))
+                document.storeToURL(
+                    target.resolve().as_uri(),
+                    (
+                        _prop("FilterName", "writer_pdf_Export"),
+                        _prop(
+                            "FilterData",
+                            uno.Any(
+                                "[]com.sun.star.beans.PropertyValue",
+                                (
+                                    _prop("UseLosslessCompression", True),
+                                    _prop("ReduceImageResolution", False),
+                                ),
+                            ),
+                        ),
+                    ),
+                )
             finally:
                 if document is not None:
                     document.close(True)
@@ -99,7 +149,8 @@ def convert(source: Path, target: Path) -> None:
             except subprocess.TimeoutExpired:
                 office.kill()
     finally:
-        # Trên Windows, LibreOffice có thể còn giữ file vài giây sau khi thoát; bỏ qua lỗi dọn thư mục tạm.
+        # Trên Windows, LibreOffice có thể còn giữ file vài giây sau khi thoát; bỏ
+        # qua lỗi dọn thư mục tạm.
         shutil.rmtree(profile, ignore_errors=True)
 
 

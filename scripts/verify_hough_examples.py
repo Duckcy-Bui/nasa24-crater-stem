@@ -2,6 +2,7 @@
 
 OpenCV is used only as the reference in this script; src/hough.py stays NumPy.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -20,25 +21,42 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.hough import (
-    _accumulate, _accumulate_gradient, _circle_offsets, _local_peaks,
-    detect_circles, resolve_hough_params,
+from src.hough import (  # noqa: E402 (sys.path trước import nội bộ)
+    _accumulate,
+    _accumulate_gradient,
+    _circle_offsets,
+    _local_peaks,
+    detect_circles,
+    resolve_hough_params,
 )
-from src.preprocessing import gaussian_blur
+from src.preprocessing import gaussian_blur  # noqa: E402 (sys.path trước import nội bộ)
 
 
 def tiny_example() -> dict:
-    """Use real internal helpers; radius=1 is deliberately outside the public API."""
+    """Kiểm phép tính Hough trên ví dụ 5×5 bằng hàm nội bộ thật.
+
+    Vào: không có tham số; dùng bốn điểm biên cố định và r = 1. Ra: dict vết bỏ phiếu, bộ tích lũy,
+    đỉnh và điểm; sai ma trận gây AssertionError, theo Phụ lục B và mục 2.2.
+    """
     edges = np.zeros((5, 5), dtype=bool)
     points = [(2, 1), (1, 2), (3, 2), (2, 3)]  # (x,y), np.nonzero row order
     for x, y in points:
         edges[y, x] = True
     angles = np.deg2rad(np.arange(0.0, 360.0, 1.0))
     offsets = _circle_offsets(1, angles)
-    manual_offsets = np.array([
-        [-1, -1], [-1, 0], [-1, 1], [0, -1],
-        [0, 1], [1, -1], [1, 0], [1, 1],
-    ], dtype=np.int32)
+    manual_offsets = np.array(
+        [
+            [-1, -1],
+            [-1, 0],
+            [-1, 1],
+            [0, -1],
+            [0, 1],
+            [1, -1],
+            [1, 0],
+            [1, 1],
+        ],
+        dtype=np.int32,
+    )
     np.testing.assert_array_equal(offsets, manual_offsets)
 
     running = np.zeros((5, 5), dtype=np.int32)
@@ -48,20 +66,30 @@ def tiny_example() -> dict:
         for dx, dy in manual_offsets:
             a, b = int(x - dx), int(y - dy)
             inside = 0 <= a < 5 and 0 <= b < 5
-            votes.append({"offset": [int(dx), int(dy)], "center": [a, b],
-                          "inside": inside, "flat_index": b * 5 + a if inside else None})
+            votes.append(
+                {
+                    "offset": [int(dx), int(dy)],
+                    "center": [a, b],
+                    "inside": inside,
+                    "flat_index": b * 5 + a if inside else None,
+                }
+            )
             if inside:
                 running[b, a] += 1
-        trace.append({"point_xy": [x, y], "votes": votes,
-                      "cumulative_accumulator": running.tolist()})
+        trace.append(
+            {"point_xy": [x, y], "votes": votes, "cumulative_accumulator": running.tolist()}
+        )
 
-    expected = np.array([
-        [0, 1, 1, 1, 0],
-        [1, 2, 2, 2, 1],
-        [1, 2, 4, 2, 1],
-        [1, 2, 2, 2, 1],
-        [0, 1, 1, 1, 0],
-    ], dtype=np.int32)
+    expected = np.array(
+        [
+            [0, 1, 1, 1, 0],
+            [1, 2, 2, 2, 1],
+            [1, 2, 4, 2, 1],
+            [1, 2, 2, 2, 1],
+            [0, 1, 1, 1, 0],
+        ],
+        dtype=np.int32,
+    )
     ys, xs = (a.astype(np.int32) for a in np.nonzero(edges))
     for batch_size in (1, 2, 256):
         actual = _accumulate(ys, xs, edges.shape, offsets, batch_size)
@@ -76,49 +104,72 @@ def tiny_example() -> dict:
     for x, y in points:
         theta[y, x] = np.arctan2(y - 2, x - 2)
     gradient = _accumulate_gradient(ys, xs, edges.shape, theta, 1)
-    expected_gradient = np.array([
-        [0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0],
-        [1, 0, 4, 0, 1],
-        [0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0],
-    ], dtype=np.int32)
+    expected_gradient = np.array(
+        [
+            [0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0],
+            [1, 0, 4, 0, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+        ],
+        dtype=np.int32,
+    )
     np.testing.assert_array_equal(gradient, expected_gradient)
     gradient_support = int(np.ceil(2 * np.pi * 1))
-    return {"shape": [5, 5], "radius": 1, "angle_step_deg": 1.0,
-            "edges": edges.astype(int).tolist(), "offsets": offsets.tolist(),
-            "trace": trace, "accumulator": actual.tolist(),
-            "toy_min_votes": 3, "threshold": threshold,
-            "peaks_yx": peaks.tolist(), "score": float(actual.max()) / len(offsets),
-            "gradient_accumulator": gradient.tolist(),
-            # Same support rule as hough.detect_circles for the gradient vote: ceil(2*pi*r).
-            "gradient_support_size": gradient_support,
-            "gradient_score": float(gradient.max()) / gradient_support,
-            "note": "Internal helpers only; detect_circles requires 512x512 and r>=5."}
+    return {
+        "shape": [5, 5],
+        "radius": 1,
+        "angle_step_deg": 1.0,
+        "edges": edges.astype(int).tolist(),
+        "offsets": offsets.tolist(),
+        "trace": trace,
+        "accumulator": actual.tolist(),
+        "toy_min_votes": 3,
+        "threshold": threshold,
+        "peaks_yx": peaks.tolist(),
+        "score": float(actual.max()) / len(offsets),
+        "gradient_accumulator": gradient.tolist(),
+        # Same support rule as hough.detect_circles for the gradient vote: ceil(2*pi*r).
+        "gradient_support_size": gradient_support,
+        "gradient_score": float(gradient.max()) / gradient_support,
+        "note": "Internal helpers only; detect_circles requires 512x512 and r>=5.",
+    }
 
 
 def nearest_truth(circles: list[dict], truth: list[dict]) -> list[dict]:
-    """Descriptive nearest neighbour, WITHOUT acceptance threshold or unique matching.
+    """Gắn sai lệch với vòng thật gần nhất để mô tả kết quả.
 
-    Several detections can point to the same truth. A row is not a TP or FP.
+    Vào: danh sách circles và truth. Ra: bản sao các vòng kèm sai lệch tâm, bán kính nếu có đáp án;
+    không ngưỡng chấp nhận, không ghép duy nhất nên không xác định TP/FP; xem mục 4.7.
     """
     rows = []
     for circle in circles:
         row = dict(circle)
         if truth:
-            known = min(truth, key=lambda t: (circle["x"] - t["x"]) ** 2
-                        + (circle["y"] - t["y"]) ** 2)
-            row.update({"nearest_truth_id": known["crater_id"],
-                        "dx_px": circle["x"] - known["x"],
-                        "dy_px": circle["y"] - known["y"],
-                        "center_distance_px": float(np.hypot(circle["x"] - known["x"],
-                                                            circle["y"] - known["y"])),
-                        "dr_px": circle["r"] - known["r"]})
+            known = min(
+                truth, key=lambda t: (circle["x"] - t["x"]) ** 2 + (circle["y"] - t["y"]) ** 2
+            )
+            row.update(
+                {
+                    "nearest_truth_id": known["crater_id"],
+                    "dx_px": circle["x"] - known["x"],
+                    "dy_px": circle["y"] - known["y"],
+                    "center_distance_px": float(
+                        np.hypot(circle["x"] - known["x"], circle["y"] - known["y"])
+                    ),
+                    "dr_px": circle["r"] - known["r"],
+                }
+            )
         rows.append(row)
     return rows
 
 
 def comparison() -> tuple[dict, dict[str, np.ndarray]]:
+    """Đối chiếu hai cách bỏ phiếu NumPy với Hough OpenCV.
+
+    Vào: không có tham số; dùng cảnh giả lập cố định. Ra: báo cáo và các mảng đầu vào, kèm kiểm ảnh
+    trống; thời gian NumPy không gồm Sobel/Canny, theo mục 4.7.
+    """
     import cv2
     from scripts.demo_hough import synthetic_scene
 
@@ -127,13 +178,17 @@ def comparison() -> tuple[dict, dict[str, np.ndarray]]:
     # Common image for all methods. These are comparison settings, not B0-B8.
     smooth = gaussian_blur(image, sigma=1.5, size=11)
     gray_u8 = np.rint(np.clip(smooth, 0, 1) * 255).astype(np.uint8)
-    cv_params = {"dp": 1.0, "minDist": 4.0, "param1": 100.0, "param2": 12.0,
-                 "minRadius": 18, "maxRadius": 36}
+    cv_params = {
+        "dp": 1.0,
+        "minDist": 4.0,
+        "param1": 100.0,
+        "param2": 12.0,
+        "minRadius": 18,
+        "maxRadius": 36,
+    }
     # Reproduce Sobel/Canny in OpenCV 4.14.0 HoughCirclesGradient.
-    gx = cv2.Sobel(gray_u8, cv2.CV_16S, 1, 0, ksize=3,
-                   borderType=cv2.BORDER_REPLICATE)
-    gy = cv2.Sobel(gray_u8, cv2.CV_16S, 0, 1, ksize=3,
-                   borderType=cv2.BORDER_REPLICATE)
+    gx = cv2.Sobel(gray_u8, cv2.CV_16S, 1, 0, ksize=3, borderType=cv2.BORDER_REPLICATE)
+    gy = cv2.Sobel(gray_u8, cv2.CV_16S, 0, 1, ksize=3, borderType=cv2.BORDER_REPLICATE)
     edges = cv2.Canny(gx, gy, 50, 100, L2gradient=False) > 0
     theta = np.arctan2(gy.astype(np.float32), gx.astype(np.float32))
     results = {}
@@ -142,18 +197,34 @@ def comparison() -> tuple[dict, dict[str, np.ndarray]]:
         start = time.perf_counter()
         circles = detect_circles(edges, 18, 36, params, theta=theta)
         seconds = time.perf_counter() - start
-        results[method] = {"params": params, "seconds": seconds,
-                           "detections": nearest_truth(circles, truth)}
+        results[method] = {
+            "params": params,
+            "seconds": seconds,
+            "detections": nearest_truth(circles, truth),
+        }
     start = time.perf_counter()
     raw = cv2.HoughCircles(gray_u8, cv2.HOUGH_GRADIENT, **cv_params)
     seconds = time.perf_counter() - start
-    circles = [] if raw is None else [
-        {"crater_id": f"CV{i}", "x": float(x), "y": float(y), "r": float(r),
-         "confidence": None, "votes": None}
-        for i, (x, y, r) in enumerate(raw[0], start=1)
-    ]
-    results["opencv"] = {"params": {"method": "HOUGH_GRADIENT", **cv_params},
-                         "seconds": seconds, "detections": nearest_truth(circles, truth)}
+    circles = (
+        []
+        if raw is None
+        else [
+            {
+                "crater_id": f"CV{i}",
+                "x": float(x),
+                "y": float(y),
+                "r": float(r),
+                "confidence": None,
+                "votes": None,
+            }
+            for i, (x, y, r) in enumerate(raw[0], start=1)
+        ]
+    )
+    results["opencv"] = {
+        "params": {"method": "HOUGH_GRADIENT", **cv_params},
+        "seconds": seconds,
+        "detections": nearest_truth(circles, truth),
+    }
     # A negative control checks the public APIs, independently of noisy detections.
     blank = np.zeros_like(edges)
     for method in ("full_circle", "gradient"):
@@ -161,52 +232,94 @@ def comparison() -> tuple[dict, dict[str, np.ndarray]]:
             raise AssertionError("Blank image produced NumPy circles.")
     if cv2.HoughCircles(np.zeros_like(gray_u8), cv2.HOUGH_GRADIENT, **cv_params) is not None:
         raise AssertionError("Blank image produced OpenCV circles.")
-    report = {"data_kind": "synthetic", "truth": truth,
-              "radius_range_px": [18, 36], "edge_count": int(edges.sum()),
-              "common_preprocessing": {"gaussian_sigma": 1.5, "gaussian_size": 11,
-                  "gaussian_border": "reflect_101", "quantization": "rint(255*smooth)",
-                  "sobel_size": 3, "sobel_border": "replicate",
-                  "canny_low": 50, "canny_high": 100, "canny_L2gradient": False},
-              "results": results, "blank_control": "all three methods returned no circles",
-              "comparison_limits": [
-                  "Same gray_u8 and radius range; NumPy receives reconstructed Canny edges.",
-                  "Internal Canny reconstruction verified against OpenCV 4.14.0 source; "
-                  "other versions must be checked separately.",
-                  "NumPy per-radius NMS/ratio and OpenCV center/radius stages differ.",
-                  "Nearest-truth differences are descriptive, not TP/FP or Precision/Recall.",
-                  "NumPy timings exclude Sobel/Canny; OpenCV timing includes them.",
-                  "Parameters illustrate differences; no accuracy acceptance threshold.",
-              ]}
-    arrays = {"image": image, "gray_u8": gray_u8, "edges": edges,
-              "theta": theta, "gx": gx, "gy": gy}
+    report = {
+        "data_kind": "synthetic",
+        "truth": truth,
+        "radius_range_px": [18, 36],
+        "edge_count": int(edges.sum()),
+        "common_preprocessing": {
+            "gaussian_sigma": 1.5,
+            "gaussian_size": 11,
+            "gaussian_border": "reflect_101",
+            "quantization": "rint(255*smooth)",
+            "sobel_size": 3,
+            "sobel_border": "replicate",
+            "canny_low": 50,
+            "canny_high": 100,
+            "canny_L2gradient": False,
+        },
+        "results": results,
+        "blank_control": "all three methods returned no circles",
+        "comparison_limits": [
+            "Same gray_u8 and radius range; NumPy receives reconstructed Canny edges.",
+            "Internal Canny reconstruction verified against OpenCV 4.14.0 source; "
+            "other versions must be checked separately.",
+            "NumPy per-radius NMS/ratio and OpenCV center/radius stages differ.",
+            "Nearest-truth differences are descriptive, not TP/FP or Precision/Recall.",
+            "NumPy timings exclude Sobel/Canny; OpenCV timing includes them.",
+            "Parameters illustrate differences; no accuracy acceptance threshold.",
+        ],
+    }
+    arrays = {
+        "image": image,
+        "gray_u8": gray_u8,
+        "edges": edges,
+        "theta": theta,
+        "gx": gx,
+        "gy": gy,
+    }
     return report, arrays
 
 
 def render_comparison(gray_u8: np.ndarray, report: dict) -> np.ndarray:
+    """Ghép bốn ô ảnh để xem đáp án và phát hiện Hough.
+
+    Vào: ảnh gray_u8 và báo cáo đối chiếu. Ra: mảng BGR 570×2048, vòng thật xanh, phát hiện đỏ;
+    không ghi tệp, minh họa mục 4.7.
+    """
     import cv2
+
     panels = []
     for method in ("input", "full_circle", "gradient", "opencv"):
         panel = np.full((570, 512, 3), 255, dtype=np.uint8)
         panel[58:570] = cv2.cvtColor(gray_u8, cv2.COLOR_GRAY2BGR)
-        cv2.putText(panel, method, (12, 25), cv2.FONT_HERSHEY_SIMPLEX,
-                    0.65, (0, 0, 0), 1, cv2.LINE_AA)
-        cv2.putText(panel, "Green: truth; red: detection", (12, 48),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 1, cv2.LINE_AA)
+        cv2.putText(
+            panel, method, (12, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 0), 1, cv2.LINE_AA
+        )
+        cv2.putText(
+            panel,
+            "Green: truth; red: detection",
+            (12, 48),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.45,
+            (0, 0, 0),
+            1,
+            cv2.LINE_AA,
+        )
         for c in report["truth"]:
-            cv2.circle(panel, (round(c["x"]), round(c["y"]) + 58),
-                       round(c["r"]), (0, 255, 0), 1)
+            cv2.circle(panel, (round(c["x"]), round(c["y"]) + 58), round(c["r"]), (0, 255, 0), 1)
         if method != "input":
             for c in report["results"][method]["detections"]:
-                cv2.circle(panel, (round(c["x"]), round(c["y"]) + 58),
-                           round(c["r"]), (0, 0, 255), 1)
+                cv2.circle(
+                    panel, (round(c["x"]), round(c["y"]) + 58), round(c["r"]), (0, 0, 255), 1
+                )
         panels.append(panel)
     return np.hstack(panels)
 
 
 def main() -> None:
+    """Chạy ví dụ tính tay và tùy chọn xuất phép đối chiếu giả lập.
+
+    Vào: CLI --tiny-only hoặc --output-root. Ra: None; in vết 5×5 khi chọn tiny-only, nếu không ghi
+    report.json, inputs.npz, comparison.png và comparison.csv vào thư mục s112 mới; xem Phụ lục
+    A–B.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--tiny-only", action="store_true",
-                        help="Print verified 5x5 trace without writing files or importing cv2.")
+    parser.add_argument(
+        "--tiny-only",
+        action="store_true",
+        help="Print verified 5x5 trace without writing files or importing cv2.",
+    )
     parser.add_argument("--output-root", type=Path, default=ROOT / "outputs")
     args = parser.parse_args()
     tiny = tiny_example()
@@ -215,46 +328,79 @@ def main() -> None:
         return
 
     import cv2
+
     report, arrays = comparison()
     # Outside a git checkout (zip/archive) record "unknown" instead of crashing after the run.
     head, dirty = "unknown", ""
     try:  # only this repo's own commit; no git, or a copy inside another repo, records "unknown"
-        top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=ROOT, capture_output=True, text=True)
+        top = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"], cwd=ROOT, capture_output=True, text=True
+        )
         if top.returncode == 0 and Path(top.stdout.strip()).resolve() == ROOT.resolve():
-            git_head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+            git_head = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+            )
             head = git_head.stdout.strip() if git_head.returncode == 0 else "unknown"
-            git_dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
+            git_dirty = subprocess.run(
+                ["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True
+            )
             dirty = git_dirty.stdout.strip() if git_dirty.returncode == 0 else ""
     except OSError:
         pass
-    source_paths = ("src/hough.py", "src/preprocessing.py", "scripts/demo_hough.py",
-                    "scripts/verify_hough_examples.py")
-    report.update({"tiny_example": tiny,
-                   "environment": {"python": platform.python_version(),
-                       "numpy": np.__version__, "opencv": cv2.__version__,
-                       "opencv_threads": cv2.getNumThreads(), "platform": platform.platform()},
-                   "code_version": head + ("+working-tree" if dirty else ""),
-                   "source_sha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
-                                     for p in source_paths},
-                   # Same hash on Windows (CRLF) and Linux (LF) checkouts of one commit.
-                   "source_sha256_lf": {p: hashlib.sha256((ROOT / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-                                        for p in source_paths},
-                   "created_at_utc": datetime.now(timezone.utc).isoformat()})
+    source_paths = (
+        "src/hough.py",
+        "src/preprocessing.py",
+        "scripts/demo_hough.py",
+        "scripts/verify_hough_examples.py",
+    )
+    report.update(
+        {
+            "tiny_example": tiny,
+            "environment": {
+                "python": platform.python_version(),
+                "numpy": np.__version__,
+                "opencv": cv2.__version__,
+                "opencv_threads": cv2.getNumThreads(),
+                "platform": platform.platform(),
+            },
+            "code_version": head + ("+working-tree" if dirty else ""),
+            "source_sha256": {
+                p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in source_paths
+            },
+            # Same hash on Windows (CRLF) and Linux (LF) checkouts of one commit.
+            "source_sha256_lf": {
+                p: hashlib.sha256((ROOT / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                for p in source_paths
+            },
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     # Render before writing, then reserve a new directory; never overwrite a run.
     png = render_comparison(arrays["gray_u8"], report)
     run_id = "s112_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     directory = args.output_root / run_id
     directory.mkdir(parents=True, exist_ok=False)
     (directory / "report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n",
-        encoding="utf-8")
+        json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+    )
     np.savez_compressed(directory / "inputs.npz", **arrays)
     encoded_ok, encoded_png = cv2.imencode(".png", png)
     if not encoded_ok:
         raise RuntimeError("Could not encode comparison image.")
     (directory / "comparison.png").write_bytes(encoded_png.tobytes())
-    fields = ("method", "crater_id", "x", "y", "r", "votes", "nearest_truth_id",
-              "dx_px", "dy_px", "center_distance_px", "dr_px")
+    fields = (
+        "method",
+        "crater_id",
+        "x",
+        "y",
+        "r",
+        "votes",
+        "nearest_truth_id",
+        "dx_px",
+        "dy_px",
+        "center_distance_px",
+        "dr_px",
+    )
     with (directory / "comparison.csv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields, extrasaction="ignore")
         writer.writeheader()

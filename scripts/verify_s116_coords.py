@@ -10,6 +10,7 @@ chiều ngược (kinh/vĩ độ → pixel ảnh cắt) của S1-10 chưa đư�
 
 Chạy từ thư mục gốc repo:  python scripts/verify_s116_coords.py
 """
+
 from __future__ import annotations
 
 import json
@@ -28,13 +29,21 @@ TOL_DEG = 1e-9
 
 
 def wkt_param(wkt: str, name: str) -> float:
+    """Lấy một tham số số thực từ chuỗi WKT.
+
+    Vào: wkt và tên name của PARAMETER cần tìm. Ra: float; lỗi nếu không tìm/đổi số được.
+    Công thức không áp dụng cho việc đọc siêu dữ liệu.
+    """
     return float(re.search(rf'PARAMETER\["{name}",([-0-9.eE+]+)\]', wkt).group(1))
 
 
 def source_pixel_to_lonlat(meta: dict, x_src: float, y_src: float) -> tuple[float, float]:
-    """x_src, y_src: tọa độ pixel ảnh nguồn, TÂM pixel ở số nguyên (quy ước contracts.py).
+    """Đổi tâm pixel ảnh nguồn sang vĩ độ và kinh độ.
 
-    Affine của rasterio tính theo GÓC pixel nên phải cộng 0,5 trước khi áp affine."""
+    Vào: meta chứa affine/WKT Equirectangular, x_src/y_src theo tâm pixel nguyên.
+    Ra: tuple (vĩ độ, kinh độ) theo độ, kinh độ trong [-180,180); không ghi file.
+    Cộng 0,5 trước affine; đổi X/Y qua bán kính và vĩ tuyến chuẩn, xem mục 4.2/Phụ lục E.
+    """
     src = meta["source"]
     a, b, c, d, e, f = src["source_transform"]
     col, row = x_src + 0.5, y_src + 0.5
@@ -49,6 +58,11 @@ def source_pixel_to_lonlat(meta: dict, x_src: float, y_src: float) -> tuple[floa
 
 
 def main() -> int:
+    """Kiểm quy đổi tâm, dải bán kính và biên cắt trên metadata bundle.
+
+    Vào: BUNDLE và TOL_DEG cố định. Ra: mã 0/1, in kết quả từng ảnh; không ghi file.
+    Đối chiếu tọa độ theo mục 4.2, dải r theo (2.14); không kiểm mọi pixel hoặc k khác 1.
+    """
     failures = 0
     with zipfile.ZipFile(BUNDLE) as z:
         names = sorted(n for n in z.namelist() if n.endswith(".json"))
@@ -57,14 +71,24 @@ def main() -> int:
             x_src, y_src, _ = source_coordinates(255.5, 255.5, 1.0, m)
             lat, lon = source_pixel_to_lonlat(m, x_src, y_src)
             d_lat, d_lon = abs(lat - m["center_lat"]), abs(lon - m["center_lon"])
-            rmin, rmax = radius_range_px(m["radius"]["d_min_m"], m["radius"]["d_max_m"], m["scale_m_per_px"])
-            in_bounds = (m["crop_x0"] + 512 * m["downsample_k"] <= m["source"]["source_width"]
-                         and m["crop_y0"] + 512 * m["downsample_k"] <= m["source"]["source_height"])
-            ok = (d_lat < TOL_DEG and d_lon < TOL_DEG and (rmin, rmax) == (m["radius"]["r_min_px"], m["radius"]["r_max_px"])
-                  and in_bounds)
+            rmin, rmax = radius_range_px(
+                m["radius"]["d_min_m"], m["radius"]["d_max_m"], m["scale_m_per_px"]
+            )
+            in_bounds = (
+                m["crop_x0"] + 512 * m["downsample_k"] <= m["source"]["source_width"]
+                and m["crop_y0"] + 512 * m["downsample_k"] <= m["source"]["source_height"]
+            )
+            ok = (
+                d_lat < TOL_DEG
+                and d_lon < TOL_DEG
+                and (rmin, rmax) == (m["radius"]["r_min_px"], m["radius"]["r_max_px"])
+                and in_bounds
+            )
             failures += not ok
-            print(f"{'OK  ' if ok else 'LOI '}{m['image_id']:<30} k={m['downsample_k']} "
-                  f"dlat={d_lat:.1e} dlon={d_lon:.1e} r=[{rmin},{rmax}] trong_anh_nguon={in_bounds}")
+            print(
+                f"{('OK  ' if ok else 'LOI ')}{m['image_id']:<30} k={m['downsample_k']} "
+                f"dlat={d_lat:.1e} dlon={d_lon:.1e} r=[{rmin},{rmax}] trong_anh_nguon={in_bounds}"
+            )
     print(f"\n{len(names)} ảnh, {failures} lỗi")
     return 1 if failures else 0
 
