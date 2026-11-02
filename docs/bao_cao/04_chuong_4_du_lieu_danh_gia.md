@@ -1,4 +1,4 @@
-<!-- S3-12 r5: Quốc Anh chốt thực nghiệm; Hưng chốt dữ liệu/thống kê; Tiến chốt đánh giá Hough. S3-05 chờ PR #38. -->
+<!-- S3-12 r5: Quốc Anh chốt thực nghiệm; Hưng chốt dữ liệu/thống kê; Tiến chốt đánh giá Hough. PR #38 đã merge; chờ Quốc Anh ghép và diễn giải S3-05. -->
 
 # Chương 4. Thực nghiệm và đánh giá
 
@@ -74,7 +74,7 @@ Báo $100\overline{R}\pm100s_R$ theo %, không nhầm với khoảng tin cậy. 
 
 ## 4.6. Ba thí nghiệm và kiểm tra kỹ thuật đã có
 
-Bảng 4.3 nêu ba câu hỏi tương ứng (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. Kết quả S3-05 vẫn chờ chủ phần; các số dưới đây là kiểm kỹ thuật/chẩn đoán đã có.
+Bảng 4.3 nêu ba câu hỏi: (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. S3-05 đã có kết quả trong repo, chờ chủ phần ghép và diễn giải; các số dưới đây là kiểm kỹ thuật/chẩn đoán.
 
 | Thí nghiệm và câu hỏi | Ảnh | Biến thể |
 |:--------------------|:--------------------|:----------------------|
@@ -84,7 +84,7 @@ Bảng 4.3 nêu ba câu hỏi tương ứng (a) so phương pháp, (b) khảo s�
 
 : Bảng 4.3. Thiết kế ba thí nghiệm.
 
-E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; ưu tiên không giảm Recall_known rồi mới xét ít vòng/nhanh hơn. E3 báo phân lớp và lọc trùng riêng; Mare Frigoris thuộc holdout chỉ được mô tả. [CHỜ S3-05 — Quốc Anh: kết quả ba thí nghiệm (a/b/c), trung bình ± SD khi có, sau khi PR #38 được tích hợp].
+E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; ưu tiên không giảm Recall_known rồi mới xét ít vòng/nhanh hơn. E3 báo phân lớp và lọc trùng riêng; Mare Frigoris thuộc holdout chỉ được mô tả. [CHỜ S3-05 — Quốc Anh: ghép và diễn giải kết quả (a/b/c) đã có trong repo; trung bình ± SD khi có căn cứ].
 
 **Tiền xử lý và trường hợp khó.** Hình 4.1 giữ cùng ảnh/thang cho các bước STT 13. Canny có 25.203 pixel biên, sau B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh nằm trong 20.949–35.590. Ngưỡng thấp/cao STT 13 là 63,6/159,0, STT 17 là 46,3/115,8 (thấp hơn khoảng 27 %). P90 tự co ngưỡng nhưng biên kết cấu vẫn nhiều; mép bóng nắng xiên mạnh hơn vành hố. Ảnh nguồn STT 17 và 13 có 11,1 % và 3,2 % pixel bão hòa, không khôi phục được bằng CLAHE.
 

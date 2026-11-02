@@ -64,7 +64,7 @@ Chỉ dùng lượt `manifest.json: status=complete, mode=full` cho bộ bảng 
 
 Seed cố định 0 (`PYTHONHASHSEED`); cảnh giả lập dựng cố định và Hough không lấy mẫu ngẫu nhiên. Thời gian, timestamp và đường dẫn thay đổi theo máy; so sánh số vòng/TP/FN/cặp ghép và cấu hình. Holdout đã được xem ở S2-06 nên đây là **đánh giá lặp**; không dùng kết quả để chọn lại tham số. Balanced, bỏ inverted/texture và dedupe là nhánh thí nghiệm. Máy trong bảng mật độ S2-09 có lọc texture/dedupe, khác pipeline game S2-15.
 
-Lệnh bao phủ các bảng thuật toán/thống kê đã có mã và dữ liệu. Khảo sát thật S3-01 và phần chưa hoàn thành S3-03/S3-05 cần chủ task xác nhận; không tạo số liệu khảo sát hay chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên.
+Lệnh bao phủ các bảng thuật toán/thống kê đã có mã và dữ liệu. S3-03 và khảo sát S3-01 còn chờ xác nhận; kết quả S3-05 đã vào repo qua PR #38, chờ chủ phần ghép và diễn giải. Không tạo số liệu khảo sát hay chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên.
 
 ## Dữ liệu và cấu hình
 

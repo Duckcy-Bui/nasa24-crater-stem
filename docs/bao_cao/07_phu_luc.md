@@ -16,7 +16,7 @@ python -B scripts/install_s106_dataset.py
 python -B -m streamlit run app.py
 ```
 
-[Tái tạo bảng kết quả và giới hạn](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/S3-10_TAI_TAO_KET_QUA.md): `python -X utf8 -B scripts/reproduce_s310.py`. Chỉ nhận manifest `complete/full`; seed 0, giữ kết quả riêng từng lần. Đây không thay số liệu S3-05 chưa tích hợp hay khảo sát chưa làm.
+[Tái tạo bảng kết quả và giới hạn](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/S3-10_TAI_TAO_KET_QUA.md): `python -X utf8 -B scripts/reproduce_s310.py`. Chỉ nhận manifest `complete/full`; seed 0, giữ kết quả riêng từng lần. Không thay việc ghép và diễn giải kết quả S3-05 đã có trong repo hay khảo sát chưa làm.
 
 Kiểm Python bằng `python -B -m unittest discover -s tests`; canvas:
 
