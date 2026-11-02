@@ -8,6 +8,7 @@ Ví dụ:
     python scripts/s207_experiments.py --write
     python scripts/s207_experiments.py --images moon_ap16_m132732855l_c01 --write
 """
+
 from __future__ import annotations
 
 import argparse
@@ -25,11 +26,15 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-from src.contracts import read_json
-from src.hough import resolve_hough_params
-from src.matching import CENTER_TOLERANCE, match_one_to_one
-from src.pipeline import detect_machine, load_image
-from src.postprocessing import apply_filter, dedupe_circles, review_candidates
+from src.contracts import read_json  # noqa: E402 - cần ROOT trước khi import
+from src.hough import resolve_hough_params  # noqa: E402 - cần ROOT
+from src.matching import CENTER_TOLERANCE, match_one_to_one  # noqa: E402 - cần ROOT
+from src.pipeline import detect_machine, load_image  # noqa: E402 - cần ROOT
+from src.postprocessing import (  # noqa: E402 - cần ROOT
+    apply_filter,
+    dedupe_circles,
+    review_candidates,
+)
 
 DEFAULT_IMAGES = (
     "moon_ap16_m132732855l_c01",  # tuning, bóng mạnh; đã dùng khảo sát S2-02
@@ -47,13 +52,27 @@ PARAMETER_VARIANTS = {
 
 
 def known_references(reference: dict[str, Any]) -> list[dict[str, Any]]:
-    """Nhãn uncertain không thuộc mẫu Recall chính thức."""
+    """Nhận reference (dict vòng); trả list vòng không có "uncertain" trong ID.
+
+    Không sửa nhãn, phục vụ mẫu số Recall_known ở (2.23).
+    """
     return [c for c in reference["circles"] if "uncertain" not in c["crater_id"].lower()]
 
 
-def recall_summary(circles: list[dict[str, Any]], reference: dict[str, Any], *,
-                   radius_bounds: tuple[int, int] | None = None,
-                   max_circles: int | None = None) -> dict[str, Any]:
+def recall_summary(
+    circles: list[dict[str, Any]],
+    reference: dict[str, Any],
+    *,
+    radius_bounds: tuple[int, int] | None = None,
+    max_circles: int | None = None,
+) -> dict[str, Any]:
+    """Tóm tắt độ bao phủ nhãn đã biết theo (2.20)–(2.23).
+
+    Vào: circles/reference là vòng/nhãn dict, radius_bounds là cặp cận r px
+    hoặc None; max_circles là trần tùy chọn. Ra: dict TP/nhãn, Recall_known,
+    nhãn bỏ sót, dải r/trần; không có nhãn thì Recall=None. Không ghi file;
+    Precision/F1 để None, không coi vòng ngoài nhãn thưa là FP.
+    """
     refs = known_references(reference)
     pairs = match_one_to_one(circles, refs, CENTER_TOLERANCE)
     found = {p["reference_id"] for p in pairs}
@@ -77,12 +96,13 @@ def recall_summary(circles: list[dict[str, Any]], reference: dict[str, Any], *,
 
 
 def split_by_image() -> dict[str, str]:
+    """Đọc manifest_split.json dưới ROOT; trả dict image_id → split, không ghi file."""
     manifest = read_json(ROOT / "data" / "s203_split" / "manifest_split.json")
     return {item["image_id"]: item["split"] for item in manifest["images"]}
 
 
 def code_version() -> str:
-    """Ghi commit để kết quả thí nghiệm tái tạo được; ngoài Git thì ghi unknown."""
+    """Đọc Git HEAD tại ROOT; trả chuỗi commit hoặc "unknown" nếu không đọc được."""
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
@@ -92,8 +112,14 @@ def code_version() -> str:
     return result.stdout.strip() if result.returncode == 0 else "unknown"
 
 
-def shading_match_distribution(circles: list[dict[str, Any]], reference: dict[str, Any]) -> dict[str, dict[str, int]]:
-    """Phân bố nhãn S1-11 của vòng khớp nhãn thưa và vòng không khớp."""
+def shading_match_distribution(
+    circles: list[dict[str, Any]], reference: dict[str, Any]
+) -> dict[str, dict[str, int]]:
+    """Nhận circles có shading và reference; trả số nhãn sáng–tối theo nhóm ghép.
+
+    Ghép nhãn chắc chắn theo (2.20)–(2.21); nhóm unmatched chưa phải FP.
+    Không sửa vòng hay ghi file.
+    """
     pairs = match_one_to_one(circles, known_references(reference), CENTER_TOLERANCE)
     matched = {p["prediction_id"] for p in pairs}
     result = {"matched_known_label": {}, "unmatched": {}}
@@ -104,32 +130,62 @@ def shading_match_distribution(circles: list[dict[str, Any]], reference: dict[st
     return result
 
 
-def validate_run_selection(image_ids: list[str], splits: dict[str, str], *, holdout: bool,
-                           chosen_config: Path | None) -> None:
+def validate_run_selection(
+    image_ids: list[str], splits: dict[str, str], *, holdout: bool, chosen_config: Path | None
+) -> None:
+    """Kiểm lựa chọn ảnh trước thí nghiệm, theo chia tập ở mục 4.4.
+
+    Vào: image_ids đã có trong splits (dict), holdout (bool), chosen_config
+    (Path hoặc None). Ra: None hoặc ValueError khi dùng holdout thiếu cờ/
+    cấu hình, hoặc bật cờ mà không có ảnh holdout; không đọc file cấu hình.
+    """
     held_out = [image_id for image_id in image_ids if splits[image_id] == "holdout"]
     if held_out and not holdout:
-        raise ValueError("Holdout chỉ chạy với --holdout và đúng một cấu hình đã chốt trên tuning.")
+        raise ValueError(
+            "Holdout chỉ chạy với --holdout và đúng một cấu hình đã chốt trên tuning."
+        )
     if holdout and not held_out:
         raise ValueError("--holdout yêu cầu ít nhất một image_id thuộc holdout.")
     if holdout and chosen_config is None:
-        raise ValueError("--holdout yêu cầu --chosen-config <JSON> để không quét nhiều biến thể E2.")
+        raise ValueError(
+            "--holdout yêu cầu --chosen-config <JSON> để không quét nhiều biến thể E2."
+        )
 
 
 def e1_status(split: str, sun_usable: bool) -> str:
+    """Nhận split (str), sun_usable (bool); trả trạng thái E1 theo mục 4.4/4.6.
+
+    Holdout luôn không đánh giá sáng–tối; tuning cần hướng nắng dùng được.
+    """
     if split == "holdout":
         return "not_evaluable_on_holdout"
     return "diagnostic_tuning_only" if sun_usable else "not_evaluable_no_usable_sun"
 
 
-def run_one(image_id: str, processed_dir: Path, split: str, *,
-            parameter_variants: dict[str, dict[str, Any]],
-            config: dict[str, Any] | None = None) -> dict[str, Any]:
+def run_one(
+    image_id: str,
+    processed_dir: Path,
+    split: str,
+    *,
+    parameter_variants: dict[str, dict[str, Any]],
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Chạy E1/E2/E3 trên image_id từ processed_dir (Path), trả dict kết quả.
+
+    split là tên tập, parameter_variants là dict tên → ghi đè Hough;
+    config là dict nền hoặc None. Đọc ảnh/nhãn, không ghi kết quả ra file;
+    thời gian một lượt theo giây, hình học theo px. Ghép/Recall theo
+    (2.20)–(2.23); các nhánh lọc riêng theo mục 3.4–3.5 và 4.6.
+    """
     metadata, image, valid = load_image(image_id, processed_dir)
-    reference = read_json(ROOT / "data" / "reference_labels" / f"{image_id}_craters_catalogue.json")
+    reference = read_json(
+        ROOT / "data" / "reference_labels" / f"{image_id}_craters_catalogue.json"
+    )
     config = config or {}
     base_hough = resolve_hough_params(config.get("hough", {}))
-    baseline = detect_machine(metadata, image, valid, hough_params=base_hough,
-                              preprocess_params=config.get("preprocess"))
+    baseline = detect_machine(
+        metadata, image, valid, hough_params=base_hough, preprocess_params=config.get("preprocess")
+    )
     raw = baseline["raw_circles"]
     shaded = baseline["machine"]["circles"]
     reviewed, review_report = review_candidates(shaded, baseline["pre"])
@@ -148,12 +204,18 @@ def run_one(image_id: str, processed_dir: Path, split: str, *,
         "scale_m_per_px": metadata["scale_m_per_px"],
         "sun_quality": metadata["sun"]["quality"],
         "experiment_1_s111": {
-            "baseline": recall_summary(raw, reference, radius_bounds=bounds, max_circles=max_circles),
-            "with_s111_annotation": recall_summary(shaded, reference, radius_bounds=bounds, max_circles=max_circles),
+            "baseline": recall_summary(
+                raw, reference, radius_bounds=bounds, max_circles=max_circles
+            ),
+            "with_s111_annotation": recall_summary(
+                shaded, reference, radius_bounds=bounds, max_circles=max_circles
+            ),
             "remove_inverted_experiment": {
                 "candidates_kept": len(inverted_kept),
                 "candidates_removed": len(inverted_removed),
-                "recall": recall_summary(inverted_kept, reference, radius_bounds=bounds, max_circles=max_circles),
+                "recall": recall_summary(
+                    inverted_kept, reference, radius_bounds=bounds, max_circles=max_circles
+                ),
                 "note": "Nhánh thí nghiệm S1-11, không phải cấu hình mặc định.",
             },
             "shading_by_label_match": shading_match_distribution(shaded, reference),
@@ -164,8 +226,11 @@ def run_one(image_id: str, processed_dir: Path, split: str, *,
             "note": (
                 "S1-11 chỉ gắn nhãn sáng-tối; nhánh remove_inverted đo trực tiếp rủi ro mất hố. "
                 "Không dùng nhánh này làm cấu hình chính nếu làm giảm Recall_known."
-                if sun_usable else
-                "Thiếu hướng nắng đủ tin cậy hoặc ảnh thuộc holdout mosaic: mọi ứng viên not_checked; không kết luận S1-11."
+                if sun_usable
+                else (
+                    "Thiếu hướng nắng đủ tin cậy hoặc ảnh thuộc holdout mosaic: "
+                    "mọi ứng viên not_checked; không kết luận S1-11."
+                )
             ),
         },
         "experiment_2_parameters": [],
@@ -174,54 +239,93 @@ def run_one(image_id: str, processed_dir: Path, split: str, *,
             "remove_texture": {
                 "candidates_kept": len(texture_kept),
                 "candidates_removed": len(texture_removed),
-                "recall": recall_summary(texture_kept, reference, radius_bounds=bounds, max_circles=max_circles),
+                "recall": recall_summary(
+                    texture_kept, reference, radius_bounds=bounds, max_circles=max_circles
+                ),
                 "scope": "tuning_diagnostic" if split == "tuning" else "holdout_descriptive",
             },
             "dedupe": {
                 "candidates_kept": len(deduped),
                 "candidates_removed": len(duplicates),
-                "recall": recall_summary(deduped, reference, radius_bounds=bounds, max_circles=max_circles),
+                "recall": recall_summary(
+                    deduped, reference, radius_bounds=bounds, max_circles=max_circles
+                ),
                 "report": dedupe_report,
             },
         },
     }
     for name, override in parameter_variants.items():
-        detected = detect_machine(metadata, image, valid, hough_params=resolve_hough_params({**base_hough, **override}),
-                                  preprocess_params=config.get("preprocess"))
-        result["experiment_2_parameters"].append({
-            "variant": name,
-            "hough_params_override": override,
-            "candidates": len(detected["raw_circles"]),
-            "seconds_hough": round(detected["seconds_hough"], 3),
-            "recall": recall_summary(detected["raw_circles"], reference,
-                                      radius_bounds=(detected["r_min"], detected["r_max"]),
-                                      max_circles=detected["hough"]["max_circles"]),
-            "scope": "tuning_selection" if split == "tuning" else "holdout_report_only",
-        })
+        detected = detect_machine(
+            metadata,
+            image,
+            valid,
+            hough_params=resolve_hough_params({**base_hough, **override}),
+            preprocess_params=config.get("preprocess"),
+        )
+        result["experiment_2_parameters"].append(
+            {
+                "variant": name,
+                "hough_params_override": override,
+                "candidates": len(detected["raw_circles"]),
+                "seconds_hough": round(detected["seconds_hough"], 3),
+                "recall": recall_summary(
+                    detected["raw_circles"],
+                    reference,
+                    radius_bounds=(detected["r_min"], detected["r_max"]),
+                    max_circles=detected["hough"]["max_circles"],
+                ),
+                "scope": "tuning_selection" if split == "tuning" else "holdout_report_only",
+            }
+        )
     return result
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Đọc argv (list str hoặc None), kiểm tập/cấu hình và trả 0 khi hoàn tất.
+
+    Đọc ảnh/nhãn/cấu hình; in JSON hoặc ghi --output khi --write (có thể
+    ghi đè). Holdout chỉ dùng biến thể đã chọn, không quét E2; mục 4.4/4.6.
+    """
     import cv2
 
     cv2.setNumThreads(1)
     parser = argparse.ArgumentParser(description="S2-07: ba kịch bản thí nghiệm")
     parser.add_argument("--images", nargs="*", help="mặc định là ba ảnh tuning")
-    parser.add_argument("--holdout", action="store_true", help="chỉ báo cáo holdout bằng một cấu hình đã chốt")
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/default.json",
-                        help="Cấu hình nền cho cả E1/E2/E3")
-    parser.add_argument("--chosen-config", type=Path, help="JSON Hough đã chốt trên tuning; bắt buộc cùng --holdout")
+    parser.add_argument(
+        "--holdout", action="store_true", help="chỉ báo cáo holdout bằng một cấu hình đã chốt"
+    )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=ROOT / "configs/default.json",
+        help="Cấu hình nền cho cả E1/E2/E3",
+    )
+    parser.add_argument(
+        "--chosen-config",
+        type=Path,
+        help="JSON Hough đã chốt trên tuning; bắt buộc cùng --holdout",
+    )
     parser.add_argument("--processed-dir", type=Path, default=ROOT / "data" / "processed")
-    parser.add_argument("--output", type=Path, default=ROOT / "docs" / "evidence" / "s2-07" / "results.json")
-    parser.add_argument("--write", action="store_true", help="ghi JSON kết quả; mặc định chỉ in ra stdout")
+    parser.add_argument(
+        "--output", type=Path, default=ROOT / "docs" / "evidence" / "s2-07" / "results.json"
+    )
+    parser.add_argument(
+        "--write", action="store_true", help="ghi JSON kết quả; mặc định chỉ in ra stdout"
+    )
     args = parser.parse_args(argv)
     splits = split_by_image()
-    image_ids = args.images if args.images is not None else (list(DEFAULT_HOLDOUT_IMAGES) if args.holdout else list(DEFAULT_IMAGES))
+    image_ids = (
+        args.images
+        if args.images is not None
+        else (list(DEFAULT_HOLDOUT_IMAGES) if args.holdout else list(DEFAULT_IMAGES))
+    )
     unknown = [image_id for image_id in image_ids if image_id not in splits]
     if unknown:
         parser.error("image_id không thuộc split S2-03: " + ", ".join(unknown))
     try:
-        validate_run_selection(image_ids, splits, holdout=args.holdout, chosen_config=args.chosen_config)
+        validate_run_selection(
+            image_ids, splits, holdout=args.holdout, chosen_config=args.chosen_config
+        )
     except ValueError as error:
         parser.error(str(error))
     config = read_json(args.config)
@@ -231,12 +335,24 @@ def main(argv: list[str] | None = None) -> int:
         try:
             supplied = read_json(args.chosen_config)
             chosen = resolve_hough_params(supplied.get("hough", supplied))
-            config = {**config, "hough": chosen,
-                      "preprocess": supplied.get("preprocess", config.get("preprocess"))}
+            config = {
+                **config,
+                "hough": chosen,
+                "preprocess": supplied.get("preprocess", config.get("preprocess")),
+            }
         except (OSError, TypeError, ValueError) as error:
             parser.error(f"Không đọc được --chosen-config: {error}")
         variants = {"chosen_on_tuning": chosen}
-    rows = [run_one(image_id, args.processed_dir, splits[image_id], parameter_variants=variants, config=config) for image_id in image_ids]
+    rows = [
+        run_one(
+            image_id,
+            args.processed_dir,
+            splits[image_id],
+            parameter_variants=variants,
+            config=config,
+        )
+        for image_id in image_ids
+    ]
     report = {
         "task_id": "S2-07",
         "effective_config": config,
@@ -250,7 +366,9 @@ def main(argv: list[str] | None = None) -> int:
     }
     if args.write:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        args.output.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         print(f"Đã ghi {args.output.resolve()}")
     else:
         print(json.dumps(report, ensure_ascii=False, indent=2))

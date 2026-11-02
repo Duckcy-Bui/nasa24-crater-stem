@@ -96,6 +96,54 @@ class Chapter4TablesTests(unittest.TestCase):
             ("holdout", "opencv", 66, 98.48, 98.21, 5.05),
         ])
 
+    def test_export_rejects_inconsistent_recall_probe(self):
+        """Recall 0,9 với TP=0/FN=9 phải bị chặn trước summarize và xuất CSV."""
+        path = self.run_dir / "evaluation_tuning/summary.json"
+        report = tables.read_json(path)
+        row = report["images"][0]["methods"]["numpy_score"]
+        self.assertEqual((row["tp"], row["fn"]), (0, 9))
+        row["recall"] = 0.9
+        tables.save_json(path, report)
+        with patch.object(tables, "summarize", wraps=tables.summarize) as summarize:
+            with self.assertRaisesRegex(ValueError, "Recall_known.*TP/FN"):
+                tables.export_tables(self.run_dir)
+            summarize.assert_not_called()
+        self.assertFalse((self.run_dir / "chapter4_tables").exists())
+
+    def test_hough_counts_and_finite_recall_are_required(self):
+        """Dữ liệu sai kiểu/miền hoặc recall không hữu hạn phải bị từ chối."""
+        invalid = [
+            {"tp": -1, "fn": 9, "recall": 0.0},
+            {"tp": 0, "fn": -1, "recall": 0.0},
+            {"tp": True, "fn": 9, "recall": 0.1},
+            {"tp": 0, "fn": 9.0, "recall": 0.0},
+            {"tp": "0", "fn": 9, "recall": 0.0},
+            {"tp": 0, "fn": 9, "recall": None},
+            {"tp": 0, "fn": 9, "recall": float("nan")},
+            {"tp": 0, "fn": 9, "recall": float("inf")},
+            {"tp": 0, "fn": 9, "recall": False},
+        ]
+        for row in invalid:
+            with self.subTest(row=row), self.assertRaises(ValueError):
+                tables.validate_hough_recall([row])
+
+    def test_hough_recall_tolerance(self):
+        """Chấp nhận sai số trong 1e-9, chặn sai số vượt dung sai."""
+        self.assertIsNone(tables.validate_hough_recall([
+            {"tp": 1, "fn": 1, "recall": 0.5 + 5e-10},
+        ]))
+        with self.assertRaisesRegex(ValueError, "inconsistent"):
+            tables.validate_hough_recall([
+                {"tp": 1, "fn": 1, "recall": 0.5 + 2e-9},
+            ])
+
+    def test_hough_zero_labels_are_rejected(self):
+        """TP+FN=0 không có Recall_known, không đưa vào mean/SD."""
+        for recall in (None, 0.0, float("nan")):
+            with self.subTest(recall=recall):
+                with self.assertRaisesRegex(ValueError, "TP\\+FN=0"):
+                    tables.validate_hough_recall([{"tp": 0, "fn": 0, "recall": recall}])
+
     def test_holdout_pivots_json_candidate_counts_and_has_total_row(self):
         rows = self.export("table_4_7")
         self.assertEqual([int(r["opencv_candidates"]) for r in rows[:-1]],
