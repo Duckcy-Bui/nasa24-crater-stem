@@ -58,13 +58,37 @@ def chapters(only: list[str] | None = None) -> list[Path]:
 EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\((?:\d+|[A-Z])\.\d+\))\s*(?=\$\$)")
 
 
+REPO_BLOB = "https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/"
+RELATIVE_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\((\.\./[^)\s]+)\)")
+
+
+def public_links(text: str) -> str:
+    """Đổi liên kết tương đối ra ngoài docs/bao_cao thành URL GitHub công khai.
+
+    Vào: text Markdown của một chương nằm trong docs/bao_cao/. Ra: chuỗi đã đổi; ảnh (![...])
+    giữ nguyên. Liên kết như ../evidence/x.csv thành REPO_BLOB + docs/evidence/x.csv. Nếu để
+    tương đối, LibreOffice ghi URI file:// tuyệt đối của máy dựng vào PDF.
+    """
+    def repl(match: re.Match) -> str:
+        target = (Path("docs/bao_cao") / match.group(2)).as_posix()
+        parts: list[str] = []
+        for piece in target.split("/"):
+            if piece == "..":
+                parts.pop()
+            elif piece != ".":
+                parts.append(piece)
+        return f"[{match.group(1)}]({REPO_BLOB}{'/'.join(parts)})"
+
+    return RELATIVE_LINK.sub(repl, text)
+
+
 def combined_markdown(files: list[Path]) -> str:
     """Ghép chương, sinh danh mục hình/bảng và xử lý khoảng cách số công thức.
 
     Vào: files là các Path Markdown theo thứ tự. Ra: chuỗi Markdown đã ghép; không ghi file.
     Chỉ thay cách trình bày số công thức bằng khoảng trắng không ngắt, không tính lại công thức.
     """
-    sources = [f.read_text(encoding="utf-8") for f in files]
+    sources = [public_links(f.read_text(encoding="utf-8")) for f in files]
     captions = re.findall(
         r"(?:!\[|^: )(Hình \d+\.\d+|Bảng [\dA-Z]+\.\d+)\. ([^\n]+)", "\n".join(sources), flags=re.M
     )
