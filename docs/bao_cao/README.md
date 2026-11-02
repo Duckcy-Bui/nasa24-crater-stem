@@ -99,15 +99,15 @@ Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đ�
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
 | Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
-| Chương 4 | 2 | Tiến: tên CPU/RAM đúng máy Windows 27/10; Quốc Anh: ghép và diễn giải kết quả S3-05 đã có trong repo |
-| Chương 5 | 1 | Quốc Anh: kết luận S3-05 theo kết quả đã tích hợp |
+| Chương 4 | 2 | Quốc Anh duyệt bản ghép S3-05 ở mục 4.6; Tiến: tên CPU/RAM máy Windows 27/10 ở mục 4.1 |
+| Chương 5 | 1 | Quốc Anh duyệt kết luận S3-05 đã soạn theo Bảng 4.4; chưa xác nhận thay chủ phần |
 | Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
 | Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
 | File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 342 test Python và 6 bộ JavaScript, đo ngày 02/11/2026 trên main `23f0b3a`, sau khi merge PR S3-16 (thêm 5 test đóng gói) và PR S3-05 (thêm 4 test). r6 không chạy lại toàn bộ kiểm thử ứng dụng.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 370 test Python và 6 bộ JavaScript, đo ngày 02/11/2026 trên nhánh hoàn thiện theo đề gốc (nền main `7e81469`); so với 342 thêm 5 test trung bình ± SD, 16 test xuất bảng Chương 4 và 7 test liên kết công khai. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 
-Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. S3-05 đã có kết quả trong repo, còn chờ chủ phần ghép và diễn giải; các xác nhận cá nhân vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
+Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. Bản ghép và kết luận S3-05 đã soạn ở Chương 4–5, chờ Quốc Anh duyệt; các xác nhận cá nhân vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
 
 ## 6. Hiệu chỉnh bảng chuyển/cắt sau kiểm r5 (r6)
 

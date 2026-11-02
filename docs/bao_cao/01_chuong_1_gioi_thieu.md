@@ -10,11 +10,11 @@ Hố có vành gần tròn và cặp vùng sáng–tối tùy hướng nắng. B
 
 ## 1.2. Đầu vào, đầu ra và ràng buộc
 
-**Đầu vào.** Ảnh LROC một kênh, bản xem nhanh (browse) TIFF 8 bit; sau cắt là mảng 512 × 512 phần tử số thực 32 bit (float32) trong [0, 1], PNG để hiển thị, mặt nạ hợp lệ và siêu dữ liệu (metadata) về nguồn, tỷ lệ, tọa độ, hướng nắng. Trò chơi nhận thêm vòng người chơi và nhãn tham chiếu. Ảnh 2 m/px xét hố 20–500 m; ảnh 20 m/px xét 200 m–4 km, tương ứng bán kính 5–125 và 5–100 px.
+**Đầu vào.** Ảnh LROC (camera của tàu quỹ đạo LRO) một kênh, bản xem nhanh (browse) TIFF 8 bit; sau cắt là mảng 512 × 512 phần tử số thực 32 bit (float32) trong [0, 1], PNG để hiển thị, mặt nạ hợp lệ và siêu dữ liệu (metadata) về nguồn, tỷ lệ, tọa độ, hướng nắng. Trò chơi nhận thêm vòng người chơi và nhãn tham chiếu. Ảnh 2 m/px xét hố 20–500 m; ảnh 20 m/px xét 200 m–4 km, tương ứng bán kính 5–125 và 5–100 px.
 
 **Đầu ra.** Danh sách tâm, bán kính và số phiếu của ứng viên máy; nhãn sáng–tối; số đếm, phân bố kích thước, mật độ khi đủ điều kiện; điểm theo nhãn chắc chắn, ảnh đối chiếu, file lưu lượt chơi và thẻ khoa học có nguồn. Ứng viên máy, nhãn và vòng người chơi được lưu riêng.
 
-**Ràng buộc.** Hough cốt lõi phải tự viết bằng NumPy; thư viện dùng cho đọc ảnh, CLAHE, Canny và đối chiếu. Dải bán kính bị kẹp trong [5, 128] px; đầu ra tối đa 100 ứng viên/ảnh. Cài đặt giữ một mặt phẳng tích lũy int32 512 × 512 (1 MiB), thay vì khối 124 MiB cho 124 bán kính; bộ nhớ toàn chương trình còn gồm ảnh, đỉnh và lô phiếu. Giao diện giữ bộ nhớ đệm (cache) tối đa 8 ảnh. Đề không đặt trần thời gian/RAM bằng số; nhóm chưa cam kết xử lý thời gian thực. Lượt chấm đầu trên máy chủ từng mất 9,4 s; thời gian Hough theo máy và ảnh được báo riêng ở Chương 4, không dùng làm cam kết tốc độ.
+**Ràng buộc.** Hough cốt lõi phải tự viết bằng NumPy; thư viện dùng đọc ảnh, cân bằng tương phản thích nghi có giới hạn (contrast limited adaptive histogram equalization — CLAHE), Canny và đối chiếu. Dải bán kính bị kẹp trong [5, 128] px; đầu ra tối đa 100 ứng viên/ảnh. Cài đặt giữ một mặt phẳng tích lũy int32 512 × 512 (1 MiB), thay vì khối 124 MiB cho 124 bán kính; bộ nhớ toàn chương trình còn gồm ảnh, đỉnh và lô phiếu. Giao diện giữ bộ nhớ đệm (cache) tối đa 8 ảnh. Đề không đặt trần thời gian/RAM bằng số; nhóm chưa cam kết xử lý thời gian thực. Lượt chấm đầu trên máy chủ từng mất 9,4 s; phép đo hiệu năng (benchmark) Hough theo máy và ảnh được báo ở Chương 4, không dùng làm cam kết tốc độ.
 
 ## 1.3. Yêu cầu và mục tiêu đo được
 
@@ -22,11 +22,11 @@ Bảng 1.1 diễn giải yêu cầu Đề 24 bằng các tiêu chí của nhóm 
 
 | Mã | Mục tiêu và tiêu chí kiểm |
 |---|---|
-| M1 | Có dữ liệu của hai thiên thể: LRO/Mặt Trăng và CTX hoặc HiRISE/Sao Hỏa; ghi nguồn, tỷ lệ, nhãn và phạm vi sử dụng |
+| M1 | Có dữ liệu của hai thiên thể: LRO/Mặt Trăng và CTX hoặc HiRISE (hai camera quỹ đạo)/Sao Hỏa; ghi nguồn, tỷ lệ, nhãn và phạm vi sử dụng |
 | M2 | Bằng mã NumPy của nhóm, định vị vòng tròn sau tăng tương phản và làm trơn; dùng hướng nắng kiểm cặp sáng–tối. Kiểm 26 ảnh, ví dụ tính tay và sai số so thư viện |
 | M3 | Với hai miền ảnh cùng tỷ lệ và dải đường kính, lập bảng số hố, biểu đồ kích thước và đối chiếu mật độ; giải thích tuổi tương đối kèm bất định |
 | M4 | Cho học sinh tự đánh dấu hố; phản hồi mức khớp với máy và danh mục tham chiếu, có thao tác sửa/lưu bài |
-| M5 | Gắn chuyện Apollo/rover với vị trí thiết bị đã biết; người chơi nhận thẻ có nguồn sau khi xác định đúng vị trí ấy |
+| M5 | Gắn chuyện Apollo/rover (xe tự hành) với vị trí thiết bị đã biết; người chơi nhận thẻ có nguồn sau khi xác định đúng vị trí ấy |
 | M6 | Báo độ chính xác dương tính (Precision) và độ bao phủ (Recall) so với danh mục; ghép một–một với sai lệch tâm ≤0,5 bán kính nhãn |
 | M7 | Khảo sát ít nhất 10 học sinh về hứng thú và hiểu bài |
 

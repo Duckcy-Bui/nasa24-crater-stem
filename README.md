@@ -44,7 +44,7 @@ Linux/macOS sau khi kích hoạt venv:
 python -X utf8 -B scripts/reproduce_s310.py
 ```
 
-Script xác minh/giải nén 26 ảnh, kiểm ví dụ tính tay và ảnh giả lập, chạy S2-15 trên 18 tuning, đối chiếu Hough trên 3 tuning/8 holdout, ba thí nghiệm trên 3 tuning/2 holdout và thống kê hai vùng. Đầu ra mới tại `outputs/s310_<UTC>/`; dùng `--output outputs/s310_full` để đặt tên, thư mục phải chưa tồn tại. Chạy đầy đủ có thể mất nhiều phút tùy CPU. Đối chiếu Hough warm-up một lượt, đo ba lượt; `--repeats 1` giảm thời gian kiểm tra, không dùng để kết luận tốc độ.
+Chế độ full mặc định tạo đủ năm CSV cho các bảng kết quả Chương 4 hiện tại (4.4–4.8). Script giữ các bước cũ: xác minh/giải nén 26 ảnh, kiểm ví dụ tính tay/giả lập, S2-15 trên 18 tuning, đối chiếu Hough 3 tuning/8 holdout, S2-07 trên 3 tuning/2 holdout và thống kê hai vùng. Sau đó chạy riêng S3-05, chụp hồ sơ lọc nhãn mù lịch sử và kết xuất bảng. Đầu ra mới tại `outputs/s310_<UTC>/`; dùng `--output outputs/s310_full` để đặt tên, thư mục phải chưa tồn tại. Chạy đầy đủ có thể mất nhiều phút tùy CPU. Đối chiếu Hough warm-up một lượt, đo ba lượt; `--repeats 1` không dùng kết luận tốc độ.
 
 | Đầu ra trong thư mục lượt chạy | Nội dung |
 |---|---|
@@ -52,19 +52,30 @@ Script xác minh/giải nén 26 ảnh, kiểm ví dụ tính tay và ảnh giả
 | `game_config.json`, `comparison_config.json` | Snapshot game S2-15 và phép đối chiếu S2-06, ghi riêng trước khi chạy |
 | `synthetic/` | Ví dụ 5×5, đối chiếu NumPy/OpenCV trên ảnh giả lập, JSON/CSV/PNG |
 | `frozen_tuning.csv`, `frozen_tuning/report.json` | TP/FN/Recall_known từng ảnh và tổng hợp 18 tuning S2-15 |
-| `evaluation_tuning/results.csv`, `evaluation_holdout/results.csv` | Bảng đánh giá S2-06/S3-02, dữ liệu cho Bảng 4.5–4.6 |
-| `E1.csv`, `E2.csv`, `E3.csv`, `experiments_*.json` | Sáng–tối, độ nhạy tham số, ảnh khó; JSON có phân lớp và chi tiết lọc |
+| `evaluation_tuning/results.csv`, `evaluation_holdout/results.csv` | Bảng đánh giá S2-06/S3-02; JSON `summary.json` cung cấp cả số vòng, dùng cho Bảng 4.6–4.7 |
+| `E1.csv`, `E2.csv`, `E3.csv`, `experiments_*.json` | Đầu ra S2-07 cũ, giữ nguyên namespace và ý nghĩa; không tráo với S3-05 |
 | `density/` | Bảng đếm, máy so với tay, mật độ và hình histogram/tích lũy/vùng đếm S2-09 |
+| `s305/` | S3-05 chạy mới: CSV/JSON/ảnh E1/E2/E3, cấu hình và report; chỉ quét tham số trên tuning, Mare chỉ mô tả nền |
+| `blind_filter/` | Bản sao đúng byte hai `docs/evidence/s2-02/<image_id>/report.json`, SHA nguồn và `filters.csv`; nhãn mù lịch sử, không phải đánh giá mới của người |
+| `chapter4_tables/` | Năm CSV dưới đây và `index.json`: số bảng, nguồn/SHA, cách làm tròn, nguồn lịch sử hay lượt mới |
 
-Chỉ dùng lượt `manifest.json: status=complete, mode=full` cho bộ bảng đầy đủ. Lỗi dừng pipeline và ghi `failed`. Kiểm luồng nhanh trên một ảnh tuning, không đọc ảnh holdout:
+| CSV trong `chapter4_tables/` | Bảng báo cáo và phạm vi |
+|---|---|
+| `table_4_4.csv` | S3-05 gộp: 11 dòng nhánh, tương ứng bốn nhóm trình bày; E1 chỉ hai ảnh đủ nắng, E2/E3 ba tuning, Mare E3 nền |
+| `table_4_5.csv` | Lọc nhãn mù: bốn cách × hai ảnh, đọc hồ sơ S2-02. STT 17 không chấm lọc sáng–tối, ô loại/mất hố để trống |
+| `table_4_6.csv` | Sáu nhóm so Hough, 3 tuning/8 holdout; trung bình ± SD mẫu theo ảnh dùng `scripts/ch4_mean_sd.py`, không phải SD thời gian |
+| `table_4_7.csv` | Tám ảnh holdout và tổng TP/FN; số vòng OpenCV lấy từ JSON |
+| `table_4_8.csv` | Hai vùng đếm tay: diện tích, N, mật độ và CI95; làm tròn từ JSON chính xác |
+
+Chỉ dùng lượt `manifest.json: status=complete, mode=full` và `chapter4_tables/index.json: status=complete` cho bộ bảng đầy đủ. Bảng 4.1–4.2 là kiểm kê đầu vào, 4.3 là thiết kế thí nghiệm. Bảng 4.5 tái kết xuất đánh giá người đã lưu; không gọi CLI S2-02 vì CLI đó ghi vào hồ sơ/nhãn lịch sử. Lỗi dừng pipeline và ghi `failed`. Kiểm nhanh giữ phạm vi cũ, bỏ hai bước đánh giá/thí nghiệm holdout và ba bước mới; bước mật độ vẫn dùng các ô hai vùng như trước:
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -B scripts/reproduce_s310.py --quick --repeats 1
 ```
 
-Seed cố định 0 (`PYTHONHASHSEED`); cảnh giả lập dựng cố định và Hough không lấy mẫu ngẫu nhiên. Thời gian, timestamp và đường dẫn thay đổi theo máy; so sánh số vòng/TP/FN/cặp ghép và cấu hình. Holdout đã được xem ở S2-06 nên đây là **đánh giá lặp**; không dùng kết quả để chọn lại tham số. Balanced, bỏ inverted/texture và dedupe là nhánh thí nghiệm. Máy trong bảng mật độ S2-09 có lọc texture/dedupe, khác pipeline game S2-15.
+Seed cố định 0 (`PYTHONHASHSEED`) trước khi khởi động từng Python con; cảnh giả lập dựng cố định và Hough không lấy mẫu ngẫu nhiên. Các producer dùng OpenCV đặt `cv2.setNumThreads(1)`, gồm S2-07/S2-09/S3-05. Thời gian, timestamp và đường dẫn thay đổi theo máy; so số vòng/TP/FN/cặp ghép và cấu hình, không đòi PNG/NPZ trùng hash giữa môi trường. Holdout đã xem nên đây là **đánh giá lặp**; không chọn lại tham số. Balanced và các bộ lọc là nhánh thí nghiệm; giảm vòng chưa chứng minh giảm FP. Mật độ máy S2-09 có lọc texture/dedupe, khác game S2-15.
 
-Lệnh bao phủ các bảng thuật toán/thống kê đã có mã và dữ liệu. S3-03 và khảo sát S3-01 còn chờ xác nhận; kết quả S3-05 đã vào repo qua PR #38, chờ chủ phần ghép và diễn giải. Không tạo số liệu khảo sát hay chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên.
+S3-05 đã được ghép thành dự thảo Chương 4–5, chờ Quốc Anh duyệt; chạy lệnh không xác nhận thay chủ phần. Không tạo số liệu khảo sát hoặc chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên; mọi CSV bảng và bản sao nhãn mù mới nằm trong thư mục lượt chạy.
 
 ## Dữ liệu và cấu hình
 

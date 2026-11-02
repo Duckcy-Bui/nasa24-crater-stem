@@ -6,6 +6,7 @@ Cách dùng:
 Ảnh overlay chỉ để kiểm tra chéo bằng mắt. Tiêu đề ghi đúng nguồn và trạng thái nhãn,
 không gọi nhãn chưa kiểm chéo là ground truth.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -16,6 +17,7 @@ import numpy as np
 import matplotlib
 
 matplotlib.use("Agg")
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.patches as mpatches  # noqa: E402
 
@@ -25,6 +27,12 @@ COLOR_UNCERTAIN = "#ff9800"
 
 
 def render(image_id: str, processed_dir: Path, ref_dir: Path) -> Path:
+    """Vẽ ảnh đối chiếu nhãn chắc chắn/chưa chắc với nguồn đã ghi.
+
+    Vào: image_id, processed_dir chứa ảnh/metadata, ref_dir chứa JSON nhãn.
+    Ra: Path PNG <image_id>_overlay.png được ghi trong ref_dir; không xác nhận nhãn thay người.
+    Minh họa nhãn mục 4.3, không có công thức toán riêng.
+    """
     data = json.loads((ref_dir / f"{image_id}_craters_catalogue.json").read_text(encoding="utf-8"))
     meta = json.loads((processed_dir / f"{image_id}.json").read_text(encoding="utf-8"))
     img = np.load(processed_dir / f"{image_id}.npy")
@@ -38,8 +46,11 @@ def render(image_id: str, processed_dir: Path, ref_dir: Path) -> Path:
     source = data["reference_source"]
     status = "chưa kiểm chéo" if "unreviewed" in source else "xem nguồn"
     ax.set_title(
-        f"S1-10 nhãn thủ công ({status}): {image_id} · {meta['scale_m_per_px']} m/px\nNguồn: {source}",
-        color="#e0e0e0", fontsize=9.5, pad=10,
+        f"S1-10 nhãn thủ công ({status}): {image_id} · {meta['scale_m_per_px']} "
+        f"m/px\nNguồn: {source}",
+        color="#e0e0e0",
+        fontsize=9.5,
+        pad=10,
     )
     ax.set_xlabel("x (pixel [0, 511])", color="#90caf9")
     ax.set_ylabel("y (pixel [0, 511])", color="#90caf9")
@@ -54,14 +65,38 @@ def render(image_id: str, processed_dir: Path, ref_dir: Path) -> Path:
         uncertain += unc
         color = COLOR_UNCERTAIN if unc else COLOR_CERTAIN
         ax.add_patch(plt.Circle((c["x"], c["y"]), c["r"], fill=False, color=color, linewidth=1.5))
-        ax.annotate(c["crater_id"], (c["x"], c["y"] - c["r"] - 4), color=color, fontsize=8, ha="center", fontweight="bold")
+        ax.annotate(
+            c["crater_id"],
+            (c["x"], c["y"] - c["r"] - 4),
+            color=color,
+            fontsize=8,
+            ha="center",
+            fontweight="bold",
+        )
 
-    ax.legend(handles=[
-        mpatches.Patch(facecolor="none", edgecolor=COLOR_CERTAIN, label=f"Nhãn chắc chắn ({certain})"),
-        mpatches.Patch(facecolor="none", edgecolor=COLOR_UNCERTAIN, label=f"Nhãn uncertain ({uncertain})"),
-    ], loc="upper right", facecolor="#263238", edgecolor="#455a64", labelcolor="#e0e0e0", fontsize=8)
-    fig.text(0.5, 0.015, "Nhãn thưa: còn nhiều hố chưa gán nhãn. Không dùng để tính Precision.",
-             color="#ffeb3b", fontsize=8, ha="center")
+    ax.legend(
+        handles=[
+            mpatches.Patch(
+                facecolor="none", edgecolor=COLOR_CERTAIN, label=f"Nhãn chắc chắn ({certain})"
+            ),
+            mpatches.Patch(
+                facecolor="none", edgecolor=COLOR_UNCERTAIN, label=f"Nhãn uncertain ({uncertain})"
+            ),
+        ],
+        loc="upper right",
+        facecolor="#263238",
+        edgecolor="#455a64",
+        labelcolor="#e0e0e0",
+        fontsize=8,
+    )
+    fig.text(
+        0.5,
+        0.015,
+        "Nhãn thưa: còn nhiều hố chưa gán nhãn. Không dùng để tính Precision.",
+        color="#ffeb3b",
+        fontsize=8,
+        ha="center",
+    )
 
     plt.tight_layout(rect=(0, 0.03, 1, 1))
     fig.savefig(out_path, dpi=150, facecolor=fig.get_facecolor())
@@ -70,6 +105,11 @@ def render(image_id: str, processed_dir: Path, ref_dir: Path) -> Path:
 
 
 def main() -> None:
+    """Đọc CLI và vẽ overlay cho ảnh được chọn.
+
+    Vào: image_id, processed-dir và ref-dir từ CLI. Ra: None; ghi PNG qua render và in tên file.
+    Công thức không áp dụng cho điều phối I/O; xem mục 4.3.
+    """
     parser = argparse.ArgumentParser(description="Vẽ lại ảnh overlay nhãn S1-10")
     parser.add_argument("image_id", nargs="?", default="moon_ap16_m106777343r_c01")
     parser.add_argument("--processed-dir", type=Path, default=ROOT / "data" / "processed")

@@ -1,4 +1,5 @@
 """List candidate crop windows using the raster mask, not brightness as validity."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,6 +11,12 @@ from rasterio.windows import Window
 
 
 def scan_windows(path: str | Path, size: int = 512, step: int = 64, min_valid: float = 0.95):
+    """Duyệt cửa sổ TIFF đủ tỷ lệ pixel hợp lệ.
+
+    Vào: path, cạnh size, bước step và ngưỡng min_valid; dùng mask raster cùng kiểm hữu hạn.
+    Ra: iterator dict x0/y0, valid_ratio và nonzero_brightness_ratio; không ghi file.
+    Tỷ lệ là số pixel đạt điều kiện chia size²; pixel 0 vẫn hợp lệ, xem mục 4.2.
+    """
     if size < 1 or step < 1 or not 0 <= min_valid <= 1:
         raise ValueError("size/step phải dương và min_valid trong [0,1].")
     with rasterio.open(path) as src:
@@ -22,8 +29,12 @@ def scan_windows(path: str | Path, size: int = 512, step: int = 64, min_valid: f
                 if ratio >= min_valid:
                     # This is diagnostic brightness coverage, never the validity mask.
                     nonzero_ratio = float(np.count_nonzero(valid & (pixels != 0)) / valid.size)
-                    yield {"x0": x0, "y0": y0, "valid_ratio": ratio,
-                           "nonzero_brightness_ratio": nonzero_ratio}
+                    yield {
+                        "x0": x0,
+                        "y0": y0,
+                        "valid_ratio": ratio,
+                        "nonzero_brightness_ratio": nonzero_ratio,
+                    }
 
 
 if __name__ == "__main__":
@@ -33,5 +44,8 @@ if __name__ == "__main__":
     parser.add_argument("--min-valid", type=float, default=0.95)
     args = parser.parse_args()
     for result in scan_windows(args.source, step=args.step, min_valid=args.min_valid):
-        print(f"x0={result['x0']:5d} y0={result['y0']:5d} valid_ratio={result['valid_ratio']:.6f} "
-              f"nonzero_brightness_ratio={result['nonzero_brightness_ratio']:.6f}")
+        print(
+            f"x0={result['x0']:5d} y0={result['y0']:5d} "
+            f"valid_ratio={result['valid_ratio']:.6f} "
+            f"nonzero_brightness_ratio={result['nonzero_brightness_ratio']:.6f}"
+        )
