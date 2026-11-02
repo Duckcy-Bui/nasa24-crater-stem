@@ -6,6 +6,8 @@ Phụ lục dẫn tới mã, hướng dẫn và hồ sơ trong kho GitHub của 
 
 ## A. Hướng dẫn cài đặt và chạy
 
+**Chữ viết tắt.** LRO (Lunar Reconnaissance Orbiter), LROC (LRO Camera); NAC/WAC (Narrow/Wide Angle Camera); PDS (Planetary Data System); CTX/HiRISE: camera Sao Hỏa. CLAHE (Contrast Limited Adaptive Histogram Equalization); NMS (Non-Maximum Suppression); STEM (Science, Technology, Engineering, Mathematics). JSON/CSV: định dạng văn bản; CI (Continuous Integration); DOI (Digital Object Identifier). SD là độ lệch chuẩn, MSE là sai số bình phương trung bình.
+
 Xem [README: cài đặt, dữ liệu và demo](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/README.md), [requirements.txt](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/requirements.txt), [requirements-test.txt](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/requirements-test.txt). Lệnh chính, từ thư mục gốc:
 
 ```bash
@@ -44,7 +46,7 @@ Bảng D.1 khai công cụ, phần sử dụng và cách kiểm soát; mỗi ng�
 
 | Thành viên | Công cụ | Dùng cho việc gì | Cách kiểm soát |
 |---|---|---|---|
-| Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát pull request; soạn tài liệu và ghép báo cáo. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi merge; số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
+| Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát yêu cầu gộp mã (pull request); soạn tài liệu và ghép báo cáo. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi gộp mã (merge); số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
 | Nguyễn Mạnh Tiến | [CHỜ] | [CHỜ] | [CHỜ] |
 | Đinh Quang Hưng | [CHỜ] | [CHỜ] | [CHỜ] |
 | Hoàng Quốc Anh | [CHỜ] | [CHỜ] | [CHỜ] |

@@ -14,7 +14,7 @@ Hố có vành gần tròn và cặp vùng sáng–tối tùy hướng nắng. B
 
 **Đầu ra.** Danh sách tâm, bán kính và số phiếu của ứng viên máy; nhãn sáng–tối; số đếm, phân bố kích thước, mật độ khi đủ điều kiện; điểm theo nhãn chắc chắn, ảnh đối chiếu, file lưu lượt chơi và thẻ khoa học có nguồn. Ứng viên máy, nhãn và vòng người chơi được lưu riêng.
 
-**Ràng buộc.** Hough cốt lõi phải tự viết bằng NumPy; thư viện dùng cho đọc ảnh, CLAHE, Canny và đối chiếu. Dải bán kính bị kẹp trong [5, 128] px; đầu ra tối đa 100 ứng viên/ảnh. Cài đặt giữ một mặt phẳng tích lũy int32 512 × 512 (1 MiB), thay vì khối 124 MiB cho 124 bán kính; bộ nhớ toàn chương trình còn gồm ảnh, đỉnh và lô phiếu. Giao diện giữ bộ nhớ đệm (cache) tối đa 8 ảnh. Đề không đặt trần thời gian/RAM bằng số; nhóm chưa cam kết xử lý thời gian thực. Lượt chấm đầu trên máy chủ từng mất 9,4 s; thời gian Hough theo máy và ảnh được báo riêng ở Chương 4, không dùng làm cam kết tốc độ.
+**Ràng buộc.** Hough cốt lõi phải tự viết bằng NumPy; thư viện dùng đọc ảnh, cân bằng tương phản thích nghi có giới hạn (contrast limited adaptive histogram equalization — CLAHE), Canny và đối chiếu. Dải bán kính bị kẹp trong [5, 128] px; đầu ra tối đa 100 ứng viên/ảnh. Cài đặt giữ một mặt phẳng tích lũy int32 512 × 512 (1 MiB), thay vì khối 124 MiB cho 124 bán kính; bộ nhớ toàn chương trình còn gồm ảnh, đỉnh và lô phiếu. Giao diện giữ bộ nhớ đệm (cache) tối đa 8 ảnh. Đề không đặt trần thời gian/RAM bằng số; nhóm chưa cam kết xử lý thời gian thực. Lượt chấm đầu trên máy chủ từng mất 9,4 s; phép đo hiệu năng (benchmark) Hough theo máy và ảnh được báo ở Chương 4, không dùng làm cam kết tốc độ.
 
 ## 1.3. Yêu cầu và mục tiêu đo được
 
