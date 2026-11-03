@@ -1,4 +1,5 @@
 """S3-03: kiểm tra bản đếm lại và quy tắc vùng đếm (dữ liệu trong repo, không cần ảnh)."""
+
 import unittest
 from pathlib import Path
 
@@ -28,18 +29,27 @@ class Counts(unittest.TestCase):
         for iid in CROPS:
             circles = read_json(COUNTS / f"{iid}_count.json")["circles"]
             for i, a in enumerate(circles):
-                for b in circles[i + 1:]:
+                for b in circles[i + 1 :]:
                     big, small = max(a["r"], b["r"]), min(a["r"], b["r"])
                     d = np.hypot(a["x"] - b["x"], a["y"] - b["y"])
-                    self.assertFalse(d <= 0.5 * big and small / big >= 0.7, (iid, a["crater_id"], b["crater_id"]))
+                    self.assertFalse(
+                        d <= 0.5 * big and small / big >= 0.7,
+                        (iid, a["crater_id"], b["crater_id"]),
+                    )
 
     def test_same_rule_no_cluster_corner_removed_from_mare_frigoris_only(self):
         """Nhận xét PR #30: góc có cụm hố lớn phải được xử lý như nhau ở hai vùng."""
-        c01 = count_mask(CROPS["moon_lunokhod1_loc_c01"]["keep"], CROPS["moon_lunokhod1_loc_c01"]["exclude"])
-        c03 = count_mask(CROPS["moon_marefrig_loc_c03"]["keep"], CROPS["moon_marefrig_loc_c03"]["exclude"])
+        c01 = count_mask(
+            CROPS["moon_lunokhod1_loc_c01"]["keep"], CROPS["moon_lunokhod1_loc_c01"]["exclude"]
+        )
+        c03 = count_mask(
+            CROPS["moon_marefrig_loc_c03"]["keep"], CROPS["moon_marefrig_loc_c03"]["exclude"]
+        )
         x0, y0, x1, y1 = CORNER
         self.assertTrue(c01[y0:y1, x0:x1].all())
-        self.assertTrue(c03[100:y1, 64:x1].all())   # cụm hố lớn của Mare Frigoris nay nằm trong vùng đếm
+        self.assertTrue(
+            c03[100:y1, 64:x1].all()
+        )  # cụm hố lớn của Mare Frigoris nay nằm trong vùng đếm
 
     def test_rule_is_recorded_and_range_is_physical(self):
         self.assertIn("Quy tắc chung", REGIONS["rule"])
@@ -69,7 +79,7 @@ class Analysis(unittest.TestCase):
         a = {"n_a": 10, "n_b": 10, "area_a": 1.0, "area_b": 1.0, "ratio": 1.0}
         grid = impact(a, a)["luoi_do_day_du"]
         row = next(r for r in grid if r["do_day_du_L"] == 0.8 and r["do_day_du_M"] == 1.0)
-        self.assertEqual(row["ty_so_tong"], 1.25)
+        self.assertEqual(row["ty_so_tong_suy_ra"], 1.25)
 
 
 if __name__ == "__main__":

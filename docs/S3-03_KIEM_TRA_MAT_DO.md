@@ -51,7 +51,7 @@ Số sửa chủ yếu ở bin nhỏ nhất, gần ngưỡng r = 7,5 px, nên c�
 
 ### 3.2. Đối chiếu với nhãn S2-03
 
-Trong vùng đếm và dải D có 30 nhãn; **chỉ 4/30 khớp một hố đã đếm** (tâm lệch ≤ 0,5 r, ghép một–một), tức cũng chỉ 4/116 hố đã đếm có nhãn. Xem [doi_chieu_nhan.csv](evidence/s3-03/doi_chieu_nhan.csv).
+Trong vùng đếm và dải D có 30 nhãn; **chỉ 4/30 khớp một hố đã đếm**, tức cũng chỉ 4/116 hố đã đếm có nhãn. Tiêu chí là tâm lệch ≤ 0,5 $r_{	ext{nhãn}}$, ghép một–một, **không xét bán kính**. Bốn cặp khớp có tâm lệch trung bình 5,4 px (≈ 109 m) và |Δr| trung bình 2,6 px. Con số 4/30 là mức đồng thuận giữa hai bộ chú thích, không phải Recall_known của máy. Xem [doi_chieu_nhan.csv](evidence/s3-03/doi_chieu_nhan.csv).
 
 Tỉ lệ thấp không chứng minh bản đếm đúng. Khi phóng to các nhãn không khớp ở bản đếm trước, phần lớn nằm trên nền phẳng hoặc lệch khỏi hố, chỉ khoảng 3–5 nhãn có dấu vết hố thật. Nhận định này mới do Claude nhìn trên 4 ô, cần Tiến và Quốc Anh xem lại. Nếu đúng, Recall_known ở các ô này có thể bị ảnh hưởng. Nhãn S2-03 không dùng được làm mốc kiểm bản đếm, và tài liệu này không sửa nhãn.
 
@@ -101,15 +101,15 @@ Dự đoán trước khi đếm lại rằng tỉ số D ≥ 424 m sẽ giảm c
 
 ### 5.1. Trên bản đếm tay
 
-Với mỗi vùng, nếu chỉ đếm được tỉ lệ c hố thật thì tỉ số đo được bị nhân với $c_M / c_L$.
+Nếu ở mỗi vùng chỉ đếm được tỉ lệ c hố thật thì tỉ số đo được bằng tỉ số thật nhân $c_L / c_M$. Bảng dưới là **tỉ số suy ra sau hiệu chỉnh**, tức tỉ số đo nhân $c_M / c_L$.
 
-| Độ đầy đủ L / M | Tỉ số tổng | Tỉ số D ≥ 424 m |
+| Độ đầy đủ L / M | Tỉ số tổng suy ra | Tỉ số D ≥ 424 m suy ra |
 |---|---:|---:|
 | 100 % / 100 % | 1,13 | 2,06 |
 | 70 % / 100 % | 1,61 | 2,95 |
 | 100 % / 70 % | 0,79 | 1,44 |
 
-Chỉ cần độ đầy đủ lệch 30 % là tỉ số tổng đổi chiều, nên chiều của tỉ số 1,13 không có ý nghĩa. Ở dải chính cần thêm 21 hố vào Lunokhod 1 hoặc 25 hố vào Mare Frigoris mới đạt p < 0,05, nên kết luận "không khác biệt" khá bền. Ở D ≥ 424 m, chỉ thêm **1 hố** vào Lunokhod 1 là đạt p < 0,05 chưa hiệu chỉnh, nên con số p = 0,054 rất mong manh.
+Chỉ cần độ đầy đủ lệch 30 % là tỉ số tổng đổi chiều, nên chiều của tỉ số 1,13 không có ý nghĩa. Ở dải chính cần thêm 21 hố vào Lunokhod 1 hoặc 25 hố vào Mare Frigoris mới đạt p < 0,05, nên kết luận **chưa đủ bằng chứng có khác biệt** đứng vững trong các kịch bản đã thử (p dải chính 0,57; cả bảy kịch bản độ nhạy p ≥ 0,05). Không bác bỏ được giả thuyết không có nghĩa là đã chứng minh hai mật độ bằng nhau. Ở D ≥ 424 m, chỉ thêm **1 hố** vào Lunokhod 1 là đạt p < 0,05 chưa hiệu chỉnh, nên con số p = 0,054 rất mong manh.
 
 ### 5.2. Trên ứng viên máy
 
@@ -122,7 +122,7 @@ Máy chạy Hough, bỏ lớp `texture`, rồi lọc trùng; so với bản đ�
 | `radius_balanced` | Lunokhod 1 | 73 | 46 | 17 | 56 | 29 | 0,249 |
 | `radius_balanced` | Mare Frigoris | 43 | 27 | 0 | 43 | 27 | 0,220 |
 
-- **Bỏ sót:** cấu hình S2-15 chỉ tìm lại 12 % và 0 % số hố, nên tỉ số mật độ của máy lên tới 7,3, hoàn toàn do bỏ sót.
+- **Bỏ sót:** cấu hình S2-15 chỉ tìm lại 12 % và 0 % số hố. Mare Frigoris chỉ còn 1 vòng trong dải và vòng này không khớp hố nào, nên tỉ số 7,3 (11/184,7 so với 1/123,0) không có ý nghĩa.
 - **Phát hiện sai:** `radius_balanced` cho tỉ số 1,13, trùng với đếm tay, nhưng ở Mare Frigoris không có vòng nào đúng. **Sự trùng khớp này là ngẫu nhiên**: hố bỏ sót và phát hiện sai bù trừ nhau. Vì vậy không được coi tỉ số gần đúng là bằng chứng máy đếm đúng.
 
 Mật độ từ ứng viên máy chưa dùng được để so hai vùng.
@@ -131,7 +131,9 @@ Mật độ từ ứng viên máy chưa dùng được để so hai vùng.
 
 - **Kết luận chính:** trong dải 300–2.000 m, chưa có căn cứ nói hai bề mặt có mật độ hố khác nhau, nên chưa so được tuổi tương đối.
 - **Gợi ý cần kiểm chứng:** Lunokhod 1 có nhiều hố ≥ 424 m hơn, còn số hố nhỏ tương đương. Mẫu này chưa đủ vững để diễn giải, và không nên trình bày là "Lunokhod 1 cổ hơn".
-- **Câu trong S2-09 cần sửa:** "Mare Frigoris có nhiều hố nhỏ hơn" và "hai đường tích lũy cắt nhau" không còn giữ được: trên bản mới, Lunokhod 1 cao hơn ở mọi ngưỡng.
+- **Câu trong S2-09 cần sửa, tách hai ý:**
+  - "Mare Frigoris có nhiều hố nhỏ hơn" **vẫn đúng về mô tả**: ở lớp 300–424 m, 33/123,0 = 0,268 so với 42/184,7 = 0,227 hố/km², nhưng không có ý nghĩa thống kê (p riêng lớp này 0,48).
+  - "Hai đường tích lũy cắt nhau" **không còn đúng**: trên bản mới, Lunokhod 1 cao hơn ở mọi ngưỡng tích lũy đã xét.
 
 Giới hạn khác: 116 hố trên hai vùng nhỏ; ảnh browse 8 bit; không có phương vị Mặt Trời; hố thứ cấp chưa tách; và không quy đổi được ra tuổi tuyệt đối.
 
@@ -139,9 +141,10 @@ Giới hạn khác: 116 hố trên hai vùng nhỏ; ảnh browse 8 bit; không c
 
 ## 7. Việc cần làm sau khi bản đếm được duyệt
 
-1. Điền `reviewed_by` (đã điền `counted_by`). Quốc Anh tự xác nhận trên PR, như review PR #30 yêu cầu; bản S2-09 chưa có xác nhận này trên PR #30.
-2. Chuyển `data/s303_counts/` thành số chính thức và chạy lại `scripts/s209_density.py`. `so_sanh.json` được app và test dùng.
-3. Cập nhật Bảng 1.1, mục 3.6, 4.1, 5.7 và chạy lại phần S2-09 của S3-10.
+1. Điền `reviewed_by` (đã điền `counted_by`). Quốc Anh tự xác nhận trên PR này; PR #47 chỉ ghi xác nhận cho bản S2-09.
+2. Chuyển `data/s303_counts/` thành số chính thức, chạy lại `scripts/s209_density.py` và cập nhật `docs/evidence/s2-09/so_sanh.json` (app và `tests/test_integration_density.py` đọc file này).
+3. Cập nhật báo cáo: **Bảng 4.8, Hình 4.4** (`04_chuong_4_du_lieu_danh_gia.md`), **Bảng 5.1 hàng M3** (`05_chuong_5_he_thong_ket_luan.md`) và mục 3.6 Chương 3.
+4. Chạy lượt tái tạo mới cho bảng S2-09 của S3-10.
 
 ## 8. Cách chạy
 

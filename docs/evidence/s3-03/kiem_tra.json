@@ -255,98 +255,98 @@
       {
         "do_day_du_L": 1.0,
         "do_day_du_M": 1.0,
-        "ty_so_tong": 1.13,
-        "ty_so_424": 2.06
+        "ty_so_tong_suy_ra": 1.13,
+        "ty_so_424_suy_ra": 2.06
       },
       {
         "do_day_du_L": 1.0,
         "do_day_du_M": 0.9,
-        "ty_so_tong": 1.02,
-        "ty_so_424": 1.86
+        "ty_so_tong_suy_ra": 1.02,
+        "ty_so_424_suy_ra": 1.86
       },
       {
         "do_day_du_L": 1.0,
         "do_day_du_M": 0.8,
-        "ty_so_tong": 0.9,
-        "ty_so_424": 1.65
+        "ty_so_tong_suy_ra": 0.9,
+        "ty_so_424_suy_ra": 1.65
       },
       {
         "do_day_du_L": 1.0,
         "do_day_du_M": 0.7,
-        "ty_so_tong": 0.79,
-        "ty_so_424": 1.44
+        "ty_so_tong_suy_ra": 0.79,
+        "ty_so_424_suy_ra": 1.44
       },
       {
         "do_day_du_L": 0.9,
         "do_day_du_M": 1.0,
-        "ty_so_tong": 1.26,
-        "ty_so_424": 2.29
+        "ty_so_tong_suy_ra": 1.26,
+        "ty_so_424_suy_ra": 2.29
       },
       {
         "do_day_du_L": 0.9,
         "do_day_du_M": 0.9,
-        "ty_so_tong": 1.13,
-        "ty_so_424": 2.06
+        "ty_so_tong_suy_ra": 1.13,
+        "ty_so_424_suy_ra": 2.06
       },
       {
         "do_day_du_L": 0.9,
         "do_day_du_M": 0.8,
-        "ty_so_tong": 1.0,
-        "ty_so_424": 1.83
+        "ty_so_tong_suy_ra": 1.0,
+        "ty_so_424_suy_ra": 1.83
       },
       {
         "do_day_du_L": 0.9,
         "do_day_du_M": 0.7,
-        "ty_so_tong": 0.88,
-        "ty_so_424": 1.61
+        "ty_so_tong_suy_ra": 0.88,
+        "ty_so_424_suy_ra": 1.61
       },
       {
         "do_day_du_L": 0.8,
         "do_day_du_M": 1.0,
-        "ty_so_tong": 1.41,
-        "ty_so_424": 2.58
+        "ty_so_tong_suy_ra": 1.41,
+        "ty_so_424_suy_ra": 2.58
       },
       {
         "do_day_du_L": 0.8,
         "do_day_du_M": 0.9,
-        "ty_so_tong": 1.27,
-        "ty_so_424": 2.32
+        "ty_so_tong_suy_ra": 1.27,
+        "ty_so_424_suy_ra": 2.32
       },
       {
         "do_day_du_L": 0.8,
         "do_day_du_M": 0.8,
-        "ty_so_tong": 1.13,
-        "ty_so_424": 2.06
+        "ty_so_tong_suy_ra": 1.13,
+        "ty_so_424_suy_ra": 2.06
       },
       {
         "do_day_du_L": 0.8,
         "do_day_du_M": 0.7,
-        "ty_so_tong": 0.99,
-        "ty_so_424": 1.81
+        "ty_so_tong_suy_ra": 0.99,
+        "ty_so_424_suy_ra": 1.81
       },
       {
         "do_day_du_L": 0.7,
         "do_day_du_M": 1.0,
-        "ty_so_tong": 1.61,
-        "ty_so_424": 2.95
+        "ty_so_tong_suy_ra": 1.61,
+        "ty_so_424_suy_ra": 2.95
       },
       {
         "do_day_du_L": 0.7,
         "do_day_du_M": 0.9,
-        "ty_so_tong": 1.45,
-        "ty_so_424": 2.65
+        "ty_so_tong_suy_ra": 1.45,
+        "ty_so_424_suy_ra": 2.65
       },
       {
         "do_day_du_L": 0.7,
         "do_day_du_M": 0.8,
-        "ty_so_tong": 1.29,
-        "ty_so_424": 2.36
+        "ty_so_tong_suy_ra": 1.29,
+        "ty_so_424_suy_ra": 2.36
       },
       {
         "do_day_du_L": 0.7,
         "do_day_du_M": 0.7,
-        "ty_so_tong": 1.13,
-        "ty_so_424": 2.06
+        "ty_so_tong_suy_ra": 1.13,
+        "ty_so_424_suy_ra": 2.06
       }
     ]
   },
