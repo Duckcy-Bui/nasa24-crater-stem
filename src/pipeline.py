@@ -20,7 +20,9 @@ from uuid import uuid4
 
 import numpy as np
 
-from src.contracts import ContractError, read_json, save_run, validate_crater_set, validate_metadata
+from src.contracts import (
+    ContractError, read_json, save_run, validate_crater_set, validate_metadata,
+)
 from src.hough import DEFAULT_PARAMS as HOUGH_DEFAULTS, detect_circles, resolve_hough_params
 from src.postprocessing import filter_candidates
 from src.preprocessing import preprocess
@@ -29,8 +31,17 @@ from src.scoring import reference_is_reviewed, score_player
 PIPELINE_VERSION = "s113-e2e-v1"
 
 
-def load_image(image_id: str, processed_dir: str | Path) -> tuple[dict[str, Any], np.ndarray, np.ndarray | None]:
-    """Đọc metadata, ảnh .npy 512×512 và mặt nạ hợp lệ (nếu có) của một ảnh cắt."""
+def load_image(
+    image_id: str, processed_dir: str | Path
+) -> tuple[dict[str, Any], np.ndarray, np.ndarray | None]:
+    """Đọc metadata, ảnh cắt và mặt nạ hợp lệ tùy chọn.
+
+    Đầu vào: image_id là mã ảnh; processed_dir là str/Path chứa các file
+    <id>.json, <id>.npy và tùy chọn <id>_valid_mask.npy của ảnh 512 × 512.
+    Đầu ra: tuple (metadata: dict, image: ndarray, valid: ndarray bool
+    hoặc None). Kiểm metadata và image_id; truyền lỗi đọc/kiểm hợp đồng.
+    Quy ước ảnh và nguồn dữ liệu theo mục 3.1 báo cáo.
+    """
     processed_dir = Path(processed_dir)
     metadata = read_json(processed_dir / f"{image_id}.json")
     validate_metadata(metadata)
@@ -43,10 +54,13 @@ def load_image(image_id: str, processed_dir: str | Path) -> tuple[dict[str, Any]
 
 
 def find_player_answer(image_id: str, player_root: str | Path) -> Path | None:
-    """Lần lưu mới nhất của người chơi cho đúng image_id.
+    """Tìm file vòng người chơi mới nhất cho đúng ảnh.
 
-    Xếp theo created_at_utc trong run.json (đủ độ chính xác dưới giây), rồi theo tên thư mục.
-    File hỏng hoặc không phải object JSON thì bỏ qua.
+    Đầu vào: image_id là mã ảnh; player_root là str/Path chứa các thư mục
+    lượt chơi với craters.json và run.json tùy chọn.
+    Đầu ra: Path của craters.json mới nhất hoặc None nếu không tìm thấy.
+    Xếp theo chuỗi created_at_utc (đủ độ chính xác dưới giây), rồi tên thư
+    mục; bỏ qua file hỏng hoặc không phải object JSON. Chỉ đọc, không ghi.
     """
     root = Path(player_root)
     if not root.is_dir():
@@ -57,7 +71,9 @@ def find_player_answer(image_id: str, player_root: str | Path) -> Path | None:
             data = read_json(path)
             if not isinstance(data, dict) or data.get("image_id") != image_id:
                 continue
-            run = read_json(path.parent / "run.json") if (path.parent / "run.json").exists() else {}
+            run = (
+                read_json(path.parent / "run.json") if (path.parent / "run.json").exists() else {}
+            )
             created = run.get("created_at_utc", "") if isinstance(run, dict) else ""
         except (OSError, ValueError):
             continue
@@ -65,8 +81,16 @@ def find_player_answer(image_id: str, player_root: str | Path) -> Path | None:
     return max(matches)[2] if matches else None
 
 
-def load_overlay_set(path: str | Path | None, metadata: dict[str, Any], expected_source: str) -> dict[str, Any] | None:
-    """Đọc một danh sách hố để vẽ cạnh; sai hợp đồng hoặc sai nguồn thì báo lỗi."""
+def load_overlay_set(
+    path: str | Path | None, metadata: dict[str, Any], expected_source: str
+) -> dict[str, Any] | None:
+    """Đọc và kiểm bộ vòng dùng vẽ đối chiếu.
+
+    Đầu vào: path là str/Path file JSON hoặc None; metadata là dict ảnh;
+    expected_source là tên nguồn yêu cầu (player/catalogue).
+    Đầu ra: dict bộ vòng hoặc None khi không có path; truyền lỗi đọc và
+    ContractError khi sai hợp đồng hoặc sai nguồn. Không sửa dữ liệu.
+    """
     if path is None:
         return None
     data = read_json(path)
@@ -77,7 +101,13 @@ def load_overlay_set(path: str | Path | None, metadata: dict[str, Any], expected
 
 
 def radius_range(metadata: dict[str, Any], hough: dict[str, Any]) -> tuple[int, int]:
-    """Dải bán kính của ảnh, kẹp trong giới hạn Hough [5, 128]."""
+    """Lấy giao dải bán kính ảnh với giới hạn cấu hình Hough.
+
+    Đầu vào: metadata là dict có radius.r_min_px/r_max_px; hough là dict
+    đã phân giải với r_min_limit_px/r_max_limit_px (mặc định 5 và 128).
+    Đầu ra: tuple hai cận nguyên bao gồm hai đầu, đơn vị pixel; giao rỗng
+    gây ContractError. Dải ảnh xuất phát từ (2.14), mục 2.2.4 báo cáo.
+    """
     r_min = max(int(metadata["radius"]["r_min_px"]), hough["r_min_limit_px"])
     r_max = min(int(metadata["radius"]["r_max_px"]), hough["r_max_limit_px"])
     if r_min > r_max:
@@ -88,6 +118,15 @@ def radius_range(metadata: dict[str, Any], hough: dict[str, Any]) -> tuple[int, 
 def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: dict[str, Any],
                    machine: dict[str, Any], player: dict[str, Any] | None,
                    reference: dict[str, Any] | None) -> None:
+    """Ghi ảnh đối chiếu vòng tròn và biên Hough ra đĩa.
+
+    Đầu vào: path là Path ảnh đích; gray là ndarray xám [0, 1], edges là
+    ndarray biên 512 × 512; metadata chứa mã ảnh/tỷ lệ m/px; machine là
+    dict vòng, player và reference là dict tùy chọn. Tâm/bán kính theo
+    pixel, gốc trên trái như mục 3.1 báo cáo.
+    Đầu ra: None; dùng backend Matplotlib Agg, ghi hình gồm hai ô vào path
+    và đóng figure sau khi ghi. Ảnh phục vụ đối chiếu, không tự chấm điểm.
+    """
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -98,28 +137,53 @@ def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: di
     figure.patch.set_facecolor("#0a0c0f")
     extent = [-0.5, 511.5, 511.5, -0.5]
     axes[0].imshow(gray, cmap="gray", vmin=0, vmax=1, extent=extent)
-    axes[0].set_title("Ảnh + vòng tròn (tọa độ 512 px, gốc trên-trái)", color="#ecEAE4", fontsize=10)
+    axes[0].set_title(
+        "Ảnh + vòng tròn (tọa độ 512 px, gốc trên-trái)", color="#ecEAE4", fontsize=10
+    )
     axes[1].imshow(edges, cmap="gray", extent=extent)
-    axes[1].set_title(f"Biên B8 đưa vào Hough ({int(edges.sum())} pixel)", color="#ecEAE4", fontsize=10)
-    layers = [(machine, "#5FE3F5", "--", 1.1), (player, "#FFD84D", "-", 1.6), (reference, "#FF8A7A", ":", 2.0)]
+    axes[1].set_title(
+        f"Biên B8 đưa vào Hough ({int(edges.sum())} pixel)", color="#ecEAE4", fontsize=10
+    )
+    layers = [
+        (machine, "#5FE3F5", "--", 1.1), (player, "#FFD84D", "-", 1.6),
+        (reference, "#FF8A7A", ":", 2.0),
+    ]
     for data, color, style, width in layers:
         if not data:
             continue
         for c in data["circles"]:
             for axis in axes:
-                axis.add_patch(Circle((c["x"], c["y"]), c["r"], fill=False, edgecolor=color, linestyle=style, linewidth=width))
+                axis.add_patch(Circle(
+                    (c["x"], c["y"]), c["r"], fill=False, edgecolor=color,
+                    linestyle=style, linewidth=width,
+                ))
     for axis in axes:
-        axis.set_xlim(-0.5, 511.5); axis.set_ylim(511.5, -0.5)
+        axis.set_xlim(-0.5, 511.5)
+        axis.set_ylim(511.5, -0.5)
         axis.tick_params(colors="#A7ADB6", labelsize=7)
-    handles = [Line2D([], [], color="#5FE3F5", linestyle="--", label=f"Máy, ứng viên thô ({len(machine['circles'])})")]
+    handles = [Line2D(
+        [], [], color="#5FE3F5", linestyle="--",
+        label=f"Máy, ứng viên thô ({len(machine['circles'])})",
+    )]
     if player:
-        handles.append(Line2D([], [], color="#FFD84D", label=f"Người chơi ({len(player['circles'])})"))
+        handles.append(Line2D(
+            [], [], color="#FFD84D", label=f"Người chơi ({len(player['circles'])})"
+        ))
     if reference:
         status = "đã kiểm chéo" if reference_is_reviewed(reference) else "chưa kiểm chéo"
-        handles.append(Line2D([], [], color="#FF8A7A", linestyle=":", label=f"Nhãn tham chiếu, {status} ({len(reference['circles'])})"))
-    axes[0].legend(handles=handles, loc="upper right", fontsize=7, facecolor="#111419", edgecolor="#303743", labelcolor="#ECEAE4")
-    figure.suptitle(f"S1-13 · {metadata['image_id']} · {metadata['scale_m_per_px']} m/px · không chấm điểm: chưa có danh mục đã xác minh",
-                    color="#A7ADB6", fontsize=9)
+        handles.append(Line2D(
+            [], [], color="#FF8A7A", linestyle=":",
+            label=f"Nhãn tham chiếu, {status} ({len(reference['circles'])})",
+        ))
+    axes[0].legend(
+        handles=handles, loc="upper right", fontsize=7, facecolor="#111419",
+        edgecolor="#303743", labelcolor="#ECEAE4",
+    )
+    figure.suptitle(
+        f"S1-13 · {metadata['image_id']} · {metadata['scale_m_per_px']} m/px · "
+        "không chấm điểm: chưa có danh mục đã xác minh",
+        color="#A7ADB6", fontsize=9,
+    )
     figure.savefig(path, dpi=110, facecolor=figure.get_facecolor())
     plt.close(figure)
 
@@ -127,10 +191,16 @@ def render_overlay(path: Path, gray: np.ndarray, edges: np.ndarray, metadata: di
 def detect_machine(metadata: dict[str, Any], image: np.ndarray, valid: np.ndarray | None, *,
                    hough_params: dict[str, Any] | None = None,
                    preprocess_params: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Tiền xử lý → Hough → chấm sáng–tối S1-11 cho một ảnh đã nạp.
+    """Chạy tiền xử lý, Hough và kiểm sáng–tối trên một ảnh đã nạp.
 
-    Trả danh sách hố của máy (source="machine") cùng tham số và thời gian từng
-    bước; dùng chung cho run_end_to_end và màn hình chấm bài (S2-08).
+    Đầu vào: metadata là dict ảnh; image là ndarray cường độ; valid là
+    ndarray bool mặt nạ cùng ảnh hoặc None. hough_params/preprocess_params
+    là dict ghi đè cấu hình hoặc None để dùng mặc định; hình học dùng pixel.
+    Đầu ra: dict gồm các mảng pre, cấu hình Hough, dải bán kính, vòng thô,
+    bộ vòng machine, trạng thái hậu xử lý và thời gian hai bước theo giây.
+    Hậu xử lý chưa cài thì giữ vòng thô, ghi skipped. Không lưu file;
+    dùng chung cho run_end_to_end và màn hình chấm bài S2-08. Luồng ở
+    mục 3.1; các khối tính toán ở mục 2.1–2.3 và 3.2–3.4 báo cáo.
     """
     t0 = time.perf_counter()
     pre = preprocess(image, metadata, preprocess_params, valid_mask=valid)
@@ -143,93 +213,156 @@ def detect_machine(metadata: dict[str, Any], image: np.ndarray, valid: np.ndarra
     t_hough = time.perf_counter() - t0
 
     try:
-        circles = filter_candidates(raw_circles, pre["gray"], metadata, {"valid_mask": pre["valid_mask"]})
+        circles = filter_candidates(
+            raw_circles, pre["gray"], metadata, {"valid_mask": pre["valid_mask"]}
+        )
         shading_counts: dict[str, int] = {}
         for c in circles:
             status = (c.get("shading") or {}).get("status", "none")
             shading_counts[status] = shading_counts.get(status, 0) + 1
-        postprocess = {"status": "applied", "circles_in": len(raw_circles), "circles_out": len(circles),
-                       "shading_counts": shading_counts}
+        postprocess = {
+            "status": "applied", "circles_in": len(raw_circles), "circles_out": len(circles),
+            "shading_counts": shading_counts,
+        }
     except NotImplementedError as error:
         circles = raw_circles
         postprocess = {"status": "skipped", "reason": f"S1-11 chưa cài: {error}"}
 
-    machine = {"schema_version": "1.0", "data_kind": metadata["data_kind"], "image_id": metadata["image_id"],
-               "source": "machine", "reference_source": None, "circles": circles}
+    machine = {
+        "schema_version": "1.0", "data_kind": metadata["data_kind"],
+        "image_id": metadata["image_id"],
+        "source": "machine", "reference_source": None, "circles": circles,
+    }
     validate_crater_set(machine, metadata)
     return {"pre": pre, "hough": hough, "r_min": r_min, "r_max": r_max, "raw_circles": raw_circles,
             "machine": machine, "postprocess": postprocess,
             "seconds_preprocess": t_pre, "seconds_hough": t_hough}
 
 
-def run_end_to_end(image_id: str, *, processed_dir: str | Path, output_root: str | Path, code_version: str,
-                   player_path: str | Path | None = None, reference_path: str | Path | None = None,
-                   hough_params: dict[str, Any] | None = None, preprocess_params: dict[str, Any] | None = None,
-                   scoring_params: dict[str, Any] | None = None, render: bool = True) -> tuple[Path, dict[str, Any]]:
-    """Chạy một ảnh từ đầu đến cuối; trả (thư mục run, tóm tắt)."""
+def run_end_to_end(
+    image_id: str, *, processed_dir: str | Path, output_root: str | Path, code_version: str,
+    player_path: str | Path | None = None, reference_path: str | Path | None = None,
+    hough_params: dict[str, Any] | None = None, preprocess_params: dict[str, Any] | None = None,
+    scoring_params: dict[str, Any] | None = None, render: bool = True
+) -> tuple[Path, dict[str, Any]]:
+    """Chạy một ảnh đến kết quả lưu trên đĩa và tóm tắt.
+
+    Đầu vào: image_id là mã ảnh; processed_dir/output_root là str/Path
+    thư mục vào/ra; code_version là chuỗi phiên bản. player_path và
+    reference_path là đường dẫn JSON tùy chọn; hough_params,
+    preprocess_params, scoring_params là dict ghi đè hoặc None. render
+    (bool) chọn ghi overlay.png; vòng dùng pixel, tỷ lệ metadata dùng m/px.
+    Đầu ra: tuple (Path thư mục mới, dict tóm tắt thời gian theo giây và
+    trạng thái từng bước). Ghi metadata/tham số/vòng/run, arrays.npz,
+    summary.json; ghi vòng người, nhãn và score.json khi có, overlay khi
+    render=True. Lỗi sau save_run thì xóa thư mục lượt dở rồi truyền lỗi;
+    lỗi ngay trong save_run không được dọn ở đây. Không tính độ đo phát hiện
+    của máy; chấm người chơi theo mục 3.7, lưu kết quả theo mục 3.1 báo cáo.
+    """
     started = time.perf_counter()
     metadata, image, valid = load_image(image_id, processed_dir)
     player = load_overlay_set(player_path, metadata, "player")
     reference = load_overlay_set(reference_path, metadata, "catalogue")
 
-    detected = detect_machine(metadata, image, valid, hough_params=hough_params, preprocess_params=preprocess_params)
+    detected = detect_machine(
+        metadata, image, valid, hough_params=hough_params, preprocess_params=preprocess_params
+    )
     pre, hough, machine = detected["pre"], detected["hough"], detected["machine"]
     r_min, r_max, raw_circles = detected["r_min"], detected["r_max"], detected["raw_circles"]
-    t_pre, t_hough, postprocess = detected["seconds_preprocess"], detected["seconds_hough"], detected["postprocess"]
+    t_pre, t_hough, postprocess = (
+        detected["seconds_preprocess"], detected["seconds_hough"], detected["postprocess"]
+    )
 
     score = None
     if player:
         score = score_player(player, machine, reference, scoring_params or {}, metadata=metadata)
         catalogue = score["vs_catalogue"]
-        scoring = {"status": "scored" if catalogue["status"] == "scored" else "machine_agreement_only",
-                   "score": score["score"], "reason": catalogue["reason"],
-                   "matched_machine": score["vs_machine"]["matched"], "catalogue_correct": catalogue["correct"]}
+        scoring = {
+            "status": "scored" if catalogue["status"] == "scored" else "machine_agreement_only",
+            "score": score["score"], "reason": catalogue["reason"],
+            "matched_machine": score["vs_machine"]["matched"],
+            "catalogue_correct": catalogue["correct"],
+        }
     else:
-        scoring = {"status": "skipped",
-                   "reason": "Chưa có câu trả lời người chơi để chấm. Vòng của máy không phải đáp án."}
+        scoring = {
+            "status": "skipped",
+            "reason": "Chưa có câu trả lời người chơi để chấm. Vòng của máy không phải đáp án.",
+        }
     summary = {
         "pipeline_version": PIPELINE_VERSION,
         "image_id": image_id,
         "data_kind": metadata["data_kind"],
         "steps": {
             "load": {"status": "ok", "valid_mask": valid is not None},
-            "preprocess": {"status": "ok", "seconds": round(t_pre, 3), "edge_px": int(pre["edges"].sum()),
-                           "valid_ratio": pre["params"]["valid_ratio"]},
-            "hough": {"status": "ok", "seconds": round(t_hough, 3), "voting_method": hough["voting_method"],
-                      "r_min_px": r_min, "r_max_px": r_max, "circles": len(raw_circles),
-                      "hit_max_circles": len(raw_circles) >= hough["max_circles"]},
+            "preprocess": {
+                "status": "ok", "seconds": round(t_pre, 3), "edge_px": int(pre["edges"].sum()),
+                "valid_ratio": pre["params"]["valid_ratio"],
+            },
+            "hough": {
+                "status": "ok", "seconds": round(t_hough, 3),
+                "voting_method": hough["voting_method"],
+                "r_min_px": r_min, "r_max_px": r_max, "circles": len(raw_circles),
+                "hit_max_circles": len(raw_circles) >= hough["max_circles"],
+            },
             "postprocess": postprocess,
-            "player": {"status": "loaded" if player else "none", "circles": len(player["circles"]) if player else 0,
-                       "path": str(player_path) if player else None},
-            "reference": {"status": "loaded" if reference else "none", "circles": len(reference["circles"]) if reference else 0,
-                          "reference_source": reference["reference_source"] if reference else None,
-                          "reviewed": reference_is_reviewed(reference)},
+            "player": {
+                "status": "loaded" if player else "none",
+                "circles": len(player["circles"]) if player else 0,
+                "path": str(player_path) if player else None,
+            },
+            "reference": {
+                "status": "loaded" if reference else "none",
+                "circles": len(reference["circles"]) if reference else 0,
+                "reference_source": reference["reference_source"] if reference else None,
+                "reviewed": reference_is_reviewed(reference),
+            },
             "scoring": scoring,
         },
     }
     params = {"pipeline_version": PIPELINE_VERSION, "preprocess": pre["params"], "hough": hough,
               "hough_defaults": HOUGH_DEFAULTS, "radius_px": [r_min, r_max]}
     radii = range(r_min, r_max + 1, hough["radius_step_px"])
-    radius_search = {"metadata_px": [metadata["radius"]["r_min_px"], metadata["radius"]["r_max_px"]],
-                     "bounds_px": [r_min, r_max], "step_px": radii.step,
-                     "count": len(radii), "last_radius_px": radii[-1]}
+    radius_search = {
+        "metadata_px": [metadata["radius"]["r_min_px"], metadata["radius"]["r_max_px"]],
+        "bounds_px": [r_min, r_max], "step_px": radii.step,
+        "count": len(radii), "last_radius_px": radii[-1],
+    }
     params["radius_search"] = radius_search
     summary["steps"]["hough"]["radius_search"] = radius_search
-    run_id = f"e2e_{image_id}_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
-    directory = save_run(output_root, run_id, metadata=metadata, crater_set=machine, params=params, code_version=code_version)
-    # A run directory is either complete or removed: never leave craters.json without summary/overlay.
+    run_id = (
+        f"e2e_{image_id}_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
+    )
+    directory = save_run(
+        output_root, run_id, metadata=metadata, crater_set=machine, params=params,
+        code_version=code_version,
+    )
+    # A run directory is either complete or removed: never leave craters.json
+    # without summary/overlay.
     try:
         summary["seconds_total"] = round(time.perf_counter() - started, 3)
         if player:
-            (directory / "player.json").write_text(json.dumps(player, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            (directory / "player.json").write_text(
+                json.dumps(player, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
         if score:
-            (directory / "score.json").write_text(json.dumps(score, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            (directory / "score.json").write_text(
+                json.dumps(score, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
         if reference:
-            (directory / "reference.json").write_text(json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        np.savez_compressed(directory / "arrays.npz", gray=pre["gray"], edges=pre["edges"], theta=pre["theta"])
+            (directory / "reference.json").write_text(
+                json.dumps(reference, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
+        np.savez_compressed(
+            directory / "arrays.npz", gray=pre["gray"], edges=pre["edges"], theta=pre["theta"]
+        )
         if render:
-            render_overlay(directory / "overlay.png", pre["gray"], pre["edges"], metadata, machine, player, reference)
-        (directory / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            render_overlay(
+                directory / "overlay.png", pre["gray"], pre["edges"], metadata, machine,
+                player, reference,
+            )
+        (directory / "summary.json").write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
     except BaseException:
         shutil.rmtree(directory, ignore_errors=True)
         raise

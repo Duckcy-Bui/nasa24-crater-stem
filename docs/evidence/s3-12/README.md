@@ -9,3 +9,13 @@ python -B scripts/verify_report_numerics.py --out outputs/report_numerics.json
 Đầu ra phải là file mới. Script yêu cầu đủ 26 ảnh 512 × 512 có toàn bộ pixel hợp lệ; dùng dữ liệu float32, đối chiếu trung bình khối k=2 với OpenCV `INTER_AREA`, Gauss σ=1,5/kernel 11 và Sobel với biên `REFLECT_101`. Sai số tính bằng float64; MSE gộp theo số phần tử. Ngưỡng kiểm sai số lớn nhất là 1e-5. Mọi phép tính xác định, không dùng lấy mẫu ngẫu nhiên. Script gọi lại `tiny_example()` của `verify_hough_examples.py` để so từng ma trận tính tay 5 × 5 với NumPy.
 
 Kết quả: 78/78 đối chiếu có sai số lớn nhất dưới ngưỡng, ví dụ Hough khớp; bảng tổng hợp ở mục 3.8 của báo cáo, mã kiểm được dẫn từ Phụ lục B. Các khác biệt cỡ 1e-7 phát sinh từ thứ tự cộng và làm tròn float32/float64. Không so MSE của danh sách vòng Hough với OpenCV vì hai thuật toán/ngưỡng không tương đương.
+
+## Trung bình ± độ lệch chuẩn theo ảnh — 02/11/2026
+
+`ch4_mean_sd.csv` tóm tắt hai bảng đã lưu (`docs/evidence/s2-15/results.csv` và `docs/evidence/s2-06-s3-02/results.csv`) theo từng nhóm tập/phương pháp: số ảnh, Recall_known trung bình ± độ lệch chuẩn mẫu theo ảnh, Recall_known gộp TP/(TP+FN) và thời gian trung bình ± độ lệch chuẩn. Không chạy lại Hough; chỉ tính trên kết quả đã lưu. Không có Precision vì nhãn thưa.
+
+```bash
+python -B scripts/ch4_mean_sd.py
+```
+
+`tests/test_ch4_mean_sd.py` kiểm công thức và khóa file này với kết quả script.

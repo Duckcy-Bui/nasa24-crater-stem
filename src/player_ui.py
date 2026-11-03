@@ -10,16 +10,21 @@ from src.contracts import ContractError
 from src.player_annotations import build_player_crater_set, save_player_answers
 
 
-def handle_save_request(draft: dict[str, Any], event: dict[str, Any] | None,
-                        metadata: dict[str, Any], session_token: str,
-                        save_state: dict[str, Any], output_root: str | Path, *,
-                        before_save: Callable[[dict[str, Any]], None] | None = None) -> dict[str, Any]:
-    """Save only the current, validated snapshot; consume each nonce once.
+def handle_save_request(
+    draft: dict[str, Any], event: dict[str, Any] | None,
+    metadata: dict[str, Any], session_token: str,
+    save_state: dict[str, Any], output_root: str | Path, *,
+    before_save: Callable[[dict[str, Any]], None] | None = None,
+) -> dict[str, Any]:
+    """Xử lý một yêu cầu lưu hợp lệ đúng ảnh, phiên và phiên bản nháp.
 
-    The caller passes metadata for the image currently open, after applying
-    its canvas event. Old image/token/revision requests are ignored. Failed
-    writes are consumed too, so a rerun cannot retry them without a new click.
-    """
+    Vào: draft/event/metadata/save_state (dict, event có thể None), session_token
+    (str), output_root (str/Path); before_save là callback tùy chọn nhận bản sao
+    trạng thái đã nhận nonce. Caller truyền metadata ảnh hiện tại sau sự kiện vẽ.
+    Ra: dict trạng thái lưu mới và kết quả/ACK; chỉ ghi câu trả lời đúng snapshot.
+    Sự kiện cũ hoặc lặp bị bỏ qua; nonce của lần ghi lỗi vẫn được nhận để rerun
+    không ghi lại nếu chưa có lần bấm mới. Không sửa các dict đầu vào.
+    Tham chiếu: báo cáo mục 3.7."""
     updated = copy.deepcopy(save_state)
     if not isinstance(event, dict):
         return updated
@@ -29,7 +34,10 @@ def handle_save_request(draft: dict[str, Any], event: dict[str, Any] | None,
             or not isinstance(nonce, str) or not 1 <= len(nonce) <= 64):
         return updated
     revision = event.get("revision")
-    if isinstance(revision, bool) or not isinstance(revision, int) or revision != draft["revision"]:
+    if (
+        isinstance(revision, bool) or not isinstance(revision, int)
+        or revision != draft["revision"]
+    ):
         return updated
     handled = updated.get("handled_nonces", [])
     if nonce in handled:

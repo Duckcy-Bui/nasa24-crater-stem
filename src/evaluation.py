@@ -8,7 +8,19 @@ from src.scoring import reference_is_reviewed
 
 
 def evaluate(machine: dict, catalogue: dict, params: dict) -> dict:
-    """Evaluate known labels; complete coverage must be declared in catalogue."""
+    """Đánh giá vòng máy bằng nhãn kiểm chéo và ghép một–một.
+
+    Đầu vào: machine, catalogue là dict vòng cùng ảnh với tâm/bán kính
+    pixel; catalogue khai báo catalogue_coverage là sparse hoặc complete.
+    params là dict chứa metadata, matching=one_to_one và tùy chọn
+    center_tolerance_fraction (tỷ lệ bán kính nhãn, mặc định 0,5).
+    Đầu ra: dict trạng thái, TP/FN, cặp ghép, ID bị bỏ qua/chưa ghép và
+    các độ đo. Nhãn chưa kiểm chéo trả unavailable và độ đo None. Ghép
+    nhãn chắc chắn trước, sau đó bỏ qua dự đoán trong vùng uncertain.
+    Nhãn thưa chỉ cho Recall_known, không suy FP/Precision/F1; nhãn đầy
+    đủ mới cho các độ đo này. Mẫu số bằng 0 cho tỷ lệ None. Xem (2.20)–
+    (2.23), mục 2.4 báo cáo. Sai hợp đồng hoặc tham số gây ContractError.
+    """
     if not isinstance(params, dict):
         raise ContractError("params phải là một dict.")
     if params.get("matching", "one_to_one") != "one_to_one":

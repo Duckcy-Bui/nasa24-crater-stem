@@ -79,31 +79,14 @@ Bảng M.1 là khung phân công theo Quy định BTL Xử lý ảnh [@quydinh_b
 
 <!-- REPORT_LISTS -->
 
-# Danh mục ký hiệu và chữ viết tắt
+# Danh mục ký hiệu
 
-Bảng M.2 liệt kê ký hiệu; nghĩa cục bộ được giải thích tại công thức.
-
-| Ký hiệu | Ý nghĩa |
-|---|---|
-| $I, I_N, I_S, E, V$ | Ảnh, ảnh chuẩn hóa, ảnh làm trơn, ảnh biên, mặt nạ hợp lệ |
-| $M, N; x, y; a, b; r$ | Số hàng/cột; tọa độ pixel; tâm Hough; bán kính (px) |
-| $s, D, k$ | Tỷ lệ (m/px), đường kính (m), hệ số thu nhỏ |
-| $P_{lo}, P_{hi}, \sigma, R_g$ | Phân vị thấp/cao; độ lệch chuẩn và bán kính mặt nạ lọc Gauss |
-| $g_x,g_y,\left\lvert G\right\rvert,\theta;\varphi$ | Gradient theo hai trục, độ lớn/hướng; góc quét Hough |
-| $A_r,\mathcal D_r,S_r,T,R_n$ | Tích lũy, độ lệch vòng, số độ lệch, số góc, số bán kính |
-| $v_{min},\kappa,\tau_r,q,L$ | Phiếu/tỷ lệ tối thiểu, ngưỡng, điểm hỗ trợ, trần số vòng |
-| $B,K,J,E_n$ | Cỡ lô, số đỉnh, tổng đoạn đếm, số biên |
-| $r_{min/max},D_{min/max}$; $\Delta r,\Delta\varphi$; $d_{NMS},\delta_{NMS}$ | Cận bán kính/đường kính, bước bán kính/góc, ngưỡng NMS tâm/r |
-| $A_{sun},\alpha_N,\mathbf u,t,S,S_{raw},\tau$ | Góc nắng/Bắc, vector nắng, tọa độ; điểm sáng–tối và ngưỡng |
-| $\beta_0,\beta_1,\beta_2;\beta$ | Hệ số mặt phẳng độ sáng; ngưỡng cắt histogram |
-| $\mathbf c_i,\mathbf q_j,r_j^{ref},\delta_{ij},x_{ij}$ | Tâm dự đoán/nhãn, r nhãn, lệch tâm chuẩn hóa, biến ghép |
-| TP, FP, FN; $N_{known}$ | Số khớp, dương tính giả, bỏ sót; số nhãn chắc chắn |
-| $\rho,A,N_D;\mu_L,\mu_U,p$ | Mật độ, diện tích km², số hố; cận Poisson, xác suất kiểm định |
-| $d,R,r;n,b_h;c,P_U$ | Lệch tâm, r lớn/nhỏ; số vòng/bin/ô, diện tích khung bao (px) |
-| $n_p,n_q,n_1,m_1;x_0,y_0$ | Số dự đoán/nhãn trước/sau rút ma trận ghép; góc ô cắt |
-| $u,v,L,T,W,z,v_x,v_y$ | Con trỏ, góc bản đồ, bề rộng, mức phóng, góc vùng xem |
-| $e_{max},\mathrm{MSE};R_i,\overline{R},s_R,m$ | Sai số lớn nhất/MSE; Recall từng ảnh, trung bình, SD mẫu, số ảnh |
+| Ký hiệu và nghĩa (theo thứ tự trong từng nhóm) |
+|---|
+| **Ảnh và hình học.** $I,I',I_N,I_S$; $V,V'$; $E,E_C$: Ảnh gốc/thu/chuẩn hóa/trơn; mặt nạ gốc/thu; biên B8/Canny. $Y,C_R,C_G,C_B$: Độ sáng, kênh đỏ/lục/lam. $M,N$; $x,y$; $a,b$; $r,R$: Hàng/cột; pixel; tâm Hough; bán kính/lớn hơn (px); $i,j$: chỉ số. $s,s_{nguồn},D,k$; $x_0,y_0$: Tỷ lệ hiện tại/nguồn (m/px), đường kính (m), hệ số thu; gốc ô cắt. |
+| **Tiền xử lý và Hough.** $P_{lo},P_{hi},P_{90}$; $N_{ô},N_{bin}$; clipLimit, $\beta$: Phân vị thấp/cao/90 %; pixel/ô, mức xám; hệ số chặn, ngưỡng cắt CLAHE. $h,h_x,h_y$; $R_g,\sigma,\ell$; $K_x,K_y,\star$: Gauss 1D/theo x/y; bán kính lọc, độ lệch chuẩn, lề; Sobel x/y, tương quan. $g_x,g_y,\left\lvert G\right\rvert,\theta$; $T_{low},T_{high}$: Gradient x/y, độ lớn, hướng; ngưỡng Canny thấp/cao. $\mathcal D_r,d_x,d_y,\mathbf n$; $A_r,S_r,S_{max}$: Tập độ lệch, thành phần x/y, pháp tuyến; tích lũy; hệ số hỗ trợ tại r (số độ lệch toàn vòng hoặc ⌈2πr⌉ với gradient)/số độ lệch lớn nhất. $\varphi,\varphi_j,T,R_n,E_n,B,K,J,L$: Góc quét/thứ j, số góc/r/biên, cỡ lô, số đỉnh, tổng độ dài đoạn, trần vòng. $v_{min},\kappa,\tau_r,q,k_r$; $\Delta r,\Delta\varphi$; $d_{NMS},\delta_{NMS}$: Phiếu/tỷ lệ tối thiểu, ngưỡng, hỗ trợ, nhóm r; bước r/góc; ngưỡng tâm/r. $r_{min/max},D_{min/max}$; $A_{sun},\alpha_N,\psi,\Delta_s$: Cận r/D; góc nắng/Bắc/trong ảnh/sai hướng. |
+| **Sáng–tối và ghép.** $\mathbf u,\mathbf p,\mathbf c,t$; $x_c,y_c$; $I_i,\overline I,t_i,\overline t$: Hướng nắng, pixel, tâm, tọa độ dọc nắng; thành phần tâm; mẫu sáng/tọa độ, trung bình. $S,S_{raw},\tau$; $\beta_0,\beta_1,\beta_2$: Điểm sau/trước trừ nền, ngưỡng; mức nền, dốc x/y. $\mathbf c_i,\mathbf q_j,r_j^{ref}$; $\delta,\delta_{ij},x_{ij},\nu$: Tâm dự đoán/nhãn, r nhãn; lệch tâm chuẩn hóa, biến ghép, số cặp tối đa. |
+| **Đếm và độ đo.** TP, FP, FN; $TP_{known},FN_{known},N_{known}$: Khớp/sai/bỏ sót; khớp/bỏ sót/số nhãn chắc chắn. Precision, Recall, $F_1$; $Recall_{known}$: Chính xác, bao phủ, trung bình điều hòa; bao phủ nhãn đã biết. $N_{dự\,đoán}=n_p,N_{nhãn}=n_q$; $n_1,m_1$; $P,Q,Z,U,H$: Số dự đoán/nhãn trước rút ma trận; hàng/cột sau rút; pixel đĩa/vành/biên vành, hợp pixel đếm, hố gộp. $\rho,A,N_D,N(\ge D),N_{px\,hợp\,lệ}$: Mật độ, diện tích km², hố trong dải/≥D, số pixel hợp lệ. |
+| **Thống kê, tọa độ và sai số.** $\mu,\mu_L,\mu_U,X,P_\mu,p$; $N_1,N_2,A_1,A_2$: Kỳ vọng/cận Poisson, biến đếm, xác suất, giá trị kiểm định; số hố/diện tích hai vùng. $d,e_r,r_{ref},r_{dự\,đoán}$; $R_i,R_{gộp},\overline R,s_R,m,TP_i,N_i$: Lệch tâm/r, r nhãn/dự đoán; Recall ảnh/gộp/trung bình, SD, số ảnh, khớp/nhãn ảnh i. $u,v,u_0,v_0,W,z,v_x,v_y$: Con trỏ, gốc bản đồ, bề rộng, mức phóng, gốc vùng xem. $Z^{np},Z^{cv},P_e,e_{max},MSE$; $n,b_h,c,P_U$: Đầu ra NumPy/OpenCV, số phần tử, sai số cực đại/bình phương TB; vòng/hố, khoảng lớp, ô cắt, pixel khung bao. |
 
 : Bảng M.2. Ký hiệu toán học.
-
-LRO (Lunar Reconnaissance Orbiter), LROC (LRO Camera); NAC/WAC (Narrow/Wide Angle Camera); PDS (Planetary Data System); CTX/HiRISE: camera Sao Hỏa. CLAHE (Contrast Limited Adaptive Histogram Equalization); NMS (Non-Maximum Suppression); STEM (Science, Technology, Engineering, Mathematics). JSON/CSV: định dạng văn bản; CI (Continuous Integration); DOI (Digital Object Identifier). $\mathrm{Recall}_{known}$ chỉ đo tỷ lệ tìm lại nhãn đã biết; SD là độ lệch chuẩn.

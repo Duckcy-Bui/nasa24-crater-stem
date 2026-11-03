@@ -26,6 +26,12 @@ SQRT2_BINS_START_M = 250.0  # biên dưới bin √2 đầu tiên trong báo cá
 
 # ------------------------------------------------------------ thống kê Poisson / nhị thức
 def _poisson_cdf(k: int, mu: float) -> float:
+    """Tính P(X <= k) của Poisson để tìm cận ở Thuật toán 3.8.
+
+    k là số đếm nguyên, mu là kỳ vọng không âm (không đơn vị).
+    Trả xác suất float bằng tổng truy hồi, chặn trên ở 1; k < 0 trả 0.
+    Hàm là phép phụ trợ cho công thức (2.25), không sửa dữ liệu ngoài.
+    """
     if k < 0:
         return 0.0
     term = total = math.exp(-mu)
@@ -36,12 +42,24 @@ def _poisson_cdf(k: int, mu: float) -> float:
 
 
 def poisson_interval(n: int, conf: float = 0.95) -> tuple[float, float]:
-    """Khoảng tin cậy chính xác cho kỳ vọng Poisson khi quan sát n (Garwood, tìm nghiệm bằng chia đôi)."""
+    """Tìm khoảng Garwood cho kỳ vọng Poisson theo (2.25), Thuật toán 3.8.
+
+    n là số đếm nguyên không âm; conf là mức tin cậy trong (0, 1), mặc định
+    0.95 ứng với hai đuôi 0.025 trong báo cáo. Trả tuple (cận dưới, cận trên)
+    theo đơn vị số đếm, dùng chia đôi; n=0 có cận dưới 0, n<0 gây ValueError.
+    Muốn khoảng cho mật độ phải chia hai cận cho diện tích vùng.
+    """
     if n < 0:
         raise ValueError("n phải >= 0.")
     a = (1 - conf) / 2
 
     def solve(f, lo, hi):
+        """Tìm nghiệm gần đúng của hàm đơn điệu bằng chia đôi, Thuật toán 3.8.
+
+        f là callable cho giá trị dương khi mu còn nhỏ; lo/hi là cận kỳ vọng
+        Poisson, không đơn vị. Trả trung điểm float sau 200 lần chia đôi;
+        không sửa biến ngoài, chỉ gọi f tại các điểm thử.
+        """
         for _ in range(200):
             mid = (lo + hi) / 2
             if f(mid) > 0:
@@ -58,7 +76,13 @@ def poisson_interval(n: int, conf: float = 0.95) -> tuple[float, float]:
 
 
 def binomial_two_sided_p(k: int, n: int, p: float) -> float:
-    """p-value hai phía của kiểm định nhị thức chính xác (cộng các kết quả có xác suất <= P(k))."""
+    """Tính p-value nhị thức chính xác hai phía theo (2.26), Thuật toán 3.8.
+
+    k là số thành công quan sát, n là tổng số nguyên với 0 <= k <= n;
+    p là xác suất giả thuyết trong [0, 1]. Trả float trong [0, 1], cộng
+    xác suất các kết quả không lớn hơn xác suất quan sát (dung sai 1e-9).
+    Nếu n=0 trả 1. Không suy tuổi tuyệt đối từ p-value.
+    """
     if n == 0:
         return 1.0
     probs = [math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(n + 1)]
@@ -67,8 +91,17 @@ def binomial_two_sided_p(k: int, n: int, p: float) -> float:
 
 
 # ------------------------------------------------------------ vùng đếm
-def count_mask(rects: list[list[int]], exclude: list[list[int]] | None = None, size: int = 512) -> np.ndarray:
-    """Mặt nạ vùng đếm trên ô 512×512 từ các hình chữ nhật [x0, y0, x1, y1) giữ lại và loại bỏ."""
+def count_mask(rects: list[list[int]], exclude: list[list[int]] | None = None,
+               size: int = 512) -> np.ndarray:
+    """Tạo mặt nạ vùng đếm dùng trong Thuật toán 3.7.
+
+    rects/exclude là list hình chữ nhật pixel [x0, y0, x1, y1) giữ/bỏ;
+    tọa độ nguyên cần chuẩn hóa với 0 <= x0 <= x1 <= size và
+    0 <= y0 <= y1 <= size. exclude có thể None; size là cạnh ảnh (px),
+    mặc định 512. Trả mảng bool (size, size): hợp vùng giữ rồi trừ vùng bỏ;
+    không sửa các danh sách đầu vào. Hàm chỉ chặn một phần cận, không
+    cung cấp phép cắt ở mép tổng quát cho tọa độ ngoài ảnh.
+    """
     mask = np.zeros((size, size), dtype=bool)
     for x0, y0, x1, y1 in rects:
         mask[max(0, y0):min(size, y1), max(0, x0):min(size, x1)] = True
@@ -78,18 +111,32 @@ def count_mask(rects: list[list[int]], exclude: list[list[int]] | None = None, s
 
 
 def _source_shift(meta: dict) -> tuple[int, int]:
+    """Lấy độ dịch ô cắt về ảnh nguồn cho Thuật toán 3.7.
+
+    meta là dict metadata có downsample_k, crop_x0, crop_y0 theo pixel nguồn.
+    Trả tuple int (x0, y0); chỉ hỗ trợ k=1, k khác gây ValueError.
+    Đây là trường hợp không giảm mẫu của quy đổi tọa độ, không sửa metadata.
+    """
     if meta["downsample_k"] != 1:
         raise ValueError("S2-09 hiện chỉ hỗ trợ ô cắt k = 1 (mọi ô của bộ S1-06 đều k = 1).")
     return int(meta["crop_x0"]), int(meta["crop_y0"])
 
 
 # ------------------------------------------------------------ đếm một vùng
-def region_count(crops: list[dict], d_min_m: float, d_max_m: float, *, same_crater_center_frac: float = 0.5,
+def region_count(crops: list[dict], d_min_m: float, d_max_m: float, *,
+                 same_crater_center_frac: float = 0.5,
                  same_crater_radius_ratio: float = 0.7) -> dict:
-    """Đếm hố của một vùng gồm nhiều ô cắt cùng ảnh nguồn.
+    """Đếm hố nhiều ô cùng ảnh nguồn theo (2.24), (2.25), Thuật toán 3.7.
 
-    crops: [{"metadata": dict, "crater_set": dict (S1-05), "mask": bool 512×512, "valid": bool 512×512 | None}]
-    Trả dict: scale, diện tích (px, km²), danh sách hố (tọa độ nguồn, D), số đếm, mật độ và khoảng tin cậy.
+    crops là list dict gồm metadata, crater_set (S1-05), mask bool 512x512
+    và valid bool cùng cỡ hoặc None. Các ô phải cùng tỷ lệ m/px, cùng nguồn,
+    k=1. d_min_m/d_max_m là dải đường kính mét [min, max).
+    same_crater_center_frac giới hạn d/R, same_crater_radius_ratio giới hạn
+    r/R để gộp hố trùng giữa ô; hai tỷ số không đơn vị.
+    Trả dict tỷ lệ, diện tích hợp vùng (px, km²), hố theo tọa độ nguồn px/D
+    mét, số đếm, mật độ hố/km² và cận 95 %. Diện tích dùng mask AND valid;
+    điều kiện nhận tâm làm tròn dùng mask của chính ô. Diện tích 0 cho NaN
+    ở mật độ/cận. Không sửa crops; chỉ gộp bản ghi đầu ra của các hố trùng.
     """
     if not crops:
         raise ValueError("Vùng cần ít nhất một ô cắt.")
@@ -132,7 +179,8 @@ def region_count(crops: list[dict], d_min_m: float, d_max_m: float, *, same_crat
             dup = None
             for k in kept:
                 R, rr = max(k["r_px"], item["r_px"]), min(k["r_px"], item["r_px"])
-                if (math.hypot(k["x_src"] - item["x_src"], k["y_src"] - item["y_src"]) <= same_crater_center_frac * R
+                if (math.hypot(k["x_src"] - item["x_src"], k["y_src"] - item["y_src"])
+                        <= same_crater_center_frac * R
                         and rr / R >= same_crater_radius_ratio):
                     dup = k
                     break
@@ -158,7 +206,12 @@ def region_count(crops: list[dict], d_min_m: float, d_max_m: float, *, same_crat
 
 # ------------------------------------------------------------ phân bố kích thước
 def sqrt2_bins(d_min_m: float, d_max_m: float) -> list[float]:
-    """Biên bin √2 bắt đầu đúng tại d_min_m (dải đếm luôn khớp biên bin)."""
+    """Tạo biên bin căn hai theo mục 2.5 và Thuật toán 3.8.
+
+    d_min_m/d_max_m là cận đường kính mét, yêu cầu 0 < min < max.
+    Trả list float bắt đầu đúng tại min, nhân sqrt(2), kết thúc đúng max;
+    bin cuối có thể hẹp hơn để khớp dải đếm.
+    """
     edges = [d_min_m]
     while edges[-1] * math.sqrt(2) < d_max_m - 1e-9:
         edges.append(edges[-1] * math.sqrt(2))
@@ -167,7 +220,14 @@ def sqrt2_bins(d_min_m: float, d_max_m: float) -> list[float]:
 
 
 def size_frequency(region: dict, edges: list[float] | None = None) -> dict:
-    """Histogram theo bin √2 và tích lũy N(≥D)/km² tại các biên bin."""
+    """Tính histogram và tần suất tích lũy theo mục 2.5, Thuật toán 3.8.
+
+    region là dict từ region_count có d_range_m, craters.d_m và area_km2
+    dương. edges là list biên đường kính mét tăng dần; None/rỗng dùng bin
+    căn hai trên dải vùng. Trả dict edges_m, counts theo [a,b), cumulative
+    gồm D, N(>=D), mật độ hố/km² và cận Poisson 95 % theo (2.25) chia diện tích.
+    Không sửa region hoặc danh sách biên.
+    """
     d0, d1 = region["d_range_m"]
     edges = edges or sqrt2_bins(d0, d1)
     ds = np.array([c["d_m"] for c in region["craters"]], dtype=float)
@@ -183,7 +243,14 @@ def size_frequency(region: dict, edges: list[float] | None = None) -> dict:
 
 # ------------------------------------------------------------ so hai vùng
 def compare_regions(a: dict, b: dict) -> dict:
-    """So mật độ hai vùng; từ chối nếu khác tỷ lệ hoặc khác dải D."""
+    """So mật độ hai vùng theo (2.24), (2.26) và Thuật toán 3.8.
+
+    a, b là dict kết quả region_count có số n, diện tích km² dương, tỷ lệ
+    m/px và dải đường kính mét. Khác tỷ lệ hoặc dải gây ValueError.
+    Trả dict mật độ hai vùng (hố/km²), tỷ số a/b, p-value nhị thức hai phía,
+    tổng số hố và tỷ phần diện tích a; tỷ số là inf nếu b không có hố.
+    Không sửa hai vùng; so mật độ không tự chứng minh tuổi tương đối.
+    """
     if a["scale_m_per_px"] != b["scale_m_per_px"]:
         raise ValueError("Hai vùng phải cùng tỷ lệ ảnh (m/px).")
     if list(a["d_range_m"]) != list(b["d_range_m"]):
@@ -197,13 +264,22 @@ def compare_regions(a: dict, b: dict) -> dict:
 
 
 def summarize(crater_set: dict, metadata: dict, valid_pixel_count: int) -> dict:
-    """Thống kê một ô cho giao diện, theo hợp đồng docs/S2-13_TICH_HOP.md mục 1.
+    """Thống kê ô cho game theo mục 3.6, (2.24), (2.25) và S2-13 mục 1.
 
-    count: số vòng trong crater_set; D = 2·r·scale (m); diện tích = valid_pixel_count·scale²/10⁶ (km²);
-    histogram theo bin √2 bắt đầu tại D nhỏ nhất của dải tìm trong metadata (radius.d_min_m).
-    Thêm (app bỏ qua): khoảng tin cậy 95 % của mật độ.
+    crater_set là dict vòng có r theo px; metadata chứa image_id, tỷ lệ
+    m/px và dải đường kính radius theo mét. valid_pixel_count là số pixel
+    hợp lệ nguyên không âm, không nhận bool; giá trị sai gây ValueError.
+    Trả dict count, diện tích km², mật độ hố/km², histogram bin căn hai,
+    giới hạn và cận mật độ 95 % khi diện tích dương. Diện tích 0 cho None
+    ở diện tích/mật độ và không có cận. Bin bắt đầu tại D tối thiểu của
+    metadata; D=2*r*scale, diện tích=count_pixel*scale²/10⁶. Vòng dưới dải
+    vẫn tính vào count nhưng được cảnh báo ngoài histogram. Cận 95 % là
+    trường bổ sung app bỏ qua. Không sửa đầu vào; đây là thống kê ứng viên
+    chưa kiểm chứng, không phải số hố thật hay căn cứ so tuổi.
     """
-    if isinstance(valid_pixel_count, bool) or not isinstance(valid_pixel_count, (int, np.integer)) or valid_pixel_count < 0:
+    if (isinstance(valid_pixel_count, bool)
+            or not isinstance(valid_pixel_count, (int, np.integer))
+            or valid_pixel_count < 0):
         raise ValueError("valid_pixel_count phải là số nguyên ≥ 0.")
     s = float(metadata["scale_m_per_px"])
     radius = metadata.get("radius") or {}
@@ -221,12 +297,15 @@ def summarize(crater_set: dict, metadata: dict, valid_pixel_count: int) -> dict:
            "density_per_km2": n / area if area > 0 else None,
            "histogram": {"bin_edges_m": [round(e, 2) for e in edges], "counts": counts},
            "limitations": [
-               "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa "
+               "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; "
+               "mật độ chỉ so được giữa "
                "các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
                "Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu.",
            ]}
     if below:
-        out["limitations"].append(f"{below} vòng nhỏ hơn D tối thiểu {d0:g} m không nằm trong histogram.")
+        out["limitations"].append(
+            f"{below} vòng nhỏ hơn D tối thiểu {d0:g} m không nằm trong histogram."
+        )
     if area > 0:
         lo, hi = poisson_interval(n)
         out["density_ci95_per_km2"] = [lo / area, hi / area]

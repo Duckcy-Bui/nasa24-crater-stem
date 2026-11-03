@@ -11,6 +11,7 @@ Tự lấy lần lưu mới nhất của người chơi trong outputs/player_ans
 công trong data/reference_labels/ nếu có. Khi có người chơi, ghi thêm score.json
 (S2-04): so với máy chỉ là mức trùng; so với danh mục chỉ khi nhãn đã kiểm chéo.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -23,19 +24,30 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
 from src.contracts import read_json  # noqa: E402
 from src.pipeline import find_player_answer, run_end_to_end  # noqa: E402
 from src.hough import resolve_hough_params  # noqa: E402
 
 
 def code_version() -> str:
-    """Commit của chính repo này; ngoài git (hoặc máy không có git) ghi "unknown"."""
+    """Đọc phiên bản của chính repo hiện tại cho một lượt chạy.
+
+    Vào: trạng thái Git tại ROOT. Ra: HEAD kèm +working-tree hoặc unknown khi không đọc đúng repo.
+    Không ghi file; công thức báo cáo không áp dụng.
+    """
     try:
-        top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=ROOT, capture_output=True, text=True)
+        top = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"], cwd=ROOT, capture_output=True, text=True
+        )
         if top.returncode != 0 or Path(top.stdout.strip()).resolve() != ROOT.resolve():
             return "unknown"
-        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
-        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
+        head = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+        )
+        dirty = subprocess.run(
+            ["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True
+        )
     except OSError:
         return "unknown"
     if head.returncode != 0:
@@ -43,30 +55,84 @@ def code_version() -> str:
     return head.stdout.strip() + ("+working-tree" if dirty.stdout.strip() else "")
 
 
-CSV_COLUMNS = ("image_id", "scale_m_per_px", "reference_status", "edge_px", "r_min_px", "r_max_px",
-               "ung_vien_may", "cham_tran", "giay_tien_xu_ly", "giay_hough", "nhan_tham_chieu",
-               "loc_s1_11", "cham_diem", "run_dir")
+CSV_COLUMNS = (
+    "image_id",
+    "scale_m_per_px",
+    "reference_status",
+    "edge_px",
+    "r_min_px",
+    "r_max_px",
+    "ung_vien_may",
+    "cham_tran",
+    "giay_tien_xu_ly",
+    "giay_hough",
+    "nhan_tham_chieu",
+    "loc_s1_11",
+    "cham_diem",
+    "run_dir",
+)
 
 
 def csv_row(directory: Path, metadata: dict, summary: dict) -> list:
+    """Trích một dòng tổng hợp theo thứ tự CSV_COLUMNS.
+
+    Vào: directory của lượt chạy, metadata và summary các bước. Ra: list giá trị CSV, không ghi
+    file.
+    Chỉ lấy số đã tính từ pipeline mục 3.1, không có công thức mới.
+    """
     steps = summary["steps"]
-    return [summary["image_id"], metadata["scale_m_per_px"], metadata.get("reference_status", "unavailable"),
-            steps["preprocess"]["edge_px"], steps["hough"]["r_min_px"], steps["hough"]["r_max_px"],
-            steps["hough"]["circles"], steps["hough"]["hit_max_circles"], steps["preprocess"]["seconds"],
-            steps["hough"]["seconds"], steps["reference"]["circles"], steps["postprocess"]["status"],
-            steps["scoring"]["status"], directory.name]
+    return [
+        summary["image_id"],
+        metadata["scale_m_per_px"],
+        metadata.get("reference_status", "unavailable"),
+        steps["preprocess"]["edge_px"],
+        steps["hough"]["r_min_px"],
+        steps["hough"]["r_max_px"],
+        steps["hough"]["circles"],
+        steps["hough"]["hit_max_circles"],
+        steps["preprocess"]["seconds"],
+        steps["hough"]["seconds"],
+        steps["reference"]["circles"],
+        steps["postprocess"]["status"],
+        steps["scoring"]["status"],
+        directory.name,
+    ]
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="S1-13: ảnh → tiền xử lý → Hough → lưu run và overlay")
+    """Chạy pipeline trên một ảnh hoặc cả bộ với các nguồn vòng tách biệt.
+
+    Vào: argv chọn ảnh, các thư mục ảnh/kết quả/người chơi/nhãn, Hough, render và CSV.
+    Ra: mã 0/1 theo số ảnh lỗi; ghi các run qua pipeline và CSV nếu yêu cầu, in trạng thái mỗi ảnh.
+    Điều phối mục 3.1/3.7; Hough và ghép/điểm do các mô-đun lõi tính, không đổi công thức.
+    """
+    parser = argparse.ArgumentParser(
+        description="S1-13: ảnh → tiền xử lý → Hough → lưu run và overlay"
+    )
     parser.add_argument("image_id", nargs="?")
-    parser.add_argument("--all", action="store_true", help="Chạy mọi ảnh trong data/s106_bundle/manifest.json")
+    parser.add_argument(
+        "--all", action="store_true", help="Chạy mọi ảnh trong data/s106_bundle/manifest.json"
+    )
     parser.add_argument("--processed-dir", type=Path, default=ROOT / "data" / "processed")
     parser.add_argument("--output-root", type=Path, default=ROOT / "outputs")
-    parser.add_argument("--player", type=Path, help="craters.json của người chơi cho đúng image_id; mặc định lấy lần lưu mới nhất")
+    parser.add_argument(
+        "--player",
+        type=Path,
+        help="craters.json của người chơi cho đúng image_id; mặc định lấy lần lưu mới nhất",
+    )
     parser.add_argument("--no-player", action="store_true", help="Không vẽ vòng người chơi")
-    parser.add_argument("--player-root", type=Path, default=ROOT / "outputs" / "player_answers", help=argparse.SUPPRESS)
-    parser.add_argument("--reference-dir", type=Path, default=ROOT / "data" / "reference_labels", help=argparse.SUPPRESS)
+    parser.add_argument(
+        "--player-root",
+        type=Path,
+        default=ROOT / "outputs" / "player_answers",
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--reference-dir",
+        type=Path,
+        default=ROOT / "data" / "reference_labels",
+        help=argparse.SUPPRESS,
+    )
     parser.add_argument("--hough-config", type=Path, help="JSON Hough (hoac config co khoa hough)")
     parser.add_argument("--voting", choices=("full_circle", "gradient"), default=None)
     parser.add_argument("--max-circles", type=int, default=None)
@@ -76,7 +142,10 @@ def main(argv: list[str] | None = None) -> int:
     if bool(args.image_id) == args.all:
         parser.error("Cần đúng một trong: image_id hoặc --all.")
     if args.player and args.all:
-        parser.error("--player là câu trả lời của một ảnh; không dùng cùng --all (khi đó mỗi ảnh tự lấy lần lưu mới nhất).")
+        parser.error(
+            '--player là câu trả lời của một ảnh; không dùng cùng --all (khi '
+            'đó mỗi ảnh tự lấy lần lưu mới nhất).'
+        )
     if args.player and args.no_player:
         parser.error("--player và --no-player mâu thuẫn nhau.")
 
@@ -91,32 +160,54 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, TypeError, ValueError) as error:
         parser.error(str(error))
 
-    ids = read_json(ROOT / "data" / "s106_bundle" / "manifest.json")["image_ids"] if args.all else [args.image_id]
+    ids = (
+        read_json(ROOT / "data" / "s106_bundle" / "manifest.json")["image_ids"]
+        if args.all
+        else [args.image_id]
+    )
     scoring_params = read_json(ROOT / "configs" / "default.json")["evaluation"]
     version = code_version()
     failed, rows = 0, []
     for image_id in ids:
-        player = None if args.no_player else (args.player or find_player_answer(image_id, args.player_root))
+        player = (
+            None
+            if args.no_player
+            else (args.player or find_player_answer(image_id, args.player_root))
+        )
         reference = args.reference_dir / f"{image_id}_craters_catalogue.json"
         try:
             directory, summary = run_end_to_end(
-                image_id, processed_dir=args.processed_dir, output_root=args.output_root, code_version=version,
-                player_path=player, reference_path=reference if reference.exists() else None,
+                image_id,
+                processed_dir=args.processed_dir,
+                output_root=args.output_root,
+                code_version=version,
+                player_path=player,
+                reference_path=reference if reference.exists() else None,
                 hough_params=hough_params,
-                scoring_params=scoring_params, render=not args.no_render)
-        except Exception as error:  # one bad image must not stop --all; KeyboardInterrupt still stops
+                scoring_params=scoring_params,
+                render=not args.no_render,
+            )
+        except (
+            Exception
+        ) as error:  # one bad image must not stop --all; KeyboardInterrupt still stops
             failed += 1
             print(f"[LỖI] {image_id}: {type(error).__name__}: {error}")
             continue
         rows.append(csv_row(directory, read_json(directory / "metadata.json"), summary))
         steps = summary["steps"]
         scoring = steps["scoring"]
-        scored = {"skipped": "bỏ qua", "machine_agreement_only": f"chỉ so máy ({scoring.get('matched_machine')} vòng trùng)",
-                  "scored": f"{scoring.get('score')} điểm"}[scoring["status"]]
-        print(f"{image_id}: {steps['hough']['circles']} ứng viên máy "
-              f"(r {steps['hough']['r_min_px']}–{steps['hough']['r_max_px']} px, {steps['hough']['voting_method']}, "
-              f"{steps['hough']['seconds']} s); người chơi {steps['player']['circles']}; "
-              f"nhãn tham chiếu {steps['reference']['circles']}; chấm điểm: {scored} → {directory}")
+        scored = {
+            "skipped": "bỏ qua",
+            "machine_agreement_only": f"chỉ so máy ({scoring.get('matched_machine')} vòng trùng)",
+            "scored": f"{scoring.get('score')} điểm",
+        }[scoring["status"]]
+        print(
+            f"{image_id}: {steps['hough']['circles']} ứng viên máy (r "
+            f"{steps['hough']['r_min_px']}–{steps['hough']['r_max_px']} px, "
+            f"{steps['hough']['voting_method']}, {steps['hough']['seconds']} s); người "
+            f"chơi {steps['player']['circles']}; nhãn tham chiếu "
+            f"{steps['reference']['circles']}; chấm điểm: {scored} → {directory}"
+        )
     if args.csv:
         with args.csv.open("w", newline="", encoding="utf-8") as handle:
             writer = csv.writer(handle, lineterminator="\n")

@@ -21,7 +21,13 @@ DEFAULT_PARAMS = {
 
 
 def resolve_hough_params(params: dict) -> dict:
-    """Nhan rieng dict Hough hoac toan bo config co khoa 'hough'."""
+    """Kiểm tra và ghép tham số Hough với cấu hình mặc định.
+
+    Vào: params là dict Hough hoặc config có khóa ``hough``; bán kính/NMS
+    tính bằng px, bước góc bằng độ, tỷ lệ phiếu không có đơn vị.
+    Ra: dict mới với kiểu int/float chuẩn hóa; không sửa params, báo lỗi
+    khi khóa, kiểu hoặc miền giá trị không hợp lệ. Tham chiếu: mục 3.3.
+    """
     if not isinstance(params, dict):
         raise TypeError("params phai la dict.")
 
@@ -88,7 +94,12 @@ def resolve_hough_params(params: dict) -> dict:
 
 
 def _circle_offsets(radius: int, angles: np.ndarray) -> np.ndarray:
-    """Moi do lech pixel chi bo phieu mot lan, du nhieu goc trung nhau."""
+    """Tạo các độ lệch pixel duy nhất trên một đường tròn rời rạc.
+
+    Vào: radius nguyên (px), angles là mảng góc 1 chiều (radian).
+    Ra: mảng int32 cỡ (S, 2), mỗi hàng (dx, dy); mỗi độ lệch chỉ bỏ
+    phiếu một lần dù nhiều góc trùng nhau. Tham chiếu: công thức (2.9).
+    """
     offsets = np.column_stack((
         np.rint(radius * np.cos(angles)),
         np.rint(radius * np.sin(angles)),
@@ -104,6 +115,13 @@ def _accumulate(
     offsets: np.ndarray,
     batch_size: int,
 ) -> np.ndarray:
+    """Cộng phiếu Hough toàn vòng theo từng lô điểm biên.
+
+    Vào: ys/xs là mảng tọa độ nguyên (px), shape=(cao, rộng), offsets
+    chứa (dx, dy) duy nhất; batch_size là số điểm biên mỗi lô.
+    Ra: bảng phiếu int32 có shape đã cho; bỏ tâm ngoài ảnh, cộng đủ
+    chỉ số trùng, không sửa đầu vào. Tham chiếu: (2.8)–(2.10), mục 3.3.
+    """
     height, width = shape
     accumulator = np.zeros(height * width, dtype=np.int32)
     dx, dy = offsets.T
@@ -141,10 +159,13 @@ def _accumulate_gradient(
     theta: np.ndarray,
     radius: int,
 ) -> np.ndarray:
-    """Moi diem bien bo phieu o hai tam dọc theo phap tuyen gradient.
+    """Bỏ phiếu tại hai tâm dọc theo pháp tuyến gradient của mỗi điểm biên.
 
-    Khong biet ho sang/toi nen can ca hai dau cua phap tuyen. theta dung
-    radian, he toa do anh x sang phai, y xuong duoi (arctan2(gy, gx)).
+    Vào: ys/xs là tọa độ nguyên (px), shape=(cao, rộng), radius tính bằng
+    px; theta cùng cỡ ảnh, đơn vị radian, bằng atan2(gy, gx). Trục x sang
+    phải, y xuống dưới; chưa biết hố sáng/tối nên cần cả hai đầu pháp tuyến.
+    Ra: bảng phiếu int32 theo shape, bỏ tâm ngoài ảnh; không sửa đầu vào.
+    Tham chiếu: công thức (2.11).
     """
     height, width = shape
     direction = theta[ys, xs]
@@ -163,7 +184,12 @@ def _accumulate_gradient(
 
 
 def _local_peaks(accumulator: np.ndarray, threshold: int) -> np.ndarray:
-    """Cuc dai 3x3; hoa phieu thi uu tien o tren, roi o ben trai."""
+    """Lấy cực đại 3×3 đạt ngưỡng, hòa phiếu ưu tiên trên rồi trái.
+
+    Vào: accumulator là mảng phiếu 2 chiều, threshold là số phiếu tối thiểu.
+    Ra: mảng chỉ số nguyên (K, 2), mỗi hàng (y, x), có thể rỗng;
+    không sửa bảng phiếu. Tham chiếu: ngưỡng (2.12), mục 2.2.2 và 3.3.
+    """
     height, width = accumulator.shape
     padded = np.pad(accumulator, 1, constant_values=-1)
     keep = accumulator >= threshold
@@ -193,10 +219,16 @@ def detect_circles(
     params: dict,
     theta: Any = None,
 ) -> list[dict]:
-    """Phat hien Hough NumPy; mac dinh quet vong tron, gradient la tuy chon.
+    """Phát hiện vòng tròn bằng Hough NumPy, mặc định bỏ phiếu toàn vòng.
 
-    Ket qua chi gom tam trong anh; ban kinh duoc phep cat qua mep anh.
-    confidence=null vi phieu Hough chua duoc hieu chuan thanh xac suat.
+    Vào: edges là mảng bool 512×512; r_min_px/r_max_px là cận bán kính
+    nguyên (px), params là cấu hình Hough. Nhánh gradient cần theta cùng
+    cỡ ảnh, hữu hạn tại biên, đơn vị radian; nhánh toàn vòng không cần theta.
+    Ra: list dict có crater_id, x/y/r (px), votes và confidence=None;
+    không sửa đầu vào, báo ValueError khi vi phạm hợp đồng. Chỉ giữ tâm
+    trong ảnh nhưng vành được cắt qua mép. Phiếu chưa được hiệu chuẩn thành
+    xác suất; giới hạn max_circles có thể làm mất ứng viên hợp lệ.
+    Tham chiếu: công thức (2.8)–(2.13), Thuật toán 3.3.
     """
     edges = np.asarray(edges)
 

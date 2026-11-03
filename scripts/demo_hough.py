@@ -16,43 +16,74 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import read_json, save_run, validate_crater_set
-from src.hough import (
-    _accumulate, _accumulate_gradient, _circle_offsets,
-    detect_circles, resolve_hough_params,
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+from src.contracts import read_json, save_run, validate_crater_set  # noqa: E402
+from src.hough import (  # noqa: E402
+    _accumulate,
+    _accumulate_gradient,
+    _circle_offsets,
+    detect_circles,
+    resolve_hough_params,
 )
 
 
 def synthetic_scene() -> tuple[np.ndarray, np.ndarray, np.ndarray, list[dict]]:
-    """Tạo ba vòng tròn đã biết; vòng thứ ba bị cắt tại mép trái ảnh."""
+    """Dựng ba đĩa đã biết cùng biên và hướng gradient lý tưởng.
+
+    Vào: các tâm/r cố định trong hàm, không dùng RNG. Ra: image, edges, theta và list truth.
+    Đường tròn theo mục 2.2; đĩa thứ ba cắt mép, đây không phải ảnh NASA.
+    """
     yy, xx = np.indices((512, 512))
     image = np.zeros((512, 512), dtype=np.float32)
     edges = np.zeros_like(image, dtype=bool)
     theta = np.zeros_like(image)
     truth = []
     for index, (x, y, radius) in enumerate(
-        ((160, 180, 32), (350, 310, 20), (8, 420, 24)), start=1,
+        ((160, 180, 32), (350, 310, 20), (8, 420, 24)),
+        start=1,
     ):
         distance = np.hypot(xx - x, yy - y)
         image[distance <= radius] = 1
         contour = np.abs(distance - radius) <= 0.5
         edges |= contour
         theta[contour] = np.arctan2(yy[contour] - y, xx[contour] - x)
-        truth.append({"crater_id": f"T{index}", "x": float(x), "y": float(y),
-                      "r": float(radius), "confidence": None, "votes": None})
+        truth.append(
+            {
+                "crater_id": f"T{index}",
+                "x": float(x),
+                "y": float(y),
+                "r": float(radius),
+                "confidence": None,
+                "votes": None,
+            }
+        )
     return image, edges, theta, truth
 
 
 def code_version() -> str:
-    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
-                          text=True, capture_output=True, check=True)
-    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
-                           text=True, capture_output=True, check=True)
+    """Đọc phiên bản Git và đánh dấu khi working tree có thay đổi.
+
+    Vào: Git tại ROOT. Ra: chuỗi HEAD có hậu tố +working-tree nếu bẩn; không ghi file.
+    Công thức báo cáo: không áp dụng cho truy xuất phiên bản.
+    """
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True
+    )
+    dirty = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=ROOT, text=True, capture_output=True, check=True
+    )
     return head.stdout.strip() + ("+working-tree" if dirty.stdout.strip() else "")
 
 
 def render_demo(directory, image, edges, theta, circles, truth, params, seconds):
+    """Vẽ ảnh giả lập, biên/vòng và tích lũy Hough tại r=32.
+
+    Vào: directory, image/edges/theta, circles/truth, params và seconds để ghi chú.
+    Ra: None; ghi directory/demo.png, dùng kiểu bỏ phiếu trong params.
+    Tích lũy theo (2.10)/(2.11), minh họa mục 2.2 và 4.7.
+    """
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle
@@ -63,22 +94,34 @@ def render_demo(directory, image, edges, theta, circles, truth, params, seconds)
     if params["voting_method"] == "gradient":
         accumulator = _accumulate_gradient(ys, xs, edges.shape, theta, radius)
     else:
-        offsets = _circle_offsets(radius, np.deg2rad(
-            np.arange(0, 360, params["angle_step_deg"]),
-        ))
-        accumulator = _accumulate(ys, xs, edges.shape, offsets,
-                                  params["edge_batch_size"])
+        offsets = _circle_offsets(
+            radius,
+            np.deg2rad(
+                np.arange(0, 360, params["angle_step_deg"]),
+            ),
+        )
+        accumulator = _accumulate(ys, xs, edges.shape, offsets, params["edge_batch_size"])
     figure, axes = plt.subplots(1, 3, figsize=(14, 5), constrained_layout=True)
     axes[0].imshow(image, cmap="gray", vmin=0, vmax=1)
     axes[0].set_title("Synthetic input: 3 known circles")
     axes[1].imshow(edges, cmap="gray")
     axes[1].set_title("Input edges and detections")
     for circle in truth:
-        axes[1].add_patch(Circle((circle["x"], circle["y"]), circle["r"],
-                                fill=False, edgecolor="lime", linestyle="--"))
+        axes[1].add_patch(
+            Circle(
+                (circle["x"], circle["y"]),
+                circle["r"],
+                fill=False,
+                edgecolor="lime",
+                linestyle="--",
+            )
+        )
     for circle in circles:
-        axes[1].add_patch(Circle((circle["x"], circle["y"]), circle["r"],
-                                fill=False, edgecolor="red", linewidth=1))
+        axes[1].add_patch(
+            Circle(
+                (circle["x"], circle["y"]), circle["r"], fill=False, edgecolor="red", linewidth=1
+            )
+        )
     heat = axes[2].imshow(accumulator, cmap="magma")
     axes[2].set_title("NumPy accumulator at radius = 32 px")
     figure.colorbar(heat, ax=axes[2], label="Votes")
@@ -88,17 +131,23 @@ def render_demo(directory, image, edges, theta, circles, truth, params, seconds)
         axis.set_xlabel("x (px)")
         axis.set_ylabel("y (px)")
     figure.suptitle(
-        f"S1-07 | {params['voting_method']} | {seconds:.3f} s | "
-        "Green: synthetic truth; red: detected circles. NOT NASA validation."
+        f"S1-07 | {params['voting_method']} | {seconds:.3f} s | Green: synthetic truth; "
+        f"red: detected circles. NOT NASA validation."
     )
     figure.savefig(directory / "demo.png", dpi=130)
     plt.close(figure)
 
 
 def main() -> None:
+    """Chạy demo Hough và kiểm ba vòng giả lập trong sai số một pixel.
+
+    Vào: CLI method, output-root và run-id; dùng cảnh cố định cùng tham số Hough.
+    Ra: None; ghi JSON hợp đồng, image/edges/theta NPY, synthetic_truth/demo_check JSON và
+    demo.png.
+    Hough theo mục 2.2; kiểm giả lập không xác nhận độ chính xác trên ảnh thật.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--method", choices=("full_circle", "gradient"),
-                        default="full_circle")
+    parser.add_argument("--method", choices=("full_circle", "gradient"), default="full_circle")
     parser.add_argument("--output-root", type=Path, default=ROOT / "outputs")
     parser.add_argument("--run-id", default=None)
     args = parser.parse_args()
@@ -109,46 +158,78 @@ def main() -> None:
     start = time.perf_counter()
     circles = detect_circles(edges, r_min, r_max, params, theta=theta)
     elapsed = time.perf_counter() - start
-    hits = sum(any(abs(found["x"] - known["x"]) <= 1
-                   and abs(found["y"] - known["y"]) <= 1
-                   and abs(found["r"] - known["r"]) <= 1
-                   for found in circles) for known in truth)
+    hits = sum(
+        any(
+            abs(found["x"] - known["x"]) <= 1
+            and abs(found["y"] - known["y"]) <= 1
+            and abs(found["r"] - known["r"]) <= 1
+            for found in circles
+        )
+        for known in truth
+    )
     if hits != len(truth):
         raise RuntimeError(f"Demo regression: detected {hits}/{len(truth)} known circles.")
 
     metadata = copy.deepcopy(read_json(ROOT / "data/examples/s105_synthetic_512.json"))
-    metadata.update({
-        "image_id": "s107_hough_synthetic", "valid_ratio": 1.0,
-        "radius": {"d_min_m": r_min * 4, "d_max_m": r_max * 4,
-                   "r_min_px": r_min, "r_max_px": r_max},
-        "preprocess": {"version": version, "method": "analytic_synthetic_edges"},
-        "note": "Synthetic disks and analytic gradients from demo_hough.py; "
-                "scale 2 m/px is hypothetical. No NASA/Robbins data.",
-    })
-    crater_set = {"schema_version": "1.0", "data_kind": "synthetic",
-                  "image_id": metadata["image_id"], "source": "machine",
-                  "reference_source": None, "circles": circles}
-    truth_set = {**crater_set, "source": "catalogue", "circles": truth,
-                 "reference_source": "Known synthetic construction in demo_hough.py; "
-                                     "NOT NASA or Robbins catalogue."}
+    metadata.update(
+        {
+            "image_id": "s107_hough_synthetic",
+            "valid_ratio": 1.0,
+            "radius": {
+                "d_min_m": r_min * 4,
+                "d_max_m": r_max * 4,
+                "r_min_px": r_min,
+                "r_max_px": r_max,
+            },
+            "preprocess": {"version": version, "method": "analytic_synthetic_edges"},
+            "note": "Synthetic disks and analytic gradients from demo_hough.py; "
+            "scale 2 m/px is hypothetical. No NASA/Robbins data.",
+        }
+    )
+    crater_set = {
+        "schema_version": "1.0",
+        "data_kind": "synthetic",
+        "image_id": metadata["image_id"],
+        "source": "machine",
+        "reference_source": None,
+        "circles": circles,
+    }
+    truth_set = {
+        **crater_set,
+        "source": "catalogue",
+        "circles": truth,
+        "reference_source": "Known synthetic construction in demo_hough.py; "
+        "NOT NASA or Robbins catalogue.",
+    }
     validate_crater_set(truth_set, metadata)
-    run_id = args.run_id or ("s107_" + args.method + "_" +
-                             datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ"))
-    directory = save_run(args.output_root, run_id, metadata=metadata,
-                         crater_set=crater_set,
-                         params={"hough": params, "r_min_px": r_min,
-                                 "r_max_px": r_max}, code_version=version)
+    run_id = args.run_id or (
+        "s107_" + args.method + "_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    )
+    directory = save_run(
+        args.output_root,
+        run_id,
+        metadata=metadata,
+        crater_set=crater_set,
+        params={"hough": params, "r_min_px": r_min, "r_max_px": r_max},
+        code_version=version,
+    )
     np.save(directory / "image.npy", image)
     np.save(directory / "edges.npy", edges)
     np.save(directory / "theta.npy", theta)
     for filename, value in (
         ("synthetic_truth.json", truth_set),
-        ("demo_check.json", {"data_kind": "synthetic", "expected_circles": len(truth),
-                             "found_within_1px": hits, "detections": len(circles),
-                             "elapsed_seconds": elapsed}),
+        (
+            "demo_check.json",
+            {
+                "data_kind": "synthetic",
+                "expected_circles": len(truth),
+                "found_within_1px": hits,
+                "detections": len(circles),
+                "elapsed_seconds": elapsed,
+            },
+        ),
     ):
-        (directory / filename).write_text(json.dumps(value, indent=2,
-                                                       allow_nan=False) + "\n")
+        (directory / filename).write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
     render_demo(directory, image, edges, theta, circles, truth, params, elapsed)
     print(f"Found {hits}/{len(truth)} synthetic circles in {elapsed:.3f} s.")
     print(f"Saved effective parameters, version, JSON, arrays and demo.png: {directory}")

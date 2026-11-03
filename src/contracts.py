@@ -18,6 +18,12 @@ class ContractError(ValueError):
 
 
 def _number(value: Any, name: str, *, positive: bool = False) -> float:
+    """Kiểm tra và đổi một số hữu hạn sang float.
+
+    Đầu vào: value là int/float (không nhận bool); name là tên trường dùng
+    trong thông báo; positive yêu cầu giá trị lớn hơn 0 khi True.
+    Đầu ra: float cùng giá trị; phát sinh ContractError nếu không hợp lệ.
+    """
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ContractError(f"{name} phải là số.")
     if not math.isfinite(value) or (positive and value <= 0):
@@ -26,25 +32,51 @@ def _number(value: Any, name: str, *, positive: bool = False) -> float:
 
 
 def _integer(value: Any, name: str, minimum: int = 0) -> int:
+    """Kiểm tra một số nguyên theo cận dưới.
+
+    Đầu vào: value phải là int, không nhận bool; name là tên trường và
+    minimum là cận dưới bao gồm chính nó (mặc định 0).
+    Đầu ra: nguyên giá trị int; phát sinh ContractError khi sai kiểu/cận.
+    """
     if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
         raise ContractError(f"{name} phải là số nguyên >= {minimum}.")
     return value
 
 
 def _required(data: dict[str, Any], names: tuple[str, ...]) -> None:
+    """Kiểm tra các khóa bắt buộc của một dict.
+
+    Đầu vào: data là dict dữ liệu; names là tuple tên khóa cần có.
+    Đầu ra: None, không đổi data; phát sinh ContractError liệt kê khóa thiếu.
+    """
     missing = [name for name in names if name not in data]
     if missing:
         raise ContractError("Thiếu trường: " + ", ".join(missing))
 
 
 def _image_id(value: Any) -> str:
-    if not isinstance(value, str) or not value or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-" for c in value):
+    """Kiểm tra mã ảnh hoặc mã lượt chạy không chứa đường dẫn.
+
+    Đầu vào: value phải là chuỗi không rỗng, chỉ gồm chữ ASCII, số, _ hoặc -.
+    Đầu ra: chuỗi gốc; phát sinh ContractError nếu không hợp lệ.
+    """
+    if not isinstance(value, str) or not value or any(
+        c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
+        for c in value
+    ):
         raise ContractError("image_id dùng chữ, số, dấu _ hoặc -; không chứa đường dẫn.")
     return value
 
 
 def radius_range_px(d_min_m: float, d_max_m: float, scale_m_per_px: float) -> tuple[int, int]:
-    """Quy đổi đường kính mét sang bán kính pixel theo S1-04."""
+    """Đổi dải đường kính mét sang dải bán kính pixel nguyên.
+
+    Đầu vào: d_min_m, d_max_m là đường kính dương theo mét, cận dưới không
+    vượt cận trên; scale_m_per_px là tỷ lệ dương theo m/px.
+    Đầu ra: tuple (r_min, r_max), kẹp trong [5, 128] px theo công thức
+    (2.14), mục 2.2.4 báo cáo và hợp đồng S1-04. Dải rỗng hoặc tham số
+    không hợp lệ gây ContractError.
+    """
     lo = _number(d_min_m, "d_min_m", positive=True)
     hi = _number(d_max_m, "d_max_m", positive=True)
     scale = _number(scale_m_per_px, "scale_m_per_px", positive=True)
@@ -58,9 +90,24 @@ def radius_range_px(d_min_m: float, d_max_m: float, scale_m_per_px: float) -> tu
 
 
 def validate_metadata(data: dict[str, Any]) -> None:
+    """Kiểm tra metadata ảnh theo hợp đồng S1-04.
+
+    Đầu vào: data là dict metadata phiên bản 1.0 của ảnh 512 × 512,
+    chứa nguồn, ô cắt, tỷ lệ m/px, góc theo độ, dải đường kính mét/bán kính
+    pixel, tỷ lệ pixel hợp lệ và tiền xử lý. Trường chưa biết được phép là
+    None chỉ ở các vị trí hợp đồng cho phép.
+    Đầu ra: None, không sửa data; phát sinh ContractError khi thiếu trường,
+    sai kiểu hoặc không nhất quán. Dải bán kính dùng (2.14); cấu trúc trao
+    đổi dữ liệu được mô tả ở mục 3.1 báo cáo.
+    """
     if not isinstance(data, dict):
         raise ContractError("Metadata phải là object JSON.")
-    _required(data, ("schema_version", "data_kind", "image_id", "source_stt", "product_id", "body", "crop_x0", "crop_y0", "downsample_k", "width", "height", "scale_m_per_px", "center_lat", "center_lon", "north_up", "north_angle_deg", "sun", "radius", "valid_ratio", "preprocess"))
+    _required(data, (
+        "schema_version", "data_kind", "image_id", "source_stt", "product_id", "body",
+        "crop_x0", "crop_y0", "downsample_k", "width", "height", "scale_m_per_px",
+        "center_lat", "center_lon", "north_up", "north_angle_deg", "sun", "radius",
+        "valid_ratio", "preprocess",
+    ))
     _image_id(data["image_id"])
     if data["schema_version"] != "1.0" or data["data_kind"] not in ("synthetic", "real"):
         raise ContractError("Phiên bản hoặc loại dữ liệu không hợp lệ.")
@@ -76,11 +123,15 @@ def validate_metadata(data: dict[str, Any]) -> None:
         raise ContractError("valid_ratio phải nằm trong [0, 1].")
     if data["source_stt"] is not None:
         _integer(data["source_stt"], "source_stt", 1)
-    if data["product_id"] is not None and (not isinstance(data["product_id"], str) or not data["product_id"]):
+    if data["product_id"] is not None and (
+        not isinstance(data["product_id"], str) or not data["product_id"]
+    ):
         raise ContractError("product_id phải là chuỗi hoặc null.")
     if data["data_kind"] == "real" and (data["source_stt"] is None or data["product_id"] is None):
         raise ContractError("Ảnh thật cần source_stt và product_id để truy xuất nguồn.")
-    for key, low, high in (("center_lat", -90, 90), ("center_lon", -180, 360), ("north_angle_deg", 0, 360)):
+    for key, low, high in (
+        ("center_lat", -90, 90), ("center_lon", -180, 360), ("north_angle_deg", 0, 360)
+    ):
         if data[key] is not None and not low <= _number(data[key], key) <= high:
             raise ContractError(f"{key} nằm ngoài khoảng hợp lệ.")
     if data["north_up"] is not None and not isinstance(data["north_up"], bool):
@@ -106,7 +157,10 @@ def validate_metadata(data: dict[str, Any]) -> None:
     if not isinstance(radius, dict):
         raise ContractError("radius phải là object.")
     _required(radius, ("d_min_m", "d_max_m", "r_min_px", "r_max_px"))
-    actual = (_integer(radius["r_min_px"], "r_min_px", 1), _integer(radius["r_max_px"], "r_max_px", 1))
+    actual = (
+        _integer(radius["r_min_px"], "r_min_px", 1),
+        _integer(radius["r_max_px"], "r_max_px", 1),
+    )
     expected = radius_range_px(radius["d_min_m"], radius["d_max_m"], scale)
     if actual != expected:
         raise ContractError(f"Bán kính phải được tính từ mét và tỷ lệ ảnh: {expected}.")
@@ -115,17 +169,33 @@ def validate_metadata(data: dict[str, Any]) -> None:
 
 
 def validate_crater_set(data: dict[str, Any], metadata: dict[str, Any]) -> None:
+    """Kiểm tra danh sách vòng tròn khớp metadata của ảnh.
+
+    Đầu vào: data là dict schema 1.0 với source machine/catalogue/player;
+    metadata là dict ảnh cần kiểm. Mỗi vòng có crater_id duy nhất, tâm x/y
+    trong [0, 511] px, r > 0 px, confidence trong [0, 1] hoặc None và votes
+    nguyên không âm hoặc None. Catalogue cần chuỗi reference_source.
+    Đầu ra: None, không đổi đầu vào; phát sinh ContractError khi sai hợp
+    đồng hoặc khác image_id/data_kind. Xem quy ước dữ liệu ở mục 3.1 báo cáo.
+    """
     validate_metadata(metadata)
     if not isinstance(data, dict):
         raise ContractError("Danh sách hố phải là object JSON.")
-    _required(data, ("schema_version", "data_kind", "image_id", "source", "reference_source", "circles"))
+    _required(data, (
+        "schema_version", "data_kind", "image_id", "source", "reference_source", "circles",
+    ))
     if data["schema_version"] != "1.0":
         raise ContractError("schema_version không được hỗ trợ.")
-    if _image_id(data["image_id"]) != metadata["image_id"] or data["data_kind"] != metadata["data_kind"]:
+    if (
+        _image_id(data["image_id"]) != metadata["image_id"]
+        or data["data_kind"] != metadata["data_kind"]
+    ):
         raise ContractError("Danh sách hố và metadata phải cùng image_id và data_kind.")
     if data["source"] not in ("machine", "catalogue", "player"):
         raise ContractError("source phải là machine, catalogue hoặc player.")
-    if data["source"] == "catalogue" and (not isinstance(data["reference_source"], str) or not data["reference_source"].strip()):
+    if data["source"] == "catalogue" and (
+        not isinstance(data["reference_source"], str) or not data["reference_source"].strip()
+    ):
         raise ContractError("Danh mục cần reference_source.")
     if not isinstance(data["circles"], list):
         raise ContractError("circles phải là danh sách.")
@@ -142,14 +212,27 @@ def validate_crater_set(data: dict[str, Any], metadata: dict[str, Any]) -> None:
         if not 0 <= x <= 511 or not 0 <= y <= 511:
             raise ContractError("Tâm hố nằm ngoài ảnh 512×512.")
         _number(circle["r"], "r", positive=True)
-        if circle["confidence"] is not None and not 0 <= _number(circle["confidence"], "confidence") <= 1:
+        if (
+            circle["confidence"] is not None
+            and not 0 <= _number(circle["confidence"], "confidence") <= 1
+        ):
             raise ContractError("confidence phải nằm trong [0, 1] hoặc null.")
         if circle["votes"] is not None:
             _integer(circle["votes"], "votes")
 
 
-def source_coordinates(x: float, y: float, r: float, metadata: dict[str, Any]) -> tuple[float, float, float]:
-    """Đổi từ ảnh xử lý về ảnh nguồn, bao gồm độ lệch tâm khối thu nhỏ."""
+def source_coordinates(
+    x: float, y: float, r: float, metadata: dict[str, Any]
+) -> tuple[float, float, float]:
+    """Đổi tâm và bán kính từ ảnh xử lý về ảnh nguồn.
+
+    Đầu vào: x, y là tâm trong [0, 511] px; r > 0 px; metadata chứa gốc ô
+    cắt và hệ số thu nhỏ nguyên k. Hệ tọa độ đặt tâm pixel tại vị trí nguyên.
+    Đầu ra: tuple (x_nguồn, y_nguồn, r_nguồn) theo pixel nguồn; tâm bằng
+    gốc cắt + k × tâm xử lý + (k - 1)/2, bán kính nhân k. Metadata hoặc
+    tọa độ sai gây ContractError. Liên quan trung bình khối (2.1) và quy
+    ước tọa độ ở mục 2.1, 3.1 báo cáo.
+    """
     validate_metadata(metadata)
     x, y, r = _number(x, "x"), _number(y, "y"), _number(r, "r", positive=True)
     if not 0 <= x <= 511 or not 0 <= y <= 511:
@@ -160,24 +243,52 @@ def source_coordinates(x: float, y: float, r: float, metadata: dict[str, Any]) -
 
 
 def read_json(path: str | Path) -> dict[str, Any]:
+    """Đọc một tài liệu JSON UTF-8 từ đĩa.
+
+    Đầu vào: path là str/Path đến file JSON, thường là object hợp đồng.
+    Đầu ra: giá trị được json.load giải mã (các nơi gọi mong đợi dict);
+    hàm không kiểm schema hay ép kiểu. Lỗi đọc file/JSON được truyền ra.
+    """
     with Path(path).open(encoding="utf-8") as handle:
         return json.load(handle)
 
 
-def save_run(output_root: str | Path, run_id: str, *, metadata: dict[str, Any], crater_set: dict[str, Any], params: dict[str, Any], code_version: str) -> Path:
-    """Lưu một lần chạy riêng; không ghi đè lần chạy đã có."""
+def save_run(
+    output_root: str | Path, run_id: str, *, metadata: dict[str, Any],
+    crater_set: dict[str, Any], params: dict[str, Any], code_version: str
+) -> Path:
+    """Lưu một lượt chạy vào thư mục mới, không ghi đè lượt đã có.
+
+    Đầu vào: output_root là str/Path thư mục cha, run_id là mã an toàn;
+    metadata và crater_set là dict cùng ảnh; params là dict tham số;
+    code_version là chuỗi phiên bản mã không rỗng để tái tạo.
+    Đầu ra: Path của thư mục chứa metadata.json, params.json, craters.json
+    và run.json có thời điểm UTC, theo mục 3.1 báo cáo. Kiểm hợp đồng và
+    khả năng mã hóa JSON trước khi tạo thư mục. Truyền lỗi nếu thư mục đã
+    tồn tại hoặc ghi file thất bại; hàm này không tự dọn khi lỗi ghi.
+    """
     _image_id(run_id)
     validate_crater_set(crater_set, metadata)
-    if not isinstance(params, dict) or not isinstance(code_version, str) or not code_version.strip():
+    if (
+        not isinstance(params, dict) or not isinstance(code_version, str)
+        or not code_version.strip()
+    ):
         raise ContractError("Cần params và mã phiên bản để tái tạo.")
     records = {
         "metadata.json": metadata,
         "params.json": params,
         "craters.json": crater_set,
-        "run.json": {"run_id": run_id, "image_id": metadata["image_id"], "data_kind": metadata["data_kind"], "code_version": code_version, "created_at_utc": datetime.now(timezone.utc).isoformat()}
+        "run.json": {
+            "run_id": run_id, "image_id": metadata["image_id"],
+            "data_kind": metadata["data_kind"], "code_version": code_version,
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        },
     }
     # Kiểm tra JSON trước khi tạo thư mục để không để lại kết quả dở dang.
-    serialized = {name: json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n" for name, value in records.items()}
+    serialized = {
+        name: json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        for name, value in records.items()
+    }
     directory = Path(output_root) / run_id
     directory.mkdir(parents=True, exist_ok=False)
     for name, value in serialized.items():

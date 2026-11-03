@@ -4,7 +4,7 @@
 
 ## 3.1. Kiến trúc và cấu trúc mã nguồn
 
-Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON, phân biệt `source` của vòng máy, nhãn và người chơi.
+Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON (tệp dữ liệu văn bản có cấu trúc), phân biệt `source` của vòng máy, nhãn và người chơi.
 
 ![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=100%}
 
@@ -33,7 +33,7 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 | B4 | CLAHE | OpenCV; ảnh 8 bit, clipLimit 2, lưới 8 × 8 |
 | B5–B6 | Gauss; Sobel, độ lớn/hướng gradient | Tự viết; σ = 1,5, kernel 11; Sobel không chia 8 |
 | B7 | Canny | OpenCV; ngưỡng tự tính P90 và tỷ lệ 0,4 |
-| B8 | Co mặt nạ, bỏ biên mép/nodata | Tự viết; lề $m=\max(6,\lceil3\sigma\rceil+1)$ |
+| B8 | Co mặt nạ, bỏ biên mép/nodata | Tự viết; lề $\ell=\max(6,\lceil3\sigma\rceil+1)$ |
 
 : Bảng 3.2. Chuỗi tiền xử lý và phần tự cài đặt.
 
@@ -44,20 +44,20 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 02 Đổi RGB sang Y theo BT.601; ảnh một kênh giữ nguyên.
 03 Lấy phân vị trên V; nếu trùng thì thử min–max; ảnh phẳng trả 0.
 04 Chuẩn hóa theo (2.2), đặt pixel lỗi bằng 0; lượng tử 8 bit cho CLAHE.
-05 Tính g theo (2.4); lọc hàng rồi cột bằng correlate_1d.
+05 Tính h theo (2.4); lọc hàng rồi cột bằng correlate_1d.
 06 Lọc Sobel tách hai trục theo (2.5); tính |G|, θ.
 07 Lấy ngưỡng theo (2.6), có nhánh gradient dương khi nền phẳng.
-08 Gọi Canny trên ảnh trơn uint8; lấy biên E_Canny.
-09 Co V theo từng trục: AND các lát dịch −m…m, ngoài ảnh là False.
-10 Trả E_Canny AND V_co, gray, smooth, θ và các ngưỡng/số biên.
+08 Gọi Canny trên ảnh trơn uint8; lấy biên E_C.
+09 Co V theo từng trục: AND các lát dịch −lề…lề, ngoài ảnh là False.
+10 Trả E_C AND V_co, gray, smooth, θ và các ngưỡng/số biên.
 ```
 
-**Thuật toán 3.2 — `correlate_1d`.** Vào: ảnh, kernel lẻ g, trục. Ra: ảnh tương quan float64. Dùng chung cho Gauss và Sobel.
+**Thuật toán 3.2 — `correlate_1d`.** Vào: ảnh, hệ số kernel lẻ, trục. Ra: ảnh tương quan float64. Dùng chung cho Gauss và Sobel.
 
 ```text
-01 Đệm phản chiếu R_g pixel theo trục, không lặp pixel mép.
+01 Đệm phản chiếu (số hệ số−1)/2 pixel theo trục, không lặp mép.
 02 Tạo out = 0 trong float64.
-03 Với mỗi j có g[j] ≠ 0: out += g[j] × lát ảnh dịch j.
+03 Với mỗi j có hệ_số[j] ≠ 0: out += hệ_số[j] × lát ảnh dịch j.
 04 Trả out; chỉ đổi float32 ở đầu ra cuối của Gauss/Sobel.
 ```
 
@@ -67,26 +67,28 @@ Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh N
 
 `src/hough.py` không gọi Hough thư viện. Cấu hình cuối `configs/default.json` khớp `configs/s215_frozen.json`: toàn vòng, bước r = 1 px, bước góc 1°, tối thiểu 12 phiếu/tỷ lệ 0,35, NMS tâm 4 px/r 2 px, trần 100 vòng, lô 256. Dải r theo (2.14): 5–125 cho 11 ảnh 2 m/px; 5–100 cho 15 ảnh 20 m/px. `params.json` ghi dải thực quét.
 
+Vector hóa (vectorization) tạo tâm cả lô bằng phép mở rộng mảng (broadcasting), không lặp Python theo từng phiếu.
+
 **Thuật toán 3.3 — `detect_circles`.** Vào: E cỡ M × N, dải r, T góc, B, L và θ nếu dùng gradient. Ra: danh sách (x,y,r,phiếu,q).
 
 ```text
-01 Lấy (ys,xs) = các điểm biên; rỗng thì trả []. U = [].
-02 Với mỗi r trong dải: tạo A int32 cỡ M×N bằng 0.
-03   Toàn vòng: tạo D_r theo (2.9), S = |D_r|.
-04     Với mỗi lô B điểm: tạo tâm bằng broadcast, bỏ tâm ngoài ảnh.
+01 Lấy (ys,xs) = các điểm biên; rỗng thì trả []. đỉnh = [].
+02 Với mỗi r trong dải: tạo A_r int32 cỡ M×N bằng 0.
+03   Toàn vòng: tạo D_r theo (2.9), S_r = |D_r|.
+04     Với mỗi lô B điểm: tạo tâm bằng mở rộng mảng, bỏ tâm ngoài ảnh.
 05     Trải phẳng i=bN+a; cộng bincount trên đoạn [min i,max i].
-06   Gradient: thiếu θ thì báo lỗi; bỏ phiếu hai tâm (2.11), S=⌈2πr⌉.
-07   Lấy cực đại 3×3 với A ≥ max(v_min,⌈κS⌉); hòa ưu tiên trên/trái.
-08   Thêm (A/S,A,y,x,r) của các đỉnh vào U.
-09 Sắp U theo (−q,−phiếu,y,x,r).
+06   Gradient: thiếu θ thì báo lỗi; bỏ phiếu hai tâm (2.11), S_r=⌈2πr⌉.
+07   Lấy cực đại 3×3 với A_r ≥ max(v_min,⌈κS_r⌉); hòa trên/trái.
+08   Thêm (A_r/S_r,A_r,y,x,r) của các đỉnh vào danh sách đỉnh.
+09 Sắp đỉnh theo (−q,−phiếu,y,x,r).
 10 Nếu radius_balanced: chia nhóm r gấp đôi, xen kẽ đầu mỗi nhóm từ nhỏ tới lớn.
-11 G = []; duyệt U, bỏ u nếu gần g đã giữ theo cả hai ngưỡng (2.13).
-12 Thêm vòng còn lại; dừng khi |G|=L; trả G.
+11 giữ = []; duyệt đỉnh, bỏ vòng gần vòng đã giữ theo hai ngưỡng (2.13).
+12 Thêm vòng còn lại; dừng khi |giữ|=L; trả giữ.
 ```
 
-Vector hóa (vectorization) tạo tâm cả lô bằng phép mở rộng mảng (broadcasting), không lặp Python theo từng phiếu. Mỗi r chỉ giữ một mặt phẳng 1 MiB; danh sách đỉnh vẫn tích lũy qua r. Đếm đoạn có phiếu giữ nguyên kết quả và từng tăng tốc 2,10–2,40 lần trên ba ảnh đo cùng máy; bảng lịch sử giữ ở Phụ lục E.
+Mỗi r chỉ giữ một mặt phẳng 1 MiB; danh sách đỉnh vẫn tích lũy qua r. Đếm đoạn có phiếu giữ nguyên kết quả và từng tăng tốc 2,10–2,40 lần trên ba ảnh đo cùng máy; bảng lịch sử giữ ở Phụ lục E.
 
-Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,20), [20,40), [40,80), [80,160), xen kẽ trước NMS. STT 13 đổi từ 100 vòng r ≤10 sang 29 vòng r >16, lớn nhất 31; nâng trần kiểu `score` lên 1.000 chỉ có 8 vòng r >16. Đây là sửa thiên lệch xếp hạng, không chứng minh Precision cao. Cấu hình cuối vẫn `score`, chọn trên 18 ảnh điều chỉnh cho 10/174 nhãn (5,75 %), không dựa vào tập kiểm tra. Gradient từng chỉ cho 0–2 vòng/ảnh ở kiểm ghép 14/10; vì vậy không dùng mặc định.
+Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,20), [20,40), [40,80), [80,160), xen kẽ trước NMS. STT 13 đổi từ 100 vòng r ≤10 sang 29 vòng r >16, lớn nhất 31; nâng trần kiểu `score` lên 1.000 chỉ có 8 vòng r >16. Phân bổ suất ứng viên (quota) theo dải r nhằm giảm thiên lệch xếp hạng, không chứng minh Precision cao. Cấu hình cuối vẫn `score`, chọn trên 18 ảnh điều chỉnh (tuning) cho 10/174 nhãn (5,75 %; trung bình theo ảnh 8,12 ± 16,06 %), không dựa vào tập kiểm tra (holdout). Gradient từng chỉ cho 0–2 vòng/ảnh ở kiểm ghép 14/10; vì vậy không dùng mặc định.
 
 ## 3.4. Sáng–tối và phân lớp ứng viên
 
@@ -128,15 +130,15 @@ $$ d/R\le\text{0,75}\quad\text{và}\quad r/R\ge\text{0,5}. \qquad (3.1) $$
 
 Điều kiện bán kính giữ hố nhỏ thật nằm trong hố lớn. Ba cặp đã biết có d/R = 0,33; 0,45; 0,71; ngưỡng 0,5 sẽ bỏ sót M66/M67. Ngưỡng 0,75 có thể gộp hai hố thật chồng gần hết, nên chưa bật mặc định.
 
-**Thuật toán 3.6 — `dedupe_circles`.** Vào: C và ngưỡng (3.1). Ra: G giữ, L loại có `duplicate_of`.
+**Thuật toán 3.6 — `dedupe_circles`.** Vào: các vòng và ngưỡng (3.1). Ra: vòng giữ, vòng loại có `duplicate_of`.
 
 ```text
-01 Với mỗi c: q = phiếu/S_r; đủ_tin = q≥0,35 và lớp≠texture.
-02 Sắp C theo (không đủ_tin, −r, −q, −phiếu, crater_id).
-03 G = []; L = [].
-04 Với c theo thứ tự: nếu có g∈G thỏa (3.1), thêm c vào L,
-05   ghi duplicate_of(c)=g; nếu không, thêm c vào G.
-06 Trả G theo thứ tự đầu vào và L.
+01 Với mỗi vòng: q = phiếu/S_r; đủ_tin = q≥0,35 và lớp≠texture.
+02 Sắp các vòng theo (không đủ_tin, −r, −q, −phiếu, crater_id).
+03 giữ = []; loại = [].
+04 Duyệt thứ tự: nếu có vòng đã giữ thỏa (3.1), thêm vòng vào loại,
+05   ghi duplicate_of = mã vòng đã giữ; nếu không, thêm vòng vào giữ.
+06 Trả giữ theo thứ tự đầu vào và loại.
 ```
 
 **Ví dụ M32/M8.** STT 13: M32 tâm (52,372), r = 9, 39 phiếu; M8 tâm (49,372), r = 6, 28 phiếu. d = 3 nên d/R = 0,33 ≤0,75 và r/R = 0,67 ≥0,5. $S_9=72$, $S_6=48$ cho q(M32) = 0,542, q(M8) = 0,583. Cả hai đủ tin, M32 lớn hơn được giữ; M8 ghi `duplicate_of=M32`. Chỉ chọn q sẽ giữ nhầm mép bóng nhỏ. Cặp M19/M15 là dạng tương tự; M66/M67 trên STT 17 có r = 7, tâm cách 5 px.
@@ -153,8 +155,8 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 01 Kiểm các ô cùng s và cùng ảnh nguồn; U = hợp mặt nạ ở hệ ảnh nguồn.
 02 H = []; với mỗi vòng (x,y,r) của mỗi ô: D = 2rs.
 03 Bỏ D ngoài [D_min,D_max) hoặc tâm làm tròn nằm ngoài mặt nạ đếm.
-04 Đổi tâm về ảnh nguồn, tìm h∈H lệch tâm ≤0,5R và r/R≥0,7.
-05 Nếu có h: gộp; nếu không: thêm vòng vào H.
+04 Đổi tâm về ảnh nguồn, tìm hố đã có trong H lệch tâm ≤0,5R và r/R≥0,7.
+05 Nếu tìm thấy hố: gộp; nếu không: thêm vòng vào H.
 06 A = |U|s²/10⁶; ρ = |H|/A; A=0 thì mật độ không xác định.
 07 Trả H, A, ρ và khoảng Poisson theo (2.25) chia A.
 ```
@@ -163,7 +165,7 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 
 ```text
 01 Tạo biên bin D_min×(√2)^j, kết thúc tại D_max; đếm và cộng dồn.
-02 Tính Poisson CDF: term=exp(−μ); lặp term*=μ/i, cộng đến n.
+02 Tính Poisson CDF (hàm phân phối tích lũy): term=exp(−μ); lặp term*=μ/i, cộng đến n.
 03 Chia đôi 200 lần tìm hai nghiệm (2.25); n=0 có cận dưới 0.
 04 Kiểm cùng s/dải D; tính xác suất Binomial của 0…N1+N2 theo (2.26).
 05 Cộng xác suất không lớn hơn xác suất N1 quan sát để có p hai phía.
@@ -175,17 +177,17 @@ Khoảng n = 0 cho [0;3,689], n = 10 cho [4,795;18,39], khớp bảng tra; 12 b�
 
 Ứng dụng Streamlit có bản đồ tự viết bằng HTML/CSS/JavaScript [@streamlit], dùng được ngoại tuyến sau cài. Người chơi kéo tâm–vành để vẽ; kéo hoặc nhập số để sửa; có xóa, hoàn tác 50 thay đổi, tối đa 500 vòng/ảnh, phóng 1–8 lần, chuột/bàn phím/cảm ứng. Đổi ảnh giữ bản nháp. “Lưu trên máy” ghi ở máy chủ, “Tải JSON” đưa file về máy người chơi.
 
-Với con trỏ (u,v), góc bản đồ (L,T), bề rộng W, mức phóng z và góc vùng xem $(v_x,v_y)$ theo mép pixel:
+Con trỏ (u,v), gốc bản đồ $(u_0,v_0)$ và bề rộng W theo pixel hiển thị; mức phóng z không đơn vị, gốc vùng xem $(v_x,v_y)$ theo mép pixel ảnh:
 
-$$ x=v_x+\frac{(u-L)512}{Wz}-\text{0,5},\qquad y=v_y+\frac{(v-T)512}{Wz}-\text{0,5}. \qquad (3.2) $$
+$$ x=v_x+\frac{(u-u_0)512}{Wz}-\text{0,5},\qquad y=v_y+\frac{(v-v_0)512}{Wz}-\text{0,5}. \qquad (3.2) $$
 
 Trừ 0,5 chuyển về tâm pixel; vẽ cộng lại 0,5. Test JavaScript kiểm nhiều mức phóng/cỡ hiển thị; ảnh đối chiếu phóng 3 lần. Câu trả lời chấm với máy và nhãn theo hai nguồn riêng.
 
-**Thuật toán 3.9 — ghép và chấm.** Vào: vòng dự đoán P, nhãn Q và mức đầy đủ. Ra: cặp ghép, sai lệch, điểm nếu nhãn đủ điều kiện.
+**Thuật toán 3.9 — ghép và chấm.** Vào: vòng dự đoán, nhãn và mức đầy đủ. Ra: cặp ghép, sai lệch, điểm nếu nhãn đủ điều kiện.
 
 ```text
 01 Tính δ_ij (2.20), bỏ hàng/cột không có cặp hợp lệ.
-02 Tạo chi phí δ cho cặp hợp lệ; phạt (k+1)(0,5+1) cho cặp sai.
+02 Tạo chi phí δ cho cặp hợp lệ; phạt (ν+1)(0,5+1) cho cặp sai.
 03 Hungary: thêm từng hàng; tìm đường tăng theo chi phí giảm bởi thế vị.
 04 Cập nhật thế vị bằng chi phí dư nhỏ nhất; truy vết, đảo đường tăng.
 05 Bỏ cặp chịu phạt; trả khoảng cách tâm, lệch r theo (2.21).
@@ -201,12 +203,12 @@ Thẻ có tiêu đề, nội dung và nguồn về Apollo 15/16, Lunokhod 1/2; d
 
 ## 3.8. Độ phức tạp, kiểm chứng và khó khăn
 
-Bảng 3.3 dùng M × N là kích thước ảnh; $E_n,K,B,S,T,R_n,L,J$ theo mục 2.2.4; n là số vòng, $r_{max}$ bán kính lớn nhất, $b_h$ số bin; c là số ô vùng đếm, $P_U$ là diện tích hình chữ nhật bao các ô trong ảnh nguồn, $n_p,n_q$ là số vòng/nhãn trước rút ma trận ghép.
+Bảng 3.3 dùng M × N là kích thước ảnh; $E_n,K,B,S_{max},T,R_n,L,J$ theo mục 2.2.4; n là số vòng, $r_{max}$ bán kính lớn nhất, $b_h$ số khoảng lớp; c là số ô vùng đếm, $P_U$ là số pixel của khung chữ nhật bao các ô, $n_p,n_q$ là số vòng/nhãn trước rút ma trận ghép.
 
 | Khối tự cài | Thời gian | Bộ nhớ phụ |
 |---|---|---|
 | B1–B3 | $O(MN\log(MN))$ là chặn trên khi tìm phân vị bằng sắp xếp; trung bình khối/ảnh xám $O(MN)$ | $O(MN)$ |
-| Gauss, Sobel, co mặt nạ | $O(MN(R_g+m))$; Sobel kernel cố định | $O(MN)$ |
+| Gauss, Sobel, co mặt nạ | $O(MN(R_g+\ell))$; Sobel kernel cố định | $O(MN)$ |
 | Hough toàn vòng / gradient | Công thức (2.15); gradient $O(R_n(E_n+MN)+K\log K+KL)$ | Công thức (2.16) |
 | `score_one`; `review_candidates` | $O(\sum r_i^2)$; thêm $O(MN)$ tìm vùng bóng | $O(r_{max}^2)$; phân lớp thêm $O(MN)$ |
 | `dedupe_circles` | $O(nT\log T+n\log n+n^2)$ | $O(n+T)$ |
@@ -215,7 +217,7 @@ Bảng 3.3 dùng M × N là kích thước ảnh; $E_n,K,B,S,T,R_n,L,J$ theo m�
 
 : Bảng 3.3. Độ phức tạp; bộ nhớ toàn ứng dụng còn gồm dữ liệu và ảnh hiển thị.
 
-Bảng 3.4 đo mới ngày 01/11/2026 trên cùng 26 ảnh float32 [0,1], cùng biên `REFLECT_101`, so NumPy tự viết với OpenCV. Với hai đầu ra X,Y có P phần tử, $e_{max}=\max_i\left\lvert X_i-Y_i\right\rvert$, $MSE=P^{-1}\sum_i(X_i-Y_i)^2$. MSE gộp có trọng số theo số phần tử, không phải sai số của phép phát hiện hố.
+Bảng 3.4 đo mới ngày 01/11/2026 trên cùng 26 ảnh float32 [0,1], cùng biên `REFLECT_101`, so NumPy tự viết với OpenCV. Với hai đầu ra $Z^{np},Z^{cv}$ có $P_e$ phần tử, $e_{max}=\max_i\left\lvert Z_i^{np}-Z_i^{cv}\right\rvert$. Sai số bình phương trung bình (mean squared error — MSE) là $MSE=P_e^{-1}\sum_i(Z_i^{np}-Z_i^{cv})^2$. MSE gộp có trọng số theo số phần tử, không phải sai số của phép phát hiện hố.
 
 | Phép đối chiếu | $e_{max}$ | MSE |
 |---|---:|---:|
@@ -225,8 +227,8 @@ Bảng 3.4 đo mới ngày 01/11/2026 trên cùng 26 ảnh float32 [0,1], cùng 
 
 : Bảng 3.4. Sai số lớn nhất và bình phương trung bình trên đủ 26 ảnh.
 
-Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$. `scripts/verify_report_numerics.py` lưu từng ảnh, hash đầu vào/mã và môi trường tại `docs/evidence/s3-12/report_numerics.json`; cũng kiểm lại ví dụ 5×5. Hough và OpenCV không cùng biên/ngưỡng/NMS nên không so MSE trực tiếp giữa hai danh sách vòng; đối chiếu trên giả lập và ảnh thật ở Chương 4. Các số đo phụ lượng tử CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo riêng.
+Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$. `scripts/verify_report_numerics.py` lưu từng ảnh, hash đầu vào/mã và môi trường tại `docs/evidence/s3-12/report_numerics.json`; cũng kiểm lại ví dụ 5×5. Hough và OpenCV không cùng biên/ngưỡng/NMS nên không so MSE trực tiếp giữa hai danh sách vòng; đối chiếu trên giả lập và ảnh thật ở Chương 4. Cảnh giả lập có nhiễu dùng giá trị khởi tạo bộ sinh số giả ngẫu nhiên (seed) cố định; Hough không lấy mẫu ngẫu nhiên. Các số đo phụ lượng tử CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo riêng.
 
-**Khó khăn và xử lý.** Đệm mép phải trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8. Thiếu hướng nắng hoặc phương sai thì không suy nhãn; hướng sai đảo dấu. Đếm đoạn phiếu và chỉ giữ một mặt phẳng giảm chi phí Hough, nhưng trần 100 thiên về vòng nhỏ. Phân lớp/lọc trùng chưa bật vì đã có ca mất cặp ghép đúng. Kho mã có 342 test Python và 6 bộ JavaScript; test xác nhận hành vi thiết kế, không thay đánh giá chất lượng. Lệnh kiểm và chạy lại ở Phụ lục A.
+**Khó khăn và xử lý.** Đệm mép phải trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8. Thiếu hướng nắng hoặc phương sai thì không suy nhãn; hướng sai đảo dấu. Đếm đoạn phiếu và chỉ giữ một mặt phẳng giảm chi phí Hough, nhưng trần 100 thiên về vòng nhỏ. Phân lớp/lọc trùng chưa bật vì đã có ca mất cặp ghép đúng. Kho mã có 370 test Python và 6 bộ JavaScript; test xác nhận hành vi thiết kế, không thay đánh giá chất lượng. Lệnh kiểm và chạy lại ở Phụ lục A.
 
-<!-- S3-12: 342 test Python và 6 bộ test JavaScript, đo ngày 02/11/2026 trên main 23f0b3a, sau khi merge PR S3-16 (thêm 5 test đóng gói), PR báo cáo và PR S3-05 (thêm 4 test). -->
+<!-- S3-12: 370 test Python và 6 bộ test JavaScript, đo ngày 02/11/2026 trên nhánh hoàn thiện theo đề gốc (nền main 7e81469); thêm 28 test so với 342: 5 test trung bình ± SD, 16 test xuất bảng Chương 4, 7 test liên kết công khai khi dựng báo cáo. -->

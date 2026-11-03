@@ -4,6 +4,7 @@ Môi trường: requirements-browser.txt và Chromium; --out phải chưa tồn 
 --layout-only kiểm riêng lỗi #9, dùng cả khi đối chứng CSS trước sửa.
 Các vòng ở đây chỉ là dữ liệu thử tương tác, không phải nhãn hố thật.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -20,18 +21,50 @@ SCORE_LABEL = "Điểm theo nhãn đã kiểm chéo"
 
 
 def run_identity(url):
-    paths = ("app.py", "src/integration.py", "src/statistics.py", "src/hough.py", "src/pipeline.py",
-             "src/crater_canvas/geometry.js", "src/crater_canvas/canvas.js", "src/crater_canvas/app.css",
-             "configs/default.json", "docs/evidence/s2-09/so_sanh.json", "data/s209_counts/regions.json",
-             "scripts/check_s213_app.py", "requirements-browser.txt", "requirements-test.txt")
-    return {"head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-            "url": url, "source_root": str(ROOT), "started_at_utc": datetime.now(timezone.utc).isoformat(),
-            "source_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True),
-            "source_sha256": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in paths},
-            "server_source_verified": False}
+    """Ghi nhận danh tính nguồn local cho lượt thử trình duyệt.
+
+    Vào: url và danh sách file cố định tại ROOT. Ra: dict Git, thời điểm, URL và SHA-256 nguồn.
+    Không xác minh mã máy chủ hoặc ghi file tại đây; công thức không áp dụng.
+    """
+    paths = (
+        "app.py",
+        "src/integration.py",
+        "src/statistics.py",
+        "src/hough.py",
+        "src/pipeline.py",
+        "src/crater_canvas/geometry.js",
+        "src/crater_canvas/canvas.js",
+        "src/crater_canvas/app.css",
+        "configs/default.json",
+        "docs/evidence/s2-09/so_sanh.json",
+        "data/s209_counts/regions.json",
+        "scripts/check_s213_app.py",
+        "requirements-browser.txt",
+        "requirements-test.txt",
+    )
+    return {
+        "head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "url": url,
+        "source_root": str(ROOT),
+        "started_at_utc": datetime.now(timezone.utc).isoformat(),
+        "source_status": subprocess.check_output(
+            ["git", "status", "--porcelain"], cwd=ROOT, text=True
+        ),
+        "source_sha256": {
+            name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in paths
+        },
+        "server_source_verified": False,
+    }
 
 
 def check_score_label(page, width, out, narrow=False):
+    """Kiểm nhãn điểm còn đủ chữ trong viewport/cột được chọn.
+
+    Vào: page, width, thư mục out và narrow để thử cột 128 px.
+    Ra: dict kích thước/độ hiển thị; đổi viewport, khi narrow ghi score_1440_narrow.png và trả
+    style cũ.
+    Kiểm giao diện mục 3.7; không tính lại điểm (3.3).
+    """
     from playwright.sync_api import expect
 
     page.set_viewport_size({"width": width, "height": 1100})
@@ -39,11 +72,14 @@ def check_score_label(page, width, out, narrow=False):
     expect(label).to_have_text(SCORE_LABEL)
     if narrow:
         # Reproduce a narrow metric column independently of the host's installed font.
-        label.evaluate("""e => {const m=e.closest('[data-testid="stMetric"]');
+        label.evaluate(
+            """e => {const m=e.closest('[data-testid="stMetric"]');
           m.dataset.testStyle=m.getAttribute('style') || '';
-          m.style.width='128px'; m.style.maxWidth='128px'; m.style.minWidth='0';} """)
+          m.style.width='128px'; m.style.maxWidth='128px'; m.style.minWidth='0';} """
+        )
     label.scroll_into_view_if_needed()
-    measured = label.evaluate("""e => {
+    measured = label.evaluate(
+        """e => {
       const range = document.createRange(); range.selectNodeContents(e);
       const lines = [...range.getClientRects()].filter(r => r.width > 0);
       const clips = [];
@@ -60,16 +96,26 @@ def check_score_label(page, width, out, narrow=False):
         && r.top>=c.top-1 && r.bottom<=c.bottom+1));
       return {text:e.textContent,white_space:getComputedStyle(e).whiteSpace,visible,
         lines:lines.map(r=>({x:r.x,y:r.y,width:r.width,height:r.height})),clips};
-    }""")
+    }"""
+    )
     if narrow:
         page.screenshot(path=str(out / "score_1440_narrow.png"))
-        label.evaluate("""e => {const m=e.closest('[data-testid="stMetric"]');
-          m.setAttribute('style',m.dataset.testStyle); delete m.dataset.testStyle;} """)
+        label.evaluate(
+            """e => {const m=e.closest('[data-testid="stMetric"]');
+          m.setAttribute('style',m.dataset.testStyle); delete m.dataset.testStyle;} """
+        )
     assert measured["visible"], f"Nhãn bị cắt ở {width}px (narrow={narrow}): {measured}"
     return {"width": width, "narrow_metric": narrow, **measured}
 
 
 def main():
+    """Chạy các assertions giao diện và ghi bằng chứng Chromium.
+
+    Vào: CLI url, out chưa tồn tại, layout-only; đọc bảng đếm tay S2-09 local.
+    Ra: None; có thể chấm/lưu trên server, ghi run_identity.json, PNG và browser_results.json.
+    Kiểm bố cục, lời giới hạn, bảng đếm tay và kéo bán kính; mục 3.6/3.7, không assert toàn bộ
+    CI/p.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8621")
     parser.add_argument("--out", type=Path, required=True)
@@ -80,16 +126,23 @@ def main():
     except FileExistsError:
         parser.error("--out phải là thư mục chưa tồn tại; không ghi đè minh chứng.")
     identity = run_identity(args.url)
-    (args.out / "run_identity.json").write_text(json.dumps(identity, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (args.out / "run_identity.json").write_text(
+        json.dumps(identity, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     from playwright.sync_api import expect, sync_playwright
 
     evidence = json.loads((ROOT / "docs/evidence/s2-09/so_sanh.json").read_text(encoding="utf-8"))
-    results = {**identity, "navigation": "reload before each image",
-               "scope": {"score_label": "text bounds at 1440/390px and a synthetic 128px metric",
-                         "manual_table": "names, counts, areas, densities and displayed conclusion",
-                         "flow": "candidate count, hidden density, one cap message and no Streamlit exception",
-                         "recorded_only": "flow table counts and page text; CI, ratio and p are not asserted",
-                         "radius": "displayed centre and radius after dragging the left rim"}}
+    results = {
+        **identity,
+        "navigation": "reload before each image",
+        "scope": {
+            "score_label": "text bounds at 1440/390px and a synthetic 128px metric",
+            "manual_table": "names, counts, areas, densities and displayed conclusion",
+            "flow": "candidate count, hidden density, one cap message and no Streamlit exception",
+            "recorded_only": "flow table counts and page text; CI, ratio and p are not asserted",
+            "radius": "displayed centre and radius after dragging the left rim",
+        },
+    }
     errors = []
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -98,19 +151,38 @@ def main():
         page.on("pageerror", lambda error: errors.append(str(error)))
 
         def capture(name, locator):
+            """Cuộn tới một phần tử và chụp trang làm bằng chứng.
+
+            Vào: name, locator; dùng page và args.out của hàm ngoài. Ra: None; ghi PNG tên name.
+            Công thức báo cáo: không áp dụng cho chụp màn hình.
+            """
             locator.scroll_into_view_if_needed()
             page.screenshot(path=str(args.out / name))
 
         def choose(image_id):
             # Use a fresh page for each screenshot; image-switch state is covered by AppTest.
+            """Tải lại trang và chọn chính xác một image_id.
+
+            Vào: image_id; dùng page/expect của hàm ngoài. Ra: frame canvas sẵn sàng, picker đúng
+            ảnh.
+            Chỉ đổi trang tại bước này; mục 3.7, không có công thức toán.
+            """
             page.reload()
             page.get_by_role("combobox", name="Chọn ảnh để mở").wait_for()
-            expect(page.frame_locator('iframe[title="app.crater_player_canvas"]').locator("#downloadAnswer")).to_be_enabled()
-            expect(page.locator('[data-testid="stApp"]')).to_have_attribute("data-test-script-state", "notRunning")
+            expect(
+                page.frame_locator('iframe[title="app.crater_player_canvas"]').locator(
+                    "#downloadAnswer"
+                )
+            ).to_be_enabled()
+            expect(page.locator('[data-testid="stApp"]')).to_have_attribute(
+                "data-test-script-state", "notRunning"
+            )
             picker = page.get_by_role("combobox", name="Chọn ảnh để mở")
             picker.click()
             picker.fill(image_id)
-            expect(page.get_by_role("option", name=re.compile(r"^" + re.escape(image_id) + r" ·"))).to_be_visible()
+            expect(
+                page.get_by_role("option", name=re.compile(r"^" + re.escape(image_id) + r" ·"))
+            ).to_be_visible()
             page.get_by_role("option", name=re.compile(r"^" + re.escape(image_id) + r" ·")).click()
             expect(picker).to_have_value(re.compile(r"^" + re.escape(image_id) + r" ·"))
             container = page.locator(f".st-key-player_canvas_{image_id}")
@@ -118,19 +190,38 @@ def main():
             frame = container.frame_locator('iframe[title="app.crater_player_canvas"]')
             expect(frame.locator("#imageMeta")).to_contain_text("m/px")
             expect(frame.locator("#downloadAnswer")).to_be_enabled()
-            expect(page.locator('[data-testid="stApp"]')).to_have_attribute("data-test-script-state", "notRunning")
+            expect(page.locator('[data-testid="stApp"]')).to_have_attribute(
+                "data-test-script-state", "notRunning"
+            )
             return frame
 
         def score():
+            """Bấm chấm và chờ nhãn điểm cùng trạng thái app đã dừng.
+
+            Vào: page/expect từ hàm ngoài. Ra: None; lượt chấm có thể được ghi trên máy chủ.
+            Không assert giá trị điểm trong helper này; điểm do app tính theo (3.3).
+            """
             page.get_by_role("button", name="Chấm bài", exact=True).click()
-            page.locator('[data-testid="stMetricLabel"] p').filter(has_text=SCORE_LABEL).wait_for(timeout=90000)
-            expect(page.locator('[data-testid="stApp"]')).to_have_attribute("data-test-script-state", "notRunning", timeout=90000)
+            page.locator('[data-testid="stMetricLabel"] p').filter(has_text=SCORE_LABEL).wait_for(
+                timeout=90000
+            )
+            expect(page.locator('[data-testid="stApp"]')).to_have_attribute(
+                "data-test-script-state", "notRunning", timeout=90000
+            )
 
         def check_cap_messages():
+            """Kiểm chỉ có một lời chạm giới hạn và lời đó là warning.
+
+            Vào: caption/warning trên page của hàm ngoài. Ra: dict captions, warnings, cap_claims.
+            Chỉ kiểm câu chữ giới hạn mục 3.6, không tính mật độ hoặc khoảng tin cậy.
+            """
             captions = page.locator('[data-testid="stCaptionContainer"]').all_inner_texts()
             warnings = page.locator('[data-testid="stAlertContentWarning"]').all_inner_texts()
-            claims = [text for text in captions + warnings
-                      if any(term in text for term in ("chạm trần", "chạm giới hạn", "max_circles"))]
+            claims = [
+                text
+                for text in captions + warnings
+                if any(term in text for term in ("chạm trần", "chạm giới hạn", "max_circles"))
+            ]
             assert len(claims) == 1 and claims[0] in warnings, captions + warnings
             return {"captions": captions, "warnings": warnings, "cap_claims": claims}
 
@@ -140,7 +231,10 @@ def main():
             score()
             results["score_label"] = []
             results["score_label"].append(check_score_label(page, 1440, args.out, narrow=True))
-            print("PASS #9: nhãn xuống dòng đủ chữ trong cột thử hẹp 128px ở viewport 1440px", flush=True)
+            print(
+                "PASS #9: nhãn xuống dòng đủ chữ trong cột thử hẹp 128px ở viewport 1440px",
+                flush=True,
+            )
             for width in (1440, 390):
                 measured = check_score_label(page, width, args.out)
                 results["score_label"].append(measured)
@@ -151,13 +245,21 @@ def main():
                 warning = page.get_by_text(re.compile("Máy đã chạm giới hạn max_circles"))
                 expect(warning).to_contain_text("không dùng để so tuổi hay so vùng")
                 density = page.locator('[data-testid="stMetric"]').filter(
-                    has=page.get_by_text("Mật độ", exact=True))
+                    has=page.get_by_text("Mật độ", exact=True)
+                )
                 expect(density.locator('[data-testid="stMetricValue"]')).to_have_text("—")
                 capture("density_cap_20m.png", warning)
-                results["density_cap"] = {"image_id": "moon_ap15_hia_c01", "scale_m_per_px": 20,
-                                          "warning": warning.inner_text(), "density": "—",
-                                          **check_cap_messages()}
-                print("PASS #10: ẩn mật độ và chỉ một thông báo chạm giới hạn trên ảnh 20 m/px", flush=True)
+                results["density_cap"] = {
+                    "image_id": "moon_ap15_hia_c01",
+                    "scale_m_per_px": 20,
+                    "warning": warning.inner_text(),
+                    "density": "—",
+                    **check_cap_messages(),
+                }
+                print(
+                    "PASS #10: ẩn mật độ và chỉ một thông báo chạm giới hạn trên ảnh 20 m/px",
+                    flush=True,
+                )
 
                 heading = page.get_by_text("So sánh mật độ hai vùng · đếm tay", exact=True)
                 for key in ("lunokhod1", "marefrig"):
@@ -167,40 +269,72 @@ def main():
                     table = page.locator('[data-testid="stTable"]')
                     text = table.inner_text()
                     for region in evidence["regions"].values():
-                        for value in (region["name"], str(region["n"]), f"{region['area_km2']:.1f}",
-                                      f"{region['density_per_km2']:.3f}"):
+                        for value in (
+                            region["name"],
+                            str(region["n"]),
+                            f"{region['area_km2']:.1f}",
+                            f"{region['density_per_km2']:.3f}",
+                        ):
                             assert value in text, (image_id, value, text)
-                    expect(page.get_by_text("Chưa có khác biệt có ý nghĩa thống kê về tổng mật độ. "
-                                            "Không kết luận được vùng nào cổ hơn.", exact=True)).to_be_visible()
+                    expect(
+                        page.get_by_text(
+                            "Chưa có khác biệt có ý nghĩa thống kê về tổng mật độ. "
+                            "Không kết luận được vùng nào cổ hơn.",
+                            exact=True,
+                        )
+                    ).to_be_visible()
                     capture(f"manual_{key}.png", heading)
                     results[key] = {"image_id": image_id, "table": text}
-                    print(f"PASS #11: tên, số hố, diện tích, mật độ và câu kết luận trên {image_id}", flush=True)
+                    print(
+                        f"PASS #11: tên, số hố, diện tích, mật độ và câu kết luận trên {image_id}",
+                        flush=True,
+                    )
                 choose("moon_marefrig_loc_c01")
                 expect(page.get_by_text(re.compile("Ảnh đang mở cùng ảnh nguồn"))).to_be_visible()
                 capture("manual_marefrig_uncounted.png", heading)
-                results["uncounted_crop"] = "PASS: c01 cùng nguồn, có lời giải thích không thuộc ô đếm"
+                results["uncounted_crop"] = (
+                    "PASS: c01 cùng nguồn, có lời giải thích không thuộc ô đếm"
+                )
 
                 results["flow"] = []
-                for image_id in ("moon_ap15_hia_c01", "moon_ap16_m109134835l_c01",
-                                 "moon_ap16_m132732855l_c01", "moon_lunokhod1_loc_c01",
-                                 "moon_lunokhod2_loc_c02", "moon_marefrig_loc_c02",
-                                 "moon_vandegraff_hia_c01"):
+                for image_id in (
+                    "moon_ap15_hia_c01",
+                    "moon_ap16_m109134835l_c01",
+                    "moon_ap16_m132732855l_c01",
+                    "moon_lunokhod1_loc_c01",
+                    "moon_lunokhod2_loc_c02",
+                    "moon_marefrig_loc_c02",
+                    "moon_vandegraff_hia_c01",
+                ):
                     choose(image_id)
                     score()
                     expect(warning).to_contain_text("không dùng để so tuổi hay so vùng")
-                    metrics = page.locator('[data-testid="stMetric"]').evaluate_all("""els => els.map(e => ({
+                    metrics = page.locator('[data-testid="stMetric"]').evaluate_all(
+                        """els => els.map(e => ({
                       label:e.querySelector('[data-testid="stMetricLabel"]').textContent,
-                      value:e.querySelector('[data-testid="stMetricValue"]').textContent}))""")
+                      value:e.querySelector('[data-testid="stMetricValue"]').textContent}))"""
+                    )
                     assert next(m["value"] for m in metrics if m["label"] == "Mật độ") == "—"
-                    assert next(m["value"] for m in metrics if m["label"] == "Số ứng viên") == "100"
+                    assert (
+                        next(m["value"] for m in metrics if m["label"] == "Số ứng viên") == "100"
+                    )
                     cap_messages = check_cap_messages()
                     expect(page.locator('[data-testid="stException"]')).to_have_count(0)
                     capture(f"flow_{image_id}.png", warning)
-                    results["flow"].append({"image_id": image_id, "metrics": metrics,
-                                            "manual_tables": page.locator('[data-testid="stTable"]').count(),
-                                            **cap_messages,
-                                            "page_text": page.locator("body").inner_text()})
-                    print(f"PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên {image_id}", flush=True)
+                    results["flow"].append(
+                        {
+                            "image_id": image_id,
+                            "metrics": metrics,
+                            "manual_tables": page.locator('[data-testid="stTable"]').count(),
+                            **cap_messages,
+                            "page_text": page.locator("body").inner_text(),
+                        }
+                    )
+                    print(
+                        f"PASS: số ứng viên, mật độ, một thông báo giới hạn và không "
+                        f"exception trên {image_id}",
+                        flush=True,
+                    )
 
                 frame = choose("moon_ap15_hia_c01")
                 expect(heading).to_have_count(0)
@@ -233,9 +367,12 @@ def main():
                 expect(frame.locator("#centerY")).to_have_value("200.00")
                 expect(frame.locator("#radius")).to_have_value(f"{math.hypot(50, 10):.2f}")
                 capture("radius_right_edge_after.png", canvas)
-                results["radius_drag"] = {"centre": [500, 200], "before": 40,
-                                          "after_display": frame.locator("#radius").input_value(),
-                                          "expected": math.hypot(50, 10)}
+                results["radius_drag"] = {
+                    "centre": [500, 200],
+                    "before": 40,
+                    "after_display": frame.locator("#radius").input_value(),
+                    "expected": math.hypot(50, 10),
+                }
                 print("PASS #8: kéo nút vành trái đổi bán kính, tâm giữ nguyên", flush=True)
             assert not errors, errors
             expect(page.locator('[data-testid="stException"]')).to_have_count(0)
@@ -247,9 +384,14 @@ def main():
             raise
         finally:
             results["observed_url"] = page.url
-            (args.out / "browser_results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            (args.out / "browser_results.json").write_text(
+                json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
             browser.close()
-    print("PASS: các assertion đã chạy, phạm vi ghi tại browser_results.json; mỗi ảnh mở trang mới", flush=True)
+    print(
+        "PASS: các assertion đã chạy, phạm vi ghi tại browser_results.json; mỗi ảnh mở trang mới",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

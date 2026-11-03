@@ -65,17 +65,30 @@ CENTER_TOLERANCE = 0.5  # fraction of ref radius, khop matching.py
 
 
 def _sha256_file(path: Path) -> str:
+    """Tính hash của file nguồn cho manifest chia tập.
+
+    Vào: path là file cần đọc. Ra: chuỗi SHA-256; không ghi file.
+    Công thức báo cáo: không áp dụng cho thao tác I/O.
+    """
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _find_ref(image_id: str) -> dict | None:
-    """Tim file nhan tham chieu cho image_id; tra None neu chua co."""
+    """Đọc nhãn tham chiếu của một ảnh nếu đã có.
+
+    Vào: image_id; dùng thư mục REF_LABEL_DIR. Ra: dict nhãn hoặc None khi thiếu file.
+    Công thức không áp dụng; nguồn nhãn được mô tả ở mục 4.3.
+    """
     fp = REF_LABEL_DIR / f"{image_id}_craters_catalogue.json"
     return json.loads(fp.read_text(encoding="utf-8")) if fp.exists() else None
 
 
 def _label_status(ref: dict | None) -> str:
-    """Tra trang thai nhan tu nguon thuc te, khong ghi cung trong manifest."""
+    """Suy trạng thái nhãn từ chuỗi nguồn đã ghi.
+
+    Vào: ref là dict nhãn hoặc None. Ra: unlabeled, reviewed hoặc sparse_unreviewed.
+    Không xác nhận vị trí nhãn thay người kiểm; xem mục 4.3.
+    """
     if ref is None:
         return "unlabeled"
     source = str(ref.get("reference_source") or "").lower()
@@ -85,11 +98,10 @@ def _label_status(ref: dict | None) -> str:
 
 
 def _ground_patch_key(crop: dict) -> str:
-    """Key xac dinh vung mat dat:
-    - Voi NAC_PHO (Apollo 16): tat ca anh deu chup tren footprint NAC_PHO_E090S0155
-      (cac tam cach nhau < 1.5 km, crop rong ~1 km -> chong lap dia ly tren mat dat)
-      -> phai vao cung mot key vung mat dat.
-    - Voi NAC_ROI (mosaics): moi product_id dai dien cho mot khu vuc mat dat rieng.
+    """Gom ảnh có chung vùng mặt đất vào cùng khóa chia tập.
+
+    Vào: crop chứa file và product_id. Ra: khóa NAC_PHO chung hoặc product_id của mosaic.
+    Quy tắc chống chồng mặt đất thuộc mục 4.4, không có công thức riêng.
     """
     file = crop["file"]
     if file.startswith("NAC_PHO_"):
@@ -100,6 +112,12 @@ def _ground_patch_key(crop: dict) -> str:
 
 
 def build_split() -> None:
+    """Tạo tập tuning/holdout theo vùng mặt đất và kiểm không tách một vùng.
+
+    Vào: CROPS_JSON, nhãn trong REF_LABEL_DIR và các tập vùng/ảnh cố định.
+    Ra: None; ghi manifest_split.json và label_index.json trong OUT_DIR, in thống kê.
+    Dùng quy tắc mục 4.4; không chia ngẫu nhiên hoặc tự xác nhận nhãn.
+    """
     crops: list[dict] = json.loads(CROPS_JSON.read_text(encoding="utf-8"))
 
     # Bước 1: Gom theo ground_patch (file + x0 + y0)
@@ -117,9 +135,7 @@ def build_split() -> None:
     for patch_key in sorted(patch_groups):
         patch_crops = patch_groups[patch_key]
         # Kiểm tra forced tuning
-        has_forced_tuning = any(
-            c["image_id"] in FORCED_TUNING_IMAGE_IDS for c in patch_crops
-        )
+        has_forced_tuning = any(c["image_id"] in FORCED_TUNING_IMAGE_IDS for c in patch_crops)
         # Kiểm tra tất cả product_id đều là holdout
         all_holdout = all(c["product_id"] in HOLDOUT_PRODUCT_IDS for c in patch_crops)
 
@@ -129,6 +145,12 @@ def build_split() -> None:
             tuning_patches.append(patch_key)
 
     def _make_entries(plist: list[str], split: str) -> list[dict]:
+        """Tạo các dòng ảnh của một tập từ nhóm vùng đã gom.
+
+        Vào: plist và tên split; dùng patch_groups, nhãn và cấu hình của hàm ngoài.
+        Ra: danh sách metadata chia tập có số nhãn/chưa chắc, trạng thái và hash.
+        Quy tắc chia tập theo mục 4.4; không ghi file tại bước này.
+        """
         out = []
         for pk in plist:
             for crop in patch_groups[pk]:
@@ -137,9 +159,7 @@ def build_split() -> None:
                 has = ref is not None
                 label_status = _label_status(ref)
                 circles = ref.get("circles", []) if ref else []
-                n_unc = sum(
-                    1 for c in circles if "uncertain" in c.get("crater_id", "")
-                )
+                n_unc = sum(1 for c in circles if "uncertain" in c.get("crater_id", ""))
                 forced_note = (
                     " Da dung tai S2-02 de chon filter -> buoc vao tuning."
                     if iid in FORCED_TUNING_IMAGE_IDS
@@ -152,19 +172,13 @@ def build_split() -> None:
                         "product_id": crop["product_id"],
                         "ground_patch": pk,
                         "region_group": crop["region_group"],
-                        "sun_quality": (
-                            "measured" if crop.get("sun_inc") is not None else "none"
-                        ),
+                        "sun_quality": ("measured" if crop.get("sun_inc") is not None else "none"),
                         "sun_inc_deg": crop.get("sun_inc"),
-                        "sun_side": (
-                            crop.get("sun_side") or crop.get("sun_side_candidate")
-                        ),
+                        "sun_side": (crop.get("sun_side") or crop.get("sun_side_candidate")),
                         "d_min_m": crop["d_min_m"],
                         "d_max_m": crop["d_max_m"],
                         "has_reference_label": has,
-                        "reference_label_file": (
-                            f"{iid}_craters_catalogue.json" if has else None
-                        ),
+                        "reference_label_file": (f"{iid}_craters_catalogue.json" if has else None),
                         "label_status": label_status,
                         "n_labels": len(circles),
                         "n_uncertain": n_unc,
@@ -248,9 +262,7 @@ def build_split() -> None:
         if e["has_reference_label"]:
             ref = _find_ref(e["image_id"])
             circles = ref.get("circles", []) if ref else []
-            n_unc = sum(
-                1 for c in circles if "uncertain" in c.get("crater_id", "")
-            )
+            n_unc = sum(1 for c in circles if "uncertain" in c.get("crater_id", ""))
             label_index[e["image_id"]] = {
                 "split": e["split"],
                 "ground_patch": e["ground_patch"],
@@ -272,12 +284,12 @@ def build_split() -> None:
     )
 
     print(
-        f"Tuning : {len(tuning)} crops ({tuning_patch_count} ground patches),"
-        f" {stats['labeled_tuning']} co nhan"
+        f"Tuning : {len(tuning)} crops ({tuning_patch_count} ground patches), "
+        f"{stats['labeled_tuning']} co nhan"
     )
     print(
-        f"Holdout: {len(holdout)} crops ({holdout_patch_count} ground patches),"
-        f" {stats['labeled_holdout']} co nhan"
+        f"Holdout: {len(holdout)} crops ({holdout_patch_count} ground patches), "
+        f"{stats['labeled_holdout']} co nhan"
     )
     print(f"Manifest : {manifest_path}")
     print(f"LabelIdx : {label_index_path}")

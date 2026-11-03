@@ -3,7 +3,8 @@
 Ví dụ:
     python scripts/run_preprocessing.py --synthetic oblique
     python scripts/run_preprocessing.py --synthetic overhead
-    python scripts/run_preprocessing.py --input data/raw/anh.tif --metadata data/processed/<id>.json
+    python scripts/run_preprocessing.py --input data/raw/anh.tif --metadata \
+data/processed/<id>.json
 
 Kết quả ở outputs/<run_id>/ (không ghi đè lần chạy cũ):
     steps/B*.png      ảnh từng bước, tên file ghi mã bước
@@ -33,7 +34,13 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from src.contracts import radius_range_px, read_json, validate_crater_set, validate_metadata  # noqa: E402
+from src.contracts import (
+    radius_range_px,
+    read_json,
+    validate_crater_set,
+    validate_metadata,
+# Import dưới đây đặt sau cấu hình backend/sys.path ở trên; giữ thứ tự (E402).
+)  # noqa: E402
 from src.preprocessing import STEPS, preprocess, read_window  # noqa: E402
 
 # Hai cảnh thử theo S1-04 mục 9: một nắng xiên, một nắng gần đứng.
@@ -44,33 +51,67 @@ SYNTHETIC = {
 
 
 def code_version() -> str:
-    commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+    """Lấy mã phiên bản của cây mã hiện tại.
+
+    Vào: không có tham số; đọc Git tại ROOT. Ra: chuỗi commit kèm trạng thái thay đổi.
+    """
+    commit = subprocess.run(
+        ["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True
+    )
     version = commit.stdout.strip() if commit.returncode == 0 else "no-git"
-    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True)
+    dirty = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True
+    )
     if dirty.returncode == 0 and dirty.stdout.strip():
         version += "+working-tree"
     return version
 
 
 def synthetic_input(name: str):
+    """Tạo đầu vào giả lập và đáp án theo cấu hình ánh sáng.
+
+    Vào: tên cảnh trong SYNTHETIC. Ra: ảnh, mặt nạ None, metadata và bộ vòng đúng.
+    Bán kính và đổi tọa độ dùng công thức (2.14), mục 4.2 của báo cáo.
+    """
     from scripts.synthetic_scene import make_scene
 
     cfg = SYNTHETIC[name]
     k, src_scale = 2, 1.0
-    image, craters = make_scene(cfg["azimuth_deg"], cfg["incidence_deg"], size=512 * k,
-                                nodata_corner=cfg["nodata_corner"], seed=cfg["seed"])
+    image, craters = make_scene(
+        cfg["azimuth_deg"],
+        cfg["incidence_deg"],
+        size=512 * k,
+        nodata_corner=cfg["nodata_corner"],
+        seed=cfg["seed"],
+    )
     d_min, d_max = 40.0, 500.0
     r_min, r_max = radius_range_px(d_min, d_max, src_scale * k)
     metadata = {
-        "schema_version": "1.0", "data_kind": "synthetic", "image_id": f"s108_synth_{name}",
-        "source_stt": None, "product_id": None, "body": "moon",
-        "crop_x0": 0, "crop_y0": 0, "downsample_k": k, "width": 512, "height": 512,
-        "scale_m_per_px": src_scale * k, "center_lat": None, "center_lon": None,
-        "north_up": True, "north_angle_deg": 0.0,
-        "sun": {"azimuth_deg": cfg["azimuth_deg"], "incidence_deg": cfg["incidence_deg"], "quality": "measured",
-                "source": "Cảnh giả lập scripts/synthetic_scene.py; hướng nắng do bộ tạo đặt."},
+        "schema_version": "1.0",
+        "data_kind": "synthetic",
+        "image_id": f"s108_synth_{name}",
+        "source_stt": None,
+        "product_id": None,
+        "body": "moon",
+        "crop_x0": 0,
+        "crop_y0": 0,
+        "downsample_k": k,
+        "width": 512,
+        "height": 512,
+        "scale_m_per_px": src_scale * k,
+        "center_lat": None,
+        "center_lon": None,
+        "north_up": True,
+        "north_angle_deg": 0.0,
+        "sun": {
+            "azimuth_deg": cfg["azimuth_deg"],
+            "incidence_deg": cfg["incidence_deg"],
+            "quality": "measured",
+            "source": "Cảnh giả lập scripts/synthetic_scene.py; hướng nắng do bộ tạo đặt.",
+        },
         "radius": {"d_min_m": d_min, "d_max_m": d_max, "r_min_px": r_min, "r_max_px": r_max},
-        "valid_ratio": None, "preprocess": None,
+        "valid_ratio": None,
+        "preprocess": None,
         "note": "Ảnh giả lập để thử tiền xử lý; không phải dữ liệu NASA.",
     }
     # Hố đúng (đáp án của bộ tạo), đổi về ảnh 512: x = (x_src − (k−1)/2)/k.
@@ -84,30 +125,60 @@ def synthetic_input(name: str):
         if not r_min <= r512 <= r_max:
             outside_radius += 1
             continue
-        circles.append({"crater_id": f"C{len(circles) + 1}", "x": round(x512, 2), "y": round(y512, 2),
-                        "r": round(r512, 2), "confidence": None, "votes": None})
+        circles.append(
+            {
+                "crater_id": f"C{len(circles) + 1}",
+                "x": round(x512, 2),
+                "y": round(y512, 2),
+                "r": round(r512, 2),
+                "confidence": None,
+                "votes": None,
+            }
+        )
     metadata["synthetic_truth_scope"] = {
         "rule": "centre_in_image_and_radius_in_search_range",
-        "r_min_px": r_min, "r_max_px": r_max,
-        "generated_craters": len(craters), "centres_outside_image": outside_centres,
+        "r_min_px": r_min,
+        "r_max_px": r_max,
+        "generated_craters": len(craters),
+        "centres_outside_image": outside_centres,
         "radius_outside_search_range_with_center_in_image": outside_radius,
         "reference_craters": len(circles),
-        "note": "Số hố ngoài bán kính chỉ đếm các hố đã có tâm trong ảnh; không lọc theo độ rõ vành hoặc mặt nạ nodata.",
+        "note": 'Số hố ngoài bán kính chỉ đếm các hố đã có tâm trong ảnh; không lọc '
+        'theo độ rõ vành hoặc mặt nạ nodata.',
     }
-    truth = {"schema_version": "1.0", "data_kind": "synthetic", "image_id": metadata["image_id"],
-             "source": "catalogue", "reference_source": "Đáp án bộ tạo cảnh giả lập S1-08", "circles": circles}
+    truth = {
+        "schema_version": "1.0",
+        "data_kind": "synthetic",
+        "image_id": metadata["image_id"],
+        "source": "catalogue",
+        "reference_source": "Đáp án bộ tạo cảnh giả lập S1-08",
+        "circles": circles,
+    }
     return image, None, metadata, truth
 
 
 def fingerprint(path: Path) -> dict:
+    """Tính dấu vân tay của một tệp đầu vào.
+
+    Vào: đường dẫn tệp. Ra: dict đường dẫn tuyệt đối, SHA-256 và số byte.
+    """
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
-    return {"path": str(path.resolve()), "sha256": digest.hexdigest(), "bytes": path.stat().st_size}
+    return {
+        "path": str(path.resolve()),
+        "sha256": digest.hexdigest(),
+        "bytes": path.stat().st_size,
+    }
 
 
 def file_input(path: Path, metadata_path: Path, valid_mask_path: Path | None = None):
+    """Đọc ảnh và kiểm tra mặt nạ theo metadata.
+
+    Vào: đường dẫn ảnh, JSON metadata và mặt nạ tùy chọn. Ra: ảnh, mặt nạ, metadata đã thêm dấu vân
+    tay và None thay đáp án; dữ liệu sai gây ValueError.
+    """
     metadata = read_json(metadata_path)
     k = metadata["downsample_k"]
     suffix = path.suffix.lower()
@@ -125,7 +196,11 @@ def file_input(path: Path, metadata_path: Path, valid_mask_path: Path | None = N
             image = image[..., [2, 1, 0, 3]] if image.shape[2] == 4 else image[..., ::-1]
     else:  # GeoTIFF, PDS .IMG, JP2: cắt cửa sổ 512·k bằng rasterio
         image, valid = read_window(str(path), metadata["crop_x0"], metadata["crop_y0"], k)
-    if image.dtype.kind not in "uif" or image.ndim not in (2, 3) or (image.ndim == 3 and image.shape[2] not in (3, 4)):
+    if (
+        image.dtype.kind not in "uif"
+        or image.ndim not in (2, 3)
+        or (image.ndim == 3 and image.shape[2] not in (3, 4))
+    ):
         raise ValueError("Ảnh đầu vào phải là mảng số thực 2 chiều hoặc RGB/RGBA.")
     if image.ndim == 3 and image.shape[2] == 4:
         alpha_valid = image[..., 3] > 0
@@ -135,20 +210,40 @@ def file_input(path: Path, metadata_path: Path, valid_mask_path: Path | None = N
     if mask_path is not None:
         mask = np.load(mask_path, allow_pickle=False)
         if mask.dtype != np.bool_ or mask.shape != image.shape[:2]:
-            raise ValueError("File valid_mask phải là mảng bool cùng chiều cao/rộng với ảnh đầu vào.")
+            raise ValueError(
+                "File valid_mask phải là mảng bool cùng chiều cao/rộng với ảnh đầu vào."
+            )
         valid = mask if valid is None else valid & mask
     finite = np.isfinite(image) if image.ndim == 2 else np.isfinite(image).all(axis=2)
     if valid is not None:
         finite &= valid
     ratio = metadata.get("valid_ratio")
     if ratio is not None:
-        if isinstance(ratio, bool) or not isinstance(ratio, (int, float)) or not math.isfinite(ratio) or not 0 <= ratio <= 1:
+        if (
+            isinstance(ratio, bool)
+            or not isinstance(ratio, (int, float))
+            or not math.isfinite(ratio)
+            or not 0 <= ratio <= 1
+        ):
             raise ValueError("metadata.valid_ratio phải là số hữu hạn trong [0, 1].")
         # Mặt nạ là nguồn chân lý; không đoán nodata từ pixel bằng 0.
-        if suffix in (".npy", ".png", ".jpg", ".jpeg") and valid is None and ratio < 1 and finite.all():
-            raise ValueError(f"Metadata có nodata nhưng thiếu mặt nạ; cung cấp --valid-mask hoặc {expected_mask.name}.")
-        if image.shape[:2] == (512, 512) and not math.isclose(float(finite.mean()), ratio, abs_tol=1e-6):
-            raise ValueError("Mặt nạ/giá trị hữu hạn không khớp metadata.valid_ratio; kiểm tra đúng bộ ảnh và metadata.")
+        if (
+            suffix in (".npy", ".png", ".jpg", ".jpeg")
+            and valid is None
+            and ratio < 1
+            and finite.all()
+        ):
+            raise ValueError(
+                f"Metadata có nodata nhưng thiếu mặt nạ; cung cấp --valid-mask hoặc "
+                f"{expected_mask.name}."
+            )
+        if image.shape[:2] == (512, 512) and not math.isclose(
+            float(finite.mean()), ratio, abs_tol=1e-6
+        ):
+            raise ValueError(
+                'Mặt nạ/giá trị hữu hạn không khớp metadata.valid_ratio; '
+                'kiểm tra đúng bộ ảnh và metadata.'
+            )
     metadata["input_files"] = {"image": fingerprint(path), "metadata": fingerprint(metadata_path)}
     if mask_path:
         metadata["input_files"]["valid_mask"] = fingerprint(mask_path)
@@ -156,22 +251,39 @@ def file_input(path: Path, metadata_path: Path, valid_mask_path: Path | None = N
 
 
 def validate_run_id(run_id: str) -> None:
+    """Kiểm tra tên lần chạy không chứa đường dẫn.
+
+    Vào: chuỗi run_id. Ra: None nếu hợp lệ, ValueError nếu chứa ký tự bị cấm.
+    """
     if not re.fullmatch(r"[A-Za-z0-9_-]+", run_id):
         raise ValueError("run_id chỉ dùng chữ, số, _ hoặc -; không được chứa đường dẫn.")
 
 
 # ------------------------------------------------------------ lưu ảnh từng bước
 def to_u8(a: np.ndarray) -> np.ndarray:
+    """Đổi ảnh chuẩn hóa sang số nguyên 8 bit để lưu.
+
+    Vào: mảng a. Ra: mảng uint8 theo round(255 × clip(a, 0, 1)).
+    """
     return np.round(np.clip(a, 0, 1) * 255).astype(np.uint8)
 
 
 def stretch(a: np.ndarray, valid: np.ndarray) -> np.ndarray:
+    """Co giãn ảnh theo phân vị phục vụ hiển thị.
+
+    Vào: mảng a và mặt nạ valid. Ra: ảnh trong [0, 1], dùng P0,5 và P99,5 trên vùng hợp lệ; dạng
+    chuẩn hóa của công thức (2.2).
+    """
     lo, hi = np.percentile(a[valid], [0.5, 99.5]) if valid.any() else (0, 1)
     return np.clip((a - lo) / max(hi - lo, 1e-12), 0, 1)
 
 
 def signed(a: np.ndarray, valid: np.ndarray) -> np.ndarray:
-    """gx, gy: xanh âm, đỏ dương, trắng 0."""
+    """Tô màu giá trị có dấu để xem gradient.
+
+    Vào: mảng a và mặt nạ valid. Ra: mảng RGB, âm xanh, dương đỏ, 0 trắng; thang màu lấy P99 của
+    trị tuyệt đối.
+    """
     import matplotlib
 
     v = np.percentile(np.abs(a[valid]), 99) or 1
@@ -179,7 +291,11 @@ def signed(a: np.ndarray, valid: np.ndarray) -> np.ndarray:
 
 
 def theta_rgb(theta: np.ndarray, mag: np.ndarray, valid: np.ndarray) -> np.ndarray:
-    """Hướng gradient: màu = góc θ, độ sáng = |G|."""
+    """Biểu diễn hướng và độ lớn gradient bằng màu.
+
+    Vào: góc theta, độ lớn mag và mặt nạ valid. Ra: mảng RGB với sắc độ theo góc và độ sáng theo
+    mag đã co giãn; xem công thức (2.5).
+    """
     import matplotlib
 
     rgb = matplotlib.colormaps["hsv"]((theta + np.pi) / (2 * np.pi))[..., :3]
@@ -187,6 +303,10 @@ def theta_rgb(theta: np.ndarray, mag: np.ndarray, valid: np.ndarray) -> np.ndarr
 
 
 def overlay(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray) -> np.ndarray:
+    """Chồng biên lên ảnh xám và đánh dấu vùng không hợp lệ.
+
+    Vào: ảnh gray, biên edges và mặt nạ valid. Ra: mảng RGB, biên đỏ và vùng không hợp lệ tím.
+    """
     rgb = np.repeat(gray[..., None], 3, axis=2) * 0.85
     rgb[~valid] = (0.25, 0.25, 0.45)
     rgb[edges] = (1.0, 0.2, 0.1)
@@ -194,25 +314,59 @@ def overlay(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray) -> np.ndarra
 
 
 def step_images(out: dict) -> list[tuple[str, str, np.ndarray]]:
+    """Chuẩn bị các ảnh trung gian của chuỗi tiền xử lý.
+
+    Vào: dict kết quả preprocess. Ra: danh sách bộ ba tên tệp, nhãn và mảng ảnh cho B1–B8; xem mục
+    2.1.
+    """
     v = out["valid_mask"]
     impl = {s: i for s, _, i in STEPS}
     return [
-        ("B1-B2_downsampled", f"B1–B2 Thu nhỏ + xám (thang gốc)\n{impl['B1']}", stretch(out["downsampled"], v)),
+        (
+            "B1-B2_downsampled",
+            f"B1–B2 Thu nhỏ + xám (thang gốc)\n{impl['B1']}",
+            stretch(out["downsampled"], v),
+        ),
         ("B3_gray", f"B3 Chuẩn hóa phân vị\n{impl['B3']}", out["gray"]),
         ("B4_enhanced", f"B4 CLAHE\n{impl['B4']}", out["enhanced"]),
-        ("B5_smooth", f"B5 Gaussian σ={out['params']['gauss_sigma']}\n{impl['B5']}", out["smooth"]),
+        (
+            "B5_smooth",
+            f"B5 Gaussian σ={out['params']['gauss_sigma']}\n{impl['B5']}",
+            out["smooth"],
+        ),
         ("B6_gx", f"B6 Sobel gx (đỏ +, xanh −)\n{impl['B6']}", signed(out["gx"], v)),
         ("B6_gy", f"B6 Sobel gy (đỏ +, xanh −)\n{impl['B6']}", signed(out["gy"], v)),
         ("B6_mag", f"B6 |G|\n{impl['B6']}", stretch(out["mag"], v)),
-        ("B6_theta", f"B6 θ (màu) × |G| (độ sáng)\n{impl['B6']}", theta_rgb(out["theta"], out["mag"], v)),
-        ("B7_canny", f"B7 Canny ({out['params']['edge_px_canny']} px)\n{impl['B7']}", out["edges_canny"].astype(float)),
-        ("B8_edges", f"B8 Biên sau mặt nạ ({out['params']['edge_px_final']} px)\n{impl['B8']}", out["edges"].astype(float)),
+        (
+            "B6_theta",
+            f"B6 θ (màu) × |G| (độ sáng)\n{impl['B6']}",
+            theta_rgb(out["theta"], out["mag"], v),
+        ),
+        (
+            "B7_canny",
+            f"B7 Canny ({out['params']['edge_px_canny']} px)\n{impl['B7']}",
+            out["edges_canny"].astype(float),
+        ),
+        (
+            "B8_edges",
+            f"B8 Biên sau mặt nạ ({out['params']['edge_px_final']} px)\n{impl['B8']}",
+            out["edges"].astype(float),
+        ),
         ("valid_mask", "Mặt nạ hợp lệ (trắng = hợp lệ)", v.astype(float)),
-        ("B8_overlay", "Biên B8 chồng lên B3 (tím = nodata)", overlay(out["gray"], out["edges"], v)),
+        (
+            "B8_overlay",
+            "Biên B8 chồng lên B3 (tím = nodata)",
+            overlay(out["gray"], out["edges"], v),
+        ),
     ]
 
 
 def save_images(out: dict, directory: Path, title: str) -> None:
+    """Lưu ảnh từng bước và bảng ảnh tổng quan.
+
+    Vào: kết quả tiền xử lý, thư mục mới và tiêu đề. Ra: None; ghi steps/*.png và overview.png
+    trong directory, ứng với mục 2.1.
+    """
     import matplotlib
 
     matplotlib.use("Agg")
@@ -241,14 +395,38 @@ def save_images(out: dict, directory: Path, title: str) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    """Chạy tiền xử lý từ tham số dòng lệnh và lưu bộ kết quả.
+
+    Vào: CLI chọn ảnh thật hoặc cảnh giả lập và cấu hình. Ra: None; ghi steps/*.png, overview.png,
+    result.npz, params.json, metadata.json, run.json và đáp án giả lập nếu có trong
+    outputs/<run_id>/; xem Phụ lục A.
+    """
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--synthetic", choices=sorted(SYNTHETIC))
-    source.add_argument("--input", type=Path, help=".npy/.png/.jpg hoặc ảnh địa lý (.tif/.img/.jp2)")
-    parser.add_argument("--metadata", type=Path, help="JSON metadata theo DINH_DANG_DU_LIEU.md (bắt buộc với --input)")
-    parser.add_argument("--valid-mask", type=Path, help="Mặt nạ bool .npy; mặc định tìm <image_id>_valid_mask.npy cạnh ảnh")
+    source.add_argument(
+        "--input", type=Path, help=".npy/.png/.jpg hoặc ảnh địa lý (.tif/.img/.jp2)"
+    )
+    parser.add_argument(
+        "--metadata",
+        type=Path,
+        help="JSON metadata theo DINH_DANG_DU_LIEU.md (bắt buộc với --input)",
+    )
+    parser.add_argument(
+        "--valid-mask",
+        type=Path,
+        help="Mặt nạ bool .npy; mặc định tìm <image_id>_valid_mask.npy cạnh ảnh",
+    )
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "default.json")
-    parser.add_argument("--set", nargs="*", default=[], metavar="KEY=VALUE", help="ghi đè tham số, vd gauss_sigma=2")
+    parser.add_argument(
+        "--set",
+        nargs="*",
+        default=[],
+        metavar="KEY=VALUE",
+        help="ghi đè tham số, vd gauss_sigma=2",
+    )
     parser.add_argument("--run-id")
     args = parser.parse_args()
 
@@ -261,7 +439,11 @@ def main() -> None:
             validate_run_id(args.run_id)
         except ValueError as exc:
             parser.error(str(exc))
-    image, valid, metadata, truth = synthetic_input(args.synthetic) if args.synthetic else file_input(args.input, args.metadata, args.valid_mask)
+    image, valid, metadata, truth = (
+        synthetic_input(args.synthetic)
+        if args.synthetic
+        else file_input(args.input, args.metadata, args.valid_mask)
+    )
 
     params = dict(read_json(args.config)["preprocess"])
     for item in args.set:
@@ -283,27 +465,49 @@ def main() -> None:
     if truth:
         validate_crater_set(truth, metadata)
 
-    run_id = args.run_id or f"s108_{metadata['image_id']}_{datetime.now(timezone.utc):%Y%m%dT%H%M%S}_{uuid4().hex[:8]}"
+    run_id = (
+        args.run_id
+        or f"s108_{metadata['image_id']}_"
+        f"{datetime.now(timezone.utc):%Y%m%dT%H%M%S}_{uuid4().hex[:8]}"
+    )
     validate_run_id(run_id)
     directory = ROOT / "outputs" / run_id
     records = {
         "params.json": used,
         "metadata.json": metadata,
-        "run.json": {"run_id": run_id, "task": "S1-08", "image_id": metadata["image_id"],
-                     "data_kind": metadata["data_kind"], "code_version": version,
-                     "config": str(args.config.relative_to(ROOT) if args.config.is_relative_to(ROOT) else args.config),
-                     "config_file": fingerprint(args.config),
-                     "input_files": metadata.get("input_files", {}),
-                     "overrides": args.set, "created_at_utc": datetime.now(timezone.utc).isoformat()},
+        "run.json": {
+            "run_id": run_id,
+            "task": "S1-08",
+            "image_id": metadata["image_id"],
+            "data_kind": metadata["data_kind"],
+            "code_version": version,
+            "config": str(
+                args.config.relative_to(ROOT) if args.config.is_relative_to(ROOT) else args.config
+            ),
+            "config_file": fingerprint(args.config),
+            "input_files": metadata.get("input_files", {}),
+            "overrides": args.set,
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        },
     }
     if truth:
         records["truth_craters.json"] = truth
-    serialized = {name: json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n" for name, value in records.items()}
+    serialized = {
+        name: json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
+        for name, value in records.items()
+    }
     directory.mkdir(parents=True, exist_ok=False)
     try:
-        save_images(out, directory, f"{metadata['image_id']} — nắng: phương vị {metadata['sun']['azimuth_deg']}°, "
-                                    f"góc tới {metadata['sun']['incidence_deg']}°")
-        np.savez_compressed(directory / "result.npz", **{key: value for key, value in out.items() if key != "params"})
+        save_images(
+            out,
+            directory,
+            f"{metadata['image_id']} — nắng: phương vị {metadata['sun']['azimuth_deg']}°, "
+            f"góc tới {metadata['sun']['incidence_deg']}°",
+        )
+        np.savez_compressed(
+            directory / "result.npz",
+            **{key: value for key, value in out.items() if key != "params"},
+        )
         for name, value in serialized.items():
             (directory / name).write_text(value, encoding="utf-8")
     except Exception:
@@ -312,8 +516,12 @@ def main() -> None:
         raise
 
     print(f"Đã lưu: {directory.relative_to(ROOT)}")
-    print(f"  pixel hợp lệ {used['valid_ratio']:.1%} | P{used['p_lo']}={used['p_lo_value']:.1f}, "
-          f"P{used['p_hi']}={used['p_hi_value']:.1f} | Canny low/high = {used['canny_low']:.1f}/{used['canny_high']:.1f}")
+    print(
+        f"  pixel hợp lệ {used['valid_ratio']:.1%} | "
+        f"P{used['p_lo']}={used['p_lo_value']:.1f}, "
+        f"P{used['p_hi']}={used['p_hi_value']:.1f} | Canny low/high = "
+        f"{used['canny_low']:.1f}/{used['canny_high']:.1f}"
+    )
     print(f"  biên Canny {used['edge_px_canny']} px → sau mặt nạ {used['edge_px_final']} px")
 
 
