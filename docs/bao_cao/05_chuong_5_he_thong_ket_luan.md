@@ -1,4 +1,4 @@
-<!-- S3-12 r5: Đức chốt kết luận; PR #38 đã merge, Quốc Anh còn ghép và diễn giải S3-05. -->
+<!-- Quốc Anh duyệt kết luận S3-05 ngày 03/11/2026 theo yêu cầu trực tiếp; Đức chốt nội dung và bố cục toàn Chương 5. -->
 
 # Chương 5. Kết luận và hướng phát triển
 
@@ -18,7 +18,7 @@ Bảng 5.1 đối chiếu đúng các mã ở Bảng 1.1. Test đạt xác nhậ
 
 : Bảng 5.1. Mức đáp ứng các mục tiêu Chương 1.
 
-[CHỜ S3-05 — Quốc Anh: ghép, diễn giải kết quả đã có trong repo ở mục 4.6 rồi bổ sung kết luận]. Tham số game đã chốt theo tuning 10/174; các lượt holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo và phạm vi số đo ở Phụ lục A–B.
+Ba thí nghiệm ở mục 4.6 giữ cả kết quả chưa tốt: bỏ inverted làm STT 9 giảm 1/11 xuống 0/11; bốn biến thể tham số đều chạm trần 100 vòng, chỉ tìm lại 1/30 nhãn trên ba tuning (gộp 3,33 %; theo ảnh 3,03 ± 5,25 %). Gắn sáng–tối giữ nguyên Recall; bỏ texture/dedupe riêng giảm vòng nhưng không tăng số nhãn tìm lại. Chưa đủ căn cứ đổi cấu hình S2-15 đã chốt trên 18 tuning (10/174), là phạm vi khác với ba ảnh của S3-05. E1 không đánh giá được trên holdout thiếu hướng nắng; Mare chỉ mô tả, không dùng chọn tham số. Các lượt holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo và phạm vi số đo ở mục 4.6 và Phụ lục A–B.
 
 ## 5.2. Hạn chế
 

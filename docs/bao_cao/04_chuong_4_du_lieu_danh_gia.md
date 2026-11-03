@@ -1,4 +1,4 @@
-<!-- S3-12 r5: Quốc Anh chốt thực nghiệm; Hưng chốt dữ liệu/thống kê; Tiến chốt đánh giá Hough. PR #38 đã merge; chờ Quốc Anh ghép và diễn giải S3-05. -->
+<!-- Quốc Anh duyệt phần S3-05 ở mục 4.6 ngày 03/11/2026 theo yêu cầu trực tiếp; giữ các phần khác và chờ Tiến cung cấp CPU/RAM đúng máy đo. -->
 
 # Chương 4. Thực nghiệm và đánh giá
 
@@ -74,7 +74,7 @@ Báo $100\overline{R}\pm100s_R$ theo %, không nhầm với khoảng tin cậy. 
 
 ## 4.6. Ba thí nghiệm và kiểm tra kỹ thuật đã có
 
-Bảng 4.3 nêu ba câu hỏi: (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. S3-05 đã có kết quả trong repo, chờ chủ phần ghép và diễn giải; các số dưới đây là kiểm kỹ thuật/chẩn đoán.
+Bảng 4.3 nêu ba câu hỏi: (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. Kết quả S3-05 ngày 01/11/2026 dùng cấu hình nền S2-15 và ba tuning STT 13, STT 9, STT 17 (`moon_ap16_m132732855l_c01`, `moon_ap16_m102064759r_c01`, `moon_ap16_m109134835l_c01`), có 9/11/10 nhãn chắc chắn. Mare (`moon_marefrig_loc_c01`) thuộc holdout chỉ mô tả. Hồ sơ `docs/evidence/s3-05/` giữ E1/E2/E3, cấu hình, 11 ảnh và JSON từng vòng; không trộn với kiểm luồng ngày 26/10 hoặc nhóm 3 ảnh/28 nhãn ở mục 4.7.
 
 | Thí nghiệm và câu hỏi | Ảnh | Biến thể |
 |:--------------------|:--------------------|:----------------------|
@@ -84,24 +84,30 @@ Bảng 4.3 nêu ba câu hỏi: (a) so phương pháp, (b) khảo sát tham số,
 
 : Bảng 4.3. Thiết kế ba thí nghiệm.
 
-E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; ưu tiên không giảm Recall_known rồi mới xét ít vòng/nhanh hơn. E3 báo phân lớp và lọc trùng riêng; Mare Frigoris thuộc holdout chỉ được mô tả. [CHỜ S3-05 — Quốc Anh: ghép và diễn giải kết quả (a/b/c) đã có trong repo; trung bình ± SD khi có căn cứ].
+E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; E3 áp dụng bỏ texture và lọc trùng riêng rẽ, không bật vào game. Lượt chạy dùng Windows 11 (build 26300), Python 3.14.7, NumPy 2.5.4, OpenCV 5.0.0 và một luồng OpenCV, khác môi trường mục 4.7. Chạy lại vào thư mục mới bằng `python -X utf8 -B scripts/s305_experiments.py --output outputs/s305_recheck`.
+
+**E1 — kết quả sáng–tối.** Hai ảnh đủ điều kiện là STT 13 và STT 9. Thô/gắn nhãn giữ 100 vòng mỗi ảnh, TP/N lần lượt 0/9 và 1/11: Recall_known gộp 1/20 = 5,00 %, trung bình theo ảnh 4,55 ± 6,43 %. Bỏ inverted còn 75/76 vòng nhưng chỉ 0/9 và 0/11. Cặp M61–C9 ở STT 9 (tâm lệch 2,828 px, bằng 0,4041 r_ref) bị loại nhầm; ảnh đối chiếu ở `E1/moon_ap16_m102064759r_c01.png` trong hồ sơ. STT 17 có góc tới 7,64° và Mare thiếu hướng nắng, đều có 100/100 vòng not_checked; không dùng chúng để so tác động sáng–tối hoặc gộp vào trung bình E1.
+
+**E2 — kết quả tham số.** Bảng 4.4 báo đủ bốn biến thể trên ba tuning; tất cả chạm trần 100 vòng. Mọi nhãn chắc chắn nằm trong dải bán kính cấu hình. SD là SD mẫu theo ảnh theo (4.1), không phải biến thiên giữa các lần chạy; các ảnh Apollo 16 có thể chồng mặt đất nên chỉ mô tả mẫu đã xét.
+
+**E3 — kết quả ảnh khó.** Trên STT 13/9/17, baseline có 100/100/100 vòng; bỏ texture còn 48/46/61, dedupe riêng còn 96/91/97. Cả ba nhánh vẫn TP/N = 0/9, 1/11, 0/10: gộp 1/30 = 3,33 %, theo ảnh 3,03 ± 5,25 %. Hai bộ lọc giữ cặp M61–C9 nhưng không khắc phục bỏ sót trên STT 13/STT 17; giảm vòng không chứng minh không mất hố chưa gán nhãn. Mare baseline có 100 vòng và 0/6; lớp máy gồm 27 rim, 4 shadow_edge, 69 texture, không phải 27 hố thật đã xác nhận. Mare không quét tham số/bộ lọc và không cộng vào trung bình tuning. Bộ ca chưa có nhãn riêng xác nhận hố chồng nhau nên không suy kết quả cho loại này.
 
 **Tiền xử lý và trường hợp khó.** Hình 4.1 giữ cùng ảnh/thang cho các bước STT 13. Canny có 25.203 pixel biên, sau B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh nằm trong 20.949–35.590. Ngưỡng thấp/cao STT 13 là 63,6/159,0, STT 17 là 46,3/115,8 (thấp hơn khoảng 27 %). P90 tự co ngưỡng nhưng biên kết cấu vẫn nhiều; mép bóng nắng xiên mạnh hơn vành hố. Ảnh nguồn STT 17 và 13 có 11,1 % và 3,2 % pixel bão hòa, không khôi phục được bằng CLAHE.
 
 ![Hình 4.1. Các bước tiền xử lý STT 13; xanh là bước tự viết, đỏ là thư viện. Cùng ảnh để thấy biên kết cấu còn lại sau B8.](../images/s114/truoc_sau_stt13.png){width=85%}
 
-**Kiểm luồng E2 ngày 26/10.** Trên STT 17 (`moon_ap16_m109134835l_c01`, 10 nhãn r = 8–22), E1 ghi 100/100 `not_checked` vì góc tới 7,64°. Bảng 4.4 cho E2; E3 xếp 61 vành/39 kết cấu, gộp 3 vòng, Recall vẫn 0/10. Đây không phải kết quả S3-05 hay căn cứ chọn tham số.
+**Đối chiếu với kiểm luồng ngày 26/10.** Khi đó chỉ chạy STT 17, E1 có 100/100 not_checked và E2 đều 0/10; đây là kiểm kỹ thuật, không thay phép chạy ba ảnh S3-05 ở Bảng 4.4.
 
-| Biến thể | Ứng viên | Thời gian Hough (s) | Recall_known |
-|:----------------------------------|:---:|:---:|:---:|
-| Mặc định | 100 | 9,136 | 0/10 |
-| `min_vote_ratio` = 0,30 | 100 | 8,437 | 0/10 |
-| `min_vote_ratio` = 0,40 | 100 | 8,375 | 0/10 |
-| `radius_step` = 2 px | 100 | 4,325 | 0/10 |
+| Biến thể | STT 13: TP/N | STT 9: TP/N | STT 17: TP/N | Gộp (%) | Theo ảnh ± SD (%) |
+|---|---:|---:|---:|---:|---:|
+| Nền: ngưỡng 0,35; bước 1 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
+| `min_vote_ratio` = 0,30 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
+| `min_vote_ratio` = 0,40 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
+| `radius_step` = 2 px | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
 
-: Bảng 4.4. Chạy kiểm tra luồng E2 trên STT 17 (một lần đo, không phải kết quả cuối).
+: Bảng 4.4. S3-05 E2 ngày 01/11: mỗi biến thể có TP = 1, FN = 29 trên 30 nhãn tuning, 100 ứng viên/ảnh; không có Precision/F1 do nhãn thưa.
 
-Bốn biến thể đều 0/10 dù thời gian khác nhau, phù hợp cơ chế trần 100 vòng ưu tiên r nhỏ (mục 3.3); máy có tìm vành khác nhưng không tìm lại nhãn đã biết. Nhãn mù cùng ảnh ghi 17/100 hố thật, nên 0/10 không đồng nghĩa ảnh không có vòng đúng.
+Bốn biến thể không tăng số nhãn tìm lại; cùng Recall không có nghĩa mọi vòng giống nhau. Thời gian nền 9,36–9,95 s/ảnh và bước r=2 là 3,98–4,97 s/ảnh chỉ đo một lượt, không làm nóng/lặp, nên chưa kết luận tốc độ. Không đổi cấu hình S2-15 từ kết quả này. Nhãn mù STT 17 có 17/100 hố thật, nên Recall_known 0/10 không đồng nghĩa máy không tìm được vòng đúng nào.
 
 **Thử lọc trên hai ảnh.** Bảng 4.5 chỉ dùng 94 vòng có nhãn rõ ở STT 13 và 83 ở STT 17; đây là độ tinh khiết ứng viên, không phải Precision toàn ảnh.
 
