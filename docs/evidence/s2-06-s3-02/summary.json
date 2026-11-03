@@ -1866,7 +1866,7 @@
       "command": "python -X utf8 -B -m unittest discover -s tests -v",
       "exit_code": 0,
       "discovered_tests": 277,
-      "note": "Full suite completed successfully in tool session 85251; console output was truncated, this is a summary, not a full log."
+      "note": "Full suite completed successfully; console output was truncated, this is a summary, not a full log."
     },
     "synthetic": {
       "data_kind": "synthetic",

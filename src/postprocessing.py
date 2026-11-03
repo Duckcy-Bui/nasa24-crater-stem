@@ -62,7 +62,12 @@ SIDE_AZIMUTH = {"east": 90.0, "west": 270.0}
 
 # ------------------------------------------------------------ Hướng nắng
 def load_sun_checks(path: str | Path | None = None) -> dict[str, dict]:
-    """Đọc kết quả kiểm tra hướng nắng bằng mắt; trả {image_id: bản ghi}."""
+    """Đọc phiếu kiểm hướng nắng bằng mắt theo mục 3.4 của báo cáo.
+
+    path là đường dẫn JSON (str/Path), hoặc None để dùng SUN_CHECKS_PATH.
+    Trả dict {image_id: bản ghi}; file không tồn tại cho dict rỗng.
+    Chỉ đọc file, không tạo hay sửa phiếu.
+    """
     path = Path(path) if path is not None else SUN_CHECKS_PATH
     if not path.exists():
         return {}
@@ -71,9 +76,12 @@ def load_sun_checks(path: str | Path | None = None) -> dict[str, dict]:
 
 
 def resolve_sun(metadata: dict, check: dict | None, params: dict) -> dict:
-    """Quyết định ảnh có được chấm không.
+    """Xét ảnh có đủ căn cứ để chấm sáng–tối theo mục 2.3 và 3.4.
 
-    Trả {"usable": bool, "reason": str, "azimuth_deg", "quality", "basis": [...]}.
+    metadata chứa sun và hướng Bắc (góc theo độ); check là phiếu kiểm bằng
+    mắt hoặc None; params là dict ngưỡng góc tới và yêu cầu kiểm bằng mắt.
+    Trả dict usable, reason, azimuth_deg, quality, basis, incidence_deg và
+    visual_check; ảnh không đủ điều kiện có usable=False, không bị loại.
     """
     sun = metadata.get("sun") or {}
     quality = sun.get("quality")
@@ -86,11 +94,15 @@ def resolve_sun(metadata: dict, check: dict | None, params: dict) -> dict:
     # 1. Phương vị có nguồn, hoặc phía nắng ứng viên đã xác nhận bằng mắt.
     if quality in ("measured", "side_only") and azimuth is not None:
         basis.append(f"metadata: {quality} {azimuth:g}° ({sun.get('source', 'không ghi nguồn')})")
-    elif sun.get("side_candidate") in SIDE_AZIMUTH and check and check.get("verdict") == "consistent":
+    elif (sun.get("side_candidate") in SIDE_AZIMUTH and check
+          and check.get("verdict") == "consistent"):
         side = sun["side_candidate"]
         azimuth, quality = SIDE_AZIMUTH[side], "side_only"
         result["quality"] = quality
-        basis.append(f"side_candidate={side} được xác nhận bằng mắt ({check.get('checked_by')}, {check.get('checked_on')})")
+        basis.append(
+            f"side_candidate={side} được xác nhận bằng mắt "
+            f"({check.get('checked_by')}, {check.get('checked_on')})"
+        )
     else:
         candidate = sun.get("side_candidate")
         result["reason"] = (f"phía nắng '{candidate}' chưa xác minh bằng mắt" if candidate
@@ -102,7 +114,10 @@ def resolve_sun(metadata: dict, check: dict | None, params: dict) -> dict:
         result["reason"] = "không có góc tới của cửa sổ"
         return result
     if incidence < params["min_incidence_deg"]:
-        result["reason"] = f"góc tới {incidence:g}° < {params['min_incidence_deg']:g}°: nắng gần đứng, bóng quá ngắn"
+        result["reason"] = (
+            f"góc tới {incidence:g}° < {params['min_incidence_deg']:g}°: "
+            "nắng gần đứng, bóng quá ngắn"
+        )
         return result
 
     # 3. Kiểm tra hướng nắng / hướng Bắc bằng mắt.
@@ -112,25 +127,42 @@ def resolve_sun(metadata: dict, check: dict | None, params: dict) -> dict:
     if params["require_visual_check"]:
         verdict = check.get("verdict") if check else None
         if verdict != "consistent":
-            result["reason"] = ("chưa kiểm tra hướng nắng bằng mắt (S1-04 mục 6.3)" if verdict in (None, "pending")
-                                else f"kiểm tra bằng mắt cho kết quả '{verdict}': không dùng ảnh này")
+            result["reason"] = (
+                "chưa kiểm tra hướng nắng bằng mắt (S1-04 mục 6.3)"
+                if verdict in (None, "pending")
+                else f"kiểm tra bằng mắt cho kết quả '{verdict}': không dùng ảnh này"
+            )
             return result
         if not any("bằng mắt" in b for b in basis):
-            basis.append(f"hướng Bắc/nắng xác nhận bằng mắt ({check.get('checked_by')}, {check.get('checked_on')})")
+            basis.append(
+                "hướng Bắc/nắng xác nhận bằng mắt "
+                f"({check.get('checked_by')}, {check.get('checked_on')})"
+            )
 
     result.update(usable=True, azimuth_deg=float(azimuth), reason=None)
     return result
 
 
 def sun_vector(azimuth_deg: float, north_angle_deg: float) -> tuple[float, float]:
-    """Vector đơn vị chỉ về phía Mặt Trời trong hệ ảnh (x phải, y xuống) — S1-04 mục 6.1."""
+    """Đổi hướng nắng sang vector đơn vị trong ảnh theo công thức (2.17).
+
+    azimuth_deg là phương vị nắng từ Bắc theo chiều kim đồng hồ;
+    north_angle_deg là hướng Bắc trong ảnh, đều tính bằng độ.
+    Trả tuple (u_x, u_y) chỉ về Mặt Trời trong hệ x phải, y xuống;
+    tương ứng quy ước S1-04 mục 6.1.
+    """
     phi = math.radians(azimuth_deg + north_angle_deg)
     return math.sin(phi), -math.cos(phi)
 
 
 # ------------------------------------------------------------ Chấm một vòng
 def _pixels_in_ring(valid: np.ndarray, x: float, y: float, r_in: float, r_out: float):
-    """Tọa độ pixel hợp lệ trong vành khuyên r_in < d <= r_out (r_in < 0 → cả đĩa); kèm số pixel lý thuyết."""
+    """Lấy pixel hợp lệ trong vành r_in < d <= r_out của mục 3.4.
+
+    valid là mảng bool 2D; x, y là tâm và r_in, r_out là bán kính theo px.
+    r_in < 0 chọn cả đĩa. Trả (xs, ys, total): hai mảng tọa độ pixel trong
+    ảnh còn hợp lệ và số pixel lý thuyết trước cắt biên/lọc mặt nạ.
+    """
     x0, x1 = int(math.floor(x - r_out)), int(math.ceil(x + r_out)) + 1
     y0, y1 = int(math.floor(y - r_out)), int(math.ceil(y + r_out)) + 1
     yy, xx = np.mgrid[y0:y1, x0:x1]
@@ -145,14 +177,17 @@ def _pixels_in_ring(valid: np.ndarray, x: float, y: float, r_in: float, r_out: f
 
 def shading_score(image: np.ndarray, valid: np.ndarray, x: float, y: float, r: float,
                   u: tuple[float, float], params: dict) -> tuple[float | None, str | None]:
-    """[TỰ VIẾT] Tương quan giữa độ sáng và vị trí dọc hướng ra xa Mặt Trời.
+    """[TỰ VIẾT] Tính tương quan sáng–tối theo (2.18) và trừ nền theo (2.19).
 
-    Nếu params["detrend"]: trước khi tính, khớp mặt phẳng độ sáng a + b·x + c·y
-    (bình phương tối thiểu) trên vành khuyên ngoài [annulus_inner·r, annulus_outer·r]
-    rồi trừ khỏi pixel trong đĩa. Mặt phẳng đại diện độ dốc sáng của địa hình
-    quanh vòng; không trừ thì một vòng đặt trên sườn dốc cũng bị chấm hợp/ngược.
-
-    Trả (score, None) hoặc (None, lý do không chấm được).
+    image là ảnh sáng 2D, valid là mặt nạ bool cùng cỡ; x, y, r theo px.
+    u là vector đơn vị hướng Mặt Trời (x phải, y xuống); params chứa kích
+    thước đĩa/vành theo r, ngưỡng số/tỷ lệ pixel hợp lệ và cờ detrend.
+    Khi detrend=True, khớp bình phương tối thiểu mặt phẳng độ sáng trên
+    vành (annulus_inner*r, annulus_outer*r], rồi trừ khỏi pixel trong đĩa.
+    Mặt phẳng loại độ dốc địa hình; nếu không trừ, vòng trên sườn dốc cũng
+    có thể được chấm hợp/ngược dù không phải hố.
+    Trả (score, None) với tương quan không đơn vị trong [-1, 1], hoặc
+    (None, lý do) khi thiếu pixel/phương sai. Không sửa ảnh đầu vào.
     """
     xs, ys, total = _pixels_in_ring(valid, x, y, -1.0, params["disk_fraction"] * r)
     n = len(xs)
@@ -161,10 +196,15 @@ def shading_score(image: np.ndarray, valid: np.ndarray, x: float, y: float, r: f
     values = image[ys, xs].astype(np.float64)
 
     if params["detrend"]:
-        ax, ay, a_total = _pixels_in_ring(valid, x, y, params["annulus_inner"] * r, params["annulus_outer"] * r)
+        ax, ay, a_total = _pixels_in_ring(
+            valid, x, y, params["annulus_inner"] * r, params["annulus_outer"] * r
+        )
         m = len(ax)
         if m < params["min_annulus_pixels"] or m < params["min_annulus_fraction"] * a_total:
-            return None, f"chỉ {m}/{a_total} pixel vành ngoài hợp lệ, không ước lượng được độ dốc địa hình"
+            return None, (
+                f"chỉ {m}/{a_total} pixel vành ngoài hợp lệ, "
+                "không ước lượng được độ dốc địa hình"
+            )
         design = np.column_stack([np.ones(m), (ax - x) / r, (ay - y) / r])
         coef, *_ = np.linalg.lstsq(design, image[ay, ax].astype(np.float64), rcond=None)
         values = values - (coef[0] + coef[1] * (xs - x) / r + coef[2] * (ys - y) / r)
@@ -178,7 +218,16 @@ def shading_score(image: np.ndarray, valid: np.ndarray, x: float, y: float, r: f
 
 
 def classify(score: float, quality: str, params: dict) -> str:
-    threshold = params["score_threshold_side_only"] if quality == "side_only" else params["score_threshold"]
+    """Phân lớp một điểm tương quan theo ngưỡng ở mục 2.3, Bảng 2.1.
+
+    score là điểm không đơn vị; quality chọn ngưỡng side_only hay ngưỡng
+    thông thường trong dict params. Trả consistent, inverted hoặc unclear.
+    Hàm chỉ xét một điểm; đồng thuận điểm gốc/sau trừ nền do score_one xét.
+    """
+    threshold = (
+        params["score_threshold_side_only"] if quality == "side_only"
+        else params["score_threshold"]
+    )
     if score >= threshold:
         return "consistent"
     if score <= -threshold:
@@ -186,18 +235,24 @@ def classify(score: float, quality: str, params: dict) -> str:
     return "unclear"
 
 
-def score_one(image: np.ndarray, valid: np.ndarray, c: dict, u: tuple[float, float], quality: str, p: dict) -> dict:
-    """Chấm một vòng; trả {"status", "score", "score_raw", "reason"}.
+def score_one(image: np.ndarray, valid: np.ndarray, c: dict,
+              u: tuple[float, float], quality: str, p: dict) -> dict:
+    """Chấm một vòng theo Thuật toán 3.4 và đồng thuận ở Bảng 2.1.
 
-    Khi bật detrend, chấm cả trên ảnh gốc lẫn sau khi trừ độ dốc địa hình và chỉ
-    kết luận khi hai cách cùng nhãn. Khác nhãn nghĩa là kết quả do độ dốc hoặc mép
-    bóng lớn quanh vòng quyết định, không phải do hình dạng hố → "unclear".
+    image/valid là ảnh 2D và mặt nạ bool cùng cỡ; c là dict vòng x, y, r
+    theo px; u là vector nắng đơn vị; quality là chất lượng hướng nắng;
+    p là dict tham số đĩa, vành, ngưỡng và cờ detrend.
+    Trả dict status, score, score_raw, reason; điểm không đơn vị hoặc None.
+    Khi bật detrend, chỉ kết luận nếu ảnh gốc và ảnh đã trừ dốc cùng nhãn.
+    Khác nhãn do độ dốc/mép bóng có thể tạo dấu giả nên ghi unclear;
+    thiếu dữ liệu ghi not_checked. Không sửa vòng hay ảnh đầu vào.
     """
     raw, why_raw = shading_score(image, valid, c["x"], c["y"], c["r"], u, {**p, "detrend": False})
     if raw is None:
         return {"status": "not_checked", "score": None, "score_raw": None, "reason": why_raw}
     if not p["detrend"]:
-        return {"status": classify(raw, quality, p), "score": round(raw, 4), "score_raw": round(raw, 4), "reason": None}
+        return {"status": classify(raw, quality, p), "score": round(raw, 4),
+                "score_raw": round(raw, 4), "reason": None}
     score, why = shading_score(image, valid, c["x"], c["y"], c["r"], u, p)
     if score is None:
         return {"status": "not_checked", "score": None, "score_raw": round(raw, 4), "reason": why}
@@ -207,11 +262,18 @@ def score_one(image: np.ndarray, valid: np.ndarray, c: dict, u: tuple[float, flo
         reason = (f"độ dốc/mép bóng địa hình làm kết quả không ổn định: ảnh gốc '{status_raw}' "
                   f"({raw:+.2f}), sau trừ dốc '{status}' ({score:+.2f})")
         status = "unclear"
-    return {"status": status, "score": round(score, 4), "score_raw": round(raw, 4), "reason": reason}
+    return {"status": status, "score": round(score, 4),
+            "score_raw": round(raw, 4), "reason": reason}
 
 
 # ------------------------------------------------------------ API cho pipeline
 def resolve_params(params: dict | None) -> dict:
+    """Hợp nhất cấu hình chấm sáng–tối của mục 3.4 với mặc định.
+
+    params là dict ghi đè hoặc None; khóa sun_checks và valid_mask thuộc
+    tầng gọi nên bị bỏ khỏi cấu hình số. Trả dict mới, không sửa params;
+    khóa lạ gây ValueError. Góc tính bằng độ, tỷ lệ theo bán kính/diện tích.
+    """
     params = dict(params or {})
     params.pop("sun_checks", None)
     params.pop("valid_mask", None)
@@ -223,18 +285,30 @@ def resolve_params(params: dict | None) -> dict:
 
 def score_candidates(circles: list[dict], image: Any, metadata: dict, params: dict | None = None,
                      valid_mask: Any = None) -> tuple[list[dict], dict]:
-    """Thêm trường "shading" vào bản sao từng vòng; trả (vòng, báo cáo cấp ảnh).
+    """Gắn nhãn sáng–tối cho các vòng theo mục 3.4, không lọc vòng.
 
-    shading = {"status": consistent|inverted|unclear|not_checked, "score": float|None (sau trừ dốc),
-               "score_raw": float|None (ảnh gốc), "reason": str|None}
+    circles là list dict vòng x, y, r theo px; image là ảnh sáng 2D;
+    metadata chứa image_id, sun và north_angle_deg. params là dict ghi đè
+    hoặc None, có thể chứa sun_checks (dict phiếu hoặc đường dẫn JSON).
+    valid_mask là mặt nạ bool cùng cỡ; nếu None dùng params.valid_mask,
+    nếu vẫn thiếu thì lấy mọi pixel hữu hạn. NaN/inf luôn bị loại khỏi phép chấm.
+    Trả (bản sao các vòng, báo cáo cấp ảnh). Mỗi vòng thêm shading gồm
+    status, score sau trừ dốc, score_raw ảnh gốc và reason; điểm có thể None.
+    status là consistent, inverted, unclear hoặc not_checked.
+    Báo cáo chứa căn cứ nắng, tham số và số nhãn. Có thể đọc file phiếu;
+    thiếu hướng nắng thì ghi log, mọi vòng not_checked và removed=0.
     """
     sun_checks = (params or {}).get("sun_checks")
     if valid_mask is None:
         valid_mask = (params or {}).get("valid_mask")
     p = resolve_params(params)
     image = np.asarray(image, dtype=np.float32)
-    valid = np.ones(image.shape, dtype=bool) if valid_mask is None else np.asarray(valid_mask, dtype=bool)
-    # NaN/inf pixels are nodata: exclude them, otherwise a score becomes NaN and breaks JSON output.
+    valid = (
+        np.ones(image.shape, dtype=bool) if valid_mask is None
+        else np.asarray(valid_mask, dtype=bool)
+    )
+    # NaN/inf pixels are nodata: exclude them, otherwise a score becomes NaN
+    # and breaks JSON output.
     valid = valid & np.isfinite(image)
     image = np.where(valid, image, 0.0).astype(np.float32)
     checks = sun_checks if isinstance(sun_checks, dict) else load_sun_checks(sun_checks)
@@ -246,7 +320,10 @@ def score_candidates(circles: list[dict], image: Any, metadata: dict, params: di
     if not sun["usable"]:
         log.warning("S1-11 bỏ qua kiểm tra sáng–tối cho %s: %s", image_id, sun["reason"])
         for c in circles:
-            out.append({**c, "shading": {"status": "not_checked", "score": None, "score_raw": None, "reason": sun["reason"]}})
+            out.append({**c, "shading": {
+                "status": "not_checked", "score": None,
+                "score_raw": None, "reason": sun["reason"],
+            }})
         counts["not_checked"] = len(circles)
     else:
         u = sun_vector(sun["azimuth_deg"], metadata["north_angle_deg"])
@@ -265,7 +342,10 @@ def score_candidates(circles: list[dict], image: Any, metadata: dict, params: di
         "quality": sun["quality"],
         "incidence_deg": sun["incidence_deg"],
         "visual_check": sun["visual_check"],
-        "sun_vector_xy": list(sun_vector(sun["azimuth_deg"], metadata["north_angle_deg"])) if sun["usable"] else None,
+        "sun_vector_xy": (
+            list(sun_vector(sun["azimuth_deg"], metadata["north_angle_deg"]))
+            if sun["usable"] else None
+        ),
         "counts": counts,
         "params": p,
         "removed": 0,
@@ -274,10 +354,14 @@ def score_candidates(circles: list[dict], image: Any, metadata: dict, params: di
 
 
 def filter_candidates(circles: list[dict], image, metadata: dict, params: dict) -> list[dict]:
-    """Giữ nguyên hệ tọa độ và số vòng; chỉ thêm trường "shading" (S1-11 không lọc).
+    """Gắn shading, giữ nguyên tọa độ và số vòng theo mục 3.4.
 
-    Thiếu hướng nắng đủ tin cậy thì mọi vòng ghi not_checked kèm lý do và ghi log.
-    params có thể chứa "valid_mask" (mặt nạ bool cùng kích thước ảnh) để bỏ pixel nodata.
+    circles là list dict vòng theo px; image là ảnh sáng 2D; metadata là
+    metadata ảnh/hướng nắng. params là dict ngưỡng và có thể chứa sun_checks
+    (dict/đường dẫn phiếu), valid_mask (mảng bool cùng cỡ để bỏ nodata).
+    Trả list bản sao vòng đã chấm, không sửa đầu vào và không lọc dù tên
+    hàm có chữ filter. Thiếu hướng tin cậy thì ghi not_checked, lý do và log;
+    có thể đọc phiếu JSON khi params không truyền sẵn dict.
     """
     scored, _ = score_candidates(circles, image, metadata, params)
     return scored
@@ -290,7 +374,8 @@ def filter_candidates(circles: list[dict], image, metadata: dict, params: dict) 
 
 REVIEW_DEFAULTS = {
     "dark_level": 0.06,            # gray (B3) dưới mức này coi là bóng
-    "shadow_min_area_px": 1500,    # vùng tối liền khối lớn hơn → bóng địa hình, không phải bóng trong hố nhỏ
+    # Vùng tối liền khối lớn hơn → bóng địa hình, không phải bóng trong hố nhỏ.
+    "shadow_min_area_px": 1500,
     "shadow_edge_dist_px": 2,      # điểm biên cách vùng bóng lớn <= 2 px → ranh giới bóng
     "rim_band_px": 1.5,            # điểm biên trong |d − r| <= 1,5 px thuộc vòng
     "radial_tol_deg": 30.0,        # gradient lệch hướng xuyên tâm <= 30° → hợp vành tròn
@@ -304,6 +389,12 @@ SHADING_STATUSES = ("consistent", "inverted", "unclear", "not_checked")
 
 
 def resolve_review_params(params: dict | None) -> dict:
+    """Hợp nhất tham số phân lớp ứng viên ở Thuật toán 3.5.
+
+    params là dict ghi đè hoặc None: khoảng cách theo px, góc theo độ,
+    tỷ lệ/độ tương phản không đơn vị. Trả dict mới với REVIEW_DEFAULTS;
+    khóa lạ gây ValueError, không sửa dict đầu vào.
+    """
     params = dict(params or {})
     unknown = set(params) - set(REVIEW_DEFAULTS)
     if unknown:
@@ -311,11 +402,15 @@ def resolve_review_params(params: dict | None) -> dict:
     return {**REVIEW_DEFAULTS, **params}
 
 
-def shadow_regions(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray, p: dict) -> tuple[np.ndarray, np.ndarray]:
-    """Vùng bóng lớn và các điểm biên nằm trên ranh giới của nó.
+def shadow_regions(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray,
+                   p: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Tìm bóng lớn và biên sát bóng theo Thuật toán 3.5, bước 1–2.
 
-    Tìm vùng liền khối: THƯ VIỆN OpenCV connectedComponentsWithStats. Giãn vùng
-    bằng phép co phần bù (erode tự viết của S1-08).
+    gray là ảnh sáng 2D thang [0, 1]; edges/valid là mặt nạ bool cùng cỡ;
+    p chứa ngưỡng tối, diện tích bóng (px) và khoảng giãn (px).
+    Trả (big, shadow_edges), hai mảng bool cùng cỡ ảnh, không sửa đầu vào.
+    Vùng liền khối dùng OpenCV connectedComponentsWithStats; giãn vùng
+    bằng co phần bù với erode tự viết của S1-08.
     """
     import cv2
     from src.preprocessing import erode
@@ -328,14 +423,24 @@ def shadow_regions(gray: np.ndarray, edges: np.ndarray, valid: np.ndarray, p: di
     return big, np.asarray(edges, dtype=bool) & near
 
 
-def candidate_features(c: dict, mag: np.ndarray, theta: np.ndarray, edges: np.ndarray, shadow_edges: np.ndarray,
+def candidate_features(c: dict, mag: np.ndarray, theta: np.ndarray,
+                       edges: np.ndarray, shadow_edges: np.ndarray,
                        valid: np.ndarray, p: dict) -> dict:
-    """[TỰ VIẾT] Đặc trưng một vòng: độ phủ biên xuyên tâm, tỉ lệ biên là ranh giới bóng, độ nổi của vành."""
+    """[TỰ VIẾT] Đo đặc trưng vòng theo Thuật toán 3.5, bước 3–6.
+
+    c chứa x, y, r theo px; mag/theta là độ lớn và góc gradient (radian);
+    edges, shadow_edges, valid là mặt nạ bool 2D cùng cỡ. p chứa dải vành
+    (px), lệch hướng cho phép (độ) và số cung chia chu vi.
+    Trả dict edge_px, radial_coverage, shadow_edge_fraction, rim_contrast:
+    số pixel biên và ba tỷ số không đơn vị. Tương phản bị chặn ở 99;
+    không có biên thì cả bốn giá trị bằng 0. Không sửa các mảng đầu vào.
+    """
     x, y, r = c["x"], c["y"], c["r"]
     xs, ys, _ = _pixels_in_ring(valid, x, y, r - p["rim_band_px"], r + p["rim_band_px"])
     on = edges[ys, xs]
     if not on.any():
-        return {"edge_px": 0, "radial_coverage": 0.0, "shadow_edge_fraction": 0.0, "rim_contrast": 0.0}
+        return {"edge_px": 0, "radial_coverage": 0.0,
+                "shadow_edge_fraction": 0.0, "rim_contrast": 0.0}
     ang = np.arctan2(ys - y, xs - x)
     radial = np.abs(np.cos(theta[ys, xs] - ang)) >= math.cos(math.radians(p["radial_tol_deg"]))
     bins = ((ang + np.pi) / (2 * np.pi) * p["angle_bins"]).astype(int) % p["angle_bins"]
@@ -347,26 +452,42 @@ def candidate_features(c: dict, mag: np.ndarray, theta: np.ndarray, edges: np.nd
     rim_mag = float(mag[ys, xs][rim].mean()) if rim.any() else 0.0
     contrast = rim_mag / background if background > 1e-9 else (99.0 if rim_mag > 0 else 0.0)
     return {"edge_px": int(on.sum()), "radial_coverage": round(coverage, 3),
-            "shadow_edge_fraction": round(shadow_fraction, 3), "rim_contrast": round(min(contrast, 99.0), 3)}
+            "shadow_edge_fraction": round(shadow_fraction, 3),
+            "rim_contrast": round(min(contrast, 99.0), 3)}
 
 
 def classify_candidate(f: dict, p: dict) -> tuple[str, str]:
-    """Lớp của một vòng theo đặc trưng hình học, kèm lý do. Không dùng điểm sáng–tối."""
+    """Chọn lớp hình học theo Thuật toán 3.5, bước 7–8.
+
+    f là dict đặc trưng từ candidate_features; p là dict ngưỡng phần biên
+    bóng, độ phủ xuyên tâm và độ nổi vành. Trả tuple (lớp, lý do), với lớp
+    rim, shadow_edge, texture hoặc unclear; không dùng điểm sáng–tối.
+    """
     if f["edge_px"] == 0:
         return "unclear", "không có điểm biên trên vòng"
     if f["shadow_edge_fraction"] >= p["max_shadow_edge_fraction"]:
-        return "shadow_edge", f"{f['shadow_edge_fraction']:.0%} điểm biên trên vòng là ranh giới vùng bóng lớn"
+        return "shadow_edge", (
+            f"{f['shadow_edge_fraction']:.0%} điểm biên trên vòng là ranh giới vùng bóng lớn"
+        )
     if f["radial_coverage"] < p["min_radial_coverage"]:
         return "texture", f"biên xuyên tâm chỉ phủ {f['radial_coverage']:.0%} chu vi"
     if f["rim_contrast"] < p["min_rim_contrast"]:
         return "texture", f"vành không nổi hơn nền (|G| vành / nền = {f['rim_contrast']:.2f})"
-    return "rim", f"biên xuyên tâm phủ {f['radial_coverage']:.0%} chu vi, vành nổi {f['rim_contrast']:.1f}× nền"
+    return "rim", (
+        f"biên xuyên tâm phủ {f['radial_coverage']:.0%} chu vi, "
+        f"vành nổi {f['rim_contrast']:.1f}× nền"
+    )
 
 
-def review_candidates(circles: list[dict], pre: dict, params: dict | None = None) -> tuple[list[dict], dict]:
-    """Thêm trường "review" = {class, reason, features} vào bản sao từng vòng. Không loại vòng nào.
+def review_candidates(circles: list[dict], pre: dict,
+                      params: dict | None = None) -> tuple[list[dict], dict]:
+    """Gắn review cho bản sao các vòng theo Thuật toán 3.5, không loại vòng.
 
-    pre: kết quả preprocess() (cần gray, mag, theta, edges, valid_mask).
+    circles là list dict vòng x, y, r theo px; pre là kết quả preprocess
+    gồm gray, mag, theta (radian), edges, valid_mask cùng cỡ 2D. params là
+    dict ghi đè ngưỡng REVIEW_DEFAULTS hoặc None.
+    Trả (vòng có review={class, reason, features}, báo cáo số nhãn, tỷ lệ
+    bóng/biên và tham số); removed=0. Không sửa vòng hay các mảng đầu vào.
     """
     p = resolve_review_params(params)
     valid = np.asarray(pre["valid_mask"], dtype=bool)
@@ -381,23 +502,35 @@ def review_candidates(circles: list[dict], pre: dict, params: dict | None = None
     report = {"params": p, "counts": counts, "removed": 0,
               "shadow_area_fraction": round(float(big.mean()), 4),
               "edge_px": edges, "shadow_edge_px": int(shadow_edges.sum()),
-              "shadow_edge_fraction_of_edges": round(int(shadow_edges.sum()) / edges, 4) if edges else 0.0}
+              "shadow_edge_fraction_of_edges": (
+                  round(int(shadow_edges.sum()) / edges, 4) if edges else 0.0
+              )}
     return out, report
 
 
-def apply_filter(circles: list[dict], remove_classes=(), remove_shading=()) -> tuple[list[dict], list[dict]]:
-    """LỌC THẬT: loại vòng có review.class thuộc remove_classes hoặc shading.status thuộc remove_shading.
+def apply_filter(circles: list[dict], remove_classes=(),
+                 remove_shading=()) -> tuple[list[dict], list[dict]]:
+    """Loại vòng theo chính sách lớp/nhãn được bật rõ ở Thuật toán 3.5.
 
-    Trả (giữ lại, bị loại); mỗi vòng bị loại có "filter_reason". Gọi không tham số thì không loại gì.
+    circles là list dict có thể có review.class và shading.status.
+    remove_classes/remove_shading là tuple hoặc list tên lớp/nhãn cần loại;
+    để rỗng thì không loại gì. Chuỗi đơn hoặc tên không hợp lệ gây ValueError.
+    Trả (giữ lại, bị loại); vòng giữ dùng đối tượng gốc, vòng bị loại là
+    bản sao thêm filter_reason. Hàm không sửa nội dung vòng đầu vào.
     """
     if isinstance(remove_classes, str) or isinstance(remove_shading, str):
-        raise ValueError("remove_classes / remove_shading phải là tuple hoặc list, không phải chuỗi.")
+        raise ValueError(
+            "remove_classes / remove_shading phải là tuple hoặc list, không phải chuỗi."
+        )
     bad = set(remove_classes) - set(REVIEW_CLASSES)
     if bad:
         raise ValueError("Lớp không biết: " + ", ".join(sorted(bad)))
     bad = set(remove_shading) - set(SHADING_STATUSES)
     if bad:
-        raise ValueError("Nhãn sáng–tối không biết: " + ", ".join(sorted(bad)) + f" (hợp lệ: {', '.join(SHADING_STATUSES)})")
+        raise ValueError(
+            "Nhãn sáng–tối không biết: " + ", ".join(sorted(bad))
+            + f" (hợp lệ: {', '.join(SHADING_STATUSES)})"
+        )
     kept, removed = [], []
     for c in circles:
         cls = (c.get("review") or {}).get("class")
@@ -421,7 +554,8 @@ def apply_filter(circles: list[dict], remove_classes=(), remove_shading=()) -> t
 #     M19 r=6 trong M15 r=10);
 #   - hai vòng cùng cỡ, tâm lệch nhau (STT 17: M66/M67, r=7, tâm cách 5 px).
 # Quy tắc (tự viết):
-#   Cặp (A, B), R = max(rA, rB), r = min:  trùng nếu  d(tâm) <= max_center_frac·R  VÀ  r/R >= min_radius_ratio.
+#   Cặp (A, B), R = max(rA, rB), r = min: trùng nếu
+#   d(tâm) <= max_center_frac·R VÀ r/R >= min_radius_ratio.
 #   - Hai hố cạnh nhau/chồng mép có d >= khoảng R + r > 0,75R → không bị gộp.
 #   - Hố nhỏ nằm trong hố lớn có r/R < 0,5 → không bị gộp.
 #   Giữ vòng theo thứ tự ưu tiên: (1) vòng đủ tin (tỉ lệ phiếu >= min_outer_vote_ratio
@@ -439,6 +573,16 @@ DEDUPE_DEFAULTS = {
 
 
 def resolve_dedupe_params(params: dict | None) -> dict:
+    """Hợp nhất và kiểm cấu hình gộp vòng ở mục 3.5.
+
+    params là dict ghi đè hoặc None: ngưỡng d/R, r/R và tỷ lệ phiếu không
+    đơn vị, unreliable_classes là tập tên lớp, angle_step_deg theo độ.
+    Trả dict mới với DEDUPE_DEFAULTS, không sửa dict đầu vào.
+    Kiểm khóa và tên lớp; kiểm 0 < max_center_frac <= 2 và
+    0 < min_radius_ratio <= 1, các lỗi này gây ValueError.
+    Không kiểm miền min_outer_vote_ratio/angle_step_deg tại đây;
+    người gọi phải bảo đảm hai giá trị này phù hợp.
+    """
     params = dict(params or {})
     unknown = set(params) - set(DEDUPE_DEFAULTS)
     if unknown:
@@ -453,7 +597,13 @@ def resolve_dedupe_params(params: dict | None) -> dict:
 
 
 def vote_ratio(c: dict, angle_step_deg: float = 1.0) -> float | None:
-    """Số phiếu / số điểm pixel khác nhau trên chu vi bán kính r (đúng mẫu số Hough dùng)."""
+    """Tính tỷ lệ phiếu toàn vòng theo (2.9), (2.12) và mục 3.5.
+
+    c là dict vòng có r theo px và votes; angle_step_deg là bước góc theo độ,
+    phải khớp nhánh Hough toàn vòng. Trả votes/số độ lệch pixel khác nhau
+    trên chu vi bán kính làm tròn, hoặc None nếu thiếu votes.
+    Đây là tỷ số xếp hạng, không phải xác suất; không dùng mẫu số gradient.
+    """
     from src.hough import _circle_offsets
 
     if c.get("votes") is None:
@@ -463,27 +613,53 @@ def vote_ratio(c: dict, angle_step_deg: float = 1.0) -> float | None:
 
 
 def duplicate_pair(a: dict, b: dict, p: dict) -> tuple[bool, float, float]:
-    """(trùng?, d/R, r/R) cho một cặp vòng."""
+    """Xét một cặp vòng theo công thức (3.1) với ngưỡng cấu hình.
+
+    a, b là dict vòng có x, y, r theo px; p chứa max_center_frac và
+    min_radius_ratio. Đặt R=max(r_a,r_b), r=min(r_a,r_b), d là cách tâm.
+    Trả (trùng, d/R, r/R); hai tỷ số không đơn vị làm tròn 3 chữ số,
+    còn quyết định trùng dùng tỷ số chưa làm tròn. Không sửa vòng.
+    """
     big, small = (a, b) if a["r"] >= b["r"] else (b, a)
     d = math.hypot(a["x"] - b["x"], a["y"] - b["y"])
     center, ratio = d / big["r"], small["r"] / big["r"]
-    return center <= p["max_center_frac"] and ratio >= p["min_radius_ratio"], round(center, 3), round(ratio, 3)
+    return (center <= p["max_center_frac"] and ratio >= p["min_radius_ratio"],
+            round(center, 3), round(ratio, 3))
 
 
-def dedupe_circles(circles: list[dict], params: dict | None = None) -> tuple[list[dict], list[dict], dict]:
-    """LỌC TRÙNG: trả (giữ lại theo thứ tự gốc, bị loại, báo cáo).
+def dedupe_circles(circles: list[dict],
+                   params: dict | None = None) -> tuple[list[dict], list[dict], dict]:
+    """Gộp vòng trùng theo (3.1) và thứ tự ưu tiên của Thuật toán 3.6.
 
-    Mỗi vòng bị loại có "duplicate_of" (crater_id vòng giữ) và "dedupe_reason".
-    Không đổi trường nào của vòng giữ lại.
+    circles là list dict vòng có crater_id, x/y/r theo px, votes và review
+    nếu có; params là dict ngưỡng gộp/độ tin cậy/bước góc hoặc None.
+    Trả (giữ lại theo thứ tự gốc, bị loại, báo cáo tham số/số lượng/cặp).
+    Vòng bị loại là bản sao có duplicate_of và dedupe_reason; vòng giữ
+    không đổi trường. Duyệt tham lam ưu tiên đủ tin, lớn hơn, tỷ lệ phiếu,
+    số phiếu rồi crater_id. Ngưỡng có thể gộp nhầm hai hố thật chồng gần hết,
+    nên việc gọi lọc phải do tầng ứng dụng quyết định.
     """
     p = resolve_dedupe_params(params)
 
     def reliable(c):
+        """Xét độ tin cậy của vòng cho thứ tự giữ ở Thuật toán 3.6.
+
+        c là dict vòng có votes, r (px) và review; dùng cấu hình p của hàm
+        ngoài. Trả bool: phiếu không có hoặc đủ tỷ lệ, đồng thời lớp không
+        nằm trong unreliable_classes. Không sửa c hay p.
+        """
         vr = vote_ratio(c, p["angle_step_deg"])
         cls = (c.get("review") or {}).get("class")
-        return (vr is None or vr >= p["min_outer_vote_ratio"]) and cls not in p["unreliable_classes"]
+        return ((vr is None or vr >= p["min_outer_vote_ratio"])
+                and cls not in p["unreliable_classes"])
 
     def key(c):
+        """Tạo khóa xếp vòng theo Thuật toán 3.6.
+
+        c là dict vòng có crater_id, r (px), votes và review nếu có;
+        dùng cấu hình p của hàm ngoài. Trả tuple ưu tiên độ tin cậy,
+        bán kính giảm dần, tỷ lệ phiếu, số phiếu rồi ID; không sửa c.
+        """
         vr = vote_ratio(c, p["angle_step_deg"]) or 0.0
         return (not reliable(c), -c["r"], -vr, -(c.get("votes") or 0), str(c["crater_id"]))
 
@@ -502,9 +678,11 @@ def dedupe_circles(circles: list[dict], params: dict | None = None) -> tuple[lis
         kid, center, ratio = hit
         why = (f"trùng {kid}: tâm lệch {center:.2f}R, r/R = {ratio:.2f}; giữ {kid} vì "
                + ("vòng kia đủ tin còn vòng này không" if reliable(by_id[kid]) and not reliable(c)
-                  else "vòng kia lớn hơn" if by_id[kid]["r"] > c["r"] else "cùng cỡ, tỉ lệ phiếu không thấp hơn"))
+                  else "vòng kia lớn hơn" if by_id[kid]["r"] > c["r"]
+                  else "cùng cỡ, tỉ lệ phiếu không thấp hơn"))
         removed.append({**c, "duplicate_of": kid, "dedupe_reason": why})
-        pairs.append({"kept": kid, "removed": c["crater_id"], "center_over_R": center, "r_over_R": ratio})
+        pairs.append({"kept": kid, "removed": c["crater_id"],
+                      "center_over_R": center, "r_over_R": ratio})
     keep = set(kept_ids)
     kept = [c for c in circles if c["crater_id"] in keep]
     report = {"params": {**p, "unreliable_classes": list(p["unreliable_classes"])},

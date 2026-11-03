@@ -89,3 +89,11 @@ Script từ chối cấu hình game lệch snapshot, split sai phạm vi và th�
 Đã kiểm **17 test** liên quan: 4 test quy trình S3-05, 5 test S2-07, 6 test evaluation, 2 test S2-15. Đối chiếu tự động ba bảng với JSON, cặp ghép một–một, các nhánh lọc và mã băm; kiểm trực quan ảnh đại diện E1/E2/E3. Lượt đầu phát hiện chú thích ảnh đơn bị cắt; đã sửa bố cục và chạy lại toàn bộ hồ sơ. Lượt đầu được giữ riêng dưới `outputs/s305_initial_20261101/`, không dùng làm hồ sơ bàn giao.
 
 **Bàn giao kỹ thuật:** đã có ba bộ kết quả, cấu hình, bảng/ảnh và diễn giải kết quả tốt/chưa tốt. Nguyễn Mạnh Tiến kiểm tra phần phối hợp và xác nhận nghiệm thu; chưa ghi thay xác nhận của Tiến, chưa cập nhật trạng thái chính thức trong bảng giao việc, chưa commit/push. Không triển khai hoặc khôi phục S2-14.
+
+## 7. Ghi chú sau khi merge (02/11/2026)
+
+Lượt chạy trên Windows ghi các file `.json` và `.csv` với kiểu xuống dòng CRLF và băm SHA-256 trên đúng byte đó. Khi commit, Git chuẩn hóa hai loại file này về LF theo `.gitattributes` (blob trên nhánh PR đã là LF), nên 37/49 SHA trong `artifacts_sha256` của [report.json](evidence/s3-05/report.json) không còn khớp file trong repo. Bản sửa khôi phục CRLF cho đúng 37 file đó, không đổi nội dung, và thêm ngoại lệ `docs/evidence/s3-05/** -text` giống hồ sơ S3-10. Sau sửa, 49/49 SHA khớp; không thay số SHA nào đã ghi.
+
+Tương tự, 6/43 SHA trong `source_and_input_sha256` (`src/contracts.py`, `src/__init__.py` và bốn file `requirements*.txt`) được băm trên bản CRLF của working tree Windows. Các file này là mã nguồn chung nên giữ LF; đổi LF sang CRLF thì tái tạo đúng cả 6 SHA đã ghi. Chạy lại script trên Linux, Python 3.12 cho cùng mọi số vòng, cặp ghép và Recall_known.
+
+[validation.log](evidence/s3-05/validation.log) ghi đường dẫn tuyệt đối tới trình thông dịch trên máy chạy. Theo [quy tắc ẩn đường dẫn](evidence/s3-10/README.md#an-duong-dan-20261101), bốn dòng `COMMAND:` thay gốc môi trường Python bằng `<venv>`; lệnh, tham số và kết quả test giữ nguyên. File này không nằm trong `artifacts_sha256`. SHA-256 trước khi sửa: `4ca640a9c77feed55ac537db2012936bf05eb9df937462ece1173ce694d4ca96`; sau khi sửa: `a808f86a82e3ef3d3d036d0eec82096b31e30e67d4fb281345af9e89af02f405`.

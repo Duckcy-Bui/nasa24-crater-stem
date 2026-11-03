@@ -1,6 +1,6 @@
 # S1-09 — Hồ sơ bàn giao để nghiệm thu
 
-Người lập: nasa24-dev. Nhánh: `s1-09-interface`. Đây là tổng hợp bằng chứng hiện có, chưa phải quyết định nghiệm thu; nasa24-qa rà độc lập trước khi lead xác nhận.
+Người lập: Codex hỗ trợ phát triển. Nhánh: `s1-09-interface`. Đây là tổng hợp bằng chứng hiện có, chưa phải quyết định nghiệm thu; một phiên Codex kiểm thử rà độc lập trước khi trưởng nhóm xác nhận.
 
 ## Phạm vi
 

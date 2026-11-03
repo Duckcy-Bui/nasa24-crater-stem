@@ -1,4 +1,5 @@
 """Download the 16 locked official TIFF sources for full S1-06 reproduction."""
+
 from __future__ import annotations
 
 import argparse
@@ -14,6 +15,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def digest_file(path: Path) -> str:
+    """Băm file theo từng khối mà không nạp cả file vào RAM.
+
+    Vào: path là file cần đọc. Ra: SHA-256 dạng hex; không ghi file.
+    Công thức báo cáo: không áp dụng cho thao tác I/O.
+    """
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
@@ -22,6 +28,12 @@ def digest_file(path: Path) -> str:
 
 
 def download(source: dict, raw_dir: Path) -> Path:
+    """Tải một TIFF LROC và xác minh kích thước/hash trước khi nhận.
+
+    Vào: source có filename, URL, bytes, sha256; raw_dir là thư mục đích.
+    Ra: Path TIFF đã đúng hash; dùng file .part tạm, giữ file cũ đúng và từ chối file cũ sai.
+    Phục vụ dữ liệu mục 4.2; không có công thức toán riêng.
+    """
     name = source["filename"]
     if Path(name).name != name or urlparse(source["url"]).hostname != "pds.lroc.im-ldi.com":
         raise ValueError("Nguồn tải không đúng manifest LROC chính thức.")

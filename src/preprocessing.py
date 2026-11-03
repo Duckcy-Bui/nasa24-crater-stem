@@ -57,20 +57,30 @@ DEFAULT_PARAMS = {
 
 
 # ---------------------------------------------------------------- B0 THƯ VIỆN
-def read_window(path: str, x0: int, y0: int, k: int, band: int = 1) -> tuple[np.ndarray, np.ndarray]:
+def read_window(
+    path: str, x0: int, y0: int, k: int, band: int = 1,
+) -> tuple[np.ndarray, np.ndarray]:
     """B0 [THƯ VIỆN rasterio]: đọc ô vuông cạnh 512·k từ (x0, y0).
 
-    Trả (ảnh float32, valid bool). Pixel nodata/NaN/±inf → valid=False, giá trị 0.
+    Vào: path là đường dẫn raster; x0/y0 là tọa độ góc trái trên (px),
+    k nguyên dương, band là chỉ số kênh từ 1. Đọc file, không ghi file.
+    Ra: (ảnh float32, valid bool) cùng cỡ 512k×512k. Pixel nodata/NaN/±inf
+    có valid=False và giá trị 0; cửa sổ vượt ảnh gây ValueError.
+    Tham chiếu: B0, mục 3.2; chưa thực hiện thu nhỏ theo (2.1).
     """
     import rasterio
     from rasterio.windows import Window
 
-    for name, value, minimum in (("crop_x0", x0, 0), ("crop_y0", y0, 0), ("downsample_k", k, 1), ("band", band, 1)):
+    for name, value, minimum in (
+        ("crop_x0", x0, 0), ("crop_y0", y0, 0), ("downsample_k", k, 1), ("band", band, 1),
+    ):
         _integer(value, name, minimum)
     side = SIZE * k
     with rasterio.open(path) as src:
         if x0 < 0 or y0 < 0 or x0 + side > src.width or y0 + side > src.height:
-            raise ValueError(f"Cửa sổ {side}px tại ({x0}, {y0}) vượt ngoài ảnh {src.width}×{src.height}.")
+            raise ValueError(
+                f"Cửa sổ {side}px tại ({x0}, {y0}) vượt ngoài ảnh {src.width}×{src.height}."
+            )
         window = Window(x0, y0, side, side)
         image = src.read(band, window=window).astype(np.float32)
         valid = src.read_masks(band, window=window) > 0
@@ -81,7 +91,13 @@ def read_window(path: str, x0: int, y0: int, k: int, band: int = 1) -> tuple[np.
 
 # ---------------------------------------------------------------- B1 TỰ VIẾT
 def block_mean(image: np.ndarray, valid: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
-    """B1 [TỰ VIẾT]: trung bình mỗi khối k×k; khối có pixel lỗi thì lỗi cả khối."""
+    """B1 [TỰ VIẾT]: thu nhỏ bằng trung bình từng khối k×k.
+
+    Vào: image là mảng H×W hoặc H×W×C, valid là mặt nạ bool H×W;
+    k nguyên dương phải chia hết H và W. Không sửa các mảng đầu vào.
+    Ra: (ảnh float32, mặt nạ bool) có cạnh giảm k lần; khối có pixel lỗi
+    bị loại cả khối và đặt ảnh bằng 0. Tham chiếu: công thức (2.1).
+    """
     _integer(k, "downsample_k", 1)
     if image.ndim not in (2, 3) or valid.shape != image.shape[:2]:
         raise ValueError("Mặt nạ phải có cùng chiều cao/rộng với ảnh.")
@@ -97,7 +113,13 @@ def block_mean(image: np.ndarray, valid: np.ndarray, k: int) -> tuple[np.ndarray
 
 # ---------------------------------------------------------------- B2 TỰ VIẾT
 def to_gray(image: np.ndarray) -> np.ndarray:
-    """B2 [TỰ VIẾT]: 1 kênh giữ nguyên; 3/4 kênh RGB(A) → Y = 0,299R + 0,587G + 0,114B."""
+    """B2 [TỰ VIẾT]: chuyển RGB(A) sang độ sáng theo BT.601.
+
+    Vào: image là ảnh một kênh hoặc RGB/RGBA; kênh alpha không tham gia Y.
+    Ra: ảnh 2 chiều float32 cùng thang đầu vào; một kênh giữ giá trị,
+    RGB dùng Y = 0,299R + 0,587G + 0,114B. Không sửa image; dạng khác
+    gây ValueError. Tham chiếu: phần thu nhỏ và chuẩn hóa, mục 2.1.
+    """
     if image.ndim == 2:
         return image.astype(np.float32)
     if image.ndim == 3 and image.shape[2] in (3, 4):
@@ -107,8 +129,17 @@ def to_gray(image: np.ndarray) -> np.ndarray:
 
 
 # ---------------------------------------------------------------- B3 TỰ VIẾT
-def normalize_percentile(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi: float) -> tuple[np.ndarray, float, float]:
-    """B3 [TỰ VIẾT]: I' = clip((I − P_lo)/(P_hi − P_lo), 0, 1), phân vị tính trên pixel hợp lệ."""
+def normalize_percentile(
+    image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi: float,
+) -> tuple[np.ndarray, float, float]:
+    """B3 [TỰ VIẾT]: chuẩn hóa theo phân vị trên pixel hợp lệ.
+
+    Vào: image là ảnh 2 chiều, valid là mặt nạ bool cùng cỡ;
+    p_lo/p_hi là mức phân vị theo %, đã kiểm 0 <= p_lo < p_hi <= 100.
+    Ra: (ảnh float32 [0, 1], cận thấp, cận cao), không sửa đầu vào.
+    Dùng I' = clip((I − P_lo)/(P_hi − P_lo), 0, 1); pixel lỗi/ảnh phẳng
+    trả 0, thiếu pixel hợp lệ gây ValueError. Tham chiếu: (2.2).
+    """
     if not valid.any():
         raise ValueError("Ảnh không có pixel hợp lệ.")
     lo, hi, _ = normalization_bounds(image, valid, p_lo, p_hi)
@@ -119,8 +150,17 @@ def normalize_percentile(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi
     return out.astype(np.float32), float(lo), float(hi)
 
 
-def normalization_bounds(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi: float) -> tuple[float, float, str]:
-    """Không xóa vật thể thưa khi hai phân vị bằng nhau; ảnh thật sự phẳng → 0."""
+def normalization_bounds(
+    image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi: float,
+) -> tuple[float, float, str]:
+    """Chọn cận chuẩn hóa, giữ vật thể thưa khi hai phân vị bằng nhau.
+
+    Vào: image và mặt nạ bool valid cùng cỡ; p_lo/p_hi là mức phân vị (%).
+    Ra: (lo, hi, tên chiến lược), cận cùng đơn vị mức xám đầu vào.
+    Phân vị trùng thì thử min–max; ảnh thật sự phẳng giữ lo=hi để hàm gọi
+    trả ảnh 0. Không sửa mảng; thiếu pixel hợp lệ gây ValueError.
+    Tham chiếu: nhánh dự phòng của chuẩn hóa (2.2), mục 2.1.
+    """
     values = image[valid].astype(np.float64)
     if not values.size:
         raise ValueError("Ảnh không có pixel hợp lệ.")
@@ -133,8 +173,15 @@ def normalization_bounds(image: np.ndarray, valid: np.ndarray, p_lo: float, p_hi
 
 
 # ---------------------------------------------------------------- B4 THƯ VIỆN
-def clahe(image: np.ndarray, valid: np.ndarray, clip: float, grid: int, bits: int = 8) -> np.ndarray:
-    """B4 [THƯ VIỆN OpenCV]: CLAHE trên uint8 (×255) hoặc uint16 (×65535), trả lại float32 [0, 1].
+def clahe(
+    image: np.ndarray, valid: np.ndarray, clip: float, grid: int, bits: int = 8,
+) -> np.ndarray:
+    """B4 [THƯ VIỆN OpenCV]: tăng tương phản bằng CLAHE 8 hoặc 16 bit.
+
+    Vào: image là ảnh xám [0, 1], valid là mặt nạ bool cùng cỡ; clip là
+    clipLimit, grid là số ô mỗi trục, bits chọn lượng tử uint8 (×255)
+    hoặc uint16 (×65535). Ra: ảnh float32 [0, 1], pixel lỗi bằng 0;
+    không sửa đầu vào. Tham chiếu: ngưỡng cắt (2.3), mục 3.2.
 
     Lệch S1-04 (đặc tả ghi uint16): OpenCV đặt ngưỡng cắt mỗi bin là
     max(1, clip·(số pixel một ô)/(số bin)). Với uint16 có 65536 bin, ô 64×64
@@ -156,7 +203,11 @@ def clahe(image: np.ndarray, valid: np.ndarray, clip: float, grid: int, bits: in
 
 # ------------------------------------------------- Phép nhân chập tự viết (B5, B6)
 def correlate_1d(image: np.ndarray, kernel: np.ndarray, axis: int) -> np.ndarray:
-    """[TỰ VIẾT] Tương quan 1 chiều theo trục axis, biên phản chiếu kiểu BORDER_REFLECT_101.
+    """[TỰ VIẾT] Tương quan một chiều với biên phản chiếu BORDER_REFLECT_101.
+
+    Vào: image là mảng 2 chiều, kernel là mảng hệ số 1 chiều có độ dài lẻ;
+    axis=0 theo cột, axis=1 theo hàng. Ra: ảnh float64 cùng cỡ,
+    không sửa đầu vào. Tham chiếu: (2.4)–(2.5), Thuật toán 3.2.
 
     out[i] = Σ_j kernel[j] · I[i + j − R]. Cộng dồn các lát cắt dịch chuyển của
     ảnh đã đệm; tính trong float64 để sai số làm tròn nhỏ hơn 1e-5.
@@ -179,7 +230,13 @@ def correlate_1d(image: np.ndarray, kernel: np.ndarray, axis: int) -> np.ndarray
 
 # ---------------------------------------------------------------- B5 TỰ VIẾT
 def gaussian_kernel(sigma: float, size: int | None = None) -> np.ndarray:
-    """[TỰ VIẾT] g(i) = exp(−i²/2σ²) / Σ exp(−j²/2σ²), i = −R…R, mặc định R = ⌈3σ⌉."""
+    """[TỰ VIẾT] Tạo kernel Gaussian một chiều có tổng hệ số bằng 1.
+
+    Vào: sigma dương hữu hạn (px); size là số phần tử lẻ >=3 hoặc None
+    để dùng bán kính R=ceil(3·sigma). Ra: mảng float64 độ dài size;
+    tham số sai gây ValueError. g(i)=exp(−i²/2σ²)/Σexp(−j²/2σ²)
+    với i từ −R tới R. Tham chiếu: công thức (2.4).
+    """
     _finite_number(sigma, "gauss_sigma", positive=True)
     if size is None:
         size = 2 * math.ceil(3 * sigma) + 1
@@ -192,7 +249,12 @@ def gaussian_kernel(sigma: float, size: int | None = None) -> np.ndarray:
 
 
 def gaussian_blur(image: np.ndarray, sigma: float, size: int | None = None) -> np.ndarray:
-    """B5 [TỰ VIẾT]: Gaussian tách được — lọc theo hàng (trục x) rồi theo cột (trục y)."""
+    """B5 [TỰ VIẾT]: lọc Gaussian theo hàng rồi theo cột.
+
+    Vào: image là ảnh 2 chiều, sigma dương (px), size là cỡ kernel lẻ
+    hoặc None để tự chọn. Ra: ảnh float32 cùng cỡ, không sửa image;
+    tính trung gian float64 với biên phản chiếu. Tham chiếu: (2.4), mục 3.2.
+    """
     g = gaussian_kernel(sigma, size)
     return correlate_1d(correlate_1d(image, g, axis=1), g, axis=0).astype(np.float32)
 
@@ -205,6 +267,10 @@ SOBEL_DIFF = np.array([-1.0, 0.0, 1.0])
 def sobel(image: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """B6 [TỰ VIẾT]: Sobel 3×3 không chia 8; trả gx, gy, |G|, θ = atan2(gy, gx).
 
+    Vào: image là ảnh xám 2 chiều. Ra: bốn mảng float32 cùng cỡ;
+    gx/gy/|G| theo thang mức xám, theta theo radian; không sửa image.
+    Tham chiếu: công thức (2.5), mục 3.2.
+
     Kx = [1,2,1]ᵀ·[-1,0,1] và Ky = [-1,0,1]ᵀ·[1,2,1], tách thành hai lượt 1 chiều.
     x sang phải, y xuống dưới: gx > 0 khi sáng dần sang phải, gy > 0 khi sáng dần xuống dưới.
     """
@@ -216,8 +282,17 @@ def sobel(image: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.nda
 
 
 # ---------------------------------------------------------------- B7 THƯ VIỆN
-def canny(smooth: np.ndarray, mag: np.ndarray, valid: np.ndarray, high_pct: float, low_ratio: float) -> tuple[np.ndarray, float, float]:
+def canny(
+    smooth: np.ndarray, mag: np.ndarray, valid: np.ndarray,
+    high_pct: float, low_ratio: float,
+) -> tuple[np.ndarray, float, float]:
     """B7 [THƯ VIỆN OpenCV]: Canny trên uint8 (×255), L2gradient, aperture 3.
+
+    Vào: smooth là ảnh trơn [0, 1], mag là độ lớn Sobel, valid là mặt nạ
+    bool cùng cỡ; high_pct theo %, low_ratio không đơn vị.
+    Ra: (biên bool, ngưỡng thấp, ngưỡng cao) theo thang gradient uint8;
+    ngưỡng cao không dương thì biên rỗng. Không sửa đầu vào.
+    Tham chiếu: công thức (2.6), mục 3.2.
 
     Ngưỡng tự động (phần tự viết): high = P{high_pct} của |G|·255 trên vùng hợp lệ,
     low = low_ratio·high. |G| của B6 không chia 8 nên cùng thang với gradient
@@ -233,8 +308,17 @@ def canny(smooth: np.ndarray, mag: np.ndarray, valid: np.ndarray, high_pct: floa
     return edges, low, high
 
 
-def canny_thresholds(mag: np.ndarray, valid: np.ndarray, high_pct: float, low_ratio: float) -> tuple[float, float, str]:
-    """P90 trên vùng giữ lại; nếu nền phẳng chiếm >90%, dùng gradient dương."""
+def canny_thresholds(
+    mag: np.ndarray, valid: np.ndarray, high_pct: float, low_ratio: float,
+) -> tuple[float, float, str]:
+    """Lấy ngưỡng Canny theo phân vị, dự phòng bằng gradient dương.
+
+    Vào: mag là độ lớn Sobel trước nhân 255, valid là mặt nạ bool cùng
+    cỡ; high_pct theo %, low_ratio là tỷ lệ thấp/cao không đơn vị.
+    Ra: (low, high, chiến lược), ngưỡng theo thang gradient uint8;
+    thiếu vùng hợp lệ/gradient dương thì hai ngưỡng bằng 0. Không sửa mảng.
+    Mặc định P90; nền phẳng >90% dùng gradient dương. Tham chiếu: (2.6).
+    """
     values = mag[valid].astype(np.float64) * 255
     if not values.size:
         return 0.0, 0.0, "no_valid_support"
@@ -251,7 +335,12 @@ def canny_thresholds(mag: np.ndarray, valid: np.ndarray, high_pct: float, low_ra
 
 # ---------------------------------------------------------------- B8 TỰ VIẾT
 def erode(mask: np.ndarray, margin: int) -> np.ndarray:
-    """[TỰ VIẾT] Co vùng True đi margin px (phần tử cấu trúc vuông), ngoài ảnh coi là False."""
+    """[TỰ VIẾT] Co mặt nạ bằng phần tử cấu trúc vuông bán kính margin.
+
+    Vào: mask là mảng bool 2 chiều, margin nguyên (px); ngoài ảnh coi là
+    False. Ra: mặt nạ bool mới cùng cỡ, không sửa mask; margin <=0 trả
+    bản sao nguyên trạng. Tham chiếu: phép AND lân cận trong (2.7).
+    """
     if margin <= 0:
         return mask.copy()
     out = mask
@@ -270,20 +359,33 @@ def erode(mask: np.ndarray, margin: int) -> np.ndarray:
 
 
 def mask_edges(edges: np.ndarray, valid: np.ndarray, margin: int) -> tuple[np.ndarray, np.ndarray]:
-    """B8 [TỰ VIẾT]: bỏ biên trong lề margin px tính từ mép ảnh và từ vùng nodata."""
+    """B8 [TỰ VIẾT]: bỏ biên gần mép ảnh và vùng nodata.
+
+    Vào: edges/valid là mảng bool cùng cỡ, margin nguyên (px) là lề co.
+    Ra: (biên sau mặt nạ, mặt nạ đã co), đều bool; không sửa đầu vào.
+    Tham chiếu: công thức (2.7), bước 9–10 của Thuật toán 3.1.
+    """
     keep = erode(valid, margin)
     return edges & keep, keep
 
 
 # ---------------------------------------------------------------- Chuỗi B1–B8
 def resolve_params(params: dict | None) -> dict:
-    """Ghép tham số người dùng với mặc định S1-04; báo lỗi nếu có khóa lạ."""
+    """Kiểm tham số và ghép với mặc định tiền xử lý S1-04.
+
+    Vào: params là dict hoặc None; phân vị theo %, sigma/lề theo px,
+    các tỷ lệ không đơn vị. Ra: dict mới có kernel lẻ và lề đủ cho
+    Gaussian/Sobel; không sửa params, tham số sai gây ValueError.
+    Tham chiếu: điều kiện lề (2.7), cấu hình B1–B8 ở mục 3.2.
+    """
     if params is not None and not isinstance(params, dict):
         raise ValueError("Tham số phải là object/dict.")
     params = dict(params or {})
     if any(not isinstance(key, str) for key in params):
         raise ValueError("Tên tham số phải là chuỗi.")
-    if "version" in params and (not isinstance(params["version"], str) or not params["version"].strip()):
+    if "version" in params and (
+        not isinstance(params["version"], str) or not params["version"].strip()
+    ):
         raise ValueError("version phải là chuỗi không rỗng.")
     extra = set(params) - set(DEFAULT_PARAMS) - {"version", "status"}
     if extra:
@@ -316,37 +418,69 @@ def resolve_params(params: dict | None) -> dict:
     merged["edge_margin_px"] = max(merged["edge_margin_px"], required_margin)
     if merged["edge_margin_px"] >= SIZE // 2:
         raise ValueError("Lề biên không được xóa toàn bộ ảnh 512×512.")
-    for key in ("clahe_grid", "clahe_bits", "gauss_kernel_size", "edge_margin_px", "edge_margin_requested_px"):
+    for key in (
+        "clahe_grid", "clahe_bits", "gauss_kernel_size",
+        "edge_margin_px", "edge_margin_requested_px",
+    ):
         merged[key] = int(merged[key])
     return merged
 
 
 def _integer(value: Any, name: str, minimum: int) -> None:
-    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
+    """Kiểm tra tham số nguyên đạt cận dưới, loại trừ bool.
+
+    Vào: value cần kiểm, name dùng trong thông báo, minimum là cận nguyên;
+    đơn vị phụ thuộc tham số gọi. Ra: None nếu hợp lệ, ValueError nếu sai;
+    không sửa đầu vào. Đây là kiểm hợp đồng, không có công thức riêng.
+    """
+    if (
+        isinstance(value, (bool, np.bool_))
+        or not isinstance(value, (int, np.integer))
+        or value < minimum
+    ):
         raise ValueError(f"{name} phải là số nguyên >= {minimum}.")
 
 
 def _finite_number(value: Any, name: str, *, positive: bool = False) -> None:
-    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, float, np.integer, np.floating)):
+    """Kiểm tra số hữu hạn và điều kiện dương khi được yêu cầu.
+
+    Vào: value cần kiểm, name là tên tham số, positive là cờ bắt buộc >0;
+    đơn vị theo hàm gọi, bool không được coi là số. Ra: None hoặc phát sinh
+    ValueError; không sửa value. Đây là kiểm hợp đồng, không có công thức riêng.
+    """
+    if (
+        isinstance(value, (bool, np.bool_))
+        or not isinstance(value, (int, float, np.integer, np.floating))
+    ):
         raise ValueError(f"{name} phải là số hữu hạn.")
     if not math.isfinite(value) or (positive and value <= 0):
         raise ValueError(f"{name} phải là số hữu hạn" + (" > 0." if positive else "."))
 
 
-def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mask: Any = None) -> dict:
+def preprocess(
+    image: Any, metadata: dict, params: dict | None = None, valid_mask: Any = None,
+) -> dict:
     """Chạy nối tiếp B1 → B8 trên ảnh đã đọc ở B0.
 
-    image: ô cắt cạnh 512·k (k = metadata["downsample_k"]), 1 hoặc 3 kênh, kiểu
+    Vào: image là ô cắt cạnh 512·k (k = metadata["downsample_k"]), 1/3/4 kênh, kiểu
     số bất kỳ; hoặc ảnh đã thu nhỏ 512×512 (khi đó bỏ qua B1).
-    valid_mask: bool cùng kích thước (tùy chọn); NaN/±inf luôn bị coi là lỗi.
+    valid_mask: bool cùng chiều cao/rộng (tùy chọn); NaN/±inf luôn bị coi là lỗi.
+    metadata là dict, params là dict cấu hình hoặc None; sigma/lề theo px,
+    phân vị theo %, theta đầu ra theo radian. RGBA loại pixel có alpha <=0.
 
-    Trả dict theo DINH_DANG_DU_LIEU.md mục 3: gray, enhanced, smooth, gx, gy,
+    Ra: dict theo DINH_DANG_DU_LIEU.md mục 3: gray, enhanced, smooth, gx, gy,
     mag, theta (float32 512×512), edges, valid_mask (bool), params; thêm
     downsampled (B1–B2, thang gốc) và edges_canny (B7 trước mặt nạ) để xem từng bước.
+    Không sửa đầu vào hay ghi file; đầu vào/cấu hình sai gây ValueError.
+    Tham chiếu: công thức (2.1)–(2.7), Thuật toán 3.1 ở mục 3.2.
     """
     p = resolve_params(params)
     image = np.asarray(image)
-    if image.dtype.kind not in "uif" or image.ndim not in (2, 3) or (image.ndim == 3 and image.shape[2] not in (3, 4)):
+    if (
+        image.dtype.kind not in "uif"
+        or image.ndim not in (2, 3)
+        or (image.ndim == 3 and image.shape[2] not in (3, 4))
+    ):
         raise ValueError("Ảnh phải là mảng số thực 2 chiều hoặc RGB/RGBA.")
     if not isinstance(metadata, dict):
         raise ValueError("Metadata phải là dict.")
@@ -393,8 +527,12 @@ def preprocess(image: Any, metadata: dict, params: dict | None = None, valid_mas
     # B6
     gx, gy, mag, theta = sobel(smooth)
     # B7
-    edges_canny, canny_low, canny_high = canny(smooth, mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"])
-    _, _, threshold_strategy = canny_thresholds(mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"])
+    edges_canny, canny_low, canny_high = canny(
+        smooth, mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"],
+    )
+    _, _, threshold_strategy = canny_thresholds(
+        mag, threshold_valid, p["canny_high_pct"], p["canny_low_ratio"],
+    )
     # B8
     edges, _ = mask_edges(edges_canny, valid, p["edge_margin_px"])
 

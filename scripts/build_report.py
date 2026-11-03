@@ -11,6 +11,7 @@ Cách chạy:
 Đầu ra nằm trong outputs/report/ (không commit). Thứ tự ghép là thứ tự tên file
 trong docs/bao_cao/ (00_..., 01_..., ...); README.md không được ghép.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -31,28 +32,82 @@ PENDING = re.compile(r"\[CHỜ[^\]]*\]")
 
 
 def chapters(only: list[str] | None = None) -> list[Path]:
+    """Chọn các chương Markdown theo thứ tự ghép báo cáo.
+
+    Vào: only là danh sách tiền tố NN hoặc None; đọc SOURCE, luôn giữ phần 00 khi lọc.
+    Ra: list Path; SystemExit khi bộ chọn sai/rỗng. Phụ lục A, không có công thức toán.
+    """
     files = sorted(p for p in SOURCE.glob("[0-9][0-9]_*.md"))
     if only:
         unknown = sorted(set(only) - {p.name[:2] for p in files})
         if unknown:
-            raise SystemExit(f"Không có file chương số {', '.join(unknown)} (ghi hai chữ số, ví dụ --only 03).")
+            raise SystemExit(
+                f"Không có file chương số {', '.join(unknown)} (ghi hai chữ số, ví dụ --only 03)."
+            )
         files = [p for p in files if p.name[:2] == "00" or p.name[:2] in only]
     if not files:
         raise SystemExit(f"Không có chương nào trong {SOURCE.relative_to(ROOT)}.")
     return files
 
 
-# LibreOffice bỏ khoảng trắng TeX (\qquad) và thu hẹp em-space khi đọc công thức Word, nên số công thức
-# dính vào công thức. Khi ghép, đổi "\qquad (2.1)" ở cuối công thức thành 8 khoảng trắng không ngắt (U+00A0);
+# LibreOffice bỏ khoảng trắng TeX (\qquad) và thu hẹp em-space khi đọc công thức Word, nên số công
+# thức
+# dính vào công thức. Khi ghép, đổi "\qquad (2.1)" ở cuối công thức thành 8 khoảng trắng không ngắt
+# (U+00A0);
 # Word cũng hiển thị đúng.
 EQUATION_NUMBER = re.compile(r"\\q?quad\s*(\((?:\d+|[A-Z])\.\d+\))\s*(?=\$\$)")
 
 
+REPO_BLOB = "https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/"
+INLINE_LINK = re.compile(r'(?<!!)\[([^\]]+)\]\((\.\./[^)\s]+)((?:\s+"[^"]*")?)\)')
+REFERENCE_LINK = re.compile(r"^( {0,3}\[[^\]]+\]:\s*)(\.\./\S+)", re.M)
+CODE_SPLIT = re.compile(r"(^```.*?^```[^\n]*$|`[^`\n]*`)", re.M | re.S)
+
+
+def _repo_url(relative: str) -> str:
+    """Đổi đường dẫn tương đối tính từ docs/bao_cao/ thành URL blob/main trên GitHub.
+
+    Vào: relative như ../evidence/x.csv. Ra: URL công khai. Phát ValueError nếu đường dẫn
+    đi ra ngoài gốc repo.
+    """
+    parts: list[str] = []
+    for piece in ("docs/bao_cao/" + relative).split("/"):
+        if piece == "..":
+            if not parts:
+                raise ValueError(f"Liên kết ra ngoài repo: {relative}")
+            parts.pop()
+        elif piece not in ("", "."):
+            parts.append(piece)
+    return REPO_BLOB + "/".join(parts)
+
+
+def public_links(text: str) -> str:
+    """Đổi liên kết tương đối ra ngoài docs/bao_cao thành URL GitHub công khai.
+
+    Vào: text Markdown của một chương trong docs/bao_cao/. Ra: chuỗi đã đổi. Đổi liên kết
+    inline (kể cả có tiêu đề) và định nghĩa liên kết tham chiếu; giữ nguyên ảnh (![...]),
+    inline code và khối code. Nếu để tương đối, LibreOffice ghi URI file:// tuyệt đối của
+    máy dựng vào PDF.
+    """
+    def convert(segment: str) -> str:
+        segment = INLINE_LINK.sub(
+            lambda m: f"[{m.group(1)}]({_repo_url(m.group(2))}{m.group(3)})", segment)
+        return REFERENCE_LINK.sub(lambda m: m.group(1) + _repo_url(m.group(2)), segment)
+
+    pieces = CODE_SPLIT.split(text)
+    return "".join(piece if i % 2 else convert(piece) for i, piece in enumerate(pieces))
+
+
 def combined_markdown(files: list[Path]) -> str:
-    """Nối các chương thành một văn bản để pandoc đọc một lần, kèm phép đổi số công thức ở trên."""
-    sources = [f.read_text(encoding="utf-8") for f in files]
-    captions = re.findall(r"(?:!\[|^: )(Hình \d+\.\d+|Bảng [\dA-Z]+\.\d+)\. ([^\n]+)",
-                          "\n".join(sources), flags=re.M)
+    """Ghép chương, sinh danh mục hình/bảng và xử lý khoảng cách số công thức.
+
+    Vào: files là các Path Markdown theo thứ tự. Ra: chuỗi Markdown đã ghép; không ghi file.
+    Chỉ thay cách trình bày số công thức bằng khoảng trắng không ngắt, không tính lại công thức.
+    """
+    sources = [public_links(f.read_text(encoding="utf-8")) for f in files]
+    captions = re.findall(
+        r"(?:!\[|^: )(Hình \d+\.\d+|Bảng [\dA-Z]+\.\d+)\. ([^\n]+)", "\n".join(sources), flags=re.M
+    )
     rows = ["| Hình/bảng | Nội dung | Trang |", "|---|---|---:|"]
     for label, caption in captions:
         title = caption.split("](", 1)[0].split(". ", 1)[0].replace("`", "")
@@ -61,24 +116,43 @@ def combined_markdown(files: list[Path]) -> str:
             title = title[:55].rsplit(" ", 1)[0] + "…"
         rows.append(f"| {label} | {title.rstrip('.')} | 0 |")
     listing = "\n".join(rows)
-    parts = [EQUATION_NUMBER.sub(lambda m: "\\text{" + "\u00a0" * 8 + "}" + m.group(1) + " ",
-                                text.replace("<!-- REPORT_LISTS -->", listing)) for text in sources]
+    parts = [
+        EQUATION_NUMBER.sub(
+            lambda m: "\\text{" + "\u00a0" * 8 + "}" + m.group(1) + " ",
+            text.replace("<!-- REPORT_LISTS -->", listing),
+        )
+        for text in sources
+    ]
     return "\n\n".join(parts)
 
 
 def report_status(files: list[Path]) -> None:
-    """In số chữ và các chỗ còn chờ kết quả ([CHỜ ...]) của từng file để nhóm theo dõi."""
+    """In số chữ và các dấu chờ trong những chương được chọn.
+
+    Vào: files là các Path Markdown. Ra: None; ghi thống kê ra stdout, bỏ comment HTML khi đếm.
+    Công thức báo cáo: không áp dụng cho kiểm văn bản.
+    """
     total = 0
     for path in files:
         text = re.sub(r"<!--.*?-->", "", path.read_text(encoding="utf-8"), flags=re.S)
         words = len(re.findall(r"\w+", text))
         total += words
         pending = PENDING.findall(text)
-        print(f"  {path.name:<40} {words:>6} chữ" + (f" · {len(pending)} chỗ [CHỜ]" if pending else ""))
+        print(
+            f"  {path.name:<40} {words:>6} chữ"
+            + (f" · {len(pending)} chỗ [CHỜ]" if pending else "")
+        )
     print(f"  {'Tổng':<40} {total:>6} chữ")
 
 
-def _font(style, size: float | None = None, *, bold: bool | None = None, italic: bool | None = None) -> None:
+def _font(
+    style, size: float | None = None, *, bold: bool | None = None, italic: bool | None = None
+) -> None:
+    """Đặt phông chữ và thuộc tính định dạng của một style DOCX.
+
+    Vào: style, size tùy chọn và cờ bold/italic; dùng FONT của mô-đun.
+    Ra: None; sửa style tại chỗ, gồm phông các bộ ký tự và màu đen; không có công thức toán.
+    """
     from docx.oxml.ns import qn
     from docx.shared import Pt, RGBColor
 
@@ -102,13 +176,28 @@ def _font(style, size: float | None = None, *, bold: bool | None = None, italic:
 
 
 def _page_number_footer(section) -> None:
+    """Thêm trường số trang căn giữa ở chân trang DOCX.
+
+    Vào: section cần sửa. Ra: None; cập nhật footer bằng trường PAGE, không ghi file trực tiếp.
+    Định dạng Phụ lục A, không có công thức toán.
+    """
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.oxml.ns import qn
 
-    paragraph = section.footer.paragraphs[0] if section.footer.paragraphs else section.footer.add_paragraph()
+    paragraph = (
+        section.footer.paragraphs[0]
+        if section.footer.paragraphs
+        else section.footer.add_paragraph()
+    )
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = paragraph.add_run()
-    for kind, text in (("begin", None), (None, " PAGE "), ("separate", None), (None, "1"), ("end", None)):
+    for kind, text in (
+        ("begin", None),
+        (None, " PAGE "),
+        ("separate", None),
+        (None, "1"),
+        ("end", None),
+    ):
         if kind:
             element = run._r.makeelement(qn("w:fldChar"), {qn("w:fldCharType"): kind})
         elif text.strip() == "PAGE":
@@ -121,12 +210,19 @@ def _page_number_footer(section) -> None:
 
 
 def reference_docx(pandoc: str, target: Path) -> Path:
-    """Mẫu kiểu chữ cho pandoc: lấy mẫu mặc định rồi chỉnh theo quy định trình bày."""
+    """Tạo mẫu DOCX theo quy cách trình bày của báo cáo.
+
+    Vào: pandoc là chương trình xuất mẫu, target là file mẫu đích.
+    Ra: Path target; ghi DOCX có style, lề, khổ giấy và trường số trang.
+    Định dạng Phụ lục A, không có công thức toán.
+    """
     from docx import Document
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.shared import Cm, Pt
 
-    raw = subprocess.run([pandoc, "--print-default-data-file", "reference.docx"], check=True, capture_output=True).stdout
+    raw = subprocess.run(
+        [pandoc, "--print-default-data-file", "reference.docx"], check=True, capture_output=True
+    ).stdout
     target.write_bytes(raw)
     document = Document(str(target))
     styles = document.styles
@@ -153,7 +249,13 @@ def reference_docx(pandoc: str, target: Path) -> Path:
         fmt.keep_with_next = True
     styles["Heading 1"].paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
     styles["Heading 1"].paragraph_format.page_break_before = True
-    for name, size in (("Title", 18), ("Subtitle", 15), ("Author", 13), ("Date", 13), ("Abstract", 13)):
+    for name, size in (
+        ("Title", 18),
+        ("Subtitle", 15),
+        ("Author", 13),
+        ("Date", 13),
+        ("Abstract", 13),
+    ):
         if name in styles:
             _font(styles[name], size, bold=(name == "Title"))
             styles[name].paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -170,8 +272,13 @@ def reference_docx(pandoc: str, target: Path) -> Path:
         styles["Source Code"].font.size = Pt(10)
     # Kiểu cho trang bìa, dùng trong Markdown bằng ::: {custom-style="Cover Title"} ... :::
     from docx.enum.style import WD_STYLE_TYPE
-    for name, size, bold, space in (("Cover", 13, False, 4), ("Cover Strong", 14, True, 4),
-                                    ("Cover Title", 18, True, 12), ("Cover Big", 22, True, 18)):
+
+    for name, size, bold, space in (
+        ("Cover", 13, False, 4),
+        ("Cover Strong", 14, True, 4),
+        ("Cover Title", 18, True, 12),
+        ("Cover Big", 22, True, 18),
+    ):
         style = styles[name] if name in styles else styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
         style.base_style = styles["Normal"]
         _font(style, size, bold=bold)
@@ -192,20 +299,44 @@ def reference_docx(pandoc: str, target: Path) -> Path:
 
 
 def build_docx(pandoc: str, output: Path, files: list[Path]) -> Path:
+    """Dựng DOCX từ các chương Markdown với hình và trích dẫn.
+
+    Vào: pandoc, output là file DOCX và files là các chương nguồn theo thứ tự.
+    Ra: Path output; ghi reference.docx, _ghep.md, DOCX rồi hậu xử lý định dạng.
+    Phụ lục A; giữ biểu thức báo cáo, không thực hiện phép tính trong chúng.
+    """
     reference = reference_docx(pandoc, output.parent / "reference.docx")
     source = output.parent / "_ghep.md"
     source.write_text(combined_markdown(files), encoding="utf-8")
     command = [
-        pandoc, str(source),
-        "--from", "markdown+pipe_tables+grid_tables+tex_math_dollars+implicit_figures+fenced_divs+raw_attribute",
-        "--to", "docx",
-        "--reference-doc", str(reference),
-        "--resource-path", os.pathsep.join(str(p) for p in (SOURCE, ROOT / "docs", ROOT)),
+        pandoc,
+        str(source),
+        "--from",
+        'markdown+pipe_tables+grid_tables+tex_math_dollars+implicit_figures+f'
+        'enced_divs+raw_attribute',
+        "--to",
+        "docx",
+        "--reference-doc",
+        str(reference),
+        "--resource-path",
+        os.pathsep.join(str(p) for p in (SOURCE, ROOT / "docs", ROOT)),
         "--no-highlight",  # mã in đen trắng; tùy chọn này có cả ở pandoc 2.x lẫn 3.x
-        "--citeproc", "--bibliography", str(SOURCE / "tai_lieu.bib"), "--csl", str(SOURCE / "ieee.csl"),
-        # Danh mục tài liệu theo IEEE bằng tiếng Anh (vol., no., pp.); ngôn ngữ văn bản đặt lại vi-VN bên dưới.
-        "--metadata", "lang=en-US", "--metadata", "link-citations=true",
-        "--output", str(output),
+        # Đường dẫn tương đối theo cwd=SOURCE: Pandoc ghi giá trị này vào docProps/custom.xml của
+        # DOCX,
+        # nên không truyền đường dẫn tuyệt đối của máy dựng.
+        "--citeproc",
+        "--bibliography",
+        "tai_lieu.bib",
+        "--csl",
+        "ieee.csl",
+        # Danh mục tài liệu theo IEEE bằng tiếng Anh (vol., no., pp.); ngôn ngữ văn bản đặt lại
+        # vi-VN bên dưới.
+        "--metadata",
+        "lang=en-US",
+        "--metadata",
+        "link-citations=true",
+        "--output",
+        str(output),
     ]
     subprocess.run(command, check=True, cwd=SOURCE)
     _postprocess(output, "vi-VN")
@@ -213,7 +344,11 @@ def build_docx(pandoc: str, output: Path, files: list[Path]) -> Path:
 
 
 def _postprocess(path: Path, language: str) -> None:
-    """Sau pandoc: đặt ngôn ngữ văn bản (kiểm chính tả trong Word) và trình bày lại các bảng."""
+    """Chỉnh ngôn ngữ, bảng và trường chú thích trong DOCX vừa dựng.
+
+    Vào: path là DOCX, language là mã ngôn ngữ. Ra: None; sửa và lưu lại file path.
+    Định dạng Phụ lục A, không có công thức toán.
+    """
     from docx import Document
     from docx.oxml.ns import qn
 
@@ -229,7 +364,8 @@ def _postprocess(path: Path, language: str) -> None:
     for table in document.tables:
         _polish_table(table)
         following = table._tbl.getnext()
-        if following is not None and following.tag == qn("w:p"):  # chừa khoảng giữa bảng và đoạn sau
+        # chừa khoảng giữa bảng và đoạn sau
+        if following is not None and following.tag == qn("w:p"):
             spacing = following.get_or_add_pPr().find(qn("w:spacing"))
             if spacing is None:
                 spacing = following.get_or_add_pPr().makeelement(qn("w:spacing"), {})
@@ -240,7 +376,11 @@ def _postprocess(path: Path, language: str) -> None:
 
 
 def _caption_page_fields(document) -> None:
-    """Đánh dấu chú thích và tạo PAGEREF cho danh mục hình/bảng; LibreOffice cập nhật khi dựng."""
+    """Gắn bookmark chú thích và trường PAGEREF cho danh mục hình/bảng.
+
+    Vào: document là DOCX đang mở. Ra: None; sửa document tại chỗ, lỗi nếu danh mục thiếu đích.
+    LibreOffice cập nhật số trang khi dựng; không có công thức toán.
+    """
     from docx.oxml.ns import qn
 
     existing = document.element.findall(".//" + qn("w:bookmarkStart"))
@@ -252,7 +392,9 @@ def _caption_page_fields(document) -> None:
             continue
         label = match.group(1)
         name = "report_caption_" + re.sub(r"[^A-Za-z0-9]", "_", label)
-        start = paragraph._p.makeelement(qn("w:bookmarkStart"), {qn("w:id"): str(next_id), qn("w:name"): name})
+        start = paragraph._p.makeelement(
+            qn("w:bookmarkStart"), {qn("w:id"): str(next_id), qn("w:name"): name}
+        )
         end = paragraph._p.makeelement(qn("w:bookmarkEnd"), {qn("w:id"): str(next_id)})
         paragraph._p.insert(1 if paragraph._p.pPr is not None else 0, start)
         paragraph._p.append(end)
@@ -268,8 +410,13 @@ def _caption_page_fields(document) -> None:
             paragraph = row.cells[2].paragraphs[0]
             paragraph.clear()
             run = paragraph.add_run()
-            for kind, text in (("begin", None), (None, f" PAGEREF {targets[label]} \\h "),
-                               ("separate", None), (None, "0"), ("end", None)):
+            for kind, text in (
+                ("begin", None),
+                (None, f" PAGEREF {targets[label]} \\h "),
+                ("separate", None),
+                (None, "0"),
+                ("end", None),
+            ):
                 if kind:
                     element = run._r.makeelement(qn("w:fldChar"), {qn("w:fldCharType"): kind})
                 elif text == "0":
@@ -282,9 +429,11 @@ def _caption_page_fields(document) -> None:
 
 
 def _polish_table(table, text_width_cm: float = 16.0) -> None:
-    """Bảng rộng hết dòng, cột chia theo lượng chữ, chữ 12 căn trái, hàng đầu lặp lại khi sang trang.
+    """Căn bảng DOCX và chia bề rộng cột theo nội dung.
 
-    Pandoc chia cột đều và để ô dùng kiểu đoạn văn (căn đều, thụt dòng), nên bảng nhiều chữ rất khó đọc.
+    Vào: table cần sửa, text_width_cm là tổng rộng; một số bảng có độ rộng cột cố định.
+    Ra: None; sửa ô/cột, định dạng đoạn/chữ và hàng tiêu đề lặp lại tại chỗ.
+    Đây là quy tắc dàn trang, không phải công thức thuật toán ảnh trong báo cáo.
     """
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.oxml.ns import qn
@@ -295,7 +444,9 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
     if not rows or not columns:
         return
     # itertext() lấy cả chữ trong công thức (OMML), cell.text thì bỏ qua công thức.
-    texts = [["".join(cell._tc.itertext()).strip() for cell in row.cells[:columns]] for row in rows]
+    texts = [
+        ["".join(cell._tc.itertext()).strip() for cell in row.cells[:columns]] for row in rows
+    ]
     weight, longest = [], []
     for i in range(columns):
         column = [row[i] for row in texts if i < len(row)]
@@ -303,7 +454,9 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
         longest.append(max((len(word) for t in column for word in t.split()), default=1))
     widths = [text_width_cm * w / sum(weight) for w in weight]
     floor = [min(5.0, 0.22 * n + 0.4) for n in longest]  # khoảng 0,22 cm mỗi ký tự ở cỡ 12
-    if sum(floor) > text_width_cm:  # quá nhiều cột hẹp: thu các mức sàn theo tỷ lệ để tổng vừa dòng
+    if (
+        sum(floor) > text_width_cm
+    ):  # quá nhiều cột hẹp: thu các mức sàn theo tỷ lệ để tổng vừa dòng
         floor = [f * text_width_cm / sum(floor) for f in floor]
     for _ in range(3):
         short = [max(f - w, 0.0) for w, f in zip(widths, floor)]
@@ -312,16 +465,28 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
         spare = [i for i in range(columns) if not short[i]]
         take = sum(short)
         room = sum(widths[i] - floor[i] for i in spare) or 1.0
-        widths = [max(w, f) if short[i] else w - take * (w - floor[i]) / room for i, (w, f) in enumerate(zip(widths, floor))]
+        widths = [
+            max(w, f) if short[i] else w - take * (w - floor[i]) / room
+            for i, (w, f) in enumerate(zip(widths, floor))
+        ]
     headers = [cell.text for cell in rows[0].cells]
     if headers == ["Hình/bảng", "Nội dung", "Trang"]:
         widths = [2.8, 11.4, 1.8]
-    elif headers == ["Thành viên", "Công việc", "File mã chính", "Mục viết", "Tỷ lệ (%)", "Chữ ký"]:
+    elif headers == [
+        "Thành viên",
+        "Công việc",
+        "File mã chính",
+        "Mục viết",
+        "Tỷ lệ (%)",
+        "Chữ ký",
+    ]:
         widths = [2.2, 2.3, 5.0, 3.7, 1.3, 1.5]
     tbl = table._tbl
     tbl_pr = tbl.tblPr
-    for tag, attrs in (("w:tblW", {"w:type": "dxa", "w:w": str(int(text_width_cm * 567))}),
-                       ("w:tblLayout", {"w:type": "fixed"})):
+    for tag, attrs in (
+        ("w:tblW", {"w:type": "dxa", "w:w": str(int(text_width_cm * 567))}),
+        ("w:tblLayout", {"w:type": "fixed"}),
+    ):
         element = tbl_pr.find(qn(tag))
         if element is None:
             element = tbl_pr.makeelement(qn(tag), {})
@@ -352,24 +517,49 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
 
 
 def uno_python() -> str | None:
-    """Python có module uno (LibreOffice) để cập nhật mục lục rồi xuất PDF."""
-    candidates = [os.environ.get("REPORT_UNO_PYTHON"), "/usr/bin/python3",
-                  r"C:\Program Files\LibreOffice\program\python.exe",
-                  "/Applications/LibreOffice.app/Contents/Resources/python"]
+    """Tìm Python có thể nạp bộ nối LibreOffice UNO.
+
+    Vào: REPORT_UNO_PYTHON và các vị trí ứng viên trên hệ thống. Ra: chuỗi chương trình hoặc None.
+    Thử import bằng tiến trình con; không ghi file, không có công thức toán.
+    """
+    candidates = [
+        os.environ.get("REPORT_UNO_PYTHON"),
+        "/usr/bin/python3",
+        r"C:\Program Files\LibreOffice\program\python.exe",
+        "/Applications/LibreOffice.app/Contents/Resources/python",
+    ]
     for candidate in filter(None, candidates):
-        if Path(candidate).exists() and subprocess.run([candidate, "-c", "import uno"],
-                                                       capture_output=True).returncode == 0:
+        if (
+            Path(candidate).exists()
+            and subprocess.run([candidate, "-c", "import uno"], capture_output=True).returncode
+            == 0
+        ):
             return candidate
     return None
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Dựng báo cáo DOCX và tùy điều kiện xuất PDF từ lựa chọn CLI.
+
+    Vào: argv chọn only, out và no-pdf; dùng nguồn chương, thư mục hình và tài liệu tham khảo.
+    Ra: mã 0; ghi DOCX và file trung gian, gọi UNO xuất PDF khi được chọn và có bộ nối.
+    Phụ lục A; không dùng kết quả dựng để xác nhận các dấu chờ.
+    """
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--no-pdf", action="store_true", help="chỉ xuất DOCX")
-    parser.add_argument("--only", nargs="+", metavar="NN", help="chỉ ghép trang đầu và các chương có số này, ví dụ --only 02 03")
-    parser.add_argument("--out", type=Path, default=OUTPUT, help="thư mục đầu ra (mặc định outputs/report)")
+    parser.add_argument(
+        "--only",
+        nargs="+",
+        metavar="NN",
+        help="chỉ ghép trang đầu và các chương có số này, ví dụ --only 02 03",
+    )
+    parser.add_argument(
+        "--out", type=Path, default=OUTPUT, help="thư mục đầu ra (mặc định outputs/report)"
+    )
     args = parser.parse_args(argv)
-    args.out = args.out.resolve()  # pandoc chạy trong docs/bao_cao, nên đường dẫn tương đối phải đổi trước
+    args.out = (
+        args.out.resolve()
+    )  # pandoc chạy trong docs/bao_cao, nên đường dẫn tương đối phải đổi trước
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     files = chapters(args.only)
@@ -386,11 +576,16 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     python = uno_python()
     if python is None:
-        print("Không tìm thấy Python có module uno của LibreOffice (cài python3-uno, hoặc đặt REPORT_UNO_PYTHON);"
-              " mở DOCX bằng Word, Ctrl+A rồi F9 cập nhật mục lục, sau đó lưu PDF.")
+        print(
+            'Không tìm thấy Python có module uno của LibreOffice (cài '
+            'python3-uno, hoặc đặt REPORT_UNO_PYTHON);'
+            " mở DOCX bằng Word, Ctrl+A rồi F9 cập nhật mục lục, sau đó lưu PDF."
+        )
         return 0
     pdf = args.out / f"{NAME}.pdf"
-    subprocess.run([python, str(ROOT / "scripts" / "report_to_pdf.py"), str(docx), str(pdf)], check=True)
+    subprocess.run(
+        [python, str(ROOT / "scripts" / "report_to_pdf.py"), str(docx), str(pdf)], check=True
+    )
     print(f"PDF: {pdf}")
     return 0
 
