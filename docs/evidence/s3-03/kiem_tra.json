@@ -1,0 +1,581 @@
+{
+  "rule": "Quy tắc chung cho cả hai vùng: chỉ loại (1) phần trùng trên ảnh nguồn, (2) dải ghép và vùng bóng lớn, (3) phần trong vành và sườn ngoài của hố có D > 2 km. Không loại vì có cụm hố nhỏ hơn.",
+  "status": "bản nháp: chờ người đếm duyệt và người thứ hai kiểm chéo",
+  "checks": [
+    {
+      "muc": "Cùng tỷ lệ ảnh",
+      "gia_tri": [
+        20.0
+      ],
+      "dat": true
+    },
+    {
+      "muc": "Cùng dải D (m)",
+      "gia_tri": [
+        300.0,
+        2000.0
+      ],
+      "dat": true
+    },
+    {
+      "muc": "Dải r tương ứng (px)",
+      "gia_tri": [
+        7.5,
+        50.0
+      ],
+      "dat": true
+    },
+    {
+      "muc": "Dải tìm Hough theo metadata (px)",
+      "gia_tri": [
+        [
+          5,
+          100
+        ]
+      ],
+      "dat": true
+    },
+    {
+      "muc": "lunokhod1: diện tích tính lại (km²)",
+      "gia_tri": 184.73,
+      "dat": true
+    },
+    {
+      "muc": "lunokhod1: phần chồng giữa hai ô (px)",
+      "gia_tri": 0,
+      "dat": true
+    },
+    {
+      "muc": "lunokhod1: tổng bin = N",
+      "gia_tri": [
+        73,
+        73
+      ],
+      "dat": true
+    },
+    {
+      "muc": "lunokhod1: D nằm trong dải",
+      "gia_tri": [
+        320.0,
+        1560.0
+      ],
+      "dat": true
+    },
+    {
+      "muc": "marefrig: diện tích tính lại (km²)",
+      "gia_tri": 122.973,
+      "dat": true
+    },
+    {
+      "muc": "marefrig: phần chồng giữa hai ô (px)",
+      "gia_tri": 0,
+      "dat": true
+    },
+    {
+      "muc": "marefrig: tổng bin = N",
+      "gia_tri": [
+        43,
+        43
+      ],
+      "dat": true
+    },
+    {
+      "muc": "marefrig: D nằm trong dải",
+      "gia_tri": [
+        320.0,
+        960.0
+      ],
+      "dat": true
+    },
+    {
+      "muc": "Đơn vị: 1 px ở 20 m/px (km²)",
+      "gia_tri": 0.0004,
+      "dat": true
+    }
+  ],
+  "thresholds": [
+    {
+      "tu_D_m": 300,
+      "n_L": 73,
+      "n_M": 43,
+      "mat_do_L": 0.395,
+      "mat_do_M": 0.35,
+      "ty_so": 1.13,
+      "p": 0.57,
+      "p_bonferroni_4": 1.0
+    },
+    {
+      "tu_D_m": 424,
+      "n_L": 31,
+      "n_M": 10,
+      "mat_do_L": 0.168,
+      "mat_do_M": 0.081,
+      "ty_so": 2.06,
+      "p": 0.054,
+      "p_bonferroni_4": 0.217
+    },
+    {
+      "tu_D_m": 600,
+      "n_L": 13,
+      "n_M": 4,
+      "mat_do_L": 0.07,
+      "mat_do_M": 0.033,
+      "ty_so": 2.16,
+      "p": 0.218,
+      "p_bonferroni_4": 0.872
+    },
+    {
+      "tu_D_m": 849,
+      "n_L": 5,
+      "n_M": 1,
+      "mat_do_L": 0.027,
+      "mat_do_M": 0.008,
+      "ty_so": 3.33,
+      "p": 0.413,
+      "p_bonferroni_4": 1.0
+    }
+  ],
+  "sensitivity": [
+    {
+      "kich_ban": "Bản S3-03",
+      "ty_so_tong": 1.13,
+      "p_tong": 0.57,
+      "ty_so_424": 2.06,
+      "p_424": 0.054,
+      "n_L": 73,
+      "n_M": 43,
+      "A_L": 184.7,
+      "A_M": 123.0
+    },
+    {
+      "kich_ban": "Bản S2-09 (cũ)",
+      "ty_so_tong": 0.79,
+      "p_tong": 0.345,
+      "ty_so_424": 2.24,
+      "p_424": 0.089,
+      "n_L": 47,
+      "n_M": 32,
+      "A_L": 184.7,
+      "A_M": 99.2
+    },
+    {
+      "kich_ban": "S3-03, cùng bỏ góc [0,0,184,244) ở c01 và c03",
+      "ty_so_tong": 1.28,
+      "p_tong": 0.263,
+      "ty_so_424": 2.61,
+      "p_424": 0.023,
+      "n_L": 67,
+      "n_M": 34,
+      "A_L": 166.8,
+      "A_M": 108.7
+    },
+    {
+      "kich_ban": "S3-03, chỉ Lunokhod c01",
+      "ty_so_tong": 1.25,
+      "p_tong": 0.29,
+      "ty_so_424": 2.23,
+      "p_424": 0.04,
+      "n_L": 46,
+      "n_M": 43,
+      "A_L": 104.9,
+      "A_M": 123.0
+    },
+    {
+      "kich_ban": "S3-03, chỉ Mare Frigoris c03",
+      "ty_so_tong": 1.05,
+      "p_tong": 0.842,
+      "ty_so_424": 1.83,
+      "p_424": 0.134,
+      "n_L": 73,
+      "n_M": 37,
+      "A_L": 184.7,
+      "A_M": 98.2
+    },
+    {
+      "kich_ban": "S3-03, r đếm +1 px",
+      "ty_so_tong": 1.13,
+      "p_tong": 0.57,
+      "ty_so_424": 1.83,
+      "p_424": 0.035,
+      "n_L": 73,
+      "n_M": 43,
+      "A_L": 184.7,
+      "A_M": 123.0
+    },
+    {
+      "kich_ban": "S3-03, r đếm −1 px",
+      "ty_so_tong": 1.36,
+      "p_tong": 0.216,
+      "ty_so_424": 1.81,
+      "p_424": 0.23,
+      "n_L": 55,
+      "n_M": 27,
+      "A_L": 184.7,
+      "A_M": 123.0
+    }
+  ],
+  "labels": {
+    "lunokhod1": {
+      "nhan_trong_vung": 17,
+      "nhan_khop_ban_dem": 3,
+      "ban_dem": 73,
+      "ban_dem_khop_nhan": 3
+    },
+    "marefrig": {
+      "nhan_trong_vung": 13,
+      "nhan_khop_ban_dem": 1,
+      "ban_dem": 43,
+      "ban_dem_khop_nhan": 1
+    }
+  },
+  "labels_old": {
+    "lunokhod1": {
+      "nhan_trong_vung": 17,
+      "nhan_khop_ban_dem": 2,
+      "ban_dem": 47,
+      "ban_dem_khop_nhan": 2
+    },
+    "marefrig": {
+      "nhan_trong_vung": 11,
+      "nhan_khop_ban_dem": 1,
+      "ban_dem": 32,
+      "ban_dem_khop_nhan": 1
+    }
+  },
+  "impact": {
+    "tong": {
+      "them_vao_L_de_p_nho_hon_0_05": 21,
+      "them_vao_M_de_p_nho_hon_0_05": 25
+    },
+    "tu_424": {
+      "them_vao_L_de_p_nho_hon_0_05": 1,
+      "them_vao_M_de_p_nho_hon_0_05": 25
+    },
+    "luoi_do_day_du": [
+      {
+        "do_day_du_L": 1.0,
+        "do_day_du_M": 1.0,
+        "ty_so_tong": 1.13,
+        "ty_so_424": 2.06
+      },
+      {
+        "do_day_du_L": 1.0,
+        "do_day_du_M": 0.9,
+        "ty_so_tong": 1.02,
+        "ty_so_424": 1.86
+      },
+      {
+        "do_day_du_L": 1.0,
+        "do_day_du_M": 0.8,
+        "ty_so_tong": 0.9,
+        "ty_so_424": 1.65
+      },
+      {
+        "do_day_du_L": 1.0,
+        "do_day_du_M": 0.7,
+        "ty_so_tong": 0.79,
+        "ty_so_424": 1.44
+      },
+      {
+        "do_day_du_L": 0.9,
+        "do_day_du_M": 1.0,
+        "ty_so_tong": 1.26,
+        "ty_so_424": 2.29
+      },
+      {
+        "do_day_du_L": 0.9,
+        "do_day_du_M": 0.9,
+        "ty_so_tong": 1.13,
+        "ty_so_424": 2.06
+      },
+      {
+        "do_day_du_L": 0.9,
+        "do_day_du_M": 0.8,
+        "ty_so_tong": 1.0,
+        "ty_so_424": 1.83
+      },
+      {
+        "do_day_du_L": 0.9,
+        "do_day_du_M": 0.7,
+        "ty_so_tong": 0.88,
+        "ty_so_424": 1.61
+      },
+      {
+        "do_day_du_L": 0.8,
+        "do_day_du_M": 1.0,
+        "ty_so_tong": 1.41,
+        "ty_so_424": 2.58
+      },
+      {
+        "do_day_du_L": 0.8,
+        "do_day_du_M": 0.9,
+        "ty_so_tong": 1.27,
+        "ty_so_424": 2.32
+      },
+      {
+        "do_day_du_L": 0.8,
+        "do_day_du_M": 0.8,
+        "ty_so_tong": 1.13,
+        "ty_so_424": 2.06
+      },
+      {
+        "do_day_du_L": 0.8,
+        "do_day_du_M": 0.7,
+        "ty_so_tong": 0.99,
+        "ty_so_424": 1.81
+      },
+      {
+        "do_day_du_L": 0.7,
+        "do_day_du_M": 1.0,
+        "ty_so_tong": 1.61,
+        "ty_so_424": 2.95
+      },
+      {
+        "do_day_du_L": 0.7,
+        "do_day_du_M": 0.9,
+        "ty_so_tong": 1.45,
+        "ty_so_424": 2.65
+      },
+      {
+        "do_day_du_L": 0.7,
+        "do_day_du_M": 0.8,
+        "ty_so_tong": 1.29,
+        "ty_so_424": 2.36
+      },
+      {
+        "do_day_du_L": 0.7,
+        "do_day_du_M": 0.7,
+        "ty_so_tong": 1.13,
+        "ty_so_424": 2.06
+      }
+    ]
+  },
+  "machine": {
+    "S2-15 (score)": {
+      "lunokhod1": {
+        "tp": 9,
+        "fn": 64,
+        "fp": 2,
+        "density": 0.059546493902439025
+      },
+      "marefrig": {
+        "tp": 0,
+        "fn": 43,
+        "fp": 1,
+        "density": 0.008131879570116319
+      }
+    },
+    "radius_balanced": {
+      "lunokhod1": {
+        "tp": 17,
+        "fn": 56,
+        "fp": 29,
+        "density": 0.249012610864745
+      },
+      "marefrig": {
+        "tp": 0,
+        "fn": 43,
+        "fp": 27,
+        "density": 0.21956074839314058
+      }
+    }
+  },
+  "regions": {
+    "lunokhod1": {
+      "product_id": "NAC_ROI_LUNOKOD1LOA_E381N3246_20M",
+      "scale_m_per_px": 20.0,
+      "d_range_m": [
+        300.0,
+        2000.0
+      ],
+      "crops": [
+        "moon_lunokhod1_loc_c01",
+        "moon_lunokhod1_loc_c02"
+      ],
+      "area_px": 461824,
+      "area_km2": 184.7296,
+      "n": 73,
+      "merged_across_crops": 0,
+      "density_per_km2": 0.3951721868070953,
+      "density_ci95_per_km2": [
+        0.309751912646913,
+        0.49686969593926217
+      ],
+      "name": "Lunokhod 1 (Mare Imbrium)"
+    },
+    "marefrig": {
+      "product_id": "NAC_ROI_MAREFRIGLOA_E598N0261_20M",
+      "scale_m_per_px": 20.0,
+      "d_range_m": [
+        300.0,
+        2000.0
+      ],
+      "crops": [
+        "moon_marefrig_loc_c02",
+        "moon_marefrig_loc_c03"
+      ],
+      "area_px": 307432,
+      "area_km2": 122.9728,
+      "n": 43,
+      "merged_across_crops": 0,
+      "density_per_km2": 0.3496708215150017,
+      "density_ci95_per_km2": [
+        0.25305850734444674,
+        0.47100430184873104
+      ],
+      "name": "Mare Frigoris"
+    }
+  },
+  "size_frequency": {
+    "lunokhod1": {
+      "edges_m": [
+        300.0,
+        424.26406871192853,
+        600.0000000000001,
+        848.5281374238573,
+        1200.0000000000005,
+        1697.0562748477148,
+        2000.0
+      ],
+      "counts": [
+        42,
+        18,
+        8,
+        3,
+        2,
+        0
+      ],
+      "cumulative": [
+        {
+          "d_m": 300.0,
+          "n": 73,
+          "per_km2": 0.3951721868070953,
+          "ci95": [
+            0.309751912646913,
+            0.49686969593926217
+          ]
+        },
+        {
+          "d_m": 424.26406871192853,
+          "n": 31,
+          "per_km2": 0.16781284645232816,
+          "ci95": [
+            0.11402068742173334,
+            0.23819694030219715
+          ]
+        },
+        {
+          "d_m": 600.0000000000001,
+          "n": 13,
+          "per_km2": 0.07037312915742794,
+          "ci95": [
+            0.03747072743623005,
+            0.12034019408995027
+          ]
+        },
+        {
+          "d_m": 848.5281374238573,
+          "n": 5,
+          "per_km2": 0.027066588137472283,
+          "ci95": [
+            0.008788447493625399,
+            0.06316438772845644
+          ]
+        },
+        {
+          "d_m": 1200.0000000000005,
+          "n": 2,
+          "per_km2": 0.010826635254988913,
+          "ci95": [
+            0.001311155757084759,
+            0.03910952910483192
+          ]
+        },
+        {
+          "d_m": 1697.0562748477148,
+          "n": 0,
+          "per_km2": 0.0,
+          "ci95": [
+            0.0,
+            0.019969076174657093
+          ]
+        }
+      ]
+    },
+    "marefrig": {
+      "edges_m": [
+        300.0,
+        424.26406871192853,
+        600.0000000000001,
+        848.5281374238573,
+        1200.0000000000005,
+        1697.0562748477148,
+        2000.0
+      ],
+      "counts": [
+        33,
+        6,
+        3,
+        1,
+        0,
+        0
+      ],
+      "cumulative": [
+        {
+          "d_m": 300.0,
+          "n": 43,
+          "per_km2": 0.3496708215150017,
+          "ci95": [
+            0.25305850734444674,
+            0.47100430184873104
+          ]
+        },
+        {
+          "d_m": 424.26406871192853,
+          "n": 10,
+          "per_km2": 0.08131879570116318,
+          "ci95": [
+            0.038995523368846055,
+            0.14954816058524956
+          ]
+        },
+        {
+          "d_m": 600.0000000000001,
+          "n": 4,
+          "per_km2": 0.032527518280465274,
+          "ci95": [
+            0.008862653965969086,
+            0.08328336571504998
+          ]
+        },
+        {
+          "d_m": 848.5281374238573,
+          "n": 1,
+          "per_km2": 0.008131879570116319,
+          "ci95": [
+            0.00020588136550757436,
+            0.04530793306274963
+          ]
+        },
+        {
+          "d_m": 1200.0000000000005,
+          "n": 0,
+          "per_km2": 0.0,
+          "ci95": [
+            0.0,
+            0.029997523469530944
+          ]
+        },
+        {
+          "d_m": 1697.0562748477148,
+          "n": 0,
+          "per_km2": 0.0,
+          "ci95": [
+            0.0,
+            0.029997523469530944
+          ]
+        }
+      ]
+    }
+  }
+}
