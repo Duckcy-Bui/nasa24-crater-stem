@@ -5,7 +5,7 @@ Mã: [src/statistics.py](../src/statistics.py), [scripts/s209_density.py](../scr
 
 **Tóm tắt.** Đếm đủ mọi hố có đường kính 300–2000 m trong vùng mặt biển của hai vùng cùng tỷ lệ 20 m/px.
 
-**Trạng thái cập nhật 03/11/2026: Hoàn thành trong hồ sơ repo.** Hoàng Quốc Anh trực tiếp xác nhận đã xem bản đếm và đồng ý cặp Lunokhod 1 – Mare Frigoris trong cuộc trò chuyện. [Minh chứng xác nhận](evidence/s2-09/quoc_anh_confirmation_20261103.json). Xác nhận trên PR #30 và trạng thái bảng giao việc chưa được cập nhật từ phiên này; [nội dung comment đã soạn](evidence/s2-09/PR30_XAC_NHAN_QUOC_ANH.md).
+**Trạng thái cập nhật 03/11/2026: Hoàn thành trong hồ sơ repo.** Hoàng Quốc Anh trực tiếp xác nhận đã xem bản đếm 47/32 hố và đồng ý cặp Lunokhod 1 – Mare Frigoris trong cuộc trò chuyện: “Tôi đã xem và xác nhận bản đếm/cặp vùng”. Xác nhận được ghi ngay trong tài liệu này; comment trên PR #30 và trạng thái bảng giao việc chưa được cập nhật từ phiên này.
 
 | Vùng | Diện tích | Số hố | Mật độ (hố/km²) | Khoảng tin cậy 95 % |
 |---|---|---|---|---|

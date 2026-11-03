@@ -100,7 +100,7 @@ Tương tự, 6/43 SHA trong `source_and_input_sha256` (`src/contracts.py`, `src
 
 ## 8. Ghi nhận xác nhận nghiệm thu (02/11/2026)
 
-Hoàng Quốc Anh, người phụ trách S3-05, báo trong cuộc trò chuyện Codex rằng **Nguyễn Mạnh Tiến đã xác nhận nghiệm thu S3-05** và yêu cầu cập nhật nhật ký/minh chứng. Đã ghi nhận tại [acceptance_20261102.json](evidence/s3-05/acceptance_20261102.json). Nguồn là lời báo lại của Quốc Anh; chưa có tin nhắn/link trực tiếp của Tiến được cung cấp. Ngày 02/11 là ngày ghi nhận, không suy thành ngày Tiến xác nhận.
+Hoàng Quốc Anh, người phụ trách S3-05, báo trong cuộc trò chuyện Codex rằng **Nguyễn Mạnh Tiến đã xác nhận nghiệm thu S3-05** và yêu cầu cập nhật nhật ký/minh chứng. Xác nhận được ghi ngay tại mục này. Nguồn là lời báo lại của Quốc Anh; chưa có tin nhắn/link trực tiếp của Tiến được cung cấp. Ngày 02/11 là ngày ghi nhận, không suy thành ngày Tiến xác nhận.
 
 Lượt review kỹ thuật cùng ngày: checker hợp đồng và 17 test đạt; 49/49 hash artifact, 43/43 hash nguồn/đầu vào khớp; tính lại độ đo của 30 nhánh khớp CSV/JSON và kiểm 11 PNG. Không chạy lại Hough trong lượt review này. Giữ giới hạn nhãn thưa, E1 không đánh giá được trên holdout và thời gian chỉ là chẩn đoán.
 
