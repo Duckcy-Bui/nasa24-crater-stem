@@ -5,8 +5,6 @@ Mã: [src/statistics.py](../src/statistics.py), [scripts/s209_density.py](../scr
 
 **Tóm tắt.** Đếm đủ mọi hố có đường kính 300–2000 m trong vùng mặt biển của hai vùng cùng tỷ lệ 20 m/px.
 
-**Trạng thái cập nhật 03/11/2026: Hoàn thành trong hồ sơ repo.** Hoàng Quốc Anh trực tiếp xác nhận đã xem bản đếm 47/32 hố và đồng ý cặp Lunokhod 1 – Mare Frigoris trong cuộc trò chuyện: “Tôi đã xem và xác nhận bản đếm/cặp vùng”. Xác nhận được ghi ngay trong tài liệu này; comment trên PR #30 và trạng thái bảng giao việc chưa được cập nhật từ phiên này.
-
 | Vùng | Diện tích | Số hố | Mật độ (hố/km²) | Khoảng tin cậy 95 % |
 |---|---|---|---|---|
 | Lunokhod 1 (Mare Imbrium) | 184,7 km² | 47 | 0,254 | 0,187–0,338 |
@@ -32,7 +30,7 @@ S2-09 dùng cặp **Lunokhod 1 và Mare Frigoris** (đã thống nhất với H�
 
 Như vậy so sánh có kiểm soát được ánh sáng ở mức thô. Lunokhod 2 bị loại vì mosaic có nhiều dải ghép, vùng bóng lớn và địa hình núi.
 
-> Cập nhật 03/11: Quốc Anh đã xác nhận đổi cặp; trưởng nhóm đã đồng ý tại mục 6 biên bản S2-16, Chương 4 hiện dùng Lunokhod 1 – Mare Frigoris. Cập nhật này không xác nhận thay Tiến hoặc các thành viên khác.
+> Cập nhật 03/11: Quốc Anh đã xác nhận đổi cặp; trưởng nhóm đã đồng ý tại mục 6 biên bản S2-16, Chương 4 hiện dùng Lunokhod 1 – Mare Frigoris. 
 
 ## 2. Phương pháp
 
@@ -145,9 +143,6 @@ Máy được chạy trên cùng vùng đếm và cùng dải D: Hough mặc đ�
 6. **Không quy đổi ra tuổi tuyệt đối.** Muốn suy ra tuổi (triệu năm) cần hàm sản xuất và hàm thời gian (chronology) được hiệu chuẩn bằng mẫu Apollo/Luna, cùng diện tích lớn hơn nhiều và dữ liệu đã hiệu chuẩn bức xạ. Ngoài phạm vi đề tài.
 7. **Đổi cặp vùng so với S1-06** (mục 1). Đã có xác nhận của Quốc Anh ngày 03/11 và đồng ý của trưởng nhóm ghi tại biên bản S2-16; điều kiện nắng chỉ tương đồng ở mức thô, không loại hết sai lệch chọn vùng.
 
-### 5.1. Tái kiểm hồ sơ ngày 03/11/2026
-
-Chạy lại phần đếm tay vào `outputs/quoc_anh_review_20261103/s209/`, không ghi đè minh chứng cũ. Bảng đếm và các mục vùng, phân bố kích thước, khoảng tin cậy, phép so trong JSON khớp hoàn toàn hồ sơ đã lưu. Kiểm riêng 80 vòng trong bốn file: 79 vòng hợp lệ; K16 ở Mare c03 có D = 280 m nên bị loại đúng. 12 test `test_statistics.py` đạt. Xác nhận xem ảnh là của Quốc Anh; kiểm tự động bằng Codex xác minh số liệu/quy tắc, không thay phép đếm thị giác độc lập hoặc chứng minh độ đầy đủ tuyệt đối.
 
 ## 6. Cách chạy
 

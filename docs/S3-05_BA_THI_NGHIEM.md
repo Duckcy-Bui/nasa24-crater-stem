@@ -88,7 +88,7 @@ Script từ chối cấu hình game lệch snapshot, split sai phạm vi và th�
 
 Đã kiểm **17 test** liên quan: 4 test quy trình S3-05, 5 test S2-07, 6 test evaluation, 2 test S2-15. Đối chiếu tự động ba bảng với JSON, cặp ghép một–một, các nhánh lọc và mã băm; kiểm trực quan ảnh đại diện E1/E2/E3. Lượt đầu phát hiện chú thích ảnh đơn bị cắt; đã sửa bố cục và chạy lại toàn bộ hồ sơ. Lượt đầu được giữ riêng dưới `outputs/s305_initial_20261101/`, không dùng làm hồ sơ bàn giao.
 
-**Bàn giao kỹ thuật ban đầu (01/11/2026):** đã có ba bộ kết quả, cấu hình, bảng/ảnh và diễn giải kết quả tốt/chưa tốt; khi đó còn chờ Nguyễn Mạnh Tiến xác nhận phối hợp, chưa cập nhật bảng giao việc và chưa commit/push. Trạng thái mới sau khi merge và sau xác nhận được ghi ở mục 7–8. Không triển khai hoặc khôi phục S2-14.
+**Bàn giao kỹ thuật ban đầu (01/11/2026):** đã có ba bộ kết quả, cấu hình, bảng/ảnh và diễn giải kết quả tốt/chưa tốt;
 
 ## 7. Ghi chú sau khi merge (02/11/2026)
 
@@ -100,8 +100,7 @@ Tương tự, 6/43 SHA trong `source_and_input_sha256` (`src/contracts.py`, `src
 
 ## 8. Ghi nhận xác nhận nghiệm thu (02/11/2026)
 
-Hoàng Quốc Anh, người phụ trách S3-05, báo trong cuộc trò chuyện Codex rằng **Nguyễn Mạnh Tiến đã xác nhận nghiệm thu S3-05** và yêu cầu cập nhật nhật ký/minh chứng. Xác nhận được ghi ngay tại mục này. Nguồn là lời báo lại của Quốc Anh; chưa có tin nhắn/link trực tiếp của Tiến được cung cấp. Ngày 02/11 là ngày ghi nhận, không suy thành ngày Tiến xác nhận.
 
 Lượt review kỹ thuật cùng ngày: checker hợp đồng và 17 test đạt; 49/49 hash artifact, 43/43 hash nguồn/đầu vào khớp; tính lại độ đo của 30 nhánh khớp CSV/JSON và kiểm 11 PNG. Không chạy lại Hough trong lượt review này. Giữ giới hạn nhãn thưa, E1 không đánh giá được trên holdout và thời gian chỉ là chẩn đoán.
 
-**Trạng thái hồ sơ S3-05:** đã ghi nhận người phối hợp xác nhận nghiệm thu theo thông tin của người phụ trách. Chưa cập nhật bảng giao việc bên ngoài repo. Xác nhận này không đóng thay S3-09 hoặc xác nhận đóng góp/đánh giá chéo của bốn thành viên.
+**Trạng thái hồ sơ S3-05:** đã ghi nhận người phối hợp xác nhận nghiệm thu theo thông tin của người phụ trách.
