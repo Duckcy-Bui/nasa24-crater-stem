@@ -54,7 +54,7 @@ Chế độ full mặc định tạo đủ năm CSV cho các bảng kết quả 
 | `frozen_tuning.csv`, `frozen_tuning/report.json` | TP/FN/Recall_known từng ảnh và tổng hợp 18 tuning S2-15 |
 | `evaluation_tuning/results.csv`, `evaluation_holdout/results.csv` | Bảng đánh giá S2-06/S3-02; JSON `summary.json` cung cấp cả số vòng, dùng cho Bảng 4.6–4.7 |
 | `E1.csv`, `E2.csv`, `E3.csv`, `experiments_*.json` | Đầu ra S2-07 cũ, giữ nguyên namespace và ý nghĩa; không tráo với S3-05 |
-| `density/` | Bảng đếm, máy so với tay, mật độ và hình histogram/tích lũy/vùng đếm S2-09 |
+| `density/` | Bảng đếm, máy so với tay, mật độ và hình histogram/tích lũy/vùng đếm từ bản đếm S3-03 (`data/s303_counts/`) |
 | `s305/` | S3-05 chạy mới: CSV/JSON/ảnh E1/E2/E3, cấu hình và report; chỉ quét tham số trên tuning, Mare chỉ mô tả nền |
 | `blind_filter/` | Bản sao đúng byte hai `docs/evidence/s2-02/<image_id>/report.json`, SHA nguồn và `filters.csv`; nhãn mù lịch sử, không phải đánh giá mới của người |
 | `chapter4_tables/` | Năm CSV dưới đây và `index.json`: số bảng, nguồn/SHA, cách làm tròn, nguồn lịch sử hay lượt mới |

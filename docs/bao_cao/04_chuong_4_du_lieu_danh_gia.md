@@ -159,20 +159,20 @@ Cân bằng bán kính chỉ gỡ một nguyên nhân bỏ sót: holdout tăng 4
 
 ## 4.8. So sánh mật độ hai vùng
 
-Chọn Lunokhod 1 (Mare Imbrium) và Mare Frigoris: cùng biển bazan, 20 m/px, nắng thấp (góc tới ảnh thành phần 60–79° và 61–84°), D = 300–2.000 m. Van de Graaff nắng cao 27–45° khó thấy hố nhỏ nên không dùng. Mare Frigoris chỉ lấy mặt biển, bỏ hố 6–8 km, bóng và dải ghép; vùng không chồng trên ảnh nguồn. Hưng đếm đủ hố trên bốn ô, Quốc Anh kiểm chéo; không dùng nhãn thưa. Bảng 4.8 và Hình 4.4 cho kết quả.
+Chọn Lunokhod 1 (Mare Imbrium) và Mare Frigoris: cùng biển bazan, 20 m/px, nắng thấp (góc tới ảnh thành phần 60–79° và 61–84°), D = 300–2.000 m. Van de Graaff nắng cao 27–45° khó thấy hố nhỏ nên không dùng. Hai vùng dùng **một quy tắc loại vùng chung**: chỉ bỏ phần trùng giữa hai ô, dải ghép, vùng bóng lớn, phần trong vành và sườn ngoài hố có D > 2 km; vùng không chồng trên ảnh nguồn. Số liệu lấy từ bản đếm lại [S3-03](../S3-03_KIEM_TRA_MAT_DO.md) trên bốn ô (bản đầu do Claude lập, Hưng duyệt, Quốc Anh kiểm chéo); bản S2-09 trước đó (47 và 32 hố) sót nhiều hố, nhất là ở Lunokhod 1, và loại vùng không đồng nhất nên không dùng. Không dùng nhãn thưa. Bảng 4.8 và Hình 4.4 cho kết quả.
 
 | Vùng | Diện tích (km²) | N | ρ (hố/km²) | Khoảng tin cậy 95 % |
 |---|---:|---:|---:|---|
-| Lunokhod 1 | 184,7 | 47 | 0,254 | 0,187–0,338 |
-| Mare Frigoris | 99,2 | 32 | 0,322 | 0,221–0,455 |
+| Lunokhod 1 | 184,7 | 73 | 0,395 | 0,310–0,497 |
+| Mare Frigoris | 123,0 | 43 | 0,350 | 0,253–0,471 |
 
 : Bảng 4.8. Mật độ đếm tay đầy đủ, cùng 20 m/px, D = 300–2.000 m.
 
-Theo khoảng lớp kích thước (bin) 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, Lunokhod 1 có 22;15;7;1;2 hố, Mare Frigoris có 26;4;2;0;0. Tỷ số tổng mật độ 0,79, p = 0,35: **chưa khác biệt có ý nghĩa**, không kết luận vùng nào già hơn. Từ 424 m trở lên, tỷ số 2,24 và p = 0,09 chỉ là gợi ý yếu; hai đường tích lũy cắt nhau.
+Theo khoảng lớp kích thước (bin) 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, Lunokhod 1 có 42;18;8;3;2 hố, Mare Frigoris có 33;6;3;1;0. Tỷ số tổng mật độ 1,13, p = 0,57: **chưa khác biệt có ý nghĩa**, không kết luận vùng nào già hơn; các kịch bản độ nhạy của S3-03 đều cho p ≥ 0,05. Từ 424 m trở lên, tỷ số 2,06 và p = 0,054 chỉ là phân tích thăm dò (hiệu chỉnh cho 4 ngưỡng: p = 0,22). Đường tích lũy của Lunokhod 1 cao hơn ở mọi ngưỡng đã xét; riêng lớp nhỏ nhất, Mare Frigoris hơi cao hơn (0,268 so với 0,227 hố/km²) nhưng không có ý nghĩa.
 
-![Hình 4.4. Tần suất tích lũy N(≥D)/km²; trục D theo mét, dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s2-09/tich_luy.png){width=65%}
+![Hình 4.4. Tần suất tích lũy N(≥D)/km²; trục D theo mét, dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s3-03/mat_do/tich_luy.png){width=65%}
 
-Bất định lớn do ít hố, vùng được chọn tránh hố lớn không phải mẫu ngẫu nhiên, thiếu phương vị nắng và có thể có cụm hố thứ cấp; sai số r đếm tay khoảng ±2 px. Máy (Hough mặc định, bỏ texture rồi lọc trùng) chỉ có 11/0 vòng trong cùng dải/vùng vì chỉ trả r ≤13 px. Mật độ ứng viên chưa dùng được; ứng dụng hiện bảng đếm tay riêng và ẩn mật độ máy khi chạm trần.
+Bất định lớn do ít hố, vùng được chọn tránh hố lớn không phải mẫu ngẫu nhiên, thiếu phương vị nắng và có thể có cụm hố thứ cấp; sai số r đếm tay khoảng ±2 px. Máy (Hough mặc định, bỏ texture rồi lọc trùng) chỉ có 11/1 vòng trong cùng dải/vùng vì chỉ trả r ≤13 px. Mật độ ứng viên chưa dùng được; ứng dụng hiện bảng đếm tay riêng và ẩn mật độ máy khi chạm trần.
 
 ## 4.9. Kết quả ứng dụng minh họa
 

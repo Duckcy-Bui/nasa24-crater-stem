@@ -54,6 +54,7 @@ def identities():
         "data/s203_split",
         "data/reference_labels",
         "data/s209_counts",
+        "data/s303_counts",
     ):
         paths += [
             p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts
@@ -326,7 +327,8 @@ def main(argv=None):
                 + read(out / "experiments_holdout.json")["results"]
             }
             export_experiments(combined, out)
-        run("density", "s209_density.py", "--output", out / "density")
+        run("density", "s209_density.py", "--counts", ROOT / "data" / "s303_counts",
+            "--output", out / "density")
         frozen = read(out / "frozen_tuning/report.json")
         if frozen["status"] != "complete":
             raise ValueError("Incomplete frozen tuning results")

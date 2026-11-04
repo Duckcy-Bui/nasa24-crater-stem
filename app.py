@@ -288,8 +288,9 @@ def show_density_comparison(metadata: dict) -> None:
             "riêng kết quả này chưa đủ để kết luận tuổi bề mặt."
         )
     st.caption("Vùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. "
-               "Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; "
-               "phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.")
+               "Nguồn: docs/evidence/s3-03/mat_do/so_sanh.json; "
+               "vùng đếm: data/s303_counts/regions.json; phương pháp và giới hạn: "
+               "docs/S2-09_MAT_DO_HO.md, docs/S3-03_KIEM_TRA_MAT_DO.md.")
 
 
 def show_cards(image_id: str) -> None:

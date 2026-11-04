@@ -146,6 +146,8 @@ Giới hạn khác: 116 hố trên hai vùng nhỏ; ảnh browse 8 bit; không c
 3. Cập nhật báo cáo: **Bảng 4.8, Hình 4.4** (`04_chuong_4_du_lieu_danh_gia.md`), **Bảng 5.1 hàng M3** (`05_chuong_5_he_thong_ket_luan.md`) và mục 3.6 Chương 3.
 4. Chạy lượt tái tạo mới cho bảng S2-09 của S3-10.
 
+**Cập nhật 04/11/2026.** Trưởng nhóm chốt dùng bản đếm S3-03 sau khi Quốc Anh kiểm chéo. Bước 2–4 làm theo cách sau. `scripts/s209_density.py` nhận thêm `--counts`. Số liệu so sánh mới nằm ở [evidence/s3-03/mat_do/](evidence/s3-03/mat_do/). App, `scripts/check_s213_app.py` và các test đọc thư mục này cùng `data/s303_counts/regions.json`. Lệnh tái tạo S3-10 chạy bước mật độ với `--counts data/s303_counts`. Hồ sơ `evidence/s2-09/` và lượt S3-10 cũ được giữ nguyên làm lịch sử. Chương 3 mục 3.6 chỉ có phương pháp, không chứa số đếm, nên không đổi.
+
 ## 8. Cách chạy
 
 ```powershell
