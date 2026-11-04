@@ -29,7 +29,7 @@ class Counts(unittest.TestCase):
         for iid in CROPS:
             circles = read_json(COUNTS / f"{iid}_count.json")["circles"]
             for i, a in enumerate(circles):
-                for b in circles[i + 1 :]:
+                for b in circles[i + 1:]:
                     big, small = max(a["r"], b["r"]), min(a["r"], b["r"])
                     d = np.hypot(a["x"] - b["x"], a["y"] - b["y"])
                     self.assertFalse(
