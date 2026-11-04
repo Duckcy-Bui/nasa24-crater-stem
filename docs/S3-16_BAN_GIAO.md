@@ -50,7 +50,7 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | Yêu cầu và nguồn | Bằng chứng repo; xử lý đề xuất | Trạng thái |
 |---|---|---|
 | Python 3.10+, thuật toán cốt lõi tự cài NumPy; đối chiếu thư viện (Q, Hình thức) | [Hough](../src/hough.py), [tiền xử lý](../src/preprocessing.py), [S2-06/S3-02](S2-06_S3-02_KIEM_CHUNG.md), ví dụ số và OpenCV ở [S3-10](S3-10_TAI_TAO_KET_QUA.md) | **Đạt** phần cài đặt/đối chiếu, không suy ra độ chính xác toàn ảnh |
-| `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; đề xuất giảng viên chấp nhận bảng ánh xạ, hoặc mở lượt chuyển cấu trúc riêng. Không tạo thư mục rỗng để coi là đạt |
+| `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; Đức chốt ngày 04/11 không tạo `results/`, giữ `docs/evidence/` ([mục 2.6](#26-quyet-dinh-04-11)). Không tạo thư mục rỗng để coi là đạt |
 | Một lệnh tái tạo **toàn bộ bảng kết quả Chương 4**, seed cố định (Q, Mã nguồn) | [README, S3-10](../README.md) và [runner](../scripts/reproduce_s310.py) cố định seed 0; danh mục và đầu ra từng bảng ở dưới | **Đạt** nguồn/đầu ra cho Bảng 4.5–4.6; **chưa biết** mức bao phủ bản cuối khi chủ Chương 4 chốt bảng lịch sử 4.4 và kết quả E1–E3. Không dùng bảng mô tả/thiết kế để kết luận thiếu bảng kết quả |
 | PEP 8; mỗi hàm có docstring nêu vào/ra/công thức (Q, Mã nguồn) | Ví dụ `sha256`, `inventory` trong [script đóng gói](../scripts/package_s316.py) chưa có docstring; chưa có kết quả lint PEP 8 toàn repo | **Lệch** docstring; PEP 8 **chưa biết**. Đề xuất lượt audit riêng, không định dạng lại mã trong vòng này |
 | Commit trải đều 8 tuần từ tài khoản từng thành viên (Q, Mã nguồn) | Lịch sử main có commit từ 12/10 đến 02/11/2026; cả bốn thành viên có trong mục Contributors của repo. Mở đầu Q ghi BTL trong 3 tuần | **Đạt theo quyết định của Đức** ngày 02/11/2026: giữ lịch sử commit hiện tại theo thời lượng 3 tuần. Không tạo lại hoặc lùi ngày commit |
@@ -93,7 +93,19 @@ Chọn điểm hạ cánh, quản lý tiền đồn và bản tiếng Việt ngo
 
 Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**. Đức cần nhận thông báo chính thức về hệ thống/người nhận, ngày giờ/múi giờ và tên ZIP/PDF/slide/video. Các nội dung bảng phân công/chữ ký và đánh giá chéo đã có yêu cầu; nếu học phần dùng biểu mẫu riêng, xin đúng mẫu. Không dùng hạn sprint làm hạn chính thức. Người phụ trách báo cáo đối chiếu thêm cấu trúc phụ lục A/B/C, định dạng và chương theo Q; tài liệu này không sửa nguồn báo cáo.
 
-`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận.
+`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận. Cách xử lý `results/` và phạm vi Đề 24 đã chốt ở mục 2.6.
+
+<a id="26-quyet-dinh-04-11"></a>
+
+### 2.6. Quyết định của trưởng nhóm ngày 04/11/2026
+
+Đức chốt ba điểm sau. Đây là cách nhóm xử lý; không phải miễn trừ của giảng viên. Các dòng **Lệch** ở mục 2.3–2.4 giữ nguyên trạng thái.
+
+| Điểm | Quyết định | Hệ quả |
+|---|---|---|
+| Lệch Đề 24: thẻ hiện khi tìm thấy (4), Sao Hỏa CTX/HiRISE, Precision so danh mục, khảo sát ≥10 học sinh | **Giữ là hạn chế**, không làm thêm trước khi nộp | Báo cáo đã nêu đủ ở [Chương 5 mục 5.2](bao_cao/05_chuong_5_he_thong_ket_luan.md); slide và video trình bày đúng như vậy, không mô tả là đã đạt |
+| Vị trí kết quả (`results/`) | **Không tạo** `results/`; kết quả giữ ở `docs/evidence/` | Không đổi đường dẫn trong manifest/hash, test và báo cáo; bảng ánh xạ ở mục 2.3 |
+| Số đếm mật độ hai vùng | **Dùng bản đếm S3-03** ([PR #46](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/46)) thay bản S2-09, **sau khi** Quốc Anh kiểm chéo và tự xác nhận trên PR #46 | Cập nhật Bảng 4.8, Hình 4.4, câu chữ mục 4.8, Bảng 5.1 hàng M3 và dữ liệu so sánh của app; tái tạo lượt mới, giữ nguyên hồ sơ S3-10 lịch sử. Chưa có xác nhận thì giữ số S2-09 |
 
 ## 3. Sản phẩm và xác nhận thành viên
 
@@ -165,7 +177,7 @@ Cập nhật kiểm kỹ thuật 04/11/2026: [biên bản S3-14](S3-14_KIEM_TRA_
 ## 5. Kiểm tra cuối
 
 - [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người.
-- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên.
+- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên. Đề 24, `results/` và số mật độ đã chốt ở mục 2.6; nhóm bốn người còn chờ giảng viên.
 - [ ] Mã/config/bundle và báo cáo cùng SHA đã chốt; phần đánh giá bị ảnh hưởng bởi thay đổi đã kiểm lại.
 - [ ] PDF cuối 30–60 trang, mở được và được người phụ trách báo cáo kiểm chương/lề/định dạng; DOCX kèm theo; hết dấu chờ chưa giải quyết, các tác giả xác nhận bản sau rút gọn và bằng chứng từng người tham gia phân tích kết quả Chương 4.
 - [ ] Đủ slide 15–20, video 5–7 phút, bảng đánh giá chéo và bảng phân công có công việc/file mã/mục báo cáo/tỷ lệ/chữ ký thật; manifest không còn ô thiếu file, mọi nội dung đã được chủ phần kiểm.

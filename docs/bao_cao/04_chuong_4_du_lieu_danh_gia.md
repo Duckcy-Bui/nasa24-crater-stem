@@ -99,7 +99,7 @@ STT 13/9/17 có 9/11/10 nhãn; E1 chỉ so STT 13/9 đủ hướng nắng. Bản
 
 **(b) Tham số.** Bốn cấu hình đều 1/30; cả 12 lượt chạm trần 100, nhãn vẫn trong dải r. Theo mục 2.2, đổi ngưỡng/bước r chưa khắc phục chọn nhiều vòng nhỏ; cùng Recall_known chưa phải cùng vòng. Bước r = 2 quét ít bán kính hơn nhưng một lượt chưa đủ kết luận tốc độ hoặc đổi cấu hình đã chốt.
 
-**(c) Điều kiện khó.** Hai bộ lọc chỉ bỏ ứng viên, không phục hồi hố Hough bỏ sót (mục 2.2/2.4): STT 13/17 vẫn 0/9, 0/10. Mare chỉ mô tả 0/6, không chọn bộ lọc trên holdout. Giảm vòng ở Bảng 4.4 chưa chứng minh giảm FP hoặc phát hiện hố chồng. [CHỜ Quốc Anh duyệt bản ghép kết quả S3-05.]
+**(c) Điều kiện khó.** Hai bộ lọc chỉ bỏ ứng viên, không phục hồi hố Hough bỏ sót (mục 2.2/2.4): STT 13/17 vẫn 0/9, 0/10. Mare chỉ mô tả 0/6, không chọn bộ lọc trên holdout. Giảm vòng ở Bảng 4.4 chưa chứng minh giảm FP hoặc phát hiện hố chồng.
 
 **Tiền xử lý.** Hình 4.1 giữ cùng ảnh/thang STT 13: Canny có 25.203 pixel biên, B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh: 20.949–35.590. Ngưỡng thấp/cao 63,6/159,0 (STT 13), 46,3/115,8 (STT 17), thấp hơn khoảng 27 %. P90 co ngưỡng nhưng vẫn nhiều kết cấu; mép bóng mạnh hơn vành. Pixel bão hòa STT 17/13: 11,1 %/3,2 %; cân bằng lược đồ thích nghi giới hạn tương phản (contrast limited adaptive histogram equalization — CLAHE) không phục hồi được.
 

@@ -3,7 +3,7 @@
 Phụ trách: Đinh Quang Hưng · Phụ thuộc: S2-09, S2-03, S2-15
 Mã: [scripts/s303_kiem_tra.py](../scripts/s303_kiem_tra.py), [tests/test_s303.py](../tests/test_s303.py). Bản đếm: [data/s303_counts/](../data/s303_counts/). Minh chứng: [docs/evidence/s3-03/](evidence/s3-03/).
 
-> **Trạng thái:** bản đếm S3-03 do Claude lập, Đinh Quang Hưng duyệt ngày 03/11/2026, Hoàng Quốc Anh kiểm chéo trên các phiếu `docs/evidence/s3-03/phieu_kiem_cheo_*.png` (PR #46). Từ 04/11/2026, app, Chương 4–5 và lệnh tái tạo dùng số S3-03 (mục 7); hồ sơ S2-09 và lượt S3-10 cũ giữ làm lịch sử.
+> **Cập nhật 04/11/2026: Quốc Anh đã xác nhận kiểm chéo bản S3-03 mới.** Bản đếm do Claude lập, Đinh Quang Hưng duyệt ngày 03/11. Khi được hỏi rõ về bốn phiếu và số mới 73/43 hố, Quốc Anh trực tiếp trả lời trong cuộc trò chuyện: “Đã xem và đồng ý bản S3-03 mới”. Đã điền `reviewed_by`/`reviewed_on` ở bốn file `data/s303_counts/`, giữ nguyên vòng và vùng đếm. Đây là xác nhận riêng cho S3-03, không dùng thay bằng xác nhận S2-09 cũ 47/32 hố. Chưa đăng xác nhận lên PR #46 từ phiên này. Từ 04/11/2026, app, Chương 4–5 và lệnh tái tạo dùng số S3-03 (mục 7); hồ sơ S2-09 và lượt S3-10 cũ giữ làm lịch sử.
 
 **Tóm tắt.** Kiểm tra phát hiện bản đếm S2-09 không đầy đủ và quy tắc loại vùng không công bằng, nên đã đếm lại theo một quy tắc chung. Mật độ trong dải 300–2.000 m: Lunokhod 1 0,395 hố/km² và Mare Frigoris 0,350 hố/km². **Hai vùng không khác nhau có ý nghĩa** (tỉ số 1,13; p = 0,57). Ở D ≥ 424 m, Lunokhod 1 nhiều hơn khoảng 2 lần (p = 0,054), nhưng đây là ngưỡng thăm dò: sau hiệu chỉnh 4 ngưỡng p = 0,22. Vì vậy **không kết luận được vùng nào già hơn**.
 
@@ -141,7 +141,7 @@ Giới hạn khác: 116 hố trên hai vùng nhỏ; ảnh browse 8 bit; không c
 
 ## 7. Việc cần làm sau khi bản đếm được duyệt
 
-1. Điền `reviewed_by` (đã điền `counted_by`). Quốc Anh tự xác nhận trên PR này; PR #47 chỉ ghi xác nhận cho bản S2-09.
+1. **Đã điền `reviewed_by`/`reviewed_on` ngày 04/11 theo xác nhận trực tiếp của Quốc Anh** (đã điền `counted_by`). Còn đăng xác nhận này trên PR #46; PR #47 chỉ ghi xác nhận cho bản S2-09. Trạng thái nháp trong `kiem_tra.json` gốc phản ánh lúc tạo trước xác nhận, không phải trạng thái người kiểm hiện tại.
 2. Chuyển `data/s303_counts/` thành số chính thức, chạy lại `scripts/s209_density.py` và cập nhật `docs/evidence/s2-09/so_sanh.json` (app và `tests/test_integration_density.py` đọc file này).
 3. Cập nhật báo cáo: **Bảng 4.8, Hình 4.4** và ba câu trong mục 4.8 Chương 4 (mô tả vùng đếm; số hố theo bin, tỉ số 0,79, p = 0,35 và "cắt nhau"; máy "11/0 vòng") (`04_chuong_4_du_lieu_danh_gia.md`), **Bảng 5.1 hàng M3** (`05_chuong_5_he_thong_ket_luan.md`) và mục 3.6 Chương 3.
 4. Chạy lượt tái tạo mới cho bảng S2-09 của S3-10.

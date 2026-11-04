@@ -246,10 +246,6 @@ def package_commit(
     Kiểm hash/CRC và giữ nguồn snapshot; submission_ready vẫn False, không có công thức toán.
     """
     report_python = os.fspath(report_python)
-    # Resolve PATH before launching: Windows may prefer the parent Python executable.
-    # abspath below preserves venv symlinks, unlike Path.resolve().
-    if not os.path.dirname(report_python):
-        report_python = shutil.which(report_python) or report_python
     if os.path.dirname(report_python):
         report_python = os.path.abspath(report_python)
     else:
