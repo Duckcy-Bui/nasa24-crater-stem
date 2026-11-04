@@ -94,12 +94,12 @@ Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã
 
 Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Các file mới đã vào `main` qua PR #43.
 
-Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ main, bỏ hai dấu chờ duyệt theo yêu cầu của Quốc Anh và điền khai báo AI của Quốc Anh. Còn **9 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
+Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ main, bỏ hai dấu chờ duyệt theo yêu cầu của Quốc Anh và điền khai báo AI của Quốc Anh. Còn **8 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
 | Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
-| Chương 4 | 1 | Còn Tiến: tên CPU/RAM máy Windows 27/10 ở mục 4.1 |
+| Chương 4 | 0 | Tiến gửi ngày 04/11/2026: RAM 12 GB; CPU giữ đúng mã hồ sơ đo ghi (`Intel64 Family 6 Model 154 Stepping 4`), không suy ra tên thương mại |
 | Chương 5 | 0 | Đã xử lý dấu chờ duyệt kết luận S3-05 của Quốc Anh; Đức chốt toàn chương |
 | Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
 | Phụ lục D | 6 | Còn Tiến và Hưng; dòng Quốc Anh đã điền |
