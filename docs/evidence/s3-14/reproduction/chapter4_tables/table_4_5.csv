@@ -1,0 +1,9 @@
+image_id,filter,status,labeled_candidates,removed,rim_removed,rim_fraction_pct
+moon_ap16_m132732855l_c01,không lọc,evaluated,94,0,0,8.5
+moon_ap16_m132732855l_c01,bỏ texture,evaluated,94,48,0,17.4
+moon_ap16_m132732855l_c01,bỏ shadow_edge + texture,evaluated,94,61,1,21.2
+moon_ap16_m132732855l_c01,bỏ sáng–tối ngược,evaluated,94,23,2,8.5
+moon_ap16_m109134835l_c01,không lọc,evaluated,83,0,0,20.5
+moon_ap16_m109134835l_c01,bỏ texture,evaluated,83,35,0,35.4
+moon_ap16_m109134835l_c01,bỏ shadow_edge + texture,evaluated,83,35,0,35.4
+moon_ap16_m109134835l_c01,bỏ sáng–tối ngược,not_evaluable_no_sun,83,,,20.5

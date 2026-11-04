@@ -1,0 +1,6 @@
+5x5 scalar calculation, NumPy batches, peaks and gradient: PASS
+full_circle: 3 circles; 0.162584 s
+gradient: 1 circles; 0.088763 s
+opencv: 4 circles; 0.009833 s
+Saved: <repo>\outputs\s314_20261104\reproduction\synthetic\s112_20261104T022440744391Z
+Synthetic comparison only; no NASA accuracy or speed ranking.
