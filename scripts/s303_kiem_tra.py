@@ -21,7 +21,8 @@ import sys
 from pathlib import Path
 
 os.environ.setdefault("MPLBACKEND", "Agg")
-import numpy as np
+# Import dưới đây đặt sau cấu hình backend ở trên; giữ thứ tự (E402).
+import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -50,6 +51,11 @@ CORNER = [0, 0, 184, 244]  # góc trưởng nhóm thử ở review PR #30
 def load(
     folder: Path, processed: Path, exclude_extra: dict | None = None, regions: dict | None = None
 ) -> dict:
+    """Nạp bản đếm và vùng đếm của hai vùng.
+
+    Vào: thư mục bản đếm, thư mục ảnh, hình chữ nhật loại thêm theo ô, regions thay thế.
+    Ra: {vùng: [ô]} với metadata, crater_set, mặt nạ đếm và mặt nạ hợp lệ.
+    """
     R = regions or read_json(folder / "regions.json")
     out = {}
     for key, reg in R["regions"].items():
@@ -70,6 +76,11 @@ def load(
 
 
 def compare(crops: dict, d0: float, d1: float) -> dict:
+    """So hai vùng từ D = d0 tới d1.
+
+    Vào: các ô của hai vùng, d0, d1 (m).
+    Ra: số hố, diện tích, mật độ, tỉ số và p hai phía theo công thức (3.6).
+    """
     a, b = region_count(crops[LUNOKHOD], d0, d1), region_count(crops[MARE], d0, d1)
     c = compare_regions(a, b)
     return {
@@ -85,6 +96,10 @@ def compare(crops: dict, d0: float, d1: float) -> dict:
 
 
 def scenario(name: str, crops: dict, d1: float) -> dict:
+    """Một dòng bảng độ nhạy: tỉ số và p ở dải chính và từ 424 m.
+
+    Vào: tên kịch bản, các ô, d1 (m). Ra: dict ghi vào do_nhay.csv.
+    """
     tot, big = compare(crops, 300.0, d1), compare(crops, THRESHOLDS[1], d1)
     return {
         "kich_ban": name,
@@ -159,7 +174,7 @@ def checks(R: dict, crops: dict, regions: dict, sfd: dict) -> list[dict]:
         xa, xb = max(0, dx), min(512, 512 + dx)
         ya, yb = max(0, dy), min(512, 512 + dy)
         overlap = (
-            int((a[ya:yb, xa:xb] & b[ya - dy : yb - dy, xa - dx : xb - dx]).sum())
+            int((a[ya:yb, xa:xb] & b[ya - dy:yb - dy, xa - dx:xb - dx]).sum())
             if xb > xa and yb > ya
             else 0
         )
@@ -330,6 +345,10 @@ def impact(a: dict, b: dict) -> dict:
     n1, n2 = a["n_a"], a["n_b"]
 
     def need(k1: int, k2: int) -> dict:
+        """Số hố cần thêm vào mỗi vùng để p hai phía (3.6) nhỏ hơn 0,05.
+
+        Vào: số hố hai vùng. Ra: hai số; None nếu không đạt trong 400 hố.
+        """
         add_a = next(
             (x for x in range(0, 400) if binomial_two_sided_p(k1 + x, k1 + x + k2, frac) < 0.05),
             None,
@@ -355,6 +374,11 @@ def impact(a: dict, b: dict) -> dict:
 
 
 def figures(regions: dict, sfd: dict, old: dict, old_sfd: dict, R: dict, processed: Path) -> None:
+    """Vẽ tích lũy, histogram, vùng đếm và phiếu kiểm chéo vào docs/evidence/s3-03/.
+
+    Vào: kết quả vùng và phân bố của bản mới và bản S2-09, regions, thư mục ảnh.
+    Ra: không.
+    """
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle
 
@@ -462,6 +486,10 @@ def figures(regions: dict, sfd: dict, old: dict, old_sfd: dict, R: dict, process
 
 
 def write_csv(name: str, header: list, rows: list) -> None:
+    """Ghi một bảng CSV UTF-8 vào docs/evidence/s3-03/.
+
+    Vào: tên file, tiêu đề cột, các dòng. Ra: không.
+    """
     with (OUT / name).open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(header)
@@ -469,6 +497,10 @@ def write_csv(name: str, header: list, rows: list) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Chạy toàn bộ kiểm tra S3-03 và ghi bằng chứng.
+
+    Vào: tham số dòng lệnh (--processed-dir, --no-machine). Ra: mã thoát 0.
+    """
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))
     ap.add_argument("--no-machine", action="store_true")
