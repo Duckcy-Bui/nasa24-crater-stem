@@ -1,0 +1,3 @@
+region,area_km2,n,density_per_km2,ci95_low,ci95_high
+Lunokhod 1 (Mare Imbrium),184.7,47,0.254,0.187,0.338
+Mare Frigoris,99.2,32,0.322,0.221,0.455

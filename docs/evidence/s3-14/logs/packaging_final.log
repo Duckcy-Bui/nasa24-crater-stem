@@ -1,0 +1,20 @@
+test_archive_rejects_escape_and_symlink (test_package_s316.PackageTests.test_archive_rejects_escape_and_symlink) ... ok
+test_bare_report_python_is_found_on_path (test_package_s316.PackageTests.test_bare_report_python_is_found_on_path) ... ok
+test_bundle_hash_mismatch_stops_before_report_build (test_package_s316.PackageTests.test_bundle_hash_mismatch_stops_before_report_build) ... ok
+test_cli_passes_owner_deliverables_to_packager (test_package_s316.PackageTests.test_cli_passes_owner_deliverables_to_packager) ... ok
+test_commit_archive_supplies_both_source_and_report (test_package_s316.PackageTests.test_commit_archive_supplies_both_source_and_report) ... ok
+test_crc_failure_is_not_reported_as_success (test_package_s316.PackageTests.test_crc_failure_is_not_reported_as_success) ... ok
+test_draft_has_slots_and_records_missing_deliverables (test_package_s316.PackageTests.test_draft_has_slots_and_records_missing_deliverables) ... ok
+test_existing_output_is_preserved (test_package_s316.PackageTests.test_existing_output_is_preserved) ... ok
+test_failed_report_does_not_publish_zip (test_package_s316.PackageTests.test_failed_report_does_not_publish_zip) ... ok
+test_invalid_deliverable_does_not_publish_zip (test_package_s316.PackageTests.test_invalid_deliverable_does_not_publish_zip) ... ok
+test_manifest_detects_changed_or_extra_file (test_package_s316.PackageTests.test_manifest_detects_changed_or_extra_file) ... ok
+test_missing_pdf_even_after_exit_zero_does_not_publish_zip (test_package_s316.PackageTests.test_missing_pdf_even_after_exit_zero_does_not_publish_zip) ... ok
+test_partial_delivery_keeps_other_slots_missing (test_package_s316.PackageTests.test_partial_delivery_keeps_other_slots_missing) ... ok
+test_received_files_are_hashed_without_claiming_owner_approval (test_package_s316.PackageTests.test_received_files_are_hashed_without_claiming_owner_approval) ... ok
+test_relative_report_python_uses_caller_directory_and_keeps_venv (test_package_s316.PackageTests.test_relative_report_python_uses_caller_directory_and_keeps_venv) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 3.485s
+
+OK

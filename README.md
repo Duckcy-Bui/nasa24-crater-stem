@@ -77,6 +77,8 @@ Seed cố định 0 (`PYTHONHASHSEED`) trước khi khởi động từng Python
 
 S3-05 đã được ghép thành dự thảo Chương 4–5, chờ Quốc Anh duyệt; chạy lệnh không xác nhận thay chủ phần. Không tạo số liệu khảo sát hoặc chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên; mọi CSV bảng và bản sao nhãn mù mới nằm trong thư mục lượt chạy.
 
+Biên bản [S3-14 — kiểm chạy lại và đủ bộ sản phẩm](docs/S3-14_KIEM_TRA_BAN_GIAO.md) ngày 04/11/2026: 370 test Python, 6 bộ canvas, Chromium local và 5 bảng Chương 4 đạt; đã sửa lỗi chọn Python đóng gói Windows. Bộ nộp cuối còn chờ PDF/slide/video và xác nhận thành viên.
+
 ## Dữ liệu và cấu hình
 
 - `data/s106_bundle/`: 26 ảnh LROC browse thật, manifest/SHA-256. Installer từ chối dữ liệu khác bundle thay vì tự ghi đè. Xem [cách cài và nguồn](docs/S1-06_HUONG_DAN_DU_LIEU.md).
