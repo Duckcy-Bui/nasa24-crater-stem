@@ -6,7 +6,7 @@
 
 Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON (tệp dữ liệu văn bản có cấu trúc), phân biệt `source` của vòng máy, nhãn và người chơi.
 
-![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=100%}
+![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=90%}
 
 | Mã nguồn | Vai trò |
 |---|---|
@@ -61,7 +61,7 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 04 Trả out; chỉ đổi float32 ở đầu ra cuối của Gauss/Sobel.
 ```
 
-Đơn vị: ảnh chuẩn hóa không thứ nguyên trong [0, 1]; ngưỡng Canny tính trên |G|·255 cùng thang ảnh 8 bit; σ, h và lề tính bằng pixel ảnh 512. Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
+Ảnh chuẩn hóa [0, 1]; Canny tính trên |G|·255; mọi độ dài ở chương này tính bằng pixel ảnh 512. Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
 
 ## 3.3. Hough tròn bằng NumPy
 
@@ -92,7 +92,7 @@ Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,
 
 ## 3.4. Sáng–tối và phân lớp ứng viên
 
-`resolve_sun` chỉ cho chấm khi có nguồn/xác nhận hướng nắng, biết hướng Bắc, góc tới ≥30° và đã kiểm bằng mắt. Ngày 18/10, tám phiếu hướng nắng ghi `consistent`; phiếu do một người kiểm nên còn giới hạn. `filter_candidates` gắn nhãn, **không loại vòng**. Ngưỡng τ ở Bảng 2.1; khoảng cách và bán kính tính bằng pixel ảnh 512.
+`resolve_sun` chỉ cho chấm khi có nguồn/xác nhận hướng nắng, biết hướng Bắc, góc tới ≥30° và đã kiểm bằng mắt. Ngày 18/10, tám phiếu hướng nắng ghi `consistent`; phiếu do một người kiểm nên còn giới hạn. `filter_candidates` gắn nhãn, **không loại vòng**. Ngưỡng τ ở Bảng 2.1.
 
 **Thuật toán 3.4 — `score_one`.** Vào: ảnh I, V, vòng (c,r), vector nắng u, ngưỡng τ. Ra: hợp/ngược/không rõ/không chấm.
 
@@ -107,7 +107,7 @@ Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,
 08 Trả nhãn theo đồng thuận S và S_raw ở Bảng 2.1.
 ```
 
-**Thuật toán 3.5 — `review_candidates`, `apply_filter`.** Vào: các vòng, gray, |G|, θ, E, V và chính sách lọc. Ra: lớp ứng viên; vòng giữ/loại và lý do. Tìm vùng liền khối dùng OpenCV, luật sau đó tự viết và độc lập điểm sáng–tối. Ngưỡng bóng 0,06 là độ sáng chuẩn hóa sau B3; 1.500 px tương ứng 0,6 km² ở 20 m/px và 0,006 km² ở 2 m/px.
+**Thuật toán 3.5 — `review_candidates`, `apply_filter`.** Vào: các vòng, gray, |G|, θ, E, V và chính sách lọc. Ra: lớp ứng viên; vòng giữ/loại và lý do. Tìm vùng liền khối dùng OpenCV, luật sau đó tự viết và độc lập điểm sáng–tối. Ngưỡng bóng 0,06 là độ sáng chuẩn hóa sau B3; 1.500 px là 0,6 km² ở 20 m/px.
 
 ```text
 01 Tìm vùng bóng gray<0,06, diện tích ≥1.500 px bằng OpenCV.
@@ -120,11 +120,11 @@ Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,
 08   còn lại rim. apply_filter kiểm tên lớp/nhãn, lọc và ghi lý do.
 ```
 
-Chỉ 8/26 ảnh được chấm sáng–tối; 3 ảnh góc tới thấp và 15 ảnh ghép (mosaic) thiếu hướng nắng giữ `not_checked`. Trên ảnh đủ điều kiện có 17–31 vòng hợp, 18–27 ngược, 44–56 không rõ trong 100 vòng. Hough tăng cả hợp và ngược so với vòng ngẫu nhiên, nên điểm chưa tách được hố thật. Ở STT 13, chỉ M9 (+0,75) trong bốn vòng điểm cao là hố; bốn vòng thấp (−0,72 đến −0,79) là mép bóng/địa hình. Các số này được chạy lại ngày 04/11/2026 bằng mã cuối và cấu hình `configs/s215_frozen.json`, không đổi. Bộ kiểm thử có 26 bài sáng–tối và 10 bài phân lớp/lọc. Kết quả lọc ở mục 4.6; mặc định chưa bật vì mới có hai ảnh Apollo 16 gán nhãn ứng viên.
+Chỉ 8/26 ảnh được chấm sáng–tối; 3 ảnh góc tới thấp và 15 ảnh ghép (mosaic) thiếu hướng nắng giữ `not_checked`. Trên ảnh đủ điều kiện có 17–31 vòng hợp, 18–27 ngược, 44–56 không rõ trong 100 vòng. Hough tăng cả hợp và ngược so với vòng ngẫu nhiên, nên điểm chưa tách được hố thật. Ở STT 13, chỉ M9 (+0,75) trong bốn vòng điểm cao là hố; bốn vòng thấp (−0,72 đến −0,79) là mép bóng/địa hình. Kết quả lọc ở mục 4.6; mặc định chưa bật vì mới có hai ảnh Apollo 16 gán nhãn ứng viên.
 
 ## 3.5. Lọc vòng tròn trùng
 
-NMS còn bỏ lọt vòng nhỏ lồng trong vành thật hoặc hai vòng cùng cỡ cách tâm trên 4 px. `dedupe_circles` dùng khoảng cách tâm d, bán kính lớn R và nhỏ r, cùng tính bằng pixel ảnh 512; hai tỷ số không thứ nguyên:
+NMS còn bỏ lọt vòng nhỏ lồng trong vành thật hoặc hai vòng cùng cỡ cách tâm trên 4 px. `dedupe_circles` dùng khoảng cách tâm d, bán kính lớn R và nhỏ r; hai tỷ số không thứ nguyên:
 
 $$ d/R\le\text{0,75}\quad\text{và}\quad r/R\ge\text{0,5}. \qquad (3.1) $$
 
@@ -143,7 +143,7 @@ $$ d/R\le\text{0,75}\quad\text{và}\quad r/R\ge\text{0,5}. \qquad (3.1) $$
 
 **Ví dụ M32/M8.** STT 13: M32 tâm (52,372), r = 9, 39 phiếu; M8 tâm (49,372), r = 6, 28 phiếu. d = 3 nên d/R = 0,33 ≤0,75 và r/R = 0,67 ≥0,5. $S_9=72$, $S_6=48$ cho q(M32) = 0,542, q(M8) = 0,583. Cả hai đủ tin, M32 lớn hơn được giữ; M8 ghi `duplicate_of=M32`. Chỉ chọn q sẽ giữ nhầm mép bóng nhỏ. Cặp M19/M15 là dạng tương tự; M66/M67 trên STT 17 có r = 7, tâm cách 5 px.
 
-Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngưỡng biên: hố chạm mép, chồng mép, hố nhỏ trong hố lớn, cụm hố phải được giữ. Chạy lại ngày 04/11/2026 bằng mã cuối cho cùng kết quả: STT 13 giảm 100→96, gộp 2/2 cặp trùng thật; STT 17 giảm 100→97, gộp 1/1 cặp; không mất hố thật trong hai bộ này. Bốn vòng loại khác thuộc `texture/unclear`. Đây chỉ là kiểm trên 3 cặp thật, không chứng minh an toàn trên mọi ảnh.
+Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngưỡng biên: hố chạm mép, chồng mép, hố nhỏ trong hố lớn, cụm hố phải được giữ. STT 13 giảm 100→96, gộp 2/2 cặp trùng thật; STT 17 giảm 100→97, gộp 1/1 cặp; không mất hố thật trong hai bộ này. Bốn vòng loại khác thuộc `texture/unclear`. Đây chỉ là kiểm trên 3 cặp thật, không chứng minh an toàn trên mọi ảnh.
 
 ## 3.6. Đếm vùng và thống kê
 
@@ -171,11 +171,9 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 05 Cộng xác suất không lớn hơn xác suất N1 quan sát để có p hai phía.
 ```
 
-Khoảng n = 0 cho [0;3,689], n = 10 cho [4,795;18,39], khớp bảng tra; 12 bài kiểm thống kê còn kiểm gộp ô và từ chối khác thang/dải.
+Khoảng n = 0 cho [0;3,689], n = 10 cho [4,795;18,39], khớp bảng tra; 12 bài kiểm thống kê còn kiểm gộp ô và từ chối khác thang/dải. Bản đếm S3-03 qua 13/13 phép kiểm độc lập của `scripts/s303_kiem_tra.py` (thang, dải r, diện tích từ mặt nạ với 1 px = $4\cdot10^{-4}$ km², chồng pixel, tổng các lớp); ngưỡng 424 m chỉ là thăm dò, báo kèm p hiệu chỉnh (mục 4.8).
 
-**Kiểm tra số đếm và diện tích (S3-03).** `scripts/s303_kiem_tra.py` kiểm lại độc lập với `region_count`: hai vùng cùng 20 m/px; cùng D = 300–2.000 m, tức r = 7,5–50 px; một pixel bằng $4\cdot10^{-4}$ km²; diện tích tính lại từ mặt nạ là 461.824 px = 184,73 km² và 307.432 px = 122,97 km², không có pixel chồng giữa hai ô của một vùng; tổng các khoảng lớp bằng N và mọi D nằm trong dải. Cả 13 phép kiểm đạt, có 8 bài kiểm thử. Quy tắc loại vùng nay dùng chung cho hai vùng: chỉ bỏ phần trùng giữa hai ô, dải ghép, vùng bóng lớn và phần trong vành, sườn ngoài của hố có D > 2 km; không bỏ vùng chỉ vì có cụm hố. Ngưỡng 424 m là phân tích thăm dò trong bốn ngưỡng √2, nên báo cả p đã hiệu chỉnh Bonferroni.
-
-[CHỜ kiểm chéo bản đếm S3-03: bản đếm lại theo quy tắc chung (73 và 43 hố) thay Bảng 4.8, Hình 4.4 và Bảng 5.1 hàng M3; đoạn văn sẵn ở `docs/S3-07_BAN_GIAO.md`] `summarize` xuất số vòng, diện tích, mật độ, histogram, giới hạn cho game. Nếu số ứng viên **thô ≥ `max_circles`**, giao diện ẩn mật độ bằng “—” và cảnh báo không suy tuổi/so vùng; số vòng, diện tích, histogram còn hiện. Với ảnh Lunokhod 1/Mare Frigoris phù hợp metadata, app hiện riêng bảng **đếm tay**, độc lập lượt chơi; ảnh cùng nguồn ngoài ô đếm có lời giải thích. Kết quả và giới hạn ở mục 4.8.
+`summarize` xuất số vòng, diện tích, mật độ, histogram, giới hạn cho game. Nếu số ứng viên **thô ≥ `max_circles`**, giao diện ẩn mật độ bằng “—” và cảnh báo không suy tuổi/so vùng; số vòng, diện tích, histogram còn hiện. Với ảnh Lunokhod 1/Mare Frigoris phù hợp metadata, app hiện riêng bảng **đếm tay**, độc lập lượt chơi; ảnh cùng nguồn ngoài ô đếm có lời giải thích. Kết quả và giới hạn ở mục 4.8.
 
 ## 3.7. Trò chơi, ghép hố và thẻ khoa học
 
@@ -231,8 +229,6 @@ Bảng 3.4 đo mới ngày 01/11/2026 trên cùng 26 ảnh float32 [0,1], cùng 
 
 : Bảng 3.4. Sai số lớn nhất và bình phương trung bình trên đủ 26 ảnh.
 
-Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$. `scripts/verify_report_numerics.py` lưu từng ảnh, hash đầu vào/mã và môi trường tại `docs/evidence/s3-12/report_numerics.json`; cũng kiểm lại ví dụ 5×5. Hough và OpenCV không cùng biên/ngưỡng/NMS nên không so MSE trực tiếp giữa hai danh sách vòng; đối chiếu trên giả lập và ảnh thật ở Chương 4. Cảnh giả lập có nhiễu dùng giá trị khởi tạo bộ sinh số giả ngẫu nhiên (seed) cố định; Hough không lấy mẫu ngẫu nhiên. Các số đo phụ lượng tử CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo riêng.
-
-**Khó khăn và xử lý.** Đệm mép phải trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8. Thiếu hướng nắng hoặc phương sai thì không suy nhãn; hướng sai đảo dấu. Đếm đoạn phiếu và chỉ giữ một mặt phẳng giảm chi phí Hough, nhưng trần 100 thiên về vòng nhỏ. Phân lớp/lọc trùng chưa bật vì đã có ca mất cặp ghép đúng. Kho mã có 380 test Python và 6 bộ JavaScript; test xác nhận hành vi thiết kế, không thay đánh giá chất lượng. Lệnh kiểm và chạy lại ở Phụ lục A.
+Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$; `scripts/verify_report_numerics.py` lưu kết quả từng ảnh, hash và môi trường (`docs/evidence/s3-12/report_numerics.json`). Hough và OpenCV khác biên/ngưỡng/NMS nên không so MSE giữa hai danh sách vòng; đối chiếu ở Chương 4. Giả lập dùng giá trị khởi tạo bộ sinh số giả ngẫu nhiên (seed) cố định. Số đo phụ CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo. **Khó khăn và xử lý:** đệm mép trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8; trần 100 vòng của Hough thiên về vòng nhỏ. 380 test Python và 6 bộ JavaScript kiểm hành vi thiết kế, không thay đánh giá chất lượng (Phụ lục A).
 
 <!-- S3-12: 380 test Python và 6 bộ test JavaScript, đo ngày 04/11/2026 trên nhánh dùng số S3-03 (nền main b091f96 và PR #46); so với 370 thêm 2 test đóng gói trên Windows (PR #48) và 8 test S3-03 (PR #46). Trước đó 370 = 342 + 5 test trung bình ± SD, 16 test xuất bảng Chương 4, 7 test liên kết công khai. -->

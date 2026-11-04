@@ -37,6 +37,15 @@ Không sửa mục 3.1, 3.3, 3.7 (của Đức và Tiến). Mục 3.6 tăng kho�
 
 ## 3. Phần chờ kiểm chéo bản đếm S3-03
 
+> **Cập nhật 04/11/2026 (khi ghép PR #50):** mục này đã xong.
+> - Quốc Anh kiểm chéo và điền `reviewed_by` (PR #47).
+> - PR #52 chuyển mục 4.8, Bảng 5.1 hàng M3, app và lệnh tái tạo sang số S3-03. Dữ liệu so sánh nằm ở `docs/evidence/s3-03/mat_do/`; `docs/evidence/s2-09/` giữ làm lịch sử.
+> - Dấu chờ ở mục 3.6 Chương 3 đã bỏ.
+>
+> Để Chương 3 giữ 9 trang, các phần Hưng thêm được viết gọn lại. Giữ nguyên công thức lề B8, đơn vị, ngưỡng τ, ngưỡng bóng và câu kiểm S3-03. Bỏ các câu ghi ngày chạy lại; các câu này có ở mục 1. Mục 3.8 cũng gọn lại. Hình 3.1 thu còn 90 % bề rộng.
+>
+> Đoạn chuẩn bị sẵn ở mục 3.1–3.3 dưới đây được giữ làm lịch sử, không cần ghép nữa.
+
 Bốn file `data/s303_counts/*_count.json` còn `reviewed_by = null`. Theo review PR #30 và PR #46, **chưa thay số trong báo cáo hay app** trước khi Quốc Anh tự xác nhận trên PR. Khi có xác nhận, người ghép làm như sau:
 
 1. Điền `reviewed_by`, `reviewed_on` vào bốn file đếm; chuyển chúng thành số chính thức và chạy lại `scripts/s209_density.py` để cập nhật `docs/evidence/s2-09/so_sanh.json` (app và `tests/test_integration_density.py` đọc file này).
