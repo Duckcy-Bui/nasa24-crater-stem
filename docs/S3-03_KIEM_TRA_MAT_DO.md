@@ -3,7 +3,7 @@
 Phụ trách: Đinh Quang Hưng · Phụ thuộc: S2-09, S2-03, S2-15
 Mã: [scripts/s303_kiem_tra.py](../scripts/s303_kiem_tra.py), [tests/test_s303.py](../tests/test_s303.py). Bản đếm: [data/s303_counts/](../data/s303_counts/). Minh chứng: [docs/evidence/s3-03/](evidence/s3-03/).
 
-> **Trạng thái: chờ kiểm chéo.** Bản đếm S3-03 do Claude lập, Đinh Quang Hưng duyệt ngày 03/11/2026; chờ Hoàng Quốc Anh kiểm chéo trên các phiếu `docs/evidence/s3-03/phieu_kiem_cheo_*.png`. App, Chương 1, 3, 4, 5 và bằng chứng S3-10 vẫn dùng số S2-09 cho tới khi kiểm chéo xong.
+> **Trạng thái:** bản đếm S3-03 do Claude lập, Đinh Quang Hưng duyệt ngày 03/11/2026, Hoàng Quốc Anh kiểm chéo trên các phiếu `docs/evidence/s3-03/phieu_kiem_cheo_*.png` (PR #46). Từ 04/11/2026, app, Chương 4–5 và lệnh tái tạo dùng số S3-03 (mục 7); hồ sơ S2-09 và lượt S3-10 cũ giữ làm lịch sử.
 
 **Tóm tắt.** Kiểm tra phát hiện bản đếm S2-09 không đầy đủ và quy tắc loại vùng không công bằng, nên đã đếm lại theo một quy tắc chung. Mật độ trong dải 300–2.000 m: Lunokhod 1 0,395 hố/km² và Mare Frigoris 0,350 hố/km². **Hai vùng không khác nhau có ý nghĩa** (tỉ số 1,13; p = 0,57). Ở D ≥ 424 m, Lunokhod 1 nhiều hơn khoảng 2 lần (p = 0,054), nhưng đây là ngưỡng thăm dò: sau hiệu chỉnh 4 ngưỡng p = 0,22. Vì vậy **không kết luận được vùng nào già hơn**.
 

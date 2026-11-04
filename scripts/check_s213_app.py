@@ -111,7 +111,7 @@ def check_score_label(page, width, out, narrow=False):
 def main():
     """Chạy các assertions giao diện và ghi bằng chứng Chromium.
 
-    Vào: CLI url, out chưa tồn tại, layout-only; đọc bảng đếm tay S2-09 local.
+    Vào: CLI url, out chưa tồn tại, layout-only; đọc bảng đếm tay S3-03 local.
     Ra: None; có thể chấm/lưu trên server, ghi run_identity.json, PNG và browser_results.json.
     Kiểm bố cục, lời giới hạn, bảng đếm tay và kéo bán kính; mục 3.6/3.7, không assert toàn bộ
     CI/p.

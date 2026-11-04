@@ -168,7 +168,7 @@ Chọn Lunokhod 1 (Mare Imbrium) và Mare Frigoris: cùng biển bazan, 20 m/px,
 
 : Bảng 4.8. Mật độ đếm tay đầy đủ, cùng 20 m/px, D = 300–2.000 m.
 
-Theo khoảng lớp kích thước (bin) 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, Lunokhod 1 có 42;18;8;3;2 hố, Mare Frigoris có 33;6;3;1;0. Tỷ số tổng mật độ 1,13, p = 0,57: **chưa khác biệt có ý nghĩa**, không kết luận vùng nào già hơn; các kịch bản độ nhạy của S3-03 đều cho p ≥ 0,05. Từ 424 m trở lên, tỷ số 2,06 và p = 0,054 chỉ là phân tích thăm dò (hiệu chỉnh cho 4 ngưỡng: p = 0,22). Đường tích lũy của Lunokhod 1 cao hơn ở mọi ngưỡng đã xét; riêng lớp nhỏ nhất, Mare Frigoris hơi cao hơn (0,268 so với 0,227 hố/km²) nhưng không có ý nghĩa.
+Theo khoảng lớp kích thước (bin) 300–424; 424–600; 600–849; 849–1.200; 1.200–2.000 m, Lunokhod 1 có 42;18;8;3;2 hố, Mare Frigoris có 33;6;3;1;0. Tỷ số tổng mật độ 1,13, p = 0,57: **chưa khác biệt có ý nghĩa**, không kết luận vùng nào già hơn; các kịch bản độ nhạy của S3-03 ở dải chính đều cho p ≥ 0,05. Từ 424 m trở lên, tỷ số 2,06 và p = 0,054 chỉ là phân tích thăm dò (hiệu chỉnh cho 4 ngưỡng: p = 0,22). Đường tích lũy của Lunokhod 1 cao hơn ở mọi ngưỡng đã xét; riêng lớp nhỏ nhất, Mare Frigoris hơi cao hơn (0,268 so với 0,227 hố/km²) nhưng không có ý nghĩa.
 
 ![Hình 4.4. Tần suất tích lũy N(≥D)/km²; trục D theo mét, dải tô là khoảng tin cậy Poisson 95 %.](../evidence/s3-03/mat_do/tich_luy.png){width=65%}
 
