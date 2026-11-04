@@ -1,0 +1,18 @@
+.\.venv\Scripts\python.exe : [WARNING] Deprecated: --no-highlight. Use --syntax-highlighting=none instead.
+At line:2 char:1
++ .\.venv\Scripts\python.exe -X utf8 -B scripts/build_report.py --out o ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WARNING] Depre...g=none instead.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  00_mo_dau.md                               1171 chữ · 1 chỗ [CHỜ]
+  01_chuong_1_gioi_thieu.md                  1409 chữ
+  02_chuong_2_co_so_ly_thuyet.md             3149 chữ
+  03_chuong_3_phuong_phap_cai_dat.md         3568 chữ
+  04_chuong_4_du_lieu_danh_gia.md            3819 chữ · 2 chỗ [CHỜ]
+  05_chuong_5_he_thong_ket_luan.md            731 chữ · 1 chỗ [CHỜ]
+  06_tai_lieu_tham_khao.md                      5 chữ
+  07_phu_luc.md                               933 chữ · 10 chỗ [CHỜ]
+  Tổng                                      14785 chữ
+DOCX: <repo>\outputs\s314_20261104\report\BaoCao_Nhom2_NASA24.docx
+Không tìm thấy Python có module uno của LibreOffice (cài python3-uno, hoặc đặt REPORT_UNO_PYTHON); mở DOCX bằng Word, Ctrl+A rồi F9 cập nhật mục lục, sau đó lưu PDF.

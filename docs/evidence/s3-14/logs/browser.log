@@ -1,0 +1,15 @@
+PASS #9: nhãn xuống dòng đủ chữ trong cột thử hẹp 128px ở viewport 1440px
+PASS #9: nhãn đủ chữ ở 1440px
+PASS #9: nhãn đủ chữ ở 390px
+PASS #10: ẩn mật độ và chỉ một thông báo chạm giới hạn trên ảnh 20 m/px
+PASS #11: tên, số hố, diện tích, mật độ và câu kết luận trên moon_lunokhod1_loc_c01
+PASS #11: tên, số hố, diện tích, mật độ và câu kết luận trên moon_marefrig_loc_c02
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_ap15_hia_c01
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_ap16_m109134835l_c01
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_ap16_m132732855l_c01
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_lunokhod1_loc_c01
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_lunokhod2_loc_c02
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_marefrig_loc_c02
+PASS: số ứng viên, mật độ, một thông báo giới hạn và không exception trên moon_vandegraff_hia_c01
+PASS #8: kéo nút vành trái đổi bán kính, tâm giữ nguyên
+PASS: các assertion đã chạy, phạm vi ghi tại browser_results.json; mỗi ảnh mở trang mới

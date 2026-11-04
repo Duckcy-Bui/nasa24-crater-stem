@@ -1,0 +1,18 @@
+{
+  "block_mean_k2": {
+    "images": 26,
+    "max_abs": 5.960464477539063e-08,
+    "mse": 2.642502578365775e-16
+  },
+  "gaussian_sigma1.5": {
+    "images": 26,
+    "max_abs": 1.7881393432617188e-07,
+    "mse": 8.694177459055e-16
+  },
+  "sobel_xy": {
+    "images": 26,
+    "max_abs": 3.5762786865234375e-07,
+    "mse": 3.2759369901532696e-15
+  }
+}
+PASS: 78 comparisons on 26 images; tiny Hough matches manual matrices

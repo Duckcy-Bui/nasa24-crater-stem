@@ -1,0 +1,6 @@
+{
+  "original_git_blob_content_sha256": "625c9eceeab3610ef02b55ef755acccf800890389cfe7ba89c5d77c01f2065a8",
+  "candidate_sha256": "0d185696ed793ccb8e8d439817259862cfe81bd9924e61053774ad07e8186082",
+  "exit_code": 0,
+  "log": "packaging_fix_candidate.log"
+}

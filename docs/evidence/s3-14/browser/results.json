@@ -1,0 +1,516 @@
+{
+  "head": "a50c145ecdb2c521298ad1a4d44a794465ced956",
+  "url": "http://127.0.0.1:8621",
+  "source_root": "<repo>",
+  "started_at_utc": "2026-11-04T02:41:46.936502+00:00",
+  "source_status": "",
+  "source_sha256": {
+    "app.py": "1db902c7f112d6b5559cde5cce43d2ccad5b02b9e6dcea7710d31199487096fb",
+    "src/integration.py": "f0ad30ca803dcf90c0a15d7c320925ab79c29578b2a56501338389a63bb73556",
+    "src/statistics.py": "55c2822fd866427a9562b559085d3540fa69bb11421f8dce6d32771c45b95961",
+    "src/hough.py": "7311ecda03862e857fe53bc8e5f47cad9016576eb5942a640999dd6696d8c635",
+    "src/pipeline.py": "c4f483864a4637e52d066244123bc9fe31904f612f0d031a2e2ff62aea14dca8",
+    "src/crater_canvas/geometry.js": "088e5586a6ccaf82541204593859cccb800b6a702baf7f4ee5669e4af21c68eb",
+    "src/crater_canvas/canvas.js": "2f43c7d177af6d4acf7f1bb0021ecec2c2de7a6cbd6ba23e3ddd58e9aef526ea",
+    "src/crater_canvas/app.css": "b5cd8cd086e1fcc37ba05d2c7e2032a02c80dc00c1f99d3bdf2d3cb7804dd669",
+    "configs/default.json": "02c87af9f420412ee7e909f6927ea7ca675b4c2899c306bc2bde1aff9a703370",
+    "docs/evidence/s2-09/so_sanh.json": "1c3453eba997c6559eaf2e999ced264e8d2deeae1192323b7e0ea74fe882c6db",
+    "data/s209_counts/regions.json": "5feaa841e871533215919044376b9ee24fd9b228c27d428a4660606abc9ae38c",
+    "scripts/check_s213_app.py": "6c673dd528255ca404fb1da28abf9abd63f531b75748aee576f15b209f942fed",
+    "requirements-browser.txt": "07f1504a0e1398d25db8e9215c2591ea012ac68f20a4adc87b1f336f9fa14a73",
+    "requirements-test.txt": "9d39d634713db9f5de4c641e8944c14911a7036235a623b728663e938fccf0a3"
+  },
+  "server_source_verified": false,
+  "navigation": "reload before each image",
+  "scope": {
+    "score_label": "text bounds at 1440/390px and a synthetic 128px metric",
+    "manual_table": "names, counts, areas, densities and displayed conclusion",
+    "flow": "candidate count, hidden density, one cap message and no Streamlit exception",
+    "recorded_only": "flow table counts and page text; CI, ratio and p are not asserted",
+    "radius": "displayed centre and radius after dragging the left rim"
+  },
+  "score_label": [
+    {
+      "width": 1440,
+      "narrow_metric": true,
+      "text": "Điểm theo nhãn đã kiểm chéo",
+      "white_space": "normal",
+      "visible": true,
+      "lines": [
+        {
+          "x": 808.34375,
+          "y": 867.171875,
+          "width": 122.484375,
+          "height": 16
+        },
+        {
+          "x": 808.34375,
+          "y": 886.171875,
+          "width": 24.46875,
+          "height": 16
+        }
+      ],
+      "clips": [
+        {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1100
+        },
+        {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1100
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "narrow_metric": false,
+      "text": "Điểm theo nhãn đã kiểm chéo",
+      "white_space": "normal",
+      "visible": true,
+      "lines": [
+        {
+          "x": 808.34375,
+          "y": 869.671875,
+          "width": 149.328125,
+          "height": 16
+        }
+      ],
+      "clips": [
+        {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1100
+        },
+        {
+          "left": 0,
+          "right": 1440,
+          "top": 0,
+          "bottom": 1100
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "narrow_metric": false,
+      "text": "Điểm theo nhãn đã kiểm chéo",
+      "white_space": "normal",
+      "visible": true,
+      "lines": [
+        {
+          "x": 16,
+          "y": 541.96875,
+          "width": 149.328125,
+          "height": 16
+        }
+      ],
+      "clips": [
+        {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 1100
+        },
+        {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 1100
+        }
+      ]
+    }
+  ],
+  "density_cap": {
+    "image_id": "moon_ap15_hia_c01",
+    "scale_m_per_px": 20,
+    "warning": "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.",
+    "density": "—",
+    "captions": [
+      "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+      "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+      "Đã lưu lượt chấm lúc 09:42: outputs\\player_scores\\score_moon_ap15_hia_c01_20261104T024211_b8fe8af0",
+      "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+      "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+      "Nguồn: NASA — Apollo 15 Mission Details"
+    ],
+    "warnings": [
+      "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+    ],
+    "cap_claims": [
+      "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+    ]
+  },
+  "lunokhod1": {
+    "image_id": "moon_lunokhod1_loc_c01",
+    "table": "Vùng\n\n\t\n\nSố hố\n\n\t\n\nDiện tích (km²)\n\n\t\n\nMật độ (hố/km²)\n\n\t\n\nKhoảng tin cậy 95 %\n\n\n\n\nLunokhod 1 (Mare Imbrium)\n\n\t\n\n47\n\n\t\n\n184.7\n\n\t\n\n0.254\n\n\t\n\n0.187–0.338\n\n\n\n\nMare Frigoris\n\n\t\n\n32\n\n\t\n\n99.2\n\n\t\n\n0.322\n\n\t\n\n0.221–0.455"
+  },
+  "marefrig": {
+    "image_id": "moon_marefrig_loc_c02",
+    "table": "Vùng\n\n\t\n\nSố hố\n\n\t\n\nDiện tích (km²)\n\n\t\n\nMật độ (hố/km²)\n\n\t\n\nKhoảng tin cậy 95 %\n\n\n\n\nLunokhod 1 (Mare Imbrium)\n\n\t\n\n47\n\n\t\n\n184.7\n\n\t\n\n0.254\n\n\t\n\n0.187–0.338\n\n\n\n\nMare Frigoris\n\n\t\n\n32\n\n\t\n\n99.2\n\n\t\n\n0.322\n\n\t\n\n0.221–0.455"
+  },
+  "uncounted_crop": "PASS: c01 cùng nguồn, có lời giải thích không thuộc ô đếm",
+  "flow": [
+    {
+      "image_id": "moon_ap15_hia_c01",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "104.86 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 0,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:42: outputs\\player_scores\\score_moon_ap15_hia_c01_20261104T024226_ad766fd5",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Nguồn: NASA — Apollo 15 Mission Details"
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "26 options available.\n3 options available.\nKhoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (9)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 9\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:42: outputs\\player_scores\\score_moon_ap15_hia_c01_20261104T024226_ad766fd5\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n104.86 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n1131.37–1600\n1600–2262.74\n200–282.84\n2262.74–3200\n282.84–400\n3200–4000\n400–565.69\n565.69–800\n800–1131.37\nĐường kính (m)\n0\n100\n50\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nApollo 15 — vùng Hadley–Apennine\n\nẢnh thuộc vùng Hadley–Apennine, nơi Apollo 15 hạ cánh năm 1971. Mô-đun Falcon và xe tự hành không nằm trong crop 512×512 này, nên thẻ không đặt ghim vị trí.\n\nNguồn: NASA — Apollo 15 Mission Details"
+    },
+    {
+      "image_id": "moon_ap16_m109134835l_c01",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "1.05 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 0,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–125 px (đường kính 20–500 m), bước 1 px, 121 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:42: outputs\\player_scores\\score_moon_ap16_m109134835l_c01_20261104T024246_eb23b93c",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Nguồn: NASA — Apollo 16 Mission Details"
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (10)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 10\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–125 px (đường kính 20–500 m), bước 1 px, 121 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:42: outputs\\player_scores\\score_moon_ap16_m109134835l_c01_20261104T024246_eb23b93c\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n1.05 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n113.14–160\n160–226.27\n20–28.28\n226.27–320\n28.28–40\n320–452.55\n40–56.57\n452.55–500\n56.57–80\n80–113.14\nĐường kính (m)\n0\n100\n50\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nApollo 16 — vùng cao nguyên Descartes\n\nẢnh thuộc vùng cao nguyên Descartes, nơi Apollo 16 hạ cánh năm 1972 để khảo sát vật liệu cao nguyên. Vị trí mô-đun Orion/ALSEP ở ngoài crop 512×512 này, nên thẻ không đặt ghim vị trí.\n\nNguồn: NASA — Apollo 16 Mission Details"
+    },
+    {
+      "image_id": "moon_ap16_m132732855l_c01",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "1.05 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 0,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–125 px (đường kính 20–500 m), bước 1 px, 121 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_ap16_m132732855l_c01_20261104T024305_a5676529",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Nguồn: NASA — Apollo 16 Mission Details"
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (9)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 9\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–125 px (đường kính 20–500 m), bước 1 px, 121 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_ap16_m132732855l_c01_20261104T024305_a5676529\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n1.05 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n113.14–160\n160–226.27\n20–28.28\n226.27–320\n28.28–40\n320–452.55\n40–56.57\n452.55–500\n56.57–80\n80–113.14\nĐường kính (m)\n0\n100\n50\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nApollo 16 — vùng cao nguyên Descartes\n\nẢnh thuộc vùng cao nguyên Descartes, nơi Apollo 16 hạ cánh năm 1972 để khảo sát vật liệu cao nguyên. Vị trí mô-đun Orion/ALSEP ở ngoài crop 512×512 này, nên thẻ không đặt ghim vị trí.\n\nNguồn: NASA — Apollo 16 Mission Details"
+    },
+    {
+      "image_id": "moon_lunokhod1_loc_c01",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "104.86 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 1,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_lunokhod1_loc_c01_20261104T024321_652b4539",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Vùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.",
+        "Nguồn: LROC — Lunokhod 1 Revisited"
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (10)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 10\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_lunokhod1_loc_c01_20261104T024321_652b4539\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n104.86 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n1131.37–1600\n1600–2262.74\n200–282.84\n2262.74–3200\n282.84–400\n3200–4000\n400–565.69\n565.69–800\n800–1131.37\nĐường kính (m)\n0\n100\n50\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nSo sánh mật độ hai vùng · đếm tay\n\nĐếm tay đủ hố trong dải D = 300–2000 m trên các phần vùng đếm đã chọn; không phải kết quả máy hay riêng ảnh đang mở.\n\nVùng\n\n\t\n\nSố hố\n\n\t\n\nDiện tích (km²)\n\n\t\n\nMật độ (hố/km²)\n\n\t\n\nKhoảng tin cậy 95 %\n\n\n\n\nLunokhod 1 (Mare Imbrium)\n\n\t\n\n47\n\n\t\n\n184.7\n\n\t\n\n0.254\n\n\t\n\n0.187–0.338\n\n\n\n\nMare Frigoris\n\n\t\n\n32\n\n\t\n\n99.2\n\n\t\n\n0.322\n\n\t\n\n0.221–0.455\n\nTỷ lệ mật độ Lunokhod 1 / Mare Frigoris: 0.79 · p-value hai phía: 0.35.\n\nChưa có khác biệt có ý nghĩa thống kê về tổng mật độ. Không kết luận được vùng nào cổ hơn.\n\nVùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nLunokhod 1 — vùng Mare Imbrium\n\nẢnh thuộc mosaic vùng Lunokhod 1 ở Mare Imbrium. LROC đã xác định lại vị trí rover, nhưng rover không nằm trong crop 512×512 này, nên thẻ không đặt ghim vị trí.\n\nNguồn: LROC — Lunokhod 1 Revisited"
+    },
+    {
+      "image_id": "moon_lunokhod2_loc_c02",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "104.86 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 0,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_lunokhod2_loc_c02_20261104T024337_79341276",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Nguồn: NASA/NSSDC — Table of Anthropogenic Impacts and Spacecraft on the Moon"
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (9)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 9\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_lunokhod2_loc_c02_20261104T024337_79341276\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n104.86 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n1131.37–1600\n1600–2262.74\n200–282.84\n2262.74–3200\n282.84–400\n3200–4000\n400–565.69\n565.69–800\n800–1131.37\nĐường kính (m)\n0\n100\n50\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nLunokhod 2 — vùng Le Monnier\n\nẢnh thuộc mosaic vùng Lunokhod 2 ở hố Le Monnier. Tọa độ rover đã được LRO xác minh, nhưng rover không nằm trong crop 512×512 này, nên thẻ không đặt ghim vị trí.\n\nNguồn: NASA/NSSDC — Table of Anthropogenic Impacts and Spacecraft on the Moon"
+    },
+    {
+      "image_id": "moon_marefrig_loc_c02",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "104.86 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 1,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_marefrig_loc_c02_20261104T024355_d6cdf73f",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Vùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.",
+        "Ảnh này chưa có thẻ khoa học."
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (7)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 7\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:43: outputs\\player_scores\\score_moon_marefrig_loc_c02_20261104T024355_d6cdf73f\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n104.86 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n1131.37–1600\n1600–2262.74\n200–282.84\n2262.74–3200\n282.84–400\n3200–4000\n400–565.69\n565.69–800\n800–1131.37\nĐường kính (m)\n0\n20\n40\n60\n80\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nSo sánh mật độ hai vùng · đếm tay\n\nĐếm tay đủ hố trong dải D = 300–2000 m trên các phần vùng đếm đã chọn; không phải kết quả máy hay riêng ảnh đang mở.\n\nVùng\n\n\t\n\nSố hố\n\n\t\n\nDiện tích (km²)\n\n\t\n\nMật độ (hố/km²)\n\n\t\n\nKhoảng tin cậy 95 %\n\n\n\n\nLunokhod 1 (Mare Imbrium)\n\n\t\n\n47\n\n\t\n\n184.7\n\n\t\n\n0.254\n\n\t\n\n0.187–0.338\n\n\n\n\nMare Frigoris\n\n\t\n\n32\n\n\t\n\n99.2\n\n\t\n\n0.322\n\n\t\n\n0.221–0.455\n\nTỷ lệ mật độ Lunokhod 1 / Mare Frigoris: 0.79 · p-value hai phía: 0.35.\n\nChưa có khác biệt có ý nghĩa thống kê về tổng mật độ. Không kết luận được vùng nào cổ hơn.\n\nVùng đếm nhỏ, được chọn trước; ánh sáng và cách nhận hố có thể ảnh hưởng số đếm. Nguồn: docs/evidence/s2-09/so_sanh.json; vùng đếm: data/s209_counts/regions.json; phương pháp và giới hạn: docs/S2-09_MAT_DO_HO.md.\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nẢnh này chưa có thẻ khoa học."
+    },
+    {
+      "image_id": "moon_vandegraff_hia_c01",
+      "metrics": [
+        {
+          "label": "Điểm theo nhãn đã kiểm chéo",
+          "value": "0/100"
+        },
+        {
+          "label": "Trùng máy",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ bạn khoanh",
+          "value": "0"
+        },
+        {
+          "label": "Chỉ máy có",
+          "value": "100"
+        },
+        {
+          "label": "Số ứng viên",
+          "value": "100"
+        },
+        {
+          "label": "Diện tích hợp lệ",
+          "value": "104.86 km²"
+        },
+        {
+          "label": "Mật độ",
+          "value": "—"
+        }
+      ],
+      "manual_tables": 0,
+      "captions": [
+        "Nhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.",
+        "Máy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.",
+        "Đã lưu lượt chấm lúc 09:44: outputs\\player_scores\\score_moon_vandegraff_hia_c01_20261104T024419_ddd26268",
+        "Phân bố đường kính (m), số ứng viên mỗi khoảng",
+        "Đếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).",
+        "Ảnh này chưa có thẻ khoa học."
+      ],
+      "warnings": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "cap_claims": [
+        "Máy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng."
+      ],
+      "page_text": "Khoanh hố Mặt Trăng\n\nNASA 24 · Nhóm 2 · Mở ảnh, khoanh hố và lưu câu trả lời\n\nChọn ảnh để mở\n\nChấm bài\n\nMáy tìm hố bằng Hough NumPy rồi so với các vòng bạn đã khoanh. Điểm chỉ có khi ảnh có nhãn đã được kiểm chéo.\n\nChấm bài\n\nVòng của bạn (0)\nỨng viên máy (100)\nNhãn tham chiếu (10)\n\nĐiểm theo nhãn đã kiểm chéo\n\n0/100\n\nTìm đúng 0 hố · bỏ sót 10\n\nNhãn thưa: điểm = tỉ lệ hố đã gán nhãn được tìm thấy; vòng ngoài nhãn không bị tính là khoanh sai.\n\nSo với máy · chỉ để tham khảo, máy không phải đáp án\n\nTrùng máy\n\n0\n\nChỉ bạn khoanh\n\n0\n\nChỉ máy có\n\n100\n\nMáy tìm bán kính 5–100 px (đường kính 200–4000 m), bước 1 px, 96 bán kính. Hố ngoài dải này máy không tìm. Vòng trùng khi tâm lệch ≤ 0.5 × bán kính.\n\nĐã lưu lượt chấm lúc 09:44: outputs\\player_scores\\score_moon_vandegraff_hia_c01_20261104T024419_ddd26268\n\nTải kết quả chấm (JSON)\n\nThống kê hố trên ảnh\n\nĐếm, kích thước và mật độ của ứng viên máy trong vùng ảnh hợp lệ. Đây là ứng viên chưa kiểm chứng, không phải số hố thật.\n\nMáy đã chạm giới hạn max_circles = 100 ứng viên thô. Mật độ bị chặn bởi giới hạn ứng viên; không dùng để so tuổi hay so vùng. Hãy mở ảnh Lunokhod 1 hoặc Mare Frigoris để xem so sánh đếm tay hai vùng.\n\nSố ứng viên\n\n100\n\nDiện tích hợp lệ\n\n104.86 km²\n\nMật độ\n\n—\n\nPhân bố đường kính (m), số ứng viên mỗi khoảng\n\n1131.37–1600\n1600–2262.74\n200–282.84\n2262.74–3200\n282.84–400\n3200–4000\n400–565.69\n565.69–800\n800–1131.37\nĐường kính (m)\n0\n20\n40\n60\n80\nSố ứng viên\n\nĐếm ứng viên máy chưa kiểm chứng trên một ô, không phải số hố thật; mật độ chỉ so được giữa các ảnh cùng tỷ lệ và cùng dải đường kính (xem docs/S2-09_MAT_DO_HO.md).\n\nThẻ khoa học\n\nKiến thức gắn với đúng địa điểm của ảnh, mỗi thẻ có nguồn đã kiểm tra.\n\nẢnh này chưa có thẻ khoa học."
+    }
+  ],
+  "outside_regions": "PASS: Apollo 15 không hiện bảng đếm tay",
+  "radius_drag": {
+    "centre": [
+      500,
+      200
+    ],
+    "before": 40,
+    "after_display": "50.99",
+    "expected": 50.99019513592785
+  },
+  "page_errors": [],
+  "status": "PASS",
+  "observed_url": "http://127.0.0.1:8621/"
+}

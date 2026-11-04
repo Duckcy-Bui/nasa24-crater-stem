@@ -172,6 +172,8 @@ Pin `94c17ff` còn đường dẫn máy trong log/manifest lịch sử. Trước
 
 Manifest schema `s316-package-2` ghi số dấu chờ, sản phẩm còn thiếu và các kiểm nội dung chưa làm. `status=complete` chỉ xác nhận tạo gói kỹ thuật; `submission_ready=false` luôn giữ để chờ Đức kiểm bộ nộp, không tự nghiệm thu dù đã nhận đủ file. Không đưa gói/thư mục dựng vào Git. Khi bàn giao thật: kiểm từng hash sau giải nén, mở PDF/slide/video/phiếu từ bản sao; kiểm demo desktop/mobile đúng phiên bản; ghi checksum ZIP, bản dự phòng và người nhận.
 
+Cập nhật kiểm kỹ thuật 04/11/2026: [biên bản S3-14](S3-14_KIEM_TRA_BAN_GIAO.md) và [bằng chứng](evidence/s3-14/README.md) có 370 test Python, 6 bộ canvas, Chromium local và full đủ Bảng 4.4–4.8. Lỗi chọn Python đóng gói Windows đã sửa. R14-03–R14-07 còn mở: PDF cuối, slide/video, xác nhận thành viên và đồng nhất phiên bản bộ nộp; giữ nguyên các ô chưa nghiệm thu.
+
 ## 5. Kiểm tra cuối
 
 - [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người.

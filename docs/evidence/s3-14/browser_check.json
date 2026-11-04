@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "server_pid": 10824,
+  "server_command_source": "app.py in current working tree",
+  "server_bound_to": "127.0.0.1:8621",
+  "log": "browser.log"
+}
