@@ -3,6 +3,8 @@
 Phụ trách: Đinh Quang Hưng · Phụ thuộc: S2-05 (lọc trùng), S2-03 (tập dữ liệu và nhãn)
 Mã: [src/statistics.py](../src/statistics.py), [scripts/s209_density.py](../scripts/s209_density.py). Số liệu: [data/s209_counts/](../data/s209_counts/). Minh chứng: [docs/evidence/s2-09/](evidence/s2-09/).
 
+> **Cập nhật 04/11/2026:** số liệu chính thức của báo cáo và app đã chuyển sang bản đếm lại [S3-03](S3-03_KIEM_TRA_MAT_DO.md). Tài liệu này giữ bản S2-09 làm lịch sử.
+
 **Tóm tắt.** Đếm đủ mọi hố có đường kính 300–2000 m trong vùng mặt biển của hai vùng cùng tỷ lệ 20 m/px.
 
 | Vùng | Diện tích | Số hố | Mật độ (hố/km²) | Khoảng tin cậy 95 % |

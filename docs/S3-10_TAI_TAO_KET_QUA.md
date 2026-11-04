@@ -10,7 +10,7 @@ Nhánh `s3-10-reproduction` bắt đầu từ `NMTien` tại `210e68d`, đã bao
 - `requirements-test.txt` đã cố định sáu phụ thuộc trực tiếp; giữ nguyên danh sách đã kiểm chứng. Báo cáo dùng phụ thuộc riêng `requirements-report.txt`.
 - `scripts/reproduce_s310.py` là lệnh tổng hợp. Mỗi lần chạy tạo thư mục mới, ghi `running/complete/failed`, lệnh và log từng bước, cấu hình, phiên bản thư viện, commit nền và SHA-256 byte mã/dữ liệu/đầu ra. Có kiểm tra mã/dữ liệu không thay đổi giữa lượt.
 - `s207_experiments.py` nhận cấu hình nền cho cả E1/E2/E3; cấu hình holdout được áp dụng cho baseline sáng–tối/ảnh khó và nhánh E2. Trước đây `--chosen-config` chỉ đi tới E2. E2 trên tuning vẫn đổi một tham số mỗi lần; không quét biến thể trên holdout.
-- `s209_density.py --output` cho phép ghi bảng/hình vào thư mục lượt chạy thay vì ghi đè bằng chứng S2-09.
+- `s209_density.py --output` cho phép ghi bảng/hình vào thư mục lượt chạy thay vì ghi đè bằng chứng S2-09. Từ 04/11/2026, lệnh tái tạo truyền thêm `--counts data/s303_counts` để bảng mật độ dùng bản đếm S3-03; các lượt S3-10 trước đó vẫn dùng bản S2-09.
 - Phụ lục C dùng cùng lệnh và mô tả đầu ra với README.
 
 ## Cách chạy và diễn giải

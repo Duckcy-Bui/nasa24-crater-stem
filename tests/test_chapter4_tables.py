@@ -37,7 +37,7 @@ class Chapter4TablesTests(unittest.TestCase):
             shutil.copyfile(ROOT / "docs/evidence/s3-05" / name,
                             self.run_dir / "s305" / name)
         (self.run_dir / "density").mkdir()
-        shutil.copyfile(ROOT / "docs/evidence/s2-09/so_sanh.json",
+        shutil.copyfile(ROOT / "docs/evidence/s3-03/mat_do/so_sanh.json",
                         self.run_dir / "density/so_sanh.json")
         tables.snapshot_blind_labels(ROOT, self.run_dir / "blind_filter")
 
@@ -177,8 +177,8 @@ class Chapter4TablesTests(unittest.TestCase):
         rows = self.export("table_4_8")
         self.assertEqual([(r["area_km2"], r["n"], r["density_per_km2"],
                            r["ci95_low"], r["ci95_high"]) for r in rows],
-                         [("184.7", "47", "0.254", "0.187", "0.338"),
-                          ("99.2", "32", "0.322", "0.221", "0.455")])
+                         [("184.7", "73", "0.395", "0.310", "0.497"),
+                          ("123.0", "43", "0.350", "0.253", "0.471")])
 
     def test_duplicate_and_holdout_filter_rows_are_rejected(self):
         path = self.run_dir / "s305/E3.csv"

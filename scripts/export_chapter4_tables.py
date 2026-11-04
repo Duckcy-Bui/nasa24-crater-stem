@@ -323,7 +323,8 @@ def density_rows(report):
     """Nhận report (dict mật độ JSON); trả hai dòng Bảng 4.8, không ghi file.
 
     Diện tích km² làm tròn một chữ số, mật độ/CI hố/km² ba chữ số từ
-    số chính xác; đếm tay, không phải Hough. Theo (2.24)–(2.25).
+    số chính xác, ghi dạng chuỗi giữ số 0 cuối (0.310, không phải 0.31) cho khớp
+    bảng báo cáo; đếm tay, không phải Hough. Theo (2.24)–(2.25).
     """
     rows = []
     for key in ("lunokhod1", "marefrig"):
@@ -332,11 +333,11 @@ def density_rows(report):
         rows.append(
             {
                 "region": region["name"],
-                "area_km2": round(region["area_km2"], 1),
+                "area_km2": f"{region['area_km2']:.1f}",
                 "n": region["n"],
-                "density_per_km2": round(region["density_per_km2"], 3),
-                "ci95_low": round(low, 3),
-                "ci95_high": round(high, 3),
+                "density_per_km2": f"{region['density_per_km2']:.3f}",
+                "ci95_low": f"{low:.3f}",
+                "ci95_high": f"{high:.3f}",
             }
         )
     return rows

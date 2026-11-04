@@ -13,8 +13,8 @@ from src import integration, statistics
 from src.contracts import read_json
 
 ROOT = Path(__file__).resolve().parents[1]
-EVIDENCE = read_json(ROOT / "docs/evidence/s2-09/so_sanh.json")
-REGIONS = read_json(ROOT / "data/s209_counts/regions.json")
+EVIDENCE = read_json(ROOT / "docs/evidence/s3-03/mat_do/so_sanh.json")
+REGIONS = read_json(ROOT / "data/s303_counts/regions.json")
 # Cài bộ ảnh từ bundle vào thư mục tạm như tests/test_integration.py; CI không có data/processed.
 _TMP = None
 DATA = None

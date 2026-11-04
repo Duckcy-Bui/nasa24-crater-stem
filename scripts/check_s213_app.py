@@ -36,8 +36,8 @@ def run_identity(url):
         "src/crater_canvas/canvas.js",
         "src/crater_canvas/app.css",
         "configs/default.json",
-        "docs/evidence/s2-09/so_sanh.json",
-        "data/s209_counts/regions.json",
+        "docs/evidence/s3-03/mat_do/so_sanh.json",
+        "data/s303_counts/regions.json",
         "scripts/check_s213_app.py",
         "requirements-browser.txt",
         "requirements-test.txt",
@@ -111,7 +111,7 @@ def check_score_label(page, width, out, narrow=False):
 def main():
     """Chạy các assertions giao diện và ghi bằng chứng Chromium.
 
-    Vào: CLI url, out chưa tồn tại, layout-only; đọc bảng đếm tay S2-09 local.
+    Vào: CLI url, out chưa tồn tại, layout-only; đọc bảng đếm tay S3-03 local.
     Ra: None; có thể chấm/lưu trên server, ghi run_identity.json, PNG và browser_results.json.
     Kiểm bố cục, lời giới hạn, bảng đếm tay và kéo bán kính; mục 3.6/3.7, không assert toàn bộ
     CI/p.
@@ -131,7 +131,8 @@ def main():
     )
     from playwright.sync_api import expect, sync_playwright
 
-    evidence = json.loads((ROOT / "docs/evidence/s2-09/so_sanh.json").read_text(encoding="utf-8"))
+    evidence_path = ROOT / "docs/evidence/s3-03/mat_do/so_sanh.json"
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
     results = {
         **identity,
         "navigation": "reload before each image",

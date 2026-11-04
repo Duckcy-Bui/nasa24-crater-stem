@@ -2,11 +2,14 @@
 
     python scripts/s209_density.py              # số liệu từ đếm tay + máy để đối chiếu
     python scripts/s209_density.py --no-machine # bỏ phần chạy Hough (nhanh)
+    python scripts/s209_density.py --counts data/s303_counts --output docs/evidence/s3-03/mat_do
 
-Đầu vào: data/s209_counts/regions.json (vùng đếm, dải D) và <image_id>_count.json
-(đếm tay đầy đủ trong vùng đếm, định dạng S1-05 source="catalogue").
-Ghi docs/evidence/s2-09/: bang_dem.csv, so_sanh.json, histogram.png, tich_luy.png,
-vung_dem.png, may_so_voi_tay.csv.
+Đầu vào: <counts>/regions.json (vùng đếm, dải D) và <image_id>_count.json
+(đếm tay đầy đủ trong vùng đếm, định dạng S1-05 source="catalogue"); mặc định
+--counts data/s209_counts (bản S2-09). Bản đếm chính thức từ 04/11/2026 là
+data/s303_counts (S3-03).
+Ghi vào --output (mặc định docs/evidence/s2-09/): bang_dem.csv, so_sanh.json,
+histogram.png, tich_luy.png, vung_dem.png, may_so_voi_tay.csv.
 """
 
 from __future__ import annotations
@@ -190,20 +193,22 @@ def figures(regions: dict, sfd: dict, R: dict, processed: Path) -> None:
 def main(argv: list[str] | None = None) -> int:
     """Đọc argv (list str hoặc None); tính thống kê vùng và trả 0 khi xong.
 
-    Đọc COUNTS và ảnh/mask; đặt OUT từ --output, ghi bang_dem.csv,
+    Đặt COUNTS từ --counts, OUT từ --output; đọc đếm tay và ảnh/mask, ghi bang_dem.csv,
     so_sanh.json và ba PNG, thêm may_so_voi_tay.csv trừ khi --no-machine.
     Có thể ghi đè đầu ra; diện tích/mật độ/CI/p theo (2.24)–(2.26), mục 3.6.
     """
     import cv2
 
     cv2.setNumThreads(1)
-    global OUT
+    global COUNTS, OUT
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--processed-dir", default=str(ROOT / "data" / "processed"))
+    ap.add_argument("--counts", type=Path, default=COUNTS,
+                    help="Thư mục đếm tay (regions.json và <image_id>_count.json)")
     ap.add_argument("--output", type=Path, default=OUT, help="Thư mục kết quả")
     ap.add_argument("--no-machine", action="store_true")
     args = ap.parse_args(argv)
-    OUT = args.output
+    COUNTS, OUT = args.counts, args.output
     processed = Path(args.processed_dir)
     R = read_json(COUNTS / "regions.json")
     d0, d1 = R["d_range_m"]

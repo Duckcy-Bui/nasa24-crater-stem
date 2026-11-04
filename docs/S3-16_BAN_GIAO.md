@@ -80,7 +80,7 @@ Kết quả S3-05 đã có trong repo qua PR #38, còn chờ chủ phần ghép 
 | Yêu cầu | Bằng chứng và giới hạn hiện tại | Trạng thái |
 |---|---|---|
 | (1) Tương phản/làm trơn, Hough tròn tự viết, kết hợp cặp sáng–tối theo nắng | `src/preprocessing.py`, `src/hough.py`, `src/postprocessing.py`; [hồ sơ sáng–tối](evidence/s1-11/). Game chỉ gắn nhãn sáng–tối; nhiều ảnh thiếu hướng nắng đo được nên không kiểm được | **Đạt** phần mã/luồng; chưa chứng minh hiệu quả kết hợp sáng–tối trên toàn bộ dữ liệu |
-| (2) Đếm, phân bố kích thước, so mật độ hai vùng để giải thích tuổi tương đối | [S2-09](evidence/s2-09/), `src/statistics.py`, bảng đếm tay Lunokhod 1/Mare Frigoris. Ứng viên game chạm trần thì ẩn mật độ; không đủ căn cứ kết luận vùng nào già hơn | **Lệch** phần diễn giải tuổi theo yêu cầu; không thay đếm tay thành kết quả máy hoặc suy tuổi tuyệt đối |
+| (2) Đếm, phân bố kích thước, so mật độ hai vùng để giải thích tuổi tương đối | [S3-03](S3-03_KIEM_TRA_MAT_DO.md) (bản đếm dùng từ 04/11; [S2-09](evidence/s2-09/) giữ làm lịch sử), `src/statistics.py`, bảng đếm tay Lunokhod 1/Mare Frigoris. Ứng viên game chạm trần thì ẩn mật độ; không đủ căn cứ kết luận vùng nào già hơn | **Lệch** phần diễn giải tuổi theo yêu cầu; không thay đếm tay thành kết quả máy hoặc suy tuổi tuyệt đối |
 | (3) Học sinh khoanh, hệ thống chấm và so máy/danh mục | [app.py](../app.py), [scoring.py](../src/scoring.py), [màn hình kết quả](S2-08_MAN_HINH_KET_QUA.md). Điểm dùng nhãn tham chiếu; giao máy chỉ là so sánh tham khảo | **Đạt** luồng kỹ thuật; chưa thử học sinh thật, nhãn/danh mục còn giới hạn dưới đây |
 | (4) Thẻ thiết bị NASA trong vùng ảnh, hiện khi học sinh tìm thấy | [S2-10](S2-10_THE_KHOA_HOC.md), [science_cards.py](../src/science_cards.py). Chỉ có thẻ vùng, `position: null`, thiết bị ngoài crop, không mở khóa khi tìm/nhấp vị trí; Lunokhod không phải thiết bị NASA | **Lệch** phần vị trí/kích hoạt; giữ rõ giới hạn, không tạo ghim giả |
 | Ảnh LRO, CTX/HiRISE Sao Hỏa, bãi Apollo/rover; danh mục hố công bố | [Chương 1 mục 1.3](bao_cao/01_chuong_1_gioi_thieu.md), [hướng dẫn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md): 26 crop LROC Mặt Trăng; không có CTX/HiRISE, thiết bị ngoài crop. Nhãn tay thưa không thay đối chiếu danh mục đầy đủ | **Lệch** phạm vi dữ liệu; Đức xác nhận với giảng viên cách trình bày phần chưa đạt |
@@ -109,7 +109,7 @@ Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**.
 
 ## 3. Sản phẩm và xác nhận thành viên
 
-Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s209_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dựng PDF/DOCX cùng nguồn; slide, video, đánh giá chéo và phân công có chữ ký nhận bằng các cờ riêng ở mục 4.
+Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s303_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dựng PDF/DOCX cùng nguồn; slide, video, đánh giá chéo và phân công có chữ ký nhận bằng các cờ riêng ở mục 4.
 
 Bảng này liệt kê việc cần từng người tự xác nhận, không ký thay. Cột cuối để trống cho bằng chứng xác nhận phiên bản cuối. [S2-16 mục 5](S2-16_NGHIEM_THU_TUAN_2.md) đã có “Đồng ý” lịch sử của Đức; không tự điền các ô còn lại.
 
