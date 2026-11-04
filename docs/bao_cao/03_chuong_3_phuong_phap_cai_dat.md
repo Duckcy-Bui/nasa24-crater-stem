@@ -1,4 +1,4 @@
-<!-- S3-12 r5: Đức chốt kiến trúc/game; Tiến chốt Hough/đối sánh; Hưng chốt tiền xử lý, hậu xử lý, thống kê. -->
+<!-- S3-12 r5: Đức chốt kiến trúc/game; Tiến chốt Hough/đối sánh; Hưng chốt tiền xử lý, hậu xử lý, thống kê. S3-07 (Hưng, 04/11/2026): đối chiếu 3.2, 3.4, 3.5, 3.6, 3.8 với mã cuối main 0e5b49f; chi tiết ở docs/S3-07_BAN_GIAO.md. -->
 
 # Chương 3. Thiết kế và cài đặt
 
@@ -6,7 +6,7 @@
 
 Hình 3.1 mô tả luồng từ ảnh tới kết quả. `run_end_to_end` và trò chơi cùng gọi lõi `detect_machine`, nên dùng cùng cấu hình sẽ có cùng ứng viên. Hai nhánh phân lớp/lọc trùng đã cài nhưng **chưa bật mặc định**. Các mô-đun ở Bảng 3.1 trao đổi mảng NumPy và JSON (tệp dữ liệu văn bản có cấu trúc), phân biệt `source` của vòng máy, nhãn và người chơi.
 
-![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=100%}
+![Hình 3.1. Sơ đồ hệ thống. Nét đứt là bước thử nghiệm chưa bật; điểm trò chơi lấy từ nhãn kiểm chéo.](../images/report/so_do_he_thong.png){width=90%}
 
 | Mã nguồn | Vai trò |
 |---|---|
@@ -33,7 +33,7 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 | B4 | CLAHE | OpenCV; ảnh 8 bit, clipLimit 2, lưới 8 × 8 |
 | B5–B6 | Gauss; Sobel, độ lớn/hướng gradient | Tự viết; σ = 1,5, kernel 11; Sobel không chia 8 |
 | B7 | Canny | OpenCV; ngưỡng tự tính P90 và tỷ lệ 0,4 |
-| B8 | Co mặt nạ, bỏ biên mép/nodata | Tự viết; lề $\ell=\max(6,\lceil3\sigma\rceil+1)$ |
+| B8 | Co mặt nạ, bỏ biên mép/nodata | Tự viết; lề $\ell=\max(6,\lfloor h/2\rfloor+1)$ = 6 px với h = 11 |
 
 : Bảng 3.2. Chuỗi tiền xử lý và phần tự cài đặt.
 
@@ -61,7 +61,7 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 04 Trả out; chỉ đổi float32 ở đầu ra cuối của Gauss/Sobel.
 ```
 
-Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
+Ảnh chuẩn hóa [0, 1]; Canny tính trên |G|·255; σ, h, lề, khoảng cách tâm và bán kính vòng tính bằng pixel ảnh 512. Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
 
 ## 3.3. Hough tròn bằng NumPy
 
@@ -92,7 +92,7 @@ Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,
 
 ## 3.4. Sáng–tối và phân lớp ứng viên
 
-`resolve_sun` chỉ cho chấm khi có nguồn/xác nhận hướng nắng, biết hướng Bắc, góc tới ≥30° và đã kiểm bằng mắt. Ngày 18/10, tám phiếu hướng nắng ghi `consistent`; phiếu do một người kiểm nên còn giới hạn. `filter_candidates` gắn nhãn, **không loại vòng**.
+`resolve_sun` chỉ cho chấm khi có nguồn/xác nhận hướng nắng, biết hướng Bắc, góc tới ≥30° và đã kiểm bằng mắt. Ngày 18/10, tám phiếu hướng nắng ghi `consistent`; phiếu do một người kiểm nên còn giới hạn. `filter_candidates` gắn nhãn, **không loại vòng**. Ngưỡng τ ở Bảng 2.1.
 
 **Thuật toán 3.4 — `score_one`.** Vào: ảnh I, V, vòng (c,r), vector nắng u, ngưỡng τ. Ra: hợp/ngược/không rõ/không chấm.
 
@@ -107,7 +107,7 @@ Cách `radius_balanced` chia $k_r=\lfloor\log_2(r/5)\rfloor$ thành [5,10), [10,
 08 Trả nhãn theo đồng thuận S và S_raw ở Bảng 2.1.
 ```
 
-**Thuật toán 3.5 — `review_candidates`, `apply_filter`.** Vào: các vòng, gray, |G|, θ, E, V và chính sách lọc. Ra: lớp ứng viên; vòng giữ/loại và lý do. Tìm vùng liền khối dùng OpenCV, luật sau đó tự viết và độc lập điểm sáng–tối.
+**Thuật toán 3.5 — `review_candidates`, `apply_filter`.** Vào: các vòng, gray, |G|, θ, E, V và chính sách lọc. Ra: lớp ứng viên; vòng giữ/loại và lý do. Tìm vùng liền khối dùng OpenCV, luật sau đó tự viết và độc lập điểm sáng–tối. Ngưỡng bóng 0,06 là độ sáng chuẩn hóa sau B3; 1.500 px là 0,6 km² ở 20 m/px.
 
 ```text
 01 Tìm vùng bóng gray<0,06, diện tích ≥1.500 px bằng OpenCV.
@@ -124,7 +124,7 @@ Chỉ 8/26 ảnh được chấm sáng–tối; 3 ảnh góc tới thấp và 15
 
 ## 3.5. Lọc vòng tròn trùng
 
-NMS còn bỏ lọt vòng nhỏ lồng trong vành thật hoặc hai vòng cùng cỡ cách tâm trên 4 px. `dedupe_circles` dùng khoảng cách tâm d, bán kính lớn R và nhỏ r:
+NMS còn bỏ lọt vòng nhỏ lồng trong vành thật hoặc hai vòng cùng cỡ cách tâm trên 4 px. `dedupe_circles` dùng khoảng cách tâm d, bán kính lớn R và nhỏ r; hai tỷ số không thứ nguyên:
 
 $$ d/R\le\text{0,75}\quad\text{và}\quad r/R\ge\text{0,5}. \qquad (3.1) $$
 
@@ -171,7 +171,9 @@ Tám bài `tests/test_dedupe.py` kiểm 10 ca, cả đổi thứ tự và ngư�
 05 Cộng xác suất không lớn hơn xác suất N1 quan sát để có p hai phía.
 ```
 
-Khoảng n = 0 cho [0;3,689], n = 10 cho [4,795;18,39], khớp bảng tra; 12 bài kiểm thống kê còn kiểm gộp ô và từ chối khác thang/dải. `summarize` xuất số vòng, diện tích, mật độ, histogram, giới hạn cho game. Nếu số ứng viên **thô ≥ `max_circles`**, giao diện ẩn mật độ bằng “—” và cảnh báo không suy tuổi/so vùng; số vòng, diện tích, histogram còn hiện. Với ảnh Lunokhod 1/Mare Frigoris phù hợp metadata, app hiện riêng bảng **đếm tay**, độc lập lượt chơi; ảnh cùng nguồn ngoài ô đếm có lời giải thích. Kết quả và giới hạn ở mục 4.8.
+Khoảng n = 0 cho [0;3,689], n = 10 cho [4,795;18,39], khớp bảng tra; 12 bài kiểm thống kê còn kiểm gộp ô và từ chối khác thang/dải. Bản đếm S3-03 qua 13/13 phép kiểm độc lập của `scripts/s303_kiem_tra.py` (thang, dải r, diện tích từ mặt nạ với 1 px = $4\cdot10^{-4}$ km², chồng pixel, tổng các lớp); ngưỡng 424 m chỉ là thăm dò, báo kèm p hiệu chỉnh (mục 4.8).
+
+`summarize` xuất số vòng, diện tích, mật độ, histogram, giới hạn cho game. Nếu số ứng viên **thô ≥ `max_circles`**, giao diện ẩn mật độ bằng “—” và cảnh báo không suy tuổi/so vùng; số vòng, diện tích, histogram còn hiện. Với ảnh Lunokhod 1/Mare Frigoris phù hợp metadata, app hiện riêng bảng **đếm tay**, độc lập lượt chơi; ảnh cùng nguồn ngoài ô đếm có lời giải thích. Kết quả và giới hạn ở mục 4.8.
 
 ## 3.7. Trò chơi, ghép hố và thẻ khoa học
 
@@ -227,8 +229,6 @@ Bảng 3.4 đo mới ngày 01/11/2026 trên cùng 26 ảnh float32 [0,1], cùng 
 
 : Bảng 3.4. Sai số lớn nhất và bình phương trung bình trên đủ 26 ảnh.
 
-Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$. `scripts/verify_report_numerics.py` lưu từng ảnh, hash đầu vào/mã và môi trường tại `docs/evidence/s3-12/report_numerics.json`; cũng kiểm lại ví dụ 5×5. Hough và OpenCV không cùng biên/ngưỡng/NMS nên không so MSE trực tiếp giữa hai danh sách vòng; đối chiếu trên giả lập và ảnh thật ở Chương 4. Cảnh giả lập có nhiễu dùng giá trị khởi tạo bộ sinh số giả ngẫu nhiên (seed) cố định; Hough không lấy mẫu ngẫu nhiên. Các số đo phụ lượng tử CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo riêng.
-
-**Khó khăn và xử lý.** Đệm mép phải trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8. Thiếu hướng nắng hoặc phương sai thì không suy nhãn; hướng sai đảo dấu. Đếm đoạn phiếu và chỉ giữ một mặt phẳng giảm chi phí Hough, nhưng trần 100 thiên về vòng nhỏ. Phân lớp/lọc trùng chưa bật vì đã có ca mất cặp ghép đúng. Kho mã có 380 test Python và 6 bộ JavaScript; test xác nhận hành vi thiết kế, không thay đánh giá chất lượng. Lệnh kiểm và chạy lại ở Phụ lục A.
+Sai khác do thứ tự cộng và làm tròn float32/float64, đều dưới ngưỡng kiểm $10^{-5}$; `scripts/verify_report_numerics.py` lưu kết quả từng ảnh, hash và môi trường (`docs/evidence/s3-12/report_numerics.json`). Hough và OpenCV khác biên/ngưỡng/NMS nên không so MSE giữa hai danh sách vòng; đối chiếu ở Chương 4. Giả lập dùng giá trị khởi tạo bộ sinh số giả ngẫu nhiên (seed) cố định. Số đo phụ CLAHE trong tài liệu bổ sung là lịch sử, chưa có script tái tạo. **Khó khăn và xử lý:** đệm mép trùng thư viện; tính số thực trước đạo hàm để tránh tràn uint8; trần 100 vòng của Hough thiên về vòng nhỏ. 380 test Python và 6 bộ JavaScript kiểm hành vi thiết kế, không thay đánh giá chất lượng (Phụ lục A).
 
 <!-- S3-12: 380 test Python và 6 bộ test JavaScript, đo ngày 04/11/2026 trên nhánh dùng số S3-03 (nền main b091f96 và PR #46); so với 370 thêm 2 test đóng gói trên Windows (PR #48) và 8 test S3-03 (PR #46). Trước đó 370 = 342 + 5 test trung bình ± SD, 16 test xuất bảng Chương 4, 7 test liên kết công khai. -->
