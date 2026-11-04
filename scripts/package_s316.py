@@ -248,6 +248,13 @@ def package_commit(
     report_python = os.fspath(report_python)
     if os.path.dirname(report_python):
         report_python = os.path.abspath(report_python)
+    else:
+        # Windows tìm tên lệnh đơn ở thư mục của Python đang chạy trước PATH,
+        # nên tự tra PATH để chạy đúng venv người gọi chỉ định (không resolve symlink).
+        found = shutil.which(report_python)
+        if found is None:
+            raise FileNotFoundError(f"Không tìm thấy report_python trên PATH: {report_python}")
+        report_python = os.path.abspath(found)
     repo, output = repo.resolve(), output.resolve()
     if output.exists():
         raise FileExistsError(f"Thư mục đầu ra đã tồn tại, không ghi đè: {output}")

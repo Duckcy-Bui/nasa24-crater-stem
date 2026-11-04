@@ -123,6 +123,24 @@ class PackageTests(unittest.TestCase):
                 result = self.build(root, report_python=executable.name, expected_prefix=directory)
             self.assertTrue((root / "output" / result["zip"]).is_file())
 
+    def test_bare_report_python_is_resolved_before_subprocess(self):
+        # Windows không tra PATH trước cho tên lệnh đơn; package_commit phải tự tra.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            directory, executable = self.make_report_python(root / "caller")
+            with patch.object(packager.shutil, "which", return_value=str(executable)) as which:
+                result = self.build(root, report_python="python-chi-co-qua-which",
+                                    expected_prefix=directory)
+            which.assert_called_once_with("python-chi-co-qua-which")
+            self.assertTrue((root / "output" / result["zip"]).is_file())
+
+    def test_missing_bare_report_python_fails_before_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with self.assertRaisesRegex(FileNotFoundError, "report_python"):
+                self.build(root, report_python="khong-co-python-nay-tren-path")
+            self.assertFalse((root / "output").exists())
+
     def test_commit_archive_supplies_both_source_and_report(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
