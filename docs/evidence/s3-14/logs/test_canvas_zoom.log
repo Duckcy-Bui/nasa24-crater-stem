@@ -1,0 +1,15 @@
+ok - actual DOM has accessible local zoom controls and a focusable canvas
+ok - wheel is non-passive, anchored under the cursor, bounded, and view-only
+ok - pinch to exact 4x and pan yield original-image draw, JSON and nonce save coordinates
+ok - tiny radius-3 ring is picked and moved at 8x with screen-space tolerance
+ok - zoom and pan do not enter undo history or change revision or persisted schema
+ok - ordinary Python ACK preserves the view while the event contract excludes view state
+ok - pan clamps to image bounds, fit returns full image, and image/session switch resets view
+ok - keyboard zoom is local; Space and middle-button pan are temporary without changing draw mode
+ok - two-finger movement pans and pointercancel rolls back an unfinished annotation
+ok - adding a second finger rolls back an unfinished circle edit before entering the view gesture
+ok - DPR backing store, label font, strokes and pixel smoothing use screen dimensions
+ok - rings are painted around pixel centres at fit and when zoomed
+ok - resize handle stays on the visible rim when the right edge is outside the image
+ok - resize handle tries bottom then top and handles corner intersections or an invisible rim
+Canvas zoom acceptance checks passed (14 scenarios)

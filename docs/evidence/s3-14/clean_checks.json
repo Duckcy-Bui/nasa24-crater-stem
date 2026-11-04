@@ -1,0 +1,12 @@
+[
+  {
+    "name": "clean_dataset",
+    "exit_code": 0,
+    "log": "clean_dataset.log"
+  },
+  {
+    "name": "clean_numerics",
+    "exit_code": 0,
+    "log": "clean_numerics.log"
+  }
+]

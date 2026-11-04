@@ -1,0 +1,81 @@
+{
+  "status": "complete",
+  "tables": [
+    {
+      "table_id": "4.4",
+      "file": "table_4_4.csv",
+      "rows": 11,
+      "mode": "computed_current_run",
+      "sha256": "3715fe687c91bc069d16adb6f967b553e30b771b4e7b7329abb833d81bfaf70c",
+      "inputs_sha256": {
+        "s305/E1.csv": "673fec0cf45a23718cf6bcf6eda0a7a2b5c34525b346980f565146c747b50d01",
+        "s305/E2.csv": "5224bbb5ed96393082bf330d5bcd510b8ee30ba748eb04b342db7806b71c3b50",
+        "s305/E3.csv": "cf87cae1285824970b50aa64683edd284fbdf533302f635ab206c3722c4fa018",
+        "s305/report.json": "33187dd088944d137e8c61aa2865eb38344852f6e426fb2b3d22e5922c3ef93d"
+      }
+    },
+    {
+      "table_id": "4.5",
+      "file": "table_4_5.csv",
+      "rows": 8,
+      "mode": "historical_blind_labels",
+      "sha256": "a12e458769d7396c06634c18fbd7f5b5aab2c0d2a2cc7bdc85e13c4145008782",
+      "inputs_sha256": {
+        "blind_filter/manifest.json": "88bd82a2a8126ffa33fa3414368fb5c0729bfa7b73c08719a3cc5c5bfcd51677",
+        "blind_filter/filters.csv": "a12e458769d7396c06634c18fbd7f5b5aab2c0d2a2cc7bdc85e13c4145008782",
+        "blind_filter/moon_ap16_m132732855l_c01.json": "f058b419adf89757561b95b6c20c3001cf0143258ff682a716c0a863d915332f",
+        "blind_filter/moon_ap16_m109134835l_c01.json": "3bbe05eb2bcb09407ce2696d84a3301b505ecec06219a9c15d8798c081908206"
+      }
+    },
+    {
+      "table_id": "4.6",
+      "file": "table_4_6.csv",
+      "rows": 6,
+      "mode": "computed_current_run",
+      "sha256": "a59202662436869567b188cc0990ce7f6219565e3a3fa617e66ae5a813346f97",
+      "inputs_sha256": {
+        "evaluation_tuning/summary.json": "d07674216c069605e92787a728e692f0fce48a6c06c1a13f64b2e89ba1b71c9a",
+        "evaluation_holdout/summary.json": "3286d94437d5bb957efdf0ba950db7077adb384992a206e104379cb5ad3979d0"
+      }
+    },
+    {
+      "table_id": "4.7",
+      "file": "table_4_7.csv",
+      "rows": 9,
+      "mode": "computed_current_run",
+      "sha256": "cd1b35c20af94083313d2f794c3dc5336cad7d6b0474cddc4c96e8d9b32454a4",
+      "inputs_sha256": {
+        "evaluation_holdout/summary.json": "3286d94437d5bb957efdf0ba950db7077adb384992a206e104379cb5ad3979d0"
+      }
+    },
+    {
+      "table_id": "4.8",
+      "file": "table_4_8.csv",
+      "rows": 2,
+      "mode": "computed_from_manual_counts",
+      "sha256": "cabd6b60bbe7cc923fd5d57a7a9c50f5ff6b897dc51249275f7697296a502d53",
+      "inputs_sha256": {
+        "density/so_sanh.json": "f207c033263b482d95e6954257f5a374bfebde0c858ba1e15020e8618e99e96d"
+      }
+    }
+  ],
+  "report_source": {
+    "path": "docs/bao_cao/04_chuong_4_du_lieu_danh_gia.md",
+    "sha256": "cd994d78f381a9bc6470a33325d7c7d20b64c36a8889460d0c09e3d6d0e222f7"
+  },
+  "base_commit": "a50c145ecdb2c521298ad1a4d44a794465ced956",
+  "seed": 0,
+  "rounding": {
+    "4.5": "purity percent: 1 decimal",
+    "4.6": "ch4_mean_sd.summarize: ratios 4 dp; percent 2 dp",
+    "4.8": "area: 1 decimal; density and CI95: 3"
+  },
+  "limitations": [
+    "4.4 has 11 branch rows representing the report's four groups.",
+    "4.5 reuses archived human judgements, not a new human review.",
+    "4.6 sample SD is across images; it is not a timing SD.",
+    "4.7 includes a total row; total candidate count is not reported.",
+    "4.1/4.2 are input inventories; 4.3 is experiment design.",
+    "Sparse labels do not establish full-image FP/Precision/F1."
+  ]
+}

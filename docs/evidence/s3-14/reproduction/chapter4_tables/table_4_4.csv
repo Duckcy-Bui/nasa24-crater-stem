@@ -1,0 +1,12 @@
+experiment,scope,variant,n_images,candidates,tp_known,known_labels,recall_known,precision,f1
+E1,tuning,raw,2,200,1,20,0.05,,
+E1,tuning,shading_annotation,2,200,1,20,0.05,,
+E1,tuning,remove_inverted,2,151,0,20,0.0,,
+E2,tuning,baseline,3,300,1,30,0.03333333333333333,,
+E2,tuning,min_vote_ratio_030,3,300,1,30,0.03333333333333333,,
+E2,tuning,min_vote_ratio_040,3,300,1,30,0.03333333333333333,,
+E2,tuning,radius_step_2,3,300,1,30,0.03333333333333333,,
+E3,tuning,baseline,3,300,1,30,0.03333333333333333,,
+E3,tuning,remove_texture,3,155,1,30,0.03333333333333333,,
+E3,tuning,dedupe,3,284,1,30,0.03333333333333333,,
+E3,holdout_descriptive,baseline,1,100,0,6,0.0,,

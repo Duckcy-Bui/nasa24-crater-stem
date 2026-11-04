@@ -1,0 +1,7 @@
+split,method,n_images,tp_known,fn_known,known_labels,recall_pooled_pct,recall_mean_pct,recall_sd_pct,precision,f1
+tuning,numpy_score,3,0,28,28,0.0,0.0,0.0,,
+tuning,numpy_balanced,3,2,26,28,7.14,7.41,6.42,,
+tuning,opencv,3,27,1,28,96.43,96.67,5.77,,
+holdout,numpy_score,8,4,62,66,6.06,5.95,8.77,,
+holdout,numpy_balanced,8,5,61,66,7.58,7.64,8.88,,
+holdout,opencv,8,65,1,66,98.48,98.21,5.05,,
