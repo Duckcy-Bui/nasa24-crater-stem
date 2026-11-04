@@ -94,20 +94,20 @@ Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã
 
 Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Các file mới đã vào `main` qua PR #43.
 
-Còn **14 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
+Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ main, bỏ hai dấu chờ duyệt theo yêu cầu của Quốc Anh và điền khai báo AI của Quốc Anh. Còn **9 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
 | Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
-| Chương 4 | 2 | Quốc Anh duyệt bản ghép S3-05 ở mục 4.6; Tiến: tên CPU/RAM máy Windows 27/10 ở mục 4.1 |
-| Chương 5 | 1 | Quốc Anh duyệt kết luận S3-05 đã soạn theo Bảng 4.4; chưa xác nhận thay chủ phần |
+| Chương 4 | 1 | Còn Tiến: tên CPU/RAM máy Windows 27/10 ở mục 4.1 |
+| Chương 5 | 0 | Đã xử lý dấu chờ duyệt kết luận S3-05 của Quốc Anh; Đức chốt toàn chương |
 | Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
-| Phụ lục D | 9 | Tiến, Hưng, Quốc Anh tự khai AI, phần sử dụng và cách kiểm soát |
+| Phụ lục D | 6 | Còn Tiến và Hưng; dòng Quốc Anh đã điền |
 | File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
 
-Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 370 test Python và 6 bộ JavaScript, đo ngày 02/11/2026 trên nhánh hoàn thiện theo đề gốc (nền main `7e81469`); so với 342 thêm 5 test trung bình ± SD, 16 test xuất bảng Chương 4 và 7 test liên kết công khai. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
+Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 380 test Python và 6 bộ JavaScript, đo ngày 04/11/2026 trên nhánh dùng số S3-03 (nền main `b091f96` và PR #46); so với 370 thêm 2 test đóng gói trên Windows (PR #48) và 8 test S3-03. Trước đó 370 = 342 + 5 test trung bình ± SD, 16 test xuất bảng Chương 4 và 7 test liên kết công khai. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 
-Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. Bản ghép và kết luận S3-05 đã soạn ở Chương 4–5, chờ Quốc Anh duyệt; các xác nhận cá nhân vẫn chờ. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; chủ phần cần xác nhận bản diễn đạt lại và hoàn tất các ô của mình.
+Đối chiếu Đề 24 vẫn có phần chưa đạt: chưa có Sao Hỏa; chưa ghép danh mục/đo Precision; chưa khảo sát ≥10 học sinh; thẻ theo vùng thay vì kích hoạt khi tìm thấy; nhóm 4 người thay vì 5 theo quy định. Nêu ở Chương 1/5, không xem chỉnh văn bản là hoàn thành chức năng. Bản ghép và kết luận S3-05 đã được rà theo yêu cầu của Quốc Anh; vẫn cần Tiến tự xác nhận nghiệm thu S3-05 trên PR. Quốc Anh đã trực tiếp đồng ý bản đếm S3-03 mới 73/43 hố; chuyển số chính thức theo mục 7 tài liệu S3-03 là bước riêng, không thay bằng số cũ 47/32. Đây là **bản làm việc**, chưa đủ điều kiện nộp cuối; các xác nhận cá nhân khác vẫn chờ.
 
 ## 6. Hiệu chỉnh bảng chuyển/cắt sau kiểm r5 (r6)
 

@@ -1,0 +1,19 @@
+ok - two-decimal inputs and list are display-only; unchanged Apply preserves full precision
+ok - editing only x preserves untouched full-precision values in download and save
+ok - editing only y preserves untouched full-precision values in download and save
+ok - editing only r preserves untouched full-precision values in download and save
+ok - valid sub-centipixel radius survives displayed 0.00 and editing another field
+ok - a deliberately changed string is parsed even if numerically equal to the displayed value
+ok - invalid x="" rejects atomically without rounding other fields
+ok - invalid x="NaN" rejects atomically without rounding other fields
+ok - invalid x="Infinity" rejects atomically without rounding other fields
+ok - invalid x="-0.01" rejects atomically without rounding other fields
+ok - invalid x="511.01" rejects atomically without rounding other fields
+ok - invalid y="512" rejects atomically without rounding other fields
+ok - invalid r="0" rejects atomically without rounding other fields
+ok - invalid r="-0.004" rejects atomically without rounding other fields
+ok - invalid r="Infinity" rejects atomically without rounding other fields
+ok - invalid r="   " rejects atomically without rounding other fields
+ok - one invalid field rejects all edits; correcting it preserves the other untouched original
+ok - Undo restores original precision and a subsequent unchanged Apply remains a no-op
+Canvas precision acceptance checks passed (18 scenarios)

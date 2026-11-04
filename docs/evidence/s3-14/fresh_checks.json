@@ -1,0 +1,58 @@
+[
+  {
+    "name": "fresh_install",
+    "command": [
+      "<repo>\\outputs\\s314_20261104\\fresh_env\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "install",
+      "-r",
+      "requirements-test.txt"
+    ],
+    "exit_code": 0,
+    "log": "fresh_install.log"
+  },
+  {
+    "name": "fresh_contracts",
+    "command": [
+      "<repo>\\outputs\\s314_20261104\\fresh_env\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "scripts/check_contracts.py"
+    ],
+    "exit_code": 0,
+    "log": "fresh_contracts.log"
+  },
+  {
+    "name": "fresh_python",
+    "command": [
+      "<repo>\\outputs\\s314_20261104\\fresh_env\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "log": "fresh_python.log"
+  },
+  {
+    "name": "fresh_numerics",
+    "command": [
+      "<repo>\\outputs\\s314_20261104\\fresh_env\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "scripts/verify_report_numerics.py",
+      "--out",
+      "<repo>\\outputs\\s314_20261104\\fresh_report_numerics.json"
+    ],
+    "exit_code": 0,
+    "log": "fresh_numerics.log"
+  }
+]

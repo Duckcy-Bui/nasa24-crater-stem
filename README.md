@@ -54,7 +54,7 @@ Chế độ full mặc định tạo đủ năm CSV cho các bảng kết quả 
 | `frozen_tuning.csv`, `frozen_tuning/report.json` | TP/FN/Recall_known từng ảnh và tổng hợp 18 tuning S2-15 |
 | `evaluation_tuning/results.csv`, `evaluation_holdout/results.csv` | Bảng đánh giá S2-06/S3-02; JSON `summary.json` cung cấp cả số vòng, dùng cho Bảng 4.6–4.7 |
 | `E1.csv`, `E2.csv`, `E3.csv`, `experiments_*.json` | Đầu ra S2-07 cũ, giữ nguyên namespace và ý nghĩa; không tráo với S3-05 |
-| `density/` | Bảng đếm, máy so với tay, mật độ và hình histogram/tích lũy/vùng đếm S2-09 |
+| `density/` | Bảng đếm, máy so với tay, mật độ và hình histogram/tích lũy/vùng đếm từ bản đếm S3-03 (`data/s303_counts/`) |
 | `s305/` | S3-05 chạy mới: CSV/JSON/ảnh E1/E2/E3, cấu hình và report; chỉ quét tham số trên tuning, Mare chỉ mô tả nền |
 | `blind_filter/` | Bản sao đúng byte hai `docs/evidence/s2-02/<image_id>/report.json`, SHA nguồn và `filters.csv`; nhãn mù lịch sử, không phải đánh giá mới của người |
 | `chapter4_tables/` | Năm CSV dưới đây và `index.json`: số bảng, nguồn/SHA, cách làm tròn, nguồn lịch sử hay lượt mới |
@@ -76,6 +76,8 @@ Chỉ dùng lượt `manifest.json: status=complete, mode=full` và `chapter4_ta
 Seed cố định 0 (`PYTHONHASHSEED`) trước khi khởi động từng Python con; cảnh giả lập dựng cố định và Hough không lấy mẫu ngẫu nhiên. Các producer dùng OpenCV đặt `cv2.setNumThreads(1)`, gồm S2-07/S2-09/S3-05. Thời gian, timestamp và đường dẫn thay đổi theo máy; so số vòng/TP/FN/cặp ghép và cấu hình, không đòi PNG/NPZ trùng hash giữa môi trường. Holdout đã xem nên đây là **đánh giá lặp**; không chọn lại tham số. Balanced và các bộ lọc là nhánh thí nghiệm; giảm vòng chưa chứng minh giảm FP. Mật độ máy S2-09 có lọc texture/dedupe, khác game S2-15.
 
 S3-05 đã được ghép thành dự thảo Chương 4–5, chờ Quốc Anh duyệt; chạy lệnh không xác nhận thay chủ phần. Không tạo số liệu khảo sát hoặc chốt tham số mới. Hồ sơ lịch sử trong `docs/evidence/` được giữ nguyên; mọi CSV bảng và bản sao nhãn mù mới nằm trong thư mục lượt chạy.
+
+Biên bản [S3-14 — kiểm chạy lại và đủ bộ sản phẩm](docs/S3-14_KIEM_TRA_BAN_GIAO.md) ngày 04/11/2026: 370 test Python, 6 bộ canvas, Chromium local và 5 bảng Chương 4 đạt; đã sửa lỗi chọn Python đóng gói Windows. Bộ nộp cuối còn chờ PDF/slide/video và xác nhận thành viên.
 
 ## Dữ liệu và cấu hình
 

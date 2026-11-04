@@ -50,7 +50,7 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | Yêu cầu và nguồn | Bằng chứng repo; xử lý đề xuất | Trạng thái |
 |---|---|---|
 | Python 3.10+, thuật toán cốt lõi tự cài NumPy; đối chiếu thư viện (Q, Hình thức) | [Hough](../src/hough.py), [tiền xử lý](../src/preprocessing.py), [S2-06/S3-02](S2-06_S3-02_KIEM_CHUNG.md), ví dụ số và OpenCV ở [S3-10](S3-10_TAI_TAO_KET_QUA.md) | **Đạt** phần cài đặt/đối chiếu, không suy ra độ chính xác toàn ảnh |
-| `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; đề xuất giảng viên chấp nhận bảng ánh xạ, hoặc mở lượt chuyển cấu trúc riêng. Không tạo thư mục rỗng để coi là đạt |
+| `src/`, `data/`, `results/`, `notebooks/` nếu có, README, requirements (Q, Mã nguồn) | Có `src/`, `data/`, `README.md`, `requirements.txt`. Kết quả ở `docs/evidence/` và `outputs/`, chưa có `results/` tracked. Không có notebook tracked nên `notebooks/` chưa áp dụng | **Lệch** tên/vị trí kết quả; Đức chốt ngày 04/11 không tạo `results/`, giữ `docs/evidence/` ([mục 2.6](#26-quyet-dinh-04-11)). Không tạo thư mục rỗng để coi là đạt |
 | Một lệnh tái tạo **toàn bộ bảng kết quả Chương 4**, seed cố định (Q, Mã nguồn) | [README, S3-10](../README.md) và [runner](../scripts/reproduce_s310.py) cố định seed 0; danh mục và đầu ra từng bảng ở dưới | **Đạt** nguồn/đầu ra cho Bảng 4.5–4.6; **chưa biết** mức bao phủ bản cuối khi chủ Chương 4 chốt bảng lịch sử 4.4 và kết quả E1–E3. Không dùng bảng mô tả/thiết kế để kết luận thiếu bảng kết quả |
 | PEP 8; mỗi hàm có docstring nêu vào/ra/công thức (Q, Mã nguồn) | Ví dụ `sha256`, `inventory` trong [script đóng gói](../scripts/package_s316.py) chưa có docstring; chưa có kết quả lint PEP 8 toàn repo | **Lệch** docstring; PEP 8 **chưa biết**. Đề xuất lượt audit riêng, không định dạng lại mã trong vòng này |
 | Commit trải đều 8 tuần từ tài khoản từng thành viên (Q, Mã nguồn) | Lịch sử main có commit từ 12/10 đến 02/11/2026; cả bốn thành viên có trong mục Contributors của repo. Mở đầu Q ghi BTL trong 3 tuần | **Đạt theo quyết định của Đức** ngày 02/11/2026: giữ lịch sử commit hiện tại theo thời lượng 3 tuần. Không tạo lại hoặc lùi ngày commit |
@@ -80,7 +80,7 @@ Kết quả S3-05 đã có trong repo qua PR #38, còn chờ chủ phần ghép 
 | Yêu cầu | Bằng chứng và giới hạn hiện tại | Trạng thái |
 |---|---|---|
 | (1) Tương phản/làm trơn, Hough tròn tự viết, kết hợp cặp sáng–tối theo nắng | `src/preprocessing.py`, `src/hough.py`, `src/postprocessing.py`; [hồ sơ sáng–tối](evidence/s1-11/). Game chỉ gắn nhãn sáng–tối; nhiều ảnh thiếu hướng nắng đo được nên không kiểm được | **Đạt** phần mã/luồng; chưa chứng minh hiệu quả kết hợp sáng–tối trên toàn bộ dữ liệu |
-| (2) Đếm, phân bố kích thước, so mật độ hai vùng để giải thích tuổi tương đối | [S2-09](evidence/s2-09/), `src/statistics.py`, bảng đếm tay Lunokhod 1/Mare Frigoris. Ứng viên game chạm trần thì ẩn mật độ; không đủ căn cứ kết luận vùng nào già hơn | **Lệch** phần diễn giải tuổi theo yêu cầu; không thay đếm tay thành kết quả máy hoặc suy tuổi tuyệt đối |
+| (2) Đếm, phân bố kích thước, so mật độ hai vùng để giải thích tuổi tương đối | [S3-03](S3-03_KIEM_TRA_MAT_DO.md) (bản đếm dùng từ 04/11; [S2-09](evidence/s2-09/) giữ làm lịch sử), `src/statistics.py`, bảng đếm tay Lunokhod 1/Mare Frigoris. Ứng viên game chạm trần thì ẩn mật độ; không đủ căn cứ kết luận vùng nào già hơn | **Lệch** phần diễn giải tuổi theo yêu cầu; không thay đếm tay thành kết quả máy hoặc suy tuổi tuyệt đối |
 | (3) Học sinh khoanh, hệ thống chấm và so máy/danh mục | [app.py](../app.py), [scoring.py](../src/scoring.py), [màn hình kết quả](S2-08_MAN_HINH_KET_QUA.md). Điểm dùng nhãn tham chiếu; giao máy chỉ là so sánh tham khảo | **Đạt** luồng kỹ thuật; chưa thử học sinh thật, nhãn/danh mục còn giới hạn dưới đây |
 | (4) Thẻ thiết bị NASA trong vùng ảnh, hiện khi học sinh tìm thấy | [S2-10](S2-10_THE_KHOA_HOC.md), [science_cards.py](../src/science_cards.py). Chỉ có thẻ vùng, `position: null`, thiết bị ngoài crop, không mở khóa khi tìm/nhấp vị trí; Lunokhod không phải thiết bị NASA | **Lệch** phần vị trí/kích hoạt; giữ rõ giới hạn, không tạo ghim giả |
 | Ảnh LRO, CTX/HiRISE Sao Hỏa, bãi Apollo/rover; danh mục hố công bố | [Chương 1 mục 1.3](bao_cao/01_chuong_1_gioi_thieu.md), [hướng dẫn dữ liệu](S1-06_HUONG_DAN_DU_LIEU.md): 26 crop LROC Mặt Trăng; không có CTX/HiRISE, thiết bị ngoài crop. Nhãn tay thưa không thay đối chiếu danh mục đầy đủ | **Lệch** phạm vi dữ liệu; Đức xác nhận với giảng viên cách trình bày phần chưa đạt |
@@ -93,11 +93,23 @@ Chọn điểm hạ cánh, quản lý tiền đồn và bản tiếng Việt ngo
 
 Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**. Đức cần nhận thông báo chính thức về hệ thống/người nhận, ngày giờ/múi giờ và tên ZIP/PDF/slide/video. Các nội dung bảng phân công/chữ ký và đánh giá chéo đã có yêu cầu; nếu học phần dùng biểu mẫu riêng, xin đúng mẫu. Không dùng hạn sprint làm hạn chính thức. Người phụ trách báo cáo đối chiếu thêm cấu trúc phụ lục A/B/C, định dạng và chương theo Q; tài liệu này không sửa nguồn báo cáo.
 
-`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận.
+`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận. Cách xử lý `results/` và phạm vi Đề 24 đã chốt ở mục 2.6.
+
+<a id="26-quyet-dinh-04-11"></a>
+
+### 2.6. Quyết định của trưởng nhóm ngày 04/11/2026
+
+Đức chốt ba điểm sau. Đây là cách nhóm xử lý; không phải miễn trừ của giảng viên. Các dòng **Lệch** ở mục 2.3–2.4 giữ nguyên trạng thái.
+
+| Điểm | Quyết định | Hệ quả |
+|---|---|---|
+| Lệch Đề 24: thẻ hiện khi tìm thấy (4), Sao Hỏa CTX/HiRISE, Precision so danh mục, khảo sát ≥10 học sinh | **Giữ là hạn chế**, không làm thêm trước khi nộp | Báo cáo đã nêu đủ ở [Chương 5 mục 5.2](bao_cao/05_chuong_5_he_thong_ket_luan.md); slide và video trình bày đúng như vậy, không mô tả là đã đạt |
+| Vị trí kết quả (`results/`) | **Không tạo** `results/`; kết quả giữ ở `docs/evidence/` | Không đổi đường dẫn trong manifest/hash, test và báo cáo; bảng ánh xạ ở mục 2.3 |
+| Số đếm mật độ hai vùng | **Dùng bản đếm S3-03** ([PR #46](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/46)) thay bản S2-09, **sau khi** Quốc Anh kiểm chéo và tự xác nhận trên PR #46 | Cập nhật Bảng 4.8, Hình 4.4, câu chữ mục 4.8, Bảng 5.1 hàng M3 và dữ liệu so sánh của app; tái tạo lượt mới, giữ nguyên hồ sơ S3-10 lịch sử. Chưa có xác nhận thì giữ số S2-09 |
 
 ## 3. Sản phẩm và xác nhận thành viên
 
-Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s209_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dựng PDF/DOCX cùng nguồn; slide, video, đánh giá chéo và phân công có chữ ký nhận bằng các cờ riêng ở mục 4.
+Mã, [bundle/metadata](../data/s106_bundle/), [nhãn](../data/reference_labels/), [chia tập](../data/s203_split/), [vùng đếm](../data/s303_counts/), [bảng đánh giá](evidence/) và [nguồn báo cáo](bao_cao/) có trong main. Script dựng PDF/DOCX cùng nguồn; slide, video, đánh giá chéo và phân công có chữ ký nhận bằng các cờ riêng ở mục 4.
 
 Bảng này liệt kê việc cần từng người tự xác nhận, không ký thay. Cột cuối để trống cho bằng chứng xác nhận phiên bản cuối. [S2-16 mục 5](S2-16_NGHIEM_THU_TUAN_2.md) đã có “Đồng ý” lịch sử của Đức; không tự điền các ô còn lại.
 
@@ -160,10 +172,12 @@ Pin `94c17ff` còn đường dẫn máy trong log/manifest lịch sử. Trước
 
 Manifest schema `s316-package-2` ghi số dấu chờ, sản phẩm còn thiếu và các kiểm nội dung chưa làm. `status=complete` chỉ xác nhận tạo gói kỹ thuật; `submission_ready=false` luôn giữ để chờ Đức kiểm bộ nộp, không tự nghiệm thu dù đã nhận đủ file. Không đưa gói/thư mục dựng vào Git. Khi bàn giao thật: kiểm từng hash sau giải nén, mở PDF/slide/video/phiếu từ bản sao; kiểm demo desktop/mobile đúng phiên bản; ghi checksum ZIP, bản dự phòng và người nhận.
 
+Cập nhật kiểm kỹ thuật 04/11/2026: [biên bản S3-14](S3-14_KIEM_TRA_BAN_GIAO.md) và [bằng chứng](evidence/s3-14/README.md) có 370 test Python, 6 bộ canvas, Chromium local và full đủ Bảng 4.4–4.8. Lỗi chọn Python đóng gói Windows đã sửa. R14-03–R14-07 còn mở: PDF cuối, slide/video, xác nhận thành viên và đồng nhất phiên bản bộ nộp; giữ nguyên các ô chưa nghiệm thu.
+
 ## 5. Kiểm tra cuối
 
 - [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người.
-- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên.
+- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên. Đề 24, `results/` và số mật độ đã chốt ở mục 2.6; nhóm bốn người còn chờ giảng viên.
 - [ ] Mã/config/bundle và báo cáo cùng SHA đã chốt; phần đánh giá bị ảnh hưởng bởi thay đổi đã kiểm lại.
 - [ ] PDF cuối 30–60 trang, mở được và được người phụ trách báo cáo kiểm chương/lề/định dạng; DOCX kèm theo; hết dấu chờ chưa giải quyết, các tác giả xác nhận bản sau rút gọn và bằng chứng từng người tham gia phân tích kết quả Chương 4.
 - [ ] Đủ slide 15–20, video 5–7 phút, bảng đánh giá chéo và bảng phân công có công việc/file mã/mục báo cáo/tỷ lệ/chữ ký thật; manifest không còn ô thiếu file, mọi nội dung đã được chủ phần kiểm.

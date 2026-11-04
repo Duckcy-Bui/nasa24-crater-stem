@@ -1,0 +1,26 @@
+moon_ap16_m132732855l_c01: baseline
+moon_ap16_m132732855l_c01: E2 baseline
+moon_ap16_m132732855l_c01: E2 min_vote_ratio_030
+moon_ap16_m132732855l_c01: E2 min_vote_ratio_040
+moon_ap16_m132732855l_c01: E2 radius_step_2
+moon_ap16_m132732855l_c01: saved E1/E2/E3 artifacts
+moon_ap16_m102064759r_c01: baseline
+moon_ap16_m102064759r_c01: E2 baseline
+moon_ap16_m102064759r_c01: E2 min_vote_ratio_030
+moon_ap16_m102064759r_c01: E2 min_vote_ratio_040
+moon_ap16_m102064759r_c01: E2 radius_step_2
+moon_ap16_m102064759r_c01: saved E1/E2/E3 artifacts
+moon_ap16_m109134835l_c01: baseline
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c01: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c01: E2 baseline
+moon_ap16_m109134835l_c01: E2 min_vote_ratio_030
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c01: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c01: E2 min_vote_ratio_040
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c01: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c01: E2 radius_step_2
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c01: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c01: saved E1/E2/E3 artifacts
+moon_marefrig_loc_c01: baseline
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_marefrig_loc_c01: metadata không có hướng nắng (sun.quality=none)
+moon_marefrig_loc_c01: saved E1/E2/E3 artifacts
+S3-05 complete: <repo>\outputs\s314_20261104\reproduction\s305

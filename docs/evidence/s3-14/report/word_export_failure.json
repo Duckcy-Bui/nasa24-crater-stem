@@ -1,0 +1,9 @@
+{
+    "export_tool":  "Microsoft Word COM",
+    "minimum_elapsed_minutes":  10,
+    "author_approved":  false,
+    "pages_verified":  false,
+    "pdf_created":  false,
+    "status":  "timed_out",
+    "reason":  "Word automation did not produce a PDF within ten minutes; stopped only the Word process started by this audit."
+}

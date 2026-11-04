@@ -20,8 +20,8 @@ from src import science_cards, statistics
 
 CARD_FIELDS = ("card_id", "title", "body", "source_title", "source_url")
 ROOT = Path(__file__).resolve().parents[1]
-COMPARISON_PATH = ROOT / "docs" / "evidence" / "s2-09" / "so_sanh.json"
-REGIONS_PATH = ROOT / "data" / "s209_counts" / "regions.json"
+COMPARISON_PATH = ROOT / "docs" / "evidence" / "s3-03" / "mat_do" / "so_sanh.json"
+REGIONS_PATH = ROOT / "data" / "s303_counts" / "regions.json"
 LEGACY_HOUGH_LIMITATION = (
     "Hough hiện chỉ trả vòng nhỏ (chạm trần 100 ứng viên), nên hố lớn bị thiếu."
 )

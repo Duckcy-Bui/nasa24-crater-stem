@@ -3,6 +3,8 @@
 Phụ trách: Đinh Quang Hưng · Phụ thuộc: S2-05 (lọc trùng), S2-03 (tập dữ liệu và nhãn)
 Mã: [src/statistics.py](../src/statistics.py), [scripts/s209_density.py](../scripts/s209_density.py). Số liệu: [data/s209_counts/](../data/s209_counts/). Minh chứng: [docs/evidence/s2-09/](evidence/s2-09/).
 
+> **Cập nhật 04/11/2026:** số liệu chính thức của báo cáo và app đã chuyển sang bản đếm lại [S3-03](S3-03_KIEM_TRA_MAT_DO.md). Tài liệu này giữ bản S2-09 làm lịch sử.
+
 **Tóm tắt.** Đếm đủ mọi hố có đường kính 300–2000 m trong vùng mặt biển của hai vùng cùng tỷ lệ 20 m/px.
 
 | Vùng | Diện tích | Số hố | Mật độ (hố/km²) | Khoảng tin cậy 95 % |
@@ -30,7 +32,7 @@ S2-09 dùng cặp **Lunokhod 1 và Mare Frigoris** (đã thống nhất với H�
 
 Như vậy so sánh có kiểm soát được ánh sáng ở mức thô. Lunokhod 2 bị loại vì mosaic có nhiều dải ghép, vùng bóng lớn và địa hình núi.
 
-> Cần nhóm xác nhận việc đổi cặp so với S1-06, và cập nhật Chương 4 (S1-16) nếu đồng ý.
+> Cập nhật 03/11: Quốc Anh đã xác nhận đổi cặp; trưởng nhóm đã đồng ý tại mục 6 biên bản S2-16, Chương 4 hiện dùng Lunokhod 1 – Mare Frigoris.
 
 ## 2. Phương pháp
 
@@ -68,7 +70,7 @@ Mật độ chỉ có nghĩa khi đếm **đủ mọi hố** trong dải D trên
 
 Các hố được đếm tay trên từng ô cắt, có lưới tọa độ và vòng mẫu 300 m. File [data/s209_counts/*_count.json](../data/s209_counts/) theo định dạng S1-05 (`source = "catalogue"`).
 
-> Người đếm: Đinh Quang Hưng (bản đầu do Claude đề xuất, Hưng duyệt); kiểm chéo: Hoàng Quốc Anh (28/10/2026).
+> Người đếm: Đinh Quang Hưng (bản đầu do Claude đề xuất, Hưng duyệt). Metadata gốc ghi Quốc Anh là người kiểm; ngày 03/11/2026 Quốc Anh trực tiếp xác nhận đã xem và đồng ý bản đếm. Giữ ngày gán nhãn 28/10 trong lịch sử, không suy ngày đó là ngày đã có xác nhận trực tiếp.
 
 ### 2.4. Thống kê
 
@@ -147,7 +149,8 @@ Máy được chạy trên cùng vùng đếm và cùng dải D: Hough mặc đ�
 4. **Hố thứ cấp và chuỗi hố.** Lunokhod 1 có cụm hố lớn liền nhau (góc trên trái `c01`), có thể là hố thứ cấp hoặc chuỗi hố, không phải hố va chạm sơ cấp độc lập. Tính chúng vào sẽ làm mật độ hố lớn tăng mà không phản ánh tuổi.
 5. **Đếm tay mang tính chủ quan.** Vị trí và bán kính ước lượng bằng mắt, sai khoảng ±2 px (±40 m). Hố gần ngưỡng r = 7,5 px dễ bị tính hay bỏ khác nhau giữa người đếm; đã có một người kiểm chéo nhưng chưa đo độ lệch giữa hai người đếm độc lập.
 6. **Không quy đổi ra tuổi tuyệt đối.** Muốn suy ra tuổi (triệu năm) cần hàm sản xuất và hàm thời gian (chronology) được hiệu chuẩn bằng mẫu Apollo/Luna, cùng diện tích lớn hơn nhiều và dữ liệu đã hiệu chuẩn bức xạ. Ngoài phạm vi đề tài.
-7. **Đổi cặp vùng so với S1-06** (mục 1). Cần nhóm xác nhận.
+7. **Đổi cặp vùng so với S1-06** (mục 1). Đã có xác nhận của Quốc Anh ngày 03/11 và đồng ý của trưởng nhóm ghi tại biên bản S2-16; điều kiện nắng chỉ tương đồng ở mức thô, không loại hết sai lệch chọn vùng.
+
 
 ## 6. Cách chạy
 

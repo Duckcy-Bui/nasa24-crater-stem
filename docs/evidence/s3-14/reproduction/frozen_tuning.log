@@ -1,0 +1,28 @@
+moon_ap16_m102057602r_c01: TP=0 FN=10
+moon_ap16_m102064759r_c01: TP=1 FN=10
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m106777343r_c01: góc tới 28.38° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m106777343r_c01: TP=2 FN=1
+moon_ap16_m113853974r_c01: TP=0 FN=10
+moon_ap16_m132732855l_c01: TP=0 FN=9
+moon_ap16_m132732855r_c01: TP=0 FN=10
+moon_ap16_m175179080r_c01: TP=1 FN=12
+moon_ap16_m1108182629l_c01: TP=1 FN=10
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c01: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c01: TP=0 FN=10
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap16_m109134835l_c02: góc tới 7.64° < 30°: nắng gần đứng, bóng quá ngắn
+moon_ap16_m109134835l_c02: TP=0 FN=11
+moon_ap16_m117392541l_c01: TP=1 FN=11
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap15_hia_c01: metadata không có hướng nắng (sun.quality=none)
+moon_ap15_hia_c01: TP=0 FN=9
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap15_hia_c02: metadata không có hướng nắng (sun.quality=none)
+moon_ap15_hia_c02: TP=2 FN=6
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_ap15_hia_c03: metadata không có hướng nắng (sun.quality=none)
+moon_ap15_hia_c03: TP=0 FN=7
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_lunokhod1_loc_c01: metadata không có hướng nắng (sun.quality=none)
+moon_lunokhod1_loc_c01: TP=0 FN=10
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_lunokhod1_loc_c02: metadata không có hướng nắng (sun.quality=none)
+moon_lunokhod1_loc_c02: TP=1 FN=8
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_vandegraff_hia_c01: metadata không có hướng nắng (sun.quality=none)
+moon_vandegraff_hia_c01: TP=0 FN=10
+S1-11 bỏ qua kiểm tra sáng–tối cho moon_vandegraff_hia_c02: metadata không có hướng nắng (sun.quality=none)
+moon_vandegraff_hia_c02: TP=1 FN=10
