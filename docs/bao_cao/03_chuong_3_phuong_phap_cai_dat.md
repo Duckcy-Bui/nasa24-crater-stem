@@ -61,7 +61,7 @@ Bảng 3.2 phân biệt phần tự viết với thư viện. B0 đọc/cắt �
 04 Trả out; chỉ đổi float32 ở đầu ra cuối của Gauss/Sobel.
 ```
 
-Ảnh chuẩn hóa [0, 1]; Canny tính trên |G|·255; mọi độ dài ở chương này tính bằng pixel ảnh 512. Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
+Ảnh chuẩn hóa [0, 1]; Canny tính trên |G|·255; σ, h, lề, khoảng cách tâm và bán kính vòng tính bằng pixel ảnh 512. Tính trong float64 tránh tràn uint8 và giảm sai số cộng dồn. Ảnh NPY đã 512 × 512 bỏ qua B1; ảnh phẳng trả biên rỗng. P90 và Gauss giảm nhiễu nhưng không phân biệt mép bóng với vành hố; kết quả tiền xử lý ở mục 4.6.
 
 ## 3.3. Hough tròn bằng NumPy
 
