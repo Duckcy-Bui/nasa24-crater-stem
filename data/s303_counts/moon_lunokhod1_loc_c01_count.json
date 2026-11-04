@@ -3,11 +3,11 @@
  "data_kind": "real",
  "image_id": "moon_lunokhod1_loc_c01",
  "source": "catalogue",
- "reference_source": "manual_count_s303; recount D 300–2000 m inside count mask; pending cross-check",
+ "reference_source": "manual_count_s303; recount D 300–2000 m inside count mask; reviewed by Hoang Quoc Anh",
  "counted_by": "Đinh Quang Hưng (bản đầu do Claude lập)",
  "counted_on": "2026-11-03",
- "reviewed_by": null,
- "reviewed_on": null,
+ "reviewed_by": "Hoàng Quốc Anh",
+ "reviewed_on": "2026-11-04",
  "circles": [
   {
    "crater_id": "K01",

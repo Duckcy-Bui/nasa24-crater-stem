@@ -49,7 +49,7 @@ Bảng D.1 khai công cụ, phần sử dụng và cách kiểm soát; mỗi ng�
 | Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát yêu cầu gộp mã (pull request); soạn tài liệu và ghép báo cáo. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi gộp mã (merge); số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
 | Nguyễn Mạnh Tiến | [CHỜ] | [CHỜ] | [CHỜ] |
 | Đinh Quang Hưng | [CHỜ] | [CHỜ] | [CHỜ] |
-| Hoàng Quốc Anh | [CHỜ] | [CHỜ] | [CHỜ] |
+| Hoàng Quốc Anh | Codex (OpenAI) | Hỗ trợ script, bảng/ảnh và tài liệu S3-05; rà số liệu và bản ghép mục 4.6, kết luận Chương 5; hỗ trợ kiểm số liệu đếm S2-09/S3-03 | Đối chiếu CSV/JSON, cấu hình, mã băm và ảnh; chạy checker/test liên quan, dựng DOCX. Quốc Anh trực tiếp xem và xác nhận phiếu đếm S3-03; phân biệt kiểm tự động với xác nhận thị giác, giữ hạn chế và nguồn số liệu |
 
 : Bảng D.1. Khai báo sử dụng công cụ AI.
 

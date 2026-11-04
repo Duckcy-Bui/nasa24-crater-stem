@@ -18,7 +18,7 @@ Bảng 5.1 đối chiếu các mã ở Bảng 1.1. Kiểm thử đạt xác nh�
 
 : Bảng 5.1. Mức đáp ứng các mục tiêu Chương 1.
 
-S3-05 (Bảng 4.4) cho thấy gắn sáng–tối giữ 1/20, lọc ngược làm mất cặp đúng; đổi tham số vẫn 1/30. Bỏ kết cấu/lọc trùng giảm 300 còn 155/284 vòng nhưng giữ 1/30, chưa khắc phục bỏ sót hay chứng minh giảm dương tính giả (false positive — FP). [CHỜ Quốc Anh duyệt kết luận S3-05.] Tham số trò chơi chốt theo tập điều chỉnh (tuning) 10/174; holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo ở Phụ lục A–B.
+S3-05 (Bảng 4.4) cho thấy gắn sáng–tối giữ 1/20, lọc ngược làm mất cặp đúng; đổi tham số vẫn 1/30. Bỏ kết cấu/lọc trùng giảm 300 còn 155/284 vòng nhưng giữ 1/30, chưa khắc phục bỏ sót hay chứng minh giảm dương tính giả (false positive — FP). Tham số trò chơi chốt theo tập điều chỉnh (tuning) 10/174; holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo ở Phụ lục A–B.
 
 ## 5.2. Hạn chế
 
