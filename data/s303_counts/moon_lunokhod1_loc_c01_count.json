@@ -1,0 +1,381 @@
+{
+ "schema_version": "1.0",
+ "data_kind": "real",
+ "image_id": "moon_lunokhod1_loc_c01",
+ "source": "catalogue",
+ "reference_source": "manual_count_s303; recount D 300–2000 m inside count mask; reviewed by Hoang Quoc Anh",
+ "counted_by": "Đinh Quang Hưng (bản đầu do Claude lập)",
+ "counted_on": "2026-11-03",
+ "reviewed_by": "Hoàng Quốc Anh",
+ "reviewed_on": "2026-11-04",
+ "circles": [
+  {
+   "crater_id": "K01",
+   "x": 59.0,
+   "y": 54.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K02",
+   "x": 93.0,
+   "y": 90.0,
+   "r": 19.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K03",
+   "x": 160.0,
+   "y": 113.0,
+   "r": 32.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K04",
+   "x": 200.0,
+   "y": 152.0,
+   "r": 22.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K05",
+   "x": 166.0,
+   "y": 206.0,
+   "r": 17.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K06",
+   "x": 291.0,
+   "y": 55.0,
+   "r": 13.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K07",
+   "x": 282.0,
+   "y": 97.0,
+   "r": 12.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K08",
+   "x": 268.0,
+   "y": 18.0,
+   "r": 13.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K10",
+   "x": 420.0,
+   "y": 134.0,
+   "r": 22.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K11",
+   "x": 279.0,
+   "y": 203.0,
+   "r": 21.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K12",
+   "x": 408.0,
+   "y": 75.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K13",
+   "x": 497.0,
+   "y": 78.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K14",
+   "x": 362.0,
+   "y": 3.0,
+   "r": 26.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K15",
+   "x": 71.0,
+   "y": 445.0,
+   "r": 39.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K17",
+   "x": 73.0,
+   "y": 384.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K18",
+   "x": 12.0,
+   "y": 478.0,
+   "r": 16.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K19",
+   "x": 63.0,
+   "y": 493.0,
+   "r": 19.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K20",
+   "x": 152.0,
+   "y": 330.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K21",
+   "x": 341.0,
+   "y": 295.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K22",
+   "x": 323.0,
+   "y": 329.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K23",
+   "x": 373.0,
+   "y": 315.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K24",
+   "x": 310.0,
+   "y": 386.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K25",
+   "x": 460.0,
+   "y": 395.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K26",
+   "x": 288.0,
+   "y": 425.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K27",
+   "x": 277.0,
+   "y": 440.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "K28",
+   "x": 366.0,
+   "y": 474.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P0",
+   "x": 256.0,
+   "y": 480.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P4",
+   "x": 306.0,
+   "y": 122.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P6",
+   "x": 336.0,
+   "y": 405.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P10",
+   "x": 166.0,
+   "y": 473.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P13",
+   "x": 478.0,
+   "y": 104.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P15",
+   "x": 257.0,
+   "y": 137.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P17",
+   "x": 391.0,
+   "y": 120.0,
+   "r": 13.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P19",
+   "x": 495.0,
+   "y": 150.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "P42",
+   "x": 368.0,
+   "y": 138.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N1",
+   "x": 20.0,
+   "y": 57.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N2",
+   "x": 44.0,
+   "y": 234.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N3",
+   "x": 131.0,
+   "y": 452.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N4",
+   "x": 326.0,
+   "y": 187.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N5",
+   "x": 317.0,
+   "y": 209.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N6",
+   "x": 48.0,
+   "y": 378.0,
+   "r": 11.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N7",
+   "x": 30.0,
+   "y": 394.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N8",
+   "x": 468.0,
+   "y": 14.0,
+   "r": 10.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N9",
+   "x": 212.0,
+   "y": 47.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N10",
+   "x": 356.0,
+   "y": 210.0,
+   "r": 8.0,
+   "confidence": null,
+   "votes": null
+  },
+  {
+   "crater_id": "N11",
+   "x": 392.0,
+   "y": 312.0,
+   "r": 9.0,
+   "confidence": null,
+   "votes": null
+  }
+ ]
+}

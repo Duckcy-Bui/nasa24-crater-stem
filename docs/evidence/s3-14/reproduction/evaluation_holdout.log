@@ -1,0 +1,40 @@
+moon_ap15_loc_c01 {'numpy_score': (0, 8, 0), 'numpy_balanced': (0, 8, 10), 'opencv': (8, 0, 5379)}
+moon_ap15_loc_c02 {'numpy_score': (0, 9, 0), 'numpy_balanced': (0, 9, 29), 'opencv': (9, 0, 5293)}
+moon_ap15_loc_c03 {'numpy_score': (0, 9, 0), 'numpy_balanced': (0, 9, 32), 'opencv': (9, 0, 5317)}
+moon_lunokhod2_loc_c01 {'numpy_score': (1, 8, 0), 'numpy_balanced': (1, 8, 28), 'opencv': (9, 0, 5495)}
+moon_lunokhod2_loc_c02 {'numpy_score': (0, 9, 0), 'numpy_balanced': (1, 8, 16), 'opencv': (9, 0, 5399)}
+moon_marefrig_loc_c01 {'numpy_score': (0, 6, 0), 'numpy_balanced': (1, 5, 29), 'opencv': (6, 0, 5390)}
+moon_marefrig_loc_c02 {'numpy_score': (1, 6, 0), 'numpy_balanced': (0, 7, 32), 'opencv': (6, 1, 5417)}
+moon_marefrig_loc_c03 {'numpy_score': (2, 7, 0), 'numpy_balanced': (2, 7, 30), 'opencv': (9, 0, 5440)}
+{
+  "numpy_score": {
+    "tp": 4,
+    "fn": 62,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.06060606060606061,
+    "recall_known_macro_mean": 0.05952380952380952,
+    "recall_known_macro_std": 0.08766159537450206
+  },
+  "numpy_balanced": {
+    "tp": 5,
+    "fn": 61,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.07575757575757576,
+    "recall_known_macro_mean": 0.0763888888888889,
+    "recall_known_macro_std": 0.08877721159205196
+  },
+  "opencv": {
+    "tp": 65,
+    "fn": 1,
+    "fp": null,
+    "precision": null,
+    "f1": null,
+    "recall_known_micro": 0.9848484848484849,
+    "recall_known_macro_mean": 0.9821428571428572,
+    "recall_known_macro_std": 0.050507627227610555
+  }
+}

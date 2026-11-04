@@ -1,0 +1,10 @@
+image_id,known_labels,numpy_score_tp,numpy_score_fn,numpy_balanced_tp,numpy_balanced_fn,opencv_tp,opencv_fn,opencv_candidates
+moon_ap15_loc_c01,8,0,8,0,8,8,0,8195
+moon_ap15_loc_c02,9,0,9,0,9,9,0,8323
+moon_ap15_loc_c03,9,0,9,0,9,9,0,8438
+moon_lunokhod2_loc_c01,9,1,8,1,8,9,0,9040
+moon_lunokhod2_loc_c02,9,0,9,1,8,9,0,9086
+moon_marefrig_loc_c01,6,0,6,1,5,6,0,8259
+moon_marefrig_loc_c02,7,1,6,0,7,6,1,8521
+moon_marefrig_loc_c03,9,2,7,2,7,9,0,8866
+TOTAL,66,4,62,5,61,65,1,

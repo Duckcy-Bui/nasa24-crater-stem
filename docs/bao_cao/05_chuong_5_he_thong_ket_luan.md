@@ -1,4 +1,4 @@
-<!-- Quốc Anh duyệt kết luận S3-05 ngày 03/11/2026 theo yêu cầu trực tiếp; Đức chốt nội dung và bố cục toàn Chương 5. -->
+<!-- Đức chốt kết luận; Quốc Anh duyệt bản ghép S3-05. -->
 
 # Chương 5. Kết luận và hướng phát triển
 
@@ -18,8 +18,7 @@ Bảng 5.1 đối chiếu các mã ở Bảng 1.1. Kiểm thử đạt xác nh�
 
 : Bảng 5.1. Mức đáp ứng các mục tiêu Chương 1.
 
-Ba thí nghiệm ở mục 4.6 giữ cả kết quả chưa tốt: bỏ inverted làm STT 9 giảm 1/11 xuống 0/11; bốn biến thể tham số đều chạm trần 100 vòng, chỉ tìm lại 1/30 nhãn trên ba tuning (gộp 3,33 %; theo ảnh 3,03 ± 5,25 %). Gắn sáng–tối giữ nguyên Recall; bỏ texture/dedupe riêng giảm vòng nhưng không tăng số nhãn tìm lại. Chưa đủ căn cứ đổi cấu hình S2-15 đã chốt trên 18 tuning (10/174), là phạm vi khác với ba ảnh của S3-05. E1 không đánh giá được trên holdout thiếu hướng nắng; Mare chỉ mô tả, không dùng chọn tham số. Các lượt holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo và phạm vi số đo ở mục 4.6 và Phụ lục A–B.
-S3-05 (Bảng 4.4) cho thấy gắn sáng–tối giữ 1/20, lọc ngược làm mất cặp đúng; đổi tham số vẫn 1/30. Bỏ kết cấu/lọc trùng giảm 300 còn 155/284 vòng nhưng giữ 1/30, chưa khắc phục bỏ sót hay chứng minh giảm dương tính giả (false positive — FP). [CHỜ Quốc Anh duyệt kết luận S3-05.] Tham số trò chơi chốt theo tập điều chỉnh (tuning) 10/174; holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo ở Phụ lục A–B.
+S3-05 (Bảng 4.4) cho thấy gắn sáng–tối giữ 1/20, lọc ngược làm mất cặp đúng; đổi tham số vẫn 1/30. Bỏ kết cấu/lọc trùng giảm 300 còn 155/284 vòng nhưng giữ 1/30, chưa khắc phục bỏ sót hay chứng minh giảm dương tính giả (false positive — FP). Tham số trò chơi chốt theo tập điều chỉnh (tuning) 10/174; holdout sau lần đầu là đánh giá lặp. Lệnh tái tạo ở Phụ lục A–B.
 
 ## 5.2. Hạn chế
 

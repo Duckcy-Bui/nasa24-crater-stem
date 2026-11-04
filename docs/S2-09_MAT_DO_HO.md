@@ -30,7 +30,7 @@ S2-09 dùng cặp **Lunokhod 1 và Mare Frigoris** (đã thống nhất với H�
 
 Như vậy so sánh có kiểm soát được ánh sáng ở mức thô. Lunokhod 2 bị loại vì mosaic có nhiều dải ghép, vùng bóng lớn và địa hình núi.
 
-> Cập nhật 03/11: Quốc Anh đã xác nhận đổi cặp; trưởng nhóm đã đồng ý tại mục 6 biên bản S2-16, Chương 4 hiện dùng Lunokhod 1 – Mare Frigoris. 
+> Cập nhật 03/11: Quốc Anh đã xác nhận đổi cặp; trưởng nhóm đã đồng ý tại mục 6 biên bản S2-16, Chương 4 hiện dùng Lunokhod 1 – Mare Frigoris.
 
 ## 2. Phương pháp
 
@@ -94,6 +94,12 @@ Bảng máy đọc: [bang_dem.csv](evidence/s2-09/bang_dem.csv). Toàn bộ số
 *Hình 2. Số hố trên 100 km² theo bin √2.*
 
 ### 3.2. So mật độ
+
+> **S3-03 (02/11/2026).** Số trong tài liệu này là bản cũ. Kiểm tra S3-03 cho thấy bản đếm chưa đầy đủ và quy tắc loại vùng chưa giống nhau giữa hai vùng; bản đếm lại đang chờ duyệt ([S3-03_KIEM_TRA_MAT_DO.md](S3-03_KIEM_TRA_MAT_DO.md)).
+>
+> **Độ nhạy:** cùng bỏ góc [0, 0, 184, 244) ở Lunokhod 1 c01 thì D ≥ 424 m còn tỉ số 2,18, p = 0,12, kết luận không đổi.
+>
+> **Ngưỡng 424 m là phân tích thăm dò:** đã thử 4 ngưỡng và p = 0,09 là giá trị nhỏ nhất.
 
 | Từ D trở lên | Lunokhod 1: N (hố/km²) | Mare Frigoris: N (hố/km²) | Tỉ số | p (hai phía) |
 |---|---|---|---|---|

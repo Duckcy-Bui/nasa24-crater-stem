@@ -1,4 +1,3 @@
-<!-- Quốc Anh duyệt phần S3-05 ở mục 4.6 ngày 03/11/2026 theo yêu cầu trực tiếp; giữ các phần khác và chờ Tiến cung cấp CPU/RAM đúng máy đo. -->
 <!-- Quốc Anh duyệt bản ghép S3-05; Hưng chốt dữ liệu/thống kê; Tiến chốt đánh giá Hough. -->
 
 # Chương 4. Thực nghiệm và đánh giá
@@ -75,7 +74,6 @@ Báo $100\overline{R}\pm100s_R$ theo %, khác khoảng tin cậy. Mật độ/t�
 
 ## 4.6. Kết quả ba thí nghiệm S3-05
 
-Bảng 4.3 nêu ba câu hỏi: (a) so phương pháp, (b) khảo sát tham số, (c) điều kiện khó. Kết quả S3-05 ngày 01/11/2026 dùng cấu hình nền S2-15 và ba tuning STT 13, STT 9, STT 17 (`moon_ap16_m132732855l_c01`, `moon_ap16_m102064759r_c01`, `moon_ap16_m109134835l_c01`), có 9/11/10 nhãn chắc chắn. Mare (`moon_marefrig_loc_c01`) thuộc holdout chỉ mô tả. Hồ sơ `docs/evidence/s3-05/` giữ E1/E2/E3, cấu hình, 11 ảnh và JSON từng vòng; không trộn với kiểm luồng ngày 26/10 hoặc nhóm 3 ảnh/28 nhãn ở mục 4.7.
 Bảng 4.3 nêu ba câu hỏi (a/b/c). S3-05 chạy ngày 01/11/2026, Python 3.14.7; mỗi cấu hình một lượt, không warm-up. Nền S2-15: ngưỡng 0,35, bước r = 1 px, trần 100 vòng. Kết quả thay [kiểm luồng E1–E3 cũ](../evidence/s2-07/results.json).
 
 | Thí nghiệm và câu hỏi | Ảnh | Biến thể |
@@ -86,13 +84,6 @@ Bảng 4.3 nêu ba câu hỏi (a/b/c). S3-05 chạy ngày 01/11/2026, Python 3.1
 
 : Bảng 4.3. Thiết kế ba thí nghiệm.
 
-E1 so Hough cơ bản với nhánh chỉ gắn nhãn (hai nhánh giữ cùng vòng) và nhánh bỏ `inverted` để đo rủi ro mất hố. E2 đổi từng tham số; E3 áp dụng bỏ texture và lọc trùng riêng rẽ, không bật vào game. Lượt chạy dùng Windows 11 (build 26300), Python 3.14.7, NumPy 2.5.4, OpenCV 5.0.0 và một luồng OpenCV, khác môi trường mục 4.7. Chạy lại vào thư mục mới bằng `python -X utf8 -B scripts/s305_experiments.py --output outputs/s305_recheck`.
-
-**E1 — kết quả sáng–tối.** Hai ảnh đủ điều kiện là STT 13 và STT 9. Thô/gắn nhãn giữ 100 vòng mỗi ảnh, TP/N lần lượt 0/9 và 1/11: Recall_known gộp 1/20 = 5,00 %, trung bình theo ảnh 4,55 ± 6,43 %. Bỏ inverted còn 75/76 vòng nhưng chỉ 0/9 và 0/11. Cặp M61–C9 ở STT 9 (tâm lệch 2,828 px, bằng 0,4041 r_ref) bị loại nhầm; ảnh đối chiếu ở `E1/moon_ap16_m102064759r_c01.png` trong hồ sơ. STT 17 có góc tới 7,64° và Mare thiếu hướng nắng, đều có 100/100 vòng not_checked; không dùng chúng để so tác động sáng–tối hoặc gộp vào trung bình E1.
-
-**E2 — kết quả tham số.** Bảng 4.4 báo đủ bốn biến thể trên ba tuning; tất cả chạm trần 100 vòng. Mọi nhãn chắc chắn nằm trong dải bán kính cấu hình. SD là SD mẫu theo ảnh theo (4.1), không phải biến thiên giữa các lần chạy; các ảnh Apollo 16 có thể chồng mặt đất nên chỉ mô tả mẫu đã xét.
-
-**E3 — kết quả ảnh khó.** Trên STT 13/9/17, baseline có 100/100/100 vòng; bỏ texture còn 48/46/61, dedupe riêng còn 96/91/97. Cả ba nhánh vẫn TP/N = 0/9, 1/11, 0/10: gộp 1/30 = 3,33 %, theo ảnh 3,03 ± 5,25 %. Hai bộ lọc giữ cặp M61–C9 nhưng không khắc phục bỏ sót trên STT 13/STT 17; giảm vòng không chứng minh không mất hố chưa gán nhãn. Mare baseline có 100 vòng và 0/6; lớp máy gồm 27 rim, 4 shadow_edge, 69 texture, không phải 27 hố thật đã xác nhận. Mare không quét tham số/bộ lọc và không cộng vào trung bình tuning. Bộ ca chưa có nhãn riêng xác nhận hố chồng nhau nên không suy kết quả cho loại này.
 STT 13/9/17 có 9/11/10 nhãn; E1 chỉ so STT 13/9 đủ hướng nắng. Bảng 4.4 gộp TP/nhãn từ `docs/evidence/s3-05/` ([E1](../evidence/s3-05/E1.csv), [E2](../evidence/s3-05/E2.csv), [E3](../evidence/s3-05/E3.csv)), không báo trung bình ± SD. Tổng 30 nhãn khác bộ 28 nhãn mục 4.7. Hai bộ lọc E3 áp dụng riêng, không nối tiếp.
 
 | Phép so, phạm vi | Nền: vòng; TP/nhãn | Nhánh thay đổi: vòng; TP/nhãn |
@@ -104,23 +95,11 @@ STT 13/9/17 có 9/11/10 nhãn; E1 chỉ so STT 13/9 đủ hướng nắng. Bản
 
 : Bảng 4.4. S3-05: tổng vòng và TP/nhãn trên cùng nhóm ảnh. Đậm Recall_known cao nhất trong từng phép so, kể cả đồng hạng; giảm vòng chưa chứng minh giảm FP.
 
-**Đối chiếu với kiểm luồng ngày 26/10.** Khi đó chỉ chạy STT 17, E1 có 100/100 not_checked và E2 đều 0/10; đây là kiểm kỹ thuật, không thay phép chạy ba ảnh S3-05 ở Bảng 4.4.
-
-| Biến thể | STT 13: TP/N | STT 9: TP/N | STT 17: TP/N | Gộp (%) | Theo ảnh ± SD (%) |
-|---|---:|---:|---:|---:|---:|
-| Nền: ngưỡng 0,35; bước 1 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
-| `min_vote_ratio` = 0,30 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
-| `min_vote_ratio` = 0,40 | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
-| `radius_step` = 2 px | 0/9 | 1/11 | 0/10 | 3,33 | 3,03 ± 5,25 |
-
-: Bảng 4.4. S3-05 E2 ngày 01/11: mỗi biến thể có TP = 1, FN = 29 trên 30 nhãn tuning, 100 ứng viên/ảnh; không có Precision/F1 do nhãn thưa.
-
-Bốn biến thể không tăng số nhãn tìm lại; cùng Recall không có nghĩa mọi vòng giống nhau. Thời gian nền 9,36–9,95 s/ảnh và bước r=2 là 3,98–4,97 s/ảnh chỉ đo một lượt, không làm nóng/lặp, nên chưa kết luận tốc độ. Không đổi cấu hình S2-15 từ kết quả này. Nhãn mù STT 17 có 17/100 hố thật, nên Recall_known 0/10 không đồng nghĩa máy không tìm được vòng đúng nào.
 **(a) So phương pháp.** Gắn sáng–tối không đổi hình học, giữ 1/20; bỏ vòng ngược (`inverted`) làm mất M61–C9 trên STT 9: 1/11→0/11. Mô hình mục 2.3 chỉ hỗ trợ: mép bóng/địa hình có thể khác giả thiết, không đủ để loại hố. Vòng không khớp nhãn thưa chưa phải FP.
 
 **(b) Tham số.** Bốn cấu hình đều 1/30; cả 12 lượt chạm trần 100, nhãn vẫn trong dải r. Theo mục 2.2, đổi ngưỡng/bước r chưa khắc phục chọn nhiều vòng nhỏ; cùng Recall_known chưa phải cùng vòng. Bước r = 2 quét ít bán kính hơn nhưng một lượt chưa đủ kết luận tốc độ hoặc đổi cấu hình đã chốt.
 
-**(c) Điều kiện khó.** Hai bộ lọc chỉ bỏ ứng viên, không phục hồi hố Hough bỏ sót (mục 2.2/2.4): STT 13/17 vẫn 0/9, 0/10. Mare chỉ mô tả 0/6, không chọn bộ lọc trên holdout. Giảm vòng ở Bảng 4.4 chưa chứng minh giảm FP hoặc phát hiện hố chồng. [CHỜ Quốc Anh duyệt bản ghép kết quả S3-05.]
+**(c) Điều kiện khó.** Hai bộ lọc chỉ bỏ ứng viên, không phục hồi hố Hough bỏ sót (mục 2.2/2.4): STT 13/17 vẫn 0/9, 0/10. Mare chỉ mô tả 0/6, không chọn bộ lọc trên holdout. Giảm vòng ở Bảng 4.4 chưa chứng minh giảm FP hoặc phát hiện hố chồng.
 
 **Tiền xử lý.** Hình 4.1 giữ cùng ảnh/thang STT 13: Canny có 25.203 pixel biên, B8 còn 24.291; STT 17 còn 26.642; cả 26 ảnh: 20.949–35.590. Ngưỡng thấp/cao 63,6/159,0 (STT 13), 46,3/115,8 (STT 17), thấp hơn khoảng 27 %. P90 co ngưỡng nhưng vẫn nhiều kết cấu; mép bóng mạnh hơn vành. Pixel bão hòa STT 17/13: 11,1 %/3,2 %; cân bằng lược đồ thích nghi giới hạn tương phản (contrast limited adaptive histogram equalization — CLAHE) không phục hồi được.
 

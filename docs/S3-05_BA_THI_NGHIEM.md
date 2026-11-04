@@ -88,7 +88,7 @@ Script từ chối cấu hình game lệch snapshot, split sai phạm vi và th�
 
 Đã kiểm **17 test** liên quan: 4 test quy trình S3-05, 5 test S2-07, 6 test evaluation, 2 test S2-15. Đối chiếu tự động ba bảng với JSON, cặp ghép một–một, các nhánh lọc và mã băm; kiểm trực quan ảnh đại diện E1/E2/E3. Lượt đầu phát hiện chú thích ảnh đơn bị cắt; đã sửa bố cục và chạy lại toàn bộ hồ sơ. Lượt đầu được giữ riêng dưới `outputs/s305_initial_20261101/`, không dùng làm hồ sơ bàn giao.
 
-**Bàn giao kỹ thuật ban đầu (01/11/2026):** đã có ba bộ kết quả, cấu hình, bảng/ảnh và diễn giải kết quả tốt/chưa tốt;
+**Bàn giao kỹ thuật ban đầu (01/11/2026):** đã có ba bộ kết quả, cấu hình, bảng/ảnh và diễn giải kết quả tốt/chưa tốt; xác nhận của người phối hợp được theo dõi riêng tại mục 8.
 
 ## 7. Ghi chú sau khi merge (02/11/2026)
 
@@ -98,9 +98,10 @@ Tương tự, 6/43 SHA trong `source_and_input_sha256` (`src/contracts.py`, `src
 
 [validation.log](evidence/s3-05/validation.log) ghi đường dẫn tuyệt đối tới trình thông dịch trên máy chạy. Theo [quy tắc ẩn đường dẫn](evidence/s3-10/README.md#an-duong-dan-20261101), bốn dòng `COMMAND:` thay gốc môi trường Python bằng `<venv>`; lệnh, tham số và kết quả test giữ nguyên. File này không nằm trong `artifacts_sha256`. SHA-256 trước khi sửa: `4ca640a9c77feed55ac537db2012936bf05eb9df937462ece1173ce694d4ca96`; sau khi sửa: `a808f86a82e3ef3d3d036d0eec82096b31e30e67d4fb281345af9e89af02f405`.
 
-## 8. Ghi nhận xác nhận nghiệm thu (02/11/2026)
+## 8. Trạng thái xác nhận nghiệm thu (cập nhật 04/11/2026)
 
+Ngày 02/11, Quốc Anh báo trong cuộc trò chuyện rằng Tiến đã xác nhận S3-05. Đây là lời báo lại, không phải bình luận, commit hoặc chữ ký trực tiếp của Tiến trên PR hiện tại. Vì vậy **vẫn chờ Nguyễn Mạnh Tiến tự xác nhận nghiệm thu S3-05 trên PR này**; không ghi thay xác nhận của người phối hợp.
 
-Lượt review kỹ thuật cùng ngày: checker hợp đồng và 17 test đạt; 49/49 hash artifact, 43/43 hash nguồn/đầu vào khớp; tính lại độ đo của 30 nhánh khớp CSV/JSON và kiểm 11 PNG. Không chạy lại Hough trong lượt review này. Giữ giới hạn nhãn thưa, E1 không đánh giá được trên holdout và thời gian chỉ là chẩn đoán.
+Lượt review kỹ thuật ngày 02/11: checker hợp đồng và 17 test đạt; 49/49 hash artifact, 43/43 hash nguồn/đầu vào khớp; tính lại độ đo của 30 nhánh khớp CSV/JSON và kiểm 11 PNG. Không chạy lại Hough trong lượt review này. Các số hash là kết quả tại thời điểm kiểm, không phải tuyên bố mọi byte mã trên main mới vẫn giống lượt cũ.
 
-**Trạng thái hồ sơ S3-05:** đã ghi nhận người phối hợp xác nhận nghiệm thu theo thông tin của người phụ trách.
+Ngày 04/11, theo yêu cầu duyệt của Quốc Anh, giữ nguyên bản rút gọn mục 4.6 và kết luận Chương 5 từ main sau PR #45, chỉ bỏ hai dấu chờ duyệt của Quốc Anh; bỏ các khối bổ sung gây trùng. Việc Quốc Anh duyệt bản ghép không thay nghiệm thu của Tiến. Số liệu S2-09 cũ 47/32 hố chỉ là lịch sử; kiểm chéo bản đếm S3-03 mới ở PR #46 là việc riêng.

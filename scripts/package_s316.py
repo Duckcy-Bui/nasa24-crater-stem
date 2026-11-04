@@ -246,8 +246,19 @@ def package_commit(
     Kiểm hash/CRC và giữ nguồn snapshot; submission_ready vẫn False, không có công thức toán.
     """
     report_python = os.fspath(report_python)
+    # Resolve PATH before launching: Windows may prefer the parent Python executable.
+    # abspath below preserves venv symlinks, unlike Path.resolve().
+    if not os.path.dirname(report_python):
+        report_python = shutil.which(report_python) or report_python
     if os.path.dirname(report_python):
         report_python = os.path.abspath(report_python)
+    else:
+        # Windows tìm tên lệnh đơn ở thư mục của Python đang chạy trước PATH,
+        # nên tự tra PATH để chạy đúng venv người gọi chỉ định (không resolve symlink).
+        found = shutil.which(report_python)
+        if found is None:
+            raise FileNotFoundError(f"Không tìm thấy report_python trên PATH: {report_python}")
+        report_python = os.path.abspath(found)
     repo, output = repo.resolve(), output.resolve()
     if output.exists():
         raise FileExistsError(f"Thư mục đầu ra đã tồn tại, không ghi đè: {output}")
