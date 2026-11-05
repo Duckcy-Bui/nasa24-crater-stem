@@ -235,6 +235,7 @@ def show_statistics(result: dict, metadata: dict) -> None:
         st.bar_chart(
             {"Đường kính (m)": labels, "Số ứng viên": histogram["counts"]}, x="Đường kính (m)",
             y="Số ứng viên", color=COLORS["machine"], height=220,
+            sort=False,  # giữ thứ tự bin tăng dần; nhãn chuỗi sẽ bị sắp sai
         )
     for note in limit["captions"]:
         st.caption(note)
