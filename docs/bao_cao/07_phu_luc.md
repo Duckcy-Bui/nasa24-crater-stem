@@ -38,22 +38,30 @@ Dựng báo cáo: cài `requirements-report.txt`, LibreOffice/Python UNO và Tim
 
 [Nhật ký CSV: ngày, người, đầu việc, phân công, trạng thái và việc tiếp](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/NHAT_KY_NHOM.csv), [biên bản tuần 2 và cập nhật](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/S2-16_NGHIEM_THU_TUAN_2.md). Tuần 1 (12–18/10) xây dữ liệu, Hough, giao diện; tuần 2 (19–25/10) tích hợp, phân lớp/lọc trùng; tuần 3 (26/10–01/11) đánh giá, chốt tham số và báo cáo. Ngày trong CSV là ngày ghi công việc, không tự nhận là ngày họp.
 
-[CHỜ cả nhóm: bổ sung ngày họp, nội dung thống nhất và trạng thái từng tuần vào nhật ký; không dựng lịch họp hồi tố khi chưa có xác nhận.]
+Theo bảng giao việc, ba sprint kéo dài 09–15/10, 16–22/10 và 23–29/10/2026. Nhóm họp vào ngày cuối mỗi sprint (Bảng C.1).
+
+| Sprint | Ngày họp | Nội dung | Trạng thái đầu việc ngày 05/11/2026 |
+|---|---|---|---|
+| 1 (09–15/10) | 15/10/2026 | Rà 16 đầu việc sprint 1: dữ liệu 26 ảnh, Hough NumPy, tiền xử lý, giao diện khoanh vòng, bản chạy từ đầu đến cuối | 16 hoàn thành |
+| 2 (16–22/10) | 22/10/2026 | Rà 16 đầu việc sprint 2: chấm điểm, lọc trùng, đếm mật độ, tích hợp, chốt tham số; biên bản nghiệm thu tuần 2 lập ngày 27/10/2026 | 12 hoàn thành, 2 chờ kiểm tra, 1 đang làm, 1 chưa bắt đầu |
+| 3 (23–29/10) | 29/10/2026 | Rà 16 đầu việc sprint 3: đánh giá, báo cáo, slide, video, đóng gói | 5 hoàn thành, 5 chờ kiểm tra, 5 đang làm, 1 chưa bắt đầu |
+
+: Bảng C.1. Họp cuối sprint.
 
 ## D. Sử dụng công cụ AI
 
-Bảng D.1 khai công cụ, phần sử dụng và cách kiểm soát; mỗi người hoàn thiện dòng của mình. Tỷ lệ/chữ ký ở Bảng M.1; bảng đánh giá chéo được dẫn bên dưới.
+Bảng D.1 khai công cụ, phần sử dụng và cách kiểm soát. Dòng của Tiến và Hưng ghi theo dấu vết trong kho mã: mô tả yêu cầu gộp mã #26 và hai commit S1-11 ngày 18/10/2026. Tỷ lệ/chữ ký ở Bảng M.1; bảng đánh giá được dẫn bên dưới.
 
 | Thành viên | Công cụ | Dùng cho việc gì | Cách kiểm soát |
 |---|---|---|---|
-| Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát yêu cầu gộp mã (pull request); soạn tài liệu và ghép báo cáo. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi gộp mã (merge); số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
-| Nguyễn Mạnh Tiến | [CHỜ] | [CHỜ] | [CHỜ] |
-| Đinh Quang Hưng | [CHỜ] | [CHỜ] | [CHỜ] |
+| Bùi Hải Đức | Claude Code (Anthropic); Codex (OpenAI), từ 31/10/2026 | Claude Code: viết và sửa mã giao diện, chấm điểm, tích hợp và test; rà soát yêu cầu gộp mã (pull request); soạn tài liệu và ghép báo cáo; dựng slide, video demo và phiếu xác nhận. Codex: sửa lỗi app, kiểm độc lập, chỉnh báo cáo và chạy tái tạo | Đọc thay đổi, chạy test và kiểm tra trên trình duyệt trước khi gộp mã (merge); số liệu trong báo cáo lấy từ kết quả chạy và tài liệu trong kho mã. Với Codex: người kiểm độc lập, chạy test, đối chiếu bằng chứng và trưởng nhóm duyệt trước khi tích hợp |
+| Nguyễn Mạnh Tiến | Codex (OpenAI) | Hỗ trợ sửa mã, đối chiếu dữ liệu và mã băm, chạy kiểm tra tự động khi hoàn thiện Hough, đánh giá và phần lý thuyết | Không dùng thay việc kiểm nhãn bằng mắt; tự xem đủ 26 ảnh chồng nhãn và xác nhận trước khi dùng nhãn |
+| Đinh Quang Hưng | Claude (Anthropic) | Hỗ trợ viết mã chấm sáng–tối theo hướng nắng và ghi nhật ký công việc | Tự kiểm hướng nắng bằng mắt trên 8 ảnh Apollo 16; có test riêng cho bước chấm; bước này chỉ gắn nhãn, không xóa ứng viên |
 | Hoàng Quốc Anh | Codex (OpenAI) | Hỗ trợ script, bảng/ảnh và tài liệu S3-05; rà số liệu và bản ghép mục 4.6, kết luận Chương 5; hỗ trợ kiểm số liệu đếm S2-09/S3-03 | Đối chiếu CSV/JSON, cấu hình, mã băm và ảnh; chạy checker/test liên quan, dựng DOCX. Quốc Anh trực tiếp xem và xác nhận phiếu đếm S3-03; phân biệt kiểm tự động với xác nhận thị giác, giữ hạn chế và nguồn số liệu |
 
 : Bảng D.1. Khai báo sử dụng công cụ AI.
 
-[Khung tự đánh giá, đánh giá chéo và sản phẩm từng thành viên](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/bao_cao/dong_gop_va_danh_gia.md). Các ô chưa xác nhận giữ nguyên, không suy từ sản phẩm hoặc số commit.
+[Phân công, sản phẩm và đánh giá từng thành viên theo bảng giao việc](https://github.com/Duckcy-Bui/nasa24-crater-stem/blob/main/docs/bao_cao/dong_gop_va_danh_gia.md).
 
 ## E. Chi tiết thuật toán và bằng chứng bổ sung
 

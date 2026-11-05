@@ -94,16 +94,16 @@ Ví dụ 5×5 đã trở lại Chương 2; Chương 3 có chín khối giả mã
 
 Phụ lục A hướng dẫn chạy; B dẫn mã kiểm ví dụ; C tóm tắt tuần và dẫn nhật ký; D khai báo AI; E chỉ dẫn liên kết. Chi tiết cũ được giữ trong [chi_tiet_bo_sung.md](chi_tiet_bo_sung.md), đóng góp/đánh giá chéo trong [dong_gop_va_danh_gia.md](dong_gop_va_danh_gia.md), hai file không ghép vào PDF. Các file mới đã vào `main` qua PR #43.
 
-Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ main, bỏ hai dấu chờ duyệt theo yêu cầu của Quốc Anh và điền khai báo AI của Quốc Anh. Còn **8 dấu chờ trong bản ghép**, cùng **17 dấu chờ** ở file đóng góp/đánh giá chéo được dẫn từ phụ lục; việc chuyển file không có nghĩa đã hoàn thành:
+Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ main, bỏ hai dấu chờ duyệt theo yêu cầu của Quốc Anh và điền khai báo AI của Quốc Anh. Cập nhật 05/11/2026: theo quyết định của Đức (S3-16 mục 2.7), bản ghép và file đóng góp/đánh giá **không còn dấu chờ**:
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
-| Mở đầu | 1 | Cả nhóm thống nhất tỷ lệ tổng 100 %, ký cam đoan/phân công; không điền thay |
+| Mở đầu | 0 | Tỷ lệ 25 % mỗi người theo 12 đầu việc/người; Đức ký ô của mình, ô của Tiến, Hưng, Quốc Anh để trống cho ký tay trên bản in |
 | Chương 4 | 0 | Tiến gửi ngày 04/11/2026: RAM 12 GB; CPU giữ đúng mã hồ sơ đo ghi (`Intel64 Family 6 Model 154 Stepping 4`), không suy ra tên thương mại |
 | Chương 5 | 0 | Đã xử lý dấu chờ duyệt kết luận S3-05 của Quốc Anh; Đức chốt toàn chương |
-| Phụ lục C | 1 | Cả nhóm: ngày họp thật, nội dung/phân công/trạng thái; ngày công việc CSV chưa phải biên bản họp |
-| Phụ lục D | 6 | Còn Tiến và Hưng; dòng Quốc Anh đã điền |
-| File đóng góp/đánh giá chéo | 17 | Cả nhóm xác nhận đóng góp, tỷ lệ, tự/đánh giá chéo; giữ nguyên các ô cá nhân |
+| Phụ lục C | 0 | Đức xác nhận nhóm họp ngày cuối mỗi sprint: 15/10, 22/10, 29/10/2026 (Bảng C.1); ngày trong CSV vẫn là ngày ghi công việc |
+| Phụ lục D | 0 | Dòng Tiến và Hưng ghi theo dấu vết trong repo (mô tả PR #26; commit S1-11 `c3452f4`, `6f1b5f0`); hai bạn bổ sung nếu dùng thêm công cụ |
+| File đóng góp/đánh giá chéo | 0 | Đức đánh giá theo bảng giao việc ngày 05/11/2026; ô xác nhận của ba bạn ký tay |
 
 Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 380 test Python và 6 bộ JavaScript, đo ngày 04/11/2026 trên nhánh dùng số S3-03 (nền main `b091f96` và PR #46); so với 370 thêm 2 test đóng gói trên Windows (PR #48) và 8 test S3-03. Trước đó 370 = 342 + 5 test trung bình ± SD, 16 test xuất bảng Chương 4 và 7 test liên kết công khai. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 

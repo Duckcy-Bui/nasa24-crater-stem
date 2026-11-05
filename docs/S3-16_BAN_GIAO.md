@@ -32,10 +32,10 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | PDF 30–60 trang (Q, Hình thức; Định dạng văn bản) | [README báo cáo mục 5](bao_cao/README.md) ghi bản rút gọn trước đó 56 trang; `validate_reports` bắt buộc PDF, DOCX là bản chỉnh sửa kèm theo | **Chưa biết** bản PDF cuối. Người phụ trách báo cáo kiểm số trang, chương, lề và phụ lục; Đức nhận bản đã chốt |
 | Mã nguồn dưới dạng repo Git (Q, Hình thức) | [Repo Git](https://github.com/Duckcy-Bui/nasa24-crater-stem), [README](../README.md), `ma_nguon/` từ `git archive`; gói ghi URL repo và SHA | **Đạt** khả năng truy cập nguồn. Archive không mang lịch sử Git; lịch sử đối chiếu riêng ở 2.3 |
 | Ứng dụng demo có giao diện (Q, Hình thức) | [app.py](../app.py), Streamlit, bundle ngoại tuyến và lệnh chạy trong hướng dẫn gói; [S2-13](S2-13_TICH_HOP.md) | **Đạt** phần giao diện/mã chạy; phạm vi bốn chức năng còn lệch ở 2.4. Đức kiểm demo bản cuối |
-| 15–20 slide (Q, Hình thức) | Chưa nhận tệp slide làm đầu vào; script có `--slides` và ô `san_pham_bo_sung/slide/` | **Lệch** bộ nộp hiện tại; Hưng giao tệp và tự xác nhận số slide/phân vai |
-| Video demo 5–7 phút (Q, Hình thức) | Chưa nhận tệp video; script có `--video` và ô `san_pham_bo_sung/video/` | **Lệch** bộ nộp hiện tại; Quốc Anh giao tệp, kiểm thời lượng và nội dung |
-| Bảng đánh giá chéo thành viên (Q, Hình thức) | [Bảng đánh giá chéo](bao_cao/dong_gop_va_danh_gia.md) còn các ô chờ; `--peer-review` nhận bản được cả nhóm hoàn thiện | **Lệch**; từng người tự đánh giá, nhận đánh giá của bạn và xác nhận, không ký thay |
-| Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [Bảng M.1 ở phần mở đầu](bao_cao/00_mo_dau.md) đã có, còn trống tỷ lệ và chữ ký; `--signed-assignment` nhận bản có chữ ký thật | **Lệch** phần tỷ lệ/chữ ký; bốn người tự xác nhận. Không coi bình luận S2-16 là đủ chữ ký của bảng cuối |
+| 15–20 slide (Q, Hình thức) | Deck 19 slide (18 slide chính và 1 slide phụ ví dụ 5×5), xuất PDF ngày 05/11/2026; đưa vào gói bằng `--slides` | **Đạt** về số slide; người trình bày từng phần duyệt lại khi tổng duyệt |
+| Video demo 5–7 phút (Q, Hình thức) | Video 6:01 quay app chạy cục bộ (mã app giống main), phụ đề tiếng Việt đốt vào hình, chưa có giọng đọc; kèm `.srt` và lời thoại để thu giọng; đưa vào gói bằng `--video` | **Đạt** thời lượng, đủ bốn chức năng và một ảnh khó; chưa có giọng đọc. Quốc Anh kiểm và thu giọng nếu cần |
+| Bảng đánh giá chéo thành viên (Q, Hình thức) | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md): Đức đánh giá cả bốn người theo bảng giao việc ngày 05/11/2026; `--peer-review` nhận trang 2 của phiếu xác nhận | **Theo quyết định 05/11** (mục 2.7). Đây là đánh giá của trưởng nhóm, chưa phải tự đánh giá của từng người; ô xác nhận của ba bạn ký tay |
+| Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [Bảng M.1 ở phần mở đầu](bao_cao/00_mo_dau.md) ghi tỷ lệ 25 % mỗi người và chữ ký của Đức; `--signed-assignment` nhận trang 1 của phiếu xác nhận | **Còn chữ ký tay** của Tiến, Hưng, Quốc Anh trên bản in (mục 2.7). Không ai ký thay |
 
 ### 2.2. Bảo vệ và vai trò
 
@@ -112,8 +112,14 @@ Tên cũ `BaoCao_Nhom2_NASA24.pdf`/`.docx` là quy ước nội bộ từ commit
 | Điểm | Quyết định | Hệ quả |
 |---|---|---|
 | Tên tệp nộp | **`BTL_XLA`** | Báo cáo dựng ra `BTL_XLA.pdf` và `BTL_XLA.docx`; gói bàn giao là thư mục `BTL_XLA/`, `BTL_XLA.zip` và `BTL_XLA.zip.sha256`. Commit nguồn vẫn ghi trong `manifest.json` và `result.json` |
-| Cơ cấu nhóm | **Nhóm bốn người được chấp nhận** | Chương 1 và Chương 5 ghi cơ cấu này đã được chấp nhận; Bảng M.1 giữ cách gộp vai trò. Tỷ lệ, chữ ký và đánh giá chéo vẫn do từng thành viên tự điền |
+| Cơ cấu nhóm | **Nhóm bốn người được chấp nhận** | Chương 1 và Chương 5 ghi cơ cấu này đã được chấp nhận; Bảng M.1 giữ cách gộp vai trò |
 | Nơi nộp, hạn nộp | **Không cần ghi** trong tài liệu này | Bỏ khỏi danh sách chờ ở mục 5 |
+| Tỷ lệ đóng góp | **25 % mỗi người**, vì mỗi người được giao 12 đầu việc | Bảng M.1 và Bảng 2 ghi 25 % |
+| Chữ ký | **Đức ký ô của mình**; ô của Tiến, Hưng, Quốc Anh để trống | Ba bạn ký tay trên bản in; không ai ký thay |
+| Đánh giá chéo | **Đức đánh giá theo bảng giao việc** | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md) ghi số đầu việc theo trạng thái và nhận xét của trưởng nhóm |
+| Ngày họp | **Ngày cuối mỗi sprint**: 15/10, 22/10, 29/10/2026 | Phụ lục C, Bảng C.1 |
+| Phần làm thay | **Video demo S3-13 và slide phụ ví dụ 5×5** do Claude dựng theo yêu cầu của Đức | Phụ lục D dòng của Đức ghi việc này; Quốc Anh và Tiến kiểm lại phần tương ứng |
+| Khai báo AI của Tiến, Hưng | **Ghi theo dấu vết trong repo** (mô tả PR #26; commit S1-11 `c3452f4`, `6f1b5f0`) | Phụ lục D; hai bạn bổ sung nếu dùng thêm công cụ |
 
 ## 3. Sản phẩm và xác nhận thành viên
 
