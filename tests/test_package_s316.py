@@ -37,7 +37,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--out", type=Path)
 out = parser.parse_args().out
 text = (Path(__file__).resolve().parents[1] / "README.md").read_text()
-with zipfile.ZipFile(out / "BaoCao_Nhom2_NASA24.docx", "w") as z:
+with zipfile.ZipFile(out / "BTL_XLA.docx", "w") as z:
     z.writestr("[Content_Types].xml", "<Types/>")
     z.writestr("word/document.xml", "<document>" + text + "</document>")
 PDF_LINE
@@ -52,7 +52,7 @@ def snapshot(*, missing_pdf=False, bad_bundle=False, failed_build=False, expecte
     manifest = {"archive": {"filename": "bundle.zip", "bytes": len(bundle),
                             "sha256": "wrong" if bad_bundle else hashlib.sha256(bundle).hexdigest()},
                 "files": {"crop.fixture": {"bytes": 19, "sha256": hashlib.sha256(b"tiny bundle fixture").hexdigest()}}}
-    pdf_line = "pass" if missing_pdf else '(out / "BaoCao_Nhom2_NASA24.pdf").write_bytes(b"%PDF-1.4\\n" + text.encode() + b"\\n%%EOF\\n")'
+    pdf_line = "pass" if missing_pdf else '(out / "BTL_XLA.pdf").write_bytes(b"%PDF-1.4\\n" + text.encode() + b"\\n%%EOF\\n")'
     builder = "raise SystemExit(9)\n" if failed_build else BUILDER.replace("PDF_LINE", pdf_line)
     if expected_prefix is not None:
         builder = ("import sys\nfrom pathlib import Path\n"
@@ -147,7 +147,7 @@ class PackageTests(unittest.TestCase):
             result = self.build(root)
             directory = root / "output" / result["package"]
             self.assertEqual((directory / "ma_nguon/README.md").read_text(), "committed snapshot")
-            self.assertIn(b"committed snapshot", (directory / "bao_cao/BaoCao_Nhom2_NASA24.pdf").read_bytes())
+            self.assertIn(b"committed snapshot", (directory / "bao_cao/BTL_XLA.pdf").read_bytes())
             self.assertFalse((directory / "ma_nguon/data/processed").exists())
             manifest = packager.verify_payload(directory)
             self.assertEqual(manifest["source_commit"], COMMIT)

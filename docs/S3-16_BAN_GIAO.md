@@ -43,7 +43,7 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 |---|---|---|
 | 20 phút: 12 trình bày, 3 demo, 5 vấn đáp (Q, Hình thức) | Hưng điều phối tổng duyệt S3-15, ghi thời gian từng phần; Đức chuẩn bị bản demo dự phòng. Chưa có biên bản tổng duyệt bản cuối | **Chưa biết** |
 | Giảng viên chỉ định người trả lời; mỗi người hiểu cả phần bạn (Q, Hình thức) | Bảng mục 3 bổ sung xác nhận đọc chéo; tập trả lời câu hỏi về Hough, tiền xử lý, dữ liệu, đánh giá, game và giới hạn | **Chưa biết**; không khóa người trả lời theo phân vai slide |
-| Nhóm 5 người/5 vai trò; được điều chỉnh vai trò nhưng ghi rõ trong đề cương (Q, Quy định chung; Cơ cấu 5 vai trò) | [PHAN_CONG](PHAN_CONG.md) chỉ có bốn thành viên | **Lệch**; Đức xin giảng viên xác nhận cơ cấu bốn người và cách gộp vai trò, không tự thêm thành viên |
+| Nhóm 5 người/5 vai trò; được điều chỉnh vai trò nhưng ghi rõ trong đề cương (Q, Quy định chung; Cơ cấu 5 vai trò) | [PHAN_CONG](PHAN_CONG.md) chỉ có bốn thành viên | **Lệch, đã được chấp nhận**: Đức xác nhận ngày 05/11/2026 nhóm bốn người được chấp nhận (mục 2.7); giữ cách gộp vai trò ở Bảng M.1, không thêm thành viên |
 
 ### 2.3. Mã nguồn và liêm chính
 
@@ -89,11 +89,11 @@ Kết quả S3-05 đã có trong repo qua PR #38, còn chờ chủ phần ghép 
 
 Chọn điểm hạ cánh, quản lý tiền đồn và bản tiếng Việt ngoại tuyến nằm ở mục **ý tưởng phát triển tiếp** của N24, không cộng thành chức năng bắt buộc mới.
 
-### 2.5. Thông tin vẫn chờ giảng viên
+### 2.5. Tên tệp, nơi nộp và hạn nộp
 
-Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**. Đức cần nhận thông báo chính thức về hệ thống/người nhận, ngày giờ/múi giờ và tên ZIP/PDF/slide/video. Các nội dung bảng phân công/chữ ký và đánh giá chéo đã có yêu cầu; nếu học phần dùng biểu mẫu riêng, xin đúng mẫu. Không dùng hạn sprint làm hạn chính thức. Người phụ trách báo cáo đối chiếu thêm cấu trúc phụ lục A/B/C, định dạng và chương theo Q; tài liệu này không sửa nguồn báo cáo.
+Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**. Ngày 05/11/2026 Đức chốt tên tệp `BTL_XLA` và báo không cần ghi nơi nộp, hạn nộp trong tài liệu này (mục 2.7). Các nội dung bảng phân công/chữ ký và đánh giá chéo đã có yêu cầu; nếu học phần dùng biểu mẫu riêng, xin đúng mẫu. Không dùng hạn sprint làm hạn chính thức. Người phụ trách báo cáo đối chiếu thêm cấu trúc phụ lục A/B/C, định dạng và chương theo Q; tài liệu này không sửa nguồn báo cáo.
 
-`BaoCao_Nhom2_NASA24.pdf`/`.docx` là **quy ước nội bộ**, do [build_report.py](../scripts/build_report.py) đặt từ commit `f3366c5` ngày 27/10/2026; hai tài liệu không yêu cầu tên này. Chờ giảng viên xác nhận tên tệp và nơi nộp. Các lệch nhóm bốn người, 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận. Cách xử lý `results/` và phạm vi Đề 24 đã chốt ở mục 2.6.
+Tên cũ `BaoCao_Nhom2_NASA24.pdf`/`.docx` là quy ước nội bộ từ commit `f3366c5` ngày 27/10/2026. Từ ngày 05/11/2026, [build_report.py](../scripts/build_report.py) và [package_s316.py](../scripts/package_s316.py) dùng tên `BTL_XLA` theo mục 2.7. Nhóm bốn người đã được chấp nhận (mục 2.7). Các lệch 8 tuần, vị trí `results/`, mức bao phủ bảng kết quả Chương 4 còn chờ bản cuối và phạm vi Đề 24 cần Đức chốt cách xử lý; không tự coi là ngoại lệ đã được chấp nhận. Cách xử lý `results/` và phạm vi Đề 24 đã chốt ở mục 2.6.
 
 <a id="26-quyet-dinh-04-11"></a>
 
@@ -106,6 +106,14 @@ Hai tài liệu không ghi **nơi nộp, hạn nộp hay quy cách tên tệp**.
 | Lệch Đề 24: thẻ hiện khi tìm thấy (4), Sao Hỏa CTX/HiRISE, Precision so danh mục, khảo sát ≥10 học sinh | **Giữ là hạn chế**, không làm thêm trước khi nộp | Báo cáo đã nêu đủ ở [Chương 5 mục 5.2](bao_cao/05_chuong_5_he_thong_ket_luan.md); slide và video trình bày đúng như vậy, không mô tả là đã đạt |
 | Vị trí kết quả (`results/`) | **Không tạo** `results/`; kết quả giữ ở `docs/evidence/` | Không đổi đường dẫn trong manifest/hash, test và báo cáo; bảng ánh xạ ở mục 2.3 |
 | Số đếm mật độ hai vùng | **Dùng bản đếm S3-03** ([PR #46](https://github.com/Duckcy-Bui/nasa24-crater-stem/pull/46)) thay bản S2-09, **sau khi** Quốc Anh kiểm chéo và tự xác nhận trên PR #46 | Cập nhật Bảng 4.8, Hình 4.4, câu chữ mục 4.8, Bảng 5.1 hàng M3 và dữ liệu so sánh của app; tái tạo lượt mới, giữ nguyên hồ sơ S3-10 lịch sử. Chưa có xác nhận thì giữ số S2-09 |
+
+### 2.7. Quyết định của trưởng nhóm ngày 05/11/2026
+
+| Điểm | Quyết định | Hệ quả |
+|---|---|---|
+| Tên tệp nộp | **`BTL_XLA`** | Báo cáo dựng ra `BTL_XLA.pdf` và `BTL_XLA.docx`; gói bàn giao là thư mục `BTL_XLA/`, `BTL_XLA.zip` và `BTL_XLA.zip.sha256`. Commit nguồn vẫn ghi trong `manifest.json` và `result.json` |
+| Cơ cấu nhóm | **Nhóm bốn người được chấp nhận** | Chương 1 và Chương 5 ghi cơ cấu này đã được chấp nhận; Bảng M.1 giữ cách gộp vai trò. Tỷ lệ, chữ ký và đánh giá chéo vẫn do từng thành viên tự điền |
+| Nơi nộp, hạn nộp | **Không cần ghi** trong tài liệu này | Bỏ khỏi danh sách chờ ở mục 5 |
 
 ## 3. Sản phẩm và xác nhận thành viên
 
@@ -151,14 +159,14 @@ Nếu Python dựng báo cáo nằm ở venv khác, thêm `--report-python <đư
 
 ```text
 outputs/s316_<phiên-bản>/
-  NASA24_Nhom2_<SHA>/
+  BTL_XLA/
     ma_nguon/                 # đúng tệp tracked của commit, gồm README và bundle
     bao_cao/                  # PDF bắt buộc, DOCX kèm theo, dựng cùng commit
     san_pham_bo_sung/         # slide/, video/, danh_gia_cheo/, phan_cong_ky/
     HUONG_DAN_BAN_GIAO.md
     manifest.json             # SHA-256/kích thước mọi file trừ chính manifest
-  NASA24_Nhom2_<SHA>.zip
-  NASA24_Nhom2_<SHA>.zip.sha256
+  BTL_XLA.zip
+  BTL_XLA.zip.sha256
   build_report.log
   report_build/               # đầu ra dựng và tệp trung gian để kiểm
   result.json
@@ -176,8 +184,8 @@ Cập nhật kiểm kỹ thuật 04/11/2026: [biên bản S3-14](S3-14_KIEM_TRA_
 
 ## 5. Kiểm tra cuối
 
-- [ ] Đức đã nhận nơi nộp, hạn/múi giờ và quy cách tên tệp từ giảng viên; xác nhận cơ cấu bốn người.
-- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên. Đề 24, `results/` và số mật độ đã chốt ở mục 2.6; nhóm bốn người còn chờ giảng viên.
+- [x] Tên tệp `BTL_XLA` và cơ cấu bốn người: Đức chốt ngày 05/11/2026 (mục 2.7). Nơi nộp và hạn nộp: Đức báo không cần ghi trong tài liệu này.
+- [ ] Các lệch mục 2 có hướng xử lý được Đức ghi rõ; không biến hạn chế đã nêu thành tiêu chí đạt hoặc miễn trừ của giảng viên. Đề 24, `results/` và số mật độ đã chốt ở mục 2.6; nhóm bốn người và tên tệp đã chốt ở mục 2.7.
 - [ ] Mã/config/bundle và báo cáo cùng SHA đã chốt; phần đánh giá bị ảnh hưởng bởi thay đổi đã kiểm lại.
 - [ ] PDF cuối 30–60 trang, mở được và được người phụ trách báo cáo kiểm chương/lề/định dạng; DOCX kèm theo; hết dấu chờ chưa giải quyết, các tác giả xác nhận bản sau rút gọn và bằng chứng từng người tham gia phân tích kết quả Chương 4.
 - [ ] Đủ slide 15–20, video 5–7 phút, bảng đánh giá chéo và bảng phân công có công việc/file mã/mục báo cáo/tỷ lệ/chữ ký thật; manifest không còn ô thiếu file, mọi nội dung đã được chủ phần kiểm.

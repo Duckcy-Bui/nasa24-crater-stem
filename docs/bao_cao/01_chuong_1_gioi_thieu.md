@@ -48,7 +48,7 @@ Hệ thống chọn giải pháp hình học có thể kiểm chứng bằng ma 
 
 Bộ hiện tại gồm **26 ảnh cắt từ 16 sản phẩm LROC**, 15 ảnh 20 m/px và 11 ảnh Apollo 16 ở 2 m/px. Tổng 241 nhãn gồm **240 nhãn chắc chắn và 1 nhãn chưa chắc chắn**. Đây là nhãn thưa (sparse labels): chỉ đo tỷ lệ tìm lại nhãn đã biết (Recall_known), chưa đo Precision/F1 toàn ảnh và chưa chiếu danh mục Robbins lên ảnh. Bản browse 8 bit phục vụ minh họa hình học, không phải phép đo quang học định lượng [@lroc_rdrsis].
 
-Các lệch so với đề được giữ rõ: chỉ có Mặt Trăng, **chưa có Sao Hỏa**; chưa có Precision theo danh mục; thẻ phủ 21/26 ảnh theo vùng, **chưa hiện khi tìm thấy thiết bị** vì vị trí nằm ngoài ô cắt. Nhóm có **4 người thay vì 5** theo Quy định BTL Xử lý ảnh [@quydinh_btl]; phân công gộp vai trò ở Bảng M.1, chưa có căn cứ coi đây là ngoại lệ đã được giảng viên chấp thuận.
+Các lệch so với đề được giữ rõ: chỉ có Mặt Trăng, **chưa có Sao Hỏa**; chưa có Precision theo danh mục; thẻ phủ 21/26 ảnh theo vùng, **chưa hiện khi tìm thấy thiết bị** vì vị trí nằm ngoài ô cắt. Nhóm có **4 người thay vì 5** theo Quy định BTL Xử lý ảnh [@quydinh_btl]; cơ cấu bốn người đã được chấp nhận, phân công gộp vai trò ở Bảng M.1.
 
 Ngày 31/10/2026, trưởng nhóm quyết định bỏ thử người chơi thật và khảo sát để ưu tiên hoàn thành dự án. Tiêu chí ít nhất 10 học sinh **chưa đạt**; nhóm không có số liệu về hứng thú hay hiểu bài. Ngoài ra, không xác định tuổi địa chất tuyệt đối, không tự nhận ứng viên máy là hố thật, chưa bật phân lớp/lọc trùng mặc định và chưa làm chế độ chọn bãi đáp hay quản lý tiền đồn.
 
