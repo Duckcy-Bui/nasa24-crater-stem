@@ -20,8 +20,8 @@ Sprint 3 có thêm: PR #38 và #47 (Quốc Anh: ba thí nghiệm S3-05, duyệt 
 | Thành viên | Tỷ lệ đóng góp | Đầu việc theo bảng giao việc (05/11/2026) | Đánh giá của trưởng nhóm | Xác nhận |
 |---|---|---|---|---|
 | Bùi Hải Đức | 25 % | 12 việc: 8 hoàn thành; chờ kiểm tra S2-16, S3-08; đang làm S3-12, S3-16 | Hoàn thành phạm vi, khung kho mã, giao diện, chấm điểm và tích hợp; ghép báo cáo, dựng slide, đóng gói; còn chốt bộ nộp | Bùi Hải Đức |
-| Nguyễn Mạnh Tiến | 25 % | 12 việc: 10 hoàn thành; đang làm S2-01, S3-14 | Hough NumPy, ví dụ tính tay, đối chiếu OpenCV, chốt tham số và lệnh tái tạo; S3-14 còn chờ bộ nộp cuối | ____ |
-| Đinh Quang Hưng | 25 % | 12 việc: 8 hoàn thành; chờ kiểm tra S2-09, S3-07, S3-11; đang làm S3-15 | Tiền xử lý B0–B8, sáng–tối, lọc trùng, đếm và so mật độ; Chương 2–3 phần của mình; tổng duyệt S3-15 chưa tổ chức | ____ |
-| Hoàng Quốc Anh | 25 % | 12 việc: 7 hoàn thành; chờ kiểm tra S3-05, S3-13; đang làm S3-09; chưa bắt đầu S2-14, S3-01 | Bộ 26 ảnh, nhãn, chia tập, ba thí nghiệm, thẻ khoa học; khảo sát học sinh (S2-14, S3-01) chưa làm, giữ là hạn chế | ____ |
+| Nguyễn Mạnh Tiến | 25 % | 12 việc: 10 hoàn thành; đang làm S2-01, S3-14 | Hough NumPy, ví dụ tính tay, đối chiếu OpenCV, chốt tham số và lệnh tái tạo; S3-14 còn chờ bộ nộp cuối | Nguyễn Mạnh Tiến |
+| Đinh Quang Hưng | 25 % | 12 việc: 8 hoàn thành; chờ kiểm tra S2-09, S3-07, S3-11; đang làm S3-15 | Tiền xử lý B0–B8, sáng–tối, lọc trùng, đếm và so mật độ; Chương 2–3 phần của mình; tổng duyệt S3-15 chưa tổ chức | Đinh Quang Hưng |
+| Hoàng Quốc Anh | 25 % | 12 việc: 7 hoàn thành; chờ kiểm tra S3-05, S3-13; đang làm S3-09; chưa bắt đầu S2-14, S3-01 | Bộ 26 ảnh, nhãn, chia tập, ba thí nghiệm, thẻ khoa học; khảo sát học sinh (S2-14, S3-01) chưa làm, giữ là hạn chế | Hoàng Quốc Anh |
 
-: Bảng 2. Tỷ lệ đóng góp và đánh giá theo bảng giao việc. Ô xác nhận để ký tay trên bản in.
+: Bảng 2. Tỷ lệ đóng góp và đánh giá theo bảng giao việc. Xác nhận là tên đánh máy trên phiếu xác nhận ngày 05/11/2026.

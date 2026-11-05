@@ -59,9 +59,9 @@ Bảng M.1 ghi phân công theo Quy định BTL Xử lý ảnh [@quydinh_btl]. M
 | Thành viên | Công việc | File mã chính | Mục viết | Tỷ lệ (%) | Chữ ký |
 |---|---|---|---|---|---|
 | Bùi Hải Đức | Trò chơi, tích hợp, ghép báo cáo | `app.py`, `src/matching.py`, `src/scoring.py`, `src/integration.py`, `src/crater_canvas/` | Ch1, 3.1, 3.7, Ch5 | 25 | Bùi Hải Đức |
-| Nguyễn Mạnh Tiến | Hough, kiểm chứng, đánh giá | `src/hough.py`, `src/evaluation.py`, `scripts/evaluate_hough.py` | 2.2, 2.4, 3.3, 3.8, 4.7 | 25 | ____ |
-| Đinh Quang Hưng | Tiền xử lý, sáng–tối, thống kê | `src/preprocessing.py`, `src/postprocessing.py`, `src/statistics.py` | 2.1, 2.3, 2.5, 3.2, 3.4–3.6, 4.8 | 25 | ____ |
-| Hoàng Quốc Anh | Dữ liệu, nhãn, thí nghiệm, thẻ | `scripts/label_craters.py`, `scripts/s207_experiments.py`, `src/science_cards.py` | 4.1–4.6, 4.9–4.10 | 25 | ____ |
+| Nguyễn Mạnh Tiến | Hough, kiểm chứng, đánh giá | `src/hough.py`, `src/evaluation.py`, `scripts/evaluate_hough.py` | 2.2, 2.4, 3.3, 3.8, 4.7 | 25 | Nguyễn Mạnh Tiến |
+| Đinh Quang Hưng | Tiền xử lý, sáng–tối, thống kê | `src/preprocessing.py`, `src/postprocessing.py`, `src/statistics.py` | 2.1, 2.3, 2.5, 3.2, 3.4–3.6, 4.8 | 25 | Đinh Quang Hưng |
+| Hoàng Quốc Anh | Dữ liệu, nhãn, thí nghiệm, thẻ | `scripts/label_craters.py`, `scripts/s207_experiments.py`, `src/science_cards.py` | 4.1–4.6, 4.9–4.10 | 25 | Hoàng Quốc Anh |
 
 : Bảng M.1. Phân công, tỷ lệ đóng góp và chữ ký.
 

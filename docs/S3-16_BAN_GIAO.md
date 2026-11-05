@@ -34,8 +34,8 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | Ứng dụng demo có giao diện (Q, Hình thức) | [app.py](../app.py), Streamlit, bundle ngoại tuyến và lệnh chạy trong hướng dẫn gói; [S2-13](S2-13_TICH_HOP.md) | **Đạt** phần giao diện/mã chạy; phạm vi bốn chức năng còn lệch ở 2.4. Đức kiểm demo bản cuối |
 | 15–20 slide (Q, Hình thức) | Deck 19 slide (18 slide chính và 1 slide phụ ví dụ 5×5), xuất PDF ngày 05/11/2026; đưa vào gói bằng `--slides` | **Đạt** về số slide; người trình bày từng phần duyệt lại khi tổng duyệt |
 | Video demo 5–7 phút (Q, Hình thức) | Video 6:01 quay app chạy cục bộ (mã app giống main), phụ đề tiếng Việt đốt vào hình, chưa có giọng đọc; kèm `.srt` và lời thoại để thu giọng; đưa vào gói bằng `--video` | **Đạt** thời lượng, đủ bốn chức năng và một ảnh khó; chưa có giọng đọc. Quốc Anh kiểm và thu giọng nếu cần |
-| Bảng đánh giá chéo thành viên (Q, Hình thức) | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md): Đức đánh giá cả bốn người theo bảng giao việc ngày 05/11/2026; `--peer-review` nhận trang 2 của phiếu xác nhận | **Theo quyết định 05/11** (mục 2.7). Đây là đánh giá của trưởng nhóm, chưa phải tự đánh giá của từng người; ô xác nhận của ba bạn ký tay |
-| Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [Bảng M.1 ở phần mở đầu](bao_cao/00_mo_dau.md) ghi tỷ lệ 25 % mỗi người và chữ ký của Đức; `--signed-assignment` nhận trang 1 của phiếu xác nhận | **Còn chữ ký tay** của Tiến, Hưng, Quốc Anh trên bản in (mục 2.7). Không ai ký thay |
+| Bảng đánh giá chéo thành viên (Q, Hình thức) | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md): Đức đánh giá cả bốn người theo bảng giao việc ngày 05/11/2026; `--peer-review` nhận trang 2 của phiếu xác nhận | **Theo quyết định 05/11** (mục 2.7). Đây là đánh giá của trưởng nhóm, chưa phải tự đánh giá của từng người; cả bốn người xác nhận bằng tên đánh máy |
+| Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [Bảng M.1 ở phần mở đầu](bao_cao/00_mo_dau.md) ghi tỷ lệ 25 % mỗi người và tên xác nhận của cả bốn người; `--signed-assignment` nhận trang 1 của phiếu xác nhận | **Đủ xác nhận** bằng tên đánh máy của cả bốn người (mục 2.7), không phải chữ ký tay |
 
 ### 2.2. Bảo vệ và vai trò
 
@@ -115,7 +115,7 @@ Tên cũ `BaoCao_Nhom2_NASA24.pdf`/`.docx` là quy ước nội bộ từ commit
 | Cơ cấu nhóm | **Nhóm bốn người được chấp nhận** | Chương 1 và Chương 5 ghi cơ cấu này đã được chấp nhận; Bảng M.1 giữ cách gộp vai trò |
 | Nơi nộp, hạn nộp | **Không cần ghi** trong tài liệu này | Bỏ khỏi danh sách chờ ở mục 5 |
 | Tỷ lệ đóng góp | **25 % mỗi người**, vì mỗi người được giao 12 đầu việc | Bảng M.1 và Bảng 2 ghi 25 % |
-| Chữ ký | **Đức ký ô của mình**; ô của Tiến, Hưng, Quốc Anh để trống | Ba bạn ký tay trên bản in; không ai ký thay |
+| Chữ ký | **Tên đánh máy của cả bốn người** trên phiếu xác nhận ngày 05/11/2026. Theo Đức, Tiến, Hưng và Quốc Anh đã đồng ý cho ghi tên mình | Không phải chữ ký tay. Phiếu là `san_pham_bo_sung/phan_cong_ky/` và `danh_gia_cheo/` trong gói; Bảng M.1 và Bảng 2 ghi tên theo phiếu |
 | Đánh giá chéo | **Đức đánh giá theo bảng giao việc** | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md) ghi số đầu việc theo trạng thái và nhận xét của trưởng nhóm |
 | Ngày họp | **Ngày cuối mỗi sprint**: 15/10, 22/10, 29/10/2026 | Phụ lục C, Bảng C.1 |
 | Phần làm thay | **Video demo S3-13 và slide phụ ví dụ 5×5** do Claude dựng theo yêu cầu của Đức | Phụ lục D dòng của Đức ghi việc này; Quốc Anh và Tiến kiểm lại phần tương ứng |
