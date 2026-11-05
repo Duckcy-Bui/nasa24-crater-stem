@@ -33,7 +33,7 @@ Mốc triển khai do trưởng nhóm xác nhận trước đó: `c466c2d` ngày
 | Mã nguồn dưới dạng repo Git (Q, Hình thức) | [Repo Git](https://github.com/Duckcy-Bui/nasa24-crater-stem), [README](../README.md), `ma_nguon/` từ `git archive`; gói ghi URL repo và SHA | **Đạt** khả năng truy cập nguồn. Archive không mang lịch sử Git; lịch sử đối chiếu riêng ở 2.3 |
 | Ứng dụng demo có giao diện (Q, Hình thức) | [app.py](../app.py), Streamlit, bundle ngoại tuyến và lệnh chạy trong hướng dẫn gói; [S2-13](S2-13_TICH_HOP.md) | **Đạt** phần giao diện/mã chạy; phạm vi bốn chức năng còn lệch ở 2.4. Đức kiểm demo bản cuối |
 | 15–20 slide (Q, Hình thức) | Deck 19 slide (18 slide chính và 1 slide phụ ví dụ 5×5), xuất PDF ngày 05/11/2026; đưa vào gói bằng `--slides` | **Đạt** về số slide; người trình bày từng phần duyệt lại khi tổng duyệt |
-| Video demo 5–7 phút (Q, Hình thức) | Video 6:01 quay app chạy cục bộ (mã app giống main), phụ đề tiếng Việt đốt vào hình, chưa có giọng đọc; kèm `.srt` và lời thoại để thu giọng; đưa vào gói bằng `--video` | **Đạt** thời lượng, đủ bốn chức năng và một ảnh khó; chưa có giọng đọc. Quốc Anh kiểm và thu giọng nếu cần |
+| Video demo 5–7 phút (Q, Hình thức) | Video 6:01 quay app chạy cục bộ (mã app giống main; quay lại ngày 05/11/2026 sau khi sửa thứ tự cột biểu đồ đường kính, giữ nguyên mốc lời thoại), phụ đề tiếng Việt đốt vào hình, chưa có giọng đọc; kèm `.srt` và lời thoại để thu giọng; đưa vào gói bằng `--video` | **Đạt** thời lượng, đủ bốn chức năng và một ảnh khó; chưa có giọng đọc. Quốc Anh kiểm và thu giọng nếu cần |
 | Bảng đánh giá chéo thành viên (Q, Hình thức) | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md): Đức đánh giá cả bốn người theo bảng giao việc ngày 05/11/2026; `--peer-review` nhận trang 2 của phiếu xác nhận | **Theo quyết định 05/11** (mục 2.7). Đây là đánh giá của trưởng nhóm, chưa phải tự đánh giá của từng người; cả bốn người xác nhận bằng tên đánh máy |
 | Bảng phân công ở phần mở đầu, có công việc, file mã, mục báo cáo, tỷ lệ (%) và chữ ký cả nhóm (Q, Phần mở đầu) | [Bảng M.1 ở phần mở đầu](bao_cao/00_mo_dau.md) ghi tỷ lệ 25 % mỗi người và tên xác nhận của cả bốn người; `--signed-assignment` nhận trang 1 của phiếu xác nhận | **Đủ xác nhận** bằng tên đánh máy của cả bốn người (mục 2.7), không phải chữ ký tay |
 
@@ -69,11 +69,11 @@ Theo [Chương 4 tại pin `9b87a61`](https://github.com/Duckcy-Bui/nasa24-crate
 | 4.4 — kiểm tra luồng E2 trên STT 17 ngày 26/10 | Nguồn lịch sử [S2-07/results.json](evidence/s2-07/results.json); bước `experiments_tuning` xuất `E2.csv` và `experiments_tuning.json`, chọn `moon_ap16_m109134835l_c01` | Bốn biến thể có cùng số ứng viên, TP/nhãn và Recall_known. Thời gian trong Bảng 4.4 thuộc lượt cũ; không yêu cầu trùng số giây khi chạy lại. Chủ Chương 4 chốt giữ bảng lịch sử hay thay bằng lượt mới có cấu hình/mốc đo rõ ràng |
 | 4.5 — kết quả gộp và theo ảnh của ba phương pháp trên tuning/holdout | Hai bước `evaluation_tuning`, `evaluation_holdout`: `evaluation_*/summary.json`, trường `aggregate`; kèm `results.csv` | Sáu dòng khớp TP/FN, Recall_known gộp, trung bình và SD mẫu sau làm tròn. Runner có đủ trường tính bảng; không cần một file Markdown trùng bố cục báo cáo |
 | 4.6 — kết quả từng ảnh holdout | `evaluation_holdout/results.csv` và `summary.json`: `images[].methods.*`, gồm `candidate_count` cho OpenCV | Tám dòng ảnh và dòng tổng khớp nhãn, TP/FN và số vòng OpenCV; không nhầm `radii_gt16` trong CSV với tổng số vòng |
-| Các bảng kết quả E1–E3 còn chờ S3-05 trong mục 4.6 | `experiments_tuning.json`, `experiments_holdout.json`, `E1.csv`, `E2.csv`, `E3.csv` do runner xuất | Đã có artifact; chủ phần chưa chốt các bảng sẽ đưa vào báo cáo nên chưa kết luận bao phủ toàn bộ bản cuối. Không tự coi thiếu bảng trình bày là thiếu bước chạy |
+| Các bảng kết quả E1–E3 của S3-05, nay là Bảng 4.4 mục 4.6 | `experiments_tuning.json`, `experiments_holdout.json`, `E1.csv`, `E2.csv`, `E3.csv` do runner xuất | Đã có artifact; chủ phần chưa chốt các bảng sẽ đưa vào báo cáo nên chưa kết luận bao phủ toàn bộ bản cuối. Không tự coi thiếu bảng trình bày là thiếu bước chạy |
 
 Bảng 4.1 (nguồn ảnh), 4.2 (thống kê nhãn) và 4.3 (thiết kế thí nghiệm) là các bảng mô tả dữ liệu/thiết kế, không dùng việc runner chưa xuất chúng để nâng yêu cầu “bảng kết quả”. Mục 4.8 chưa có bảng kết quả khảo sát vì khảo sát chưa làm; yêu cầu khảo sát vẫn **chưa đạt**, tách khỏi kiểm độ bao phủ runner. Khi Chương 4 được chốt hoặc đổi số bảng, chủ phần cập nhật lại danh mục và dẫn artifact tương ứng.
 
-Kết quả S3-05 đã có trong repo qua PR #38, còn chờ chủ phần ghép và diễn giải ở mục 4.6.
+Kết quả S3-05 đã có trong repo qua PR #38 và đã ghép vào mục 4.6 (Bảng 4.4). Sheet còn để S3-05 ở trạng thái chờ kiểm tra cho tới khi Tiến xác nhận nghiệm thu.
 
 ### 2.4. Danh sách đề tài NASA, Đề 24
 
@@ -119,6 +119,7 @@ Tên cũ `BaoCao_Nhom2_NASA24.pdf`/`.docx` là quy ước nội bộ từ commit
 | Đánh giá chéo | **Đức đánh giá theo bảng giao việc** | [Bảng 2](bao_cao/dong_gop_va_danh_gia.md) ghi số đầu việc theo trạng thái và nhận xét của trưởng nhóm |
 | Ngày họp | **Ngày cuối mỗi sprint**: 15/10, 22/10, 29/10/2026 | Phụ lục C, Bảng C.1 |
 | Phần làm thay | **Video demo S3-13 và slide phụ ví dụ 5×5** do Claude dựng theo yêu cầu của Đức | Phụ lục D dòng của Đức ghi việc này; Quốc Anh và Tiến kiểm lại phần tương ứng |
+| Sửa lỗi cuối | **Sửa thứ tự cột biểu đồ đường kính** (trước đây trục x xếp nhãn theo chữ, ví dụ `1131.37–1600` đứng trước `200–282.84`) và các câu còn ghi "chờ xác nhận" | `app.py` truyền `sort=False` cho `st.bar_chart`, có test riêng; video quay lại cùng mốc thời gian |
 | Khai báo AI của Tiến, Hưng | **Ghi theo dấu vết trong repo** (mô tả PR #26; commit S1-11 `c3452f4`, `6f1b5f0`) | Phụ lục D; hai bạn bổ sung nếu dùng thêm công cụ |
 
 ## 3. Sản phẩm và xác nhận thành viên

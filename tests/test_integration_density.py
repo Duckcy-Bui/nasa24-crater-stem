@@ -225,6 +225,25 @@ app.show_statistics(result, {})
         self.assertEqual(len(at.warning), 1)
         self.assertIn("không dùng để so tuổi hay so vùng", at.warning[0].value)
 
+    def test_histogram_bins_keep_numeric_order(self):
+        # Nhãn "100–141.4" đứng trước "50–70.7" nếu trục x sắp theo chuỗi.
+        code = """
+import app
+result = {'scored': {'machine': {}}, 'detected': {
+    'valid_pixels': 512 * 512, 'raw_count': 5, 'hough': {'max_circles': 100}}}
+app.show_statistics(result, {})
+"""
+        stats = {"count": 5, "valid_area_km2": 1.0, "density_per_km2": 5.0,
+                 "histogram": {"bin_edges_m": [50, 70.7, 100, 141.4], "counts": [3, 1, 1]}}
+        with mock.patch("src.statistics.summarize", return_value=stats):
+            at = AppTest.from_string(code).run()
+        self.assertEqual(len(at.exception), 0)
+        charts = [n for n in at.main.children.values() if n.type == "vega_lite_chart"]
+        self.assertEqual(len(charts), 1)
+        x = json.loads(charts[0].proto.spec)["encoding"]["x"]
+        self.assertIn("sort", x)
+        self.assertIsNone(x["sort"])  # giữ thứ tự dữ liệu: 50–70.7, 70.7–100, 100–141.4
+
     def test_manual_comparison_is_rendered_without_scoring(self):
         code = f"import app\napp.show_density_comparison({META!r})\n"
         at = AppTest.from_string(code).run()

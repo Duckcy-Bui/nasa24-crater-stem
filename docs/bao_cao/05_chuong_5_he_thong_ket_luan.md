@@ -22,7 +22,7 @@ S3-05 (Bảng 4.4) cho thấy gắn sáng–tối giữ 1/20, lọc ngược là
 
 ## 5.2. Hạn chế
 
-Phạm vi **chỉ Mặt Trăng, chưa Sao Hỏa**; dùng nhãn thưa thay danh mục nên **chưa có Precision**. Thẻ theo vùng chưa đạt hành vi tìm thấy thiết bị; **khảo sát học sinh chưa đạt**. Nhóm có **4 thay vì 5 thành viên** theo quy định; cơ cấu này đã được chấp nhận. Tỷ lệ và chữ ký còn chờ chính thành viên xác nhận.
+Phạm vi **chỉ Mặt Trăng, chưa Sao Hỏa**; dùng nhãn thưa thay danh mục nên **chưa có Precision**. Thẻ theo vùng chưa đạt hành vi tìm thấy thiết bị; **khảo sát học sinh chưa đạt**. Nhóm có **4 thay vì 5 thành viên** theo quy định; cơ cấu này đã được chấp nhận. Tỷ lệ 25 % mỗi người; cả bốn thành viên đã xác nhận ở Bảng M.1.
 
 Hough chạm trần 100 vòng, thiên về hố nhỏ; bộ lọc chưa bật vì có nguy cơ mất hố đúng. Ảnh xem nhanh (browse) 8 bit, góc nắng không đều và holdout toàn 20 m/px, thiếu hướng nắng, đã được xem trước giới hạn suy luận. Đếm tay hai vùng có ít hố, sai số r khoảng ±2 px; không suy tuổi tuyệt đối. Lượt chấm đầu còn chậm. Phép đo phụ về lượng tử 8 bit trong tài liệu bổ sung chưa có mã tái tạo riêng.
 
