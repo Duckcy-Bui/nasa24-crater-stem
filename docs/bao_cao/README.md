@@ -98,12 +98,12 @@ Cập nhật 04/11/2026: giữ bản 4.6 và kết luận S3-05 rút gọn từ 
 
 | Nơi | Số dấu | Ai cần bổ sung |
 |---|---:|---|
-| Mở đầu | 0 | Tỷ lệ 25 % mỗi người theo 12 đầu việc/người; Đức ký ô của mình, ô của Tiến, Hưng, Quốc Anh để trống cho ký tay trên bản in |
+| Mở đầu | 0 | Tỷ lệ 25 % mỗi người theo 12 đầu việc/người; cả bốn người xác nhận bằng tên đánh máy trên phiếu ngày 05/11/2026 (Tiến, Hưng, Quốc Anh đồng ý theo Đức) |
 | Chương 4 | 0 | Tiến gửi ngày 04/11/2026: RAM 12 GB; CPU giữ đúng mã hồ sơ đo ghi (`Intel64 Family 6 Model 154 Stepping 4`), không suy ra tên thương mại |
 | Chương 5 | 0 | Đã xử lý dấu chờ duyệt kết luận S3-05 của Quốc Anh; Đức chốt toàn chương |
 | Phụ lục C | 0 | Đức xác nhận nhóm họp ngày cuối mỗi sprint: 15/10, 22/10, 29/10/2026 (Bảng C.1); ngày trong CSV vẫn là ngày ghi công việc |
 | Phụ lục D | 0 | Dòng Tiến và Hưng ghi theo dấu vết trong repo (mô tả PR #26; commit S1-11 `c3452f4`, `6f1b5f0`); hai bạn bổ sung nếu dùng thêm công cụ |
-| File đóng góp/đánh giá chéo | 0 | Đức đánh giá theo bảng giao việc ngày 05/11/2026; ô xác nhận của ba bạn ký tay |
+| File đóng góp/đánh giá chéo | 0 | Đức đánh giá theo bảng giao việc ngày 05/11/2026; cả bốn người xác nhận bằng tên đánh máy trên phiếu |
 
 Môi trường lượt Linux 31/10 dùng đúng hồ sơ S3-10, hồ sơ đó chưa có RAM; không thay bằng cấu hình máy đo khác. Lượt kiểm số học 01/11 có môi trường riêng trong `docs/evidence/s3-12/`. Số test ở mục 3.8: 380 test Python và 6 bộ JavaScript, đo ngày 04/11/2026 trên nhánh dùng số S3-03 (nền main `b091f96` và PR #46); so với 370 thêm 2 test đóng gói trên Windows (PR #48) và 8 test S3-03. Trước đó 370 = 342 + 5 test trung bình ± SD, 16 test xuất bảng Chương 4 và 7 test liên kết công khai. r6 không chạy lại toàn bộ kiểm thử ứng dụng.
 

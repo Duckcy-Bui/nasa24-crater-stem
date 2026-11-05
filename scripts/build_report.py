@@ -480,7 +480,7 @@ def _polish_table(table, text_width_cm: float = 16.0) -> None:
         "Tỷ lệ (%)",
         "Chữ ký",
     ]:
-        widths = [2.2, 2.3, 5.0, 3.7, 1.3, 1.5]
+        widths = [2.2, 2.2, 4.6, 3.2, 1.3, 2.5]
     elif headers[:3] == ["Sprint", "Ngày họp", "Nội dung"] and columns == 4:
         widths = [2.4, 2.4, 7.2, 4.0]  # Bảng C.1: cột nội dung rộng nhất
     tbl = table._tbl
