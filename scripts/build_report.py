@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs" / "bao_cao"
 OUTPUT = ROOT / "outputs" / "report"
-NAME = "BaoCao_Nhom2_NASA24"
+NAME = "BTL_XLA"
 FONT = "Times New Roman"
 
 

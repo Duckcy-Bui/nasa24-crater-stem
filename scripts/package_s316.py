@@ -17,7 +17,7 @@ import tarfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT_NAME = "BaoCao_Nhom2_NASA24"
+REPORT_NAME = "BTL_XLA"
 REPOSITORY = "https://github.com/Duckcy-Bui/nasa24-crater-stem"
 DELIVERABLES = {
     "slides": ("slide", "Hưng", "15–20 slide"),
@@ -266,7 +266,7 @@ def package_commit(
     tree = git_output(repo, "rev-parse", revision + "^{tree}").decode().strip()
     raw = git_output(repo, "archive", "--format=tar", revision)
     output.mkdir(parents=True)
-    directory = output / ("NASA24_Nhom2_" + revision[:12])
+    directory = output / REPORT_NAME
     directory.mkdir()
     source = directory / "ma_nguon"
     extract_archive(raw, source)
